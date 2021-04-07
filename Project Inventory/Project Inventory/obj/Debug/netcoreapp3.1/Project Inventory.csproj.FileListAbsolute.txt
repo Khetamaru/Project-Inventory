@@ -1,0 +1,19 @@
+C:\ANTHONY\PERSO\Projet Inventaire\Project-Inventory\Project Inventory\Project Inventory\bin\Debug\netcoreapp3.1\Project Inventory.exe
+C:\ANTHONY\PERSO\Projet Inventaire\Project-Inventory\Project Inventory\Project Inventory\bin\Debug\netcoreapp3.1\Project Inventory.deps.json
+C:\ANTHONY\PERSO\Projet Inventaire\Project-Inventory\Project Inventory\Project Inventory\bin\Debug\netcoreapp3.1\Project Inventory.runtimeconfig.json
+C:\ANTHONY\PERSO\Projet Inventaire\Project-Inventory\Project Inventory\Project Inventory\bin\Debug\netcoreapp3.1\Project Inventory.runtimeconfig.dev.json
+C:\ANTHONY\PERSO\Projet Inventaire\Project-Inventory\Project Inventory\Project Inventory\bin\Debug\netcoreapp3.1\Project Inventory.dll
+C:\ANTHONY\PERSO\Projet Inventaire\Project-Inventory\Project Inventory\Project Inventory\bin\Debug\netcoreapp3.1\Project Inventory.pdb
+C:\ANTHONY\PERSO\Projet Inventaire\Project-Inventory\Project Inventory\Project Inventory\obj\Debug\netcoreapp3.1\Project Inventory.csprojAssemblyReference.cache
+C:\ANTHONY\PERSO\Projet Inventaire\Project-Inventory\Project Inventory\Project Inventory\obj\Debug\netcoreapp3.1\MainWindow.g.cs
+C:\ANTHONY\PERSO\Projet Inventaire\Project-Inventory\Project Inventory\Project Inventory\obj\Debug\netcoreapp3.1\App.g.cs
+C:\ANTHONY\PERSO\Projet Inventaire\Project-Inventory\Project Inventory\Project Inventory\obj\Debug\netcoreapp3.1\Project Inventory_MarkupCompile.cache
+C:\ANTHONY\PERSO\Projet Inventaire\Project-Inventory\Project Inventory\Project Inventory\obj\Debug\netcoreapp3.1\Project Inventory_MarkupCompile.lref
+C:\ANTHONY\PERSO\Projet Inventaire\Project-Inventory\Project Inventory\Project Inventory\obj\Debug\netcoreapp3.1\MainWindow.baml
+C:\ANTHONY\PERSO\Projet Inventaire\Project-Inventory\Project Inventory\Project Inventory\obj\Debug\netcoreapp3.1\Project Inventory.g.resources
+C:\ANTHONY\PERSO\Projet Inventaire\Project-Inventory\Project Inventory\Project Inventory\obj\Debug\netcoreapp3.1\Project Inventory.AssemblyInfoInputs.cache
+C:\ANTHONY\PERSO\Projet Inventaire\Project-Inventory\Project Inventory\Project Inventory\obj\Debug\netcoreapp3.1\Project Inventory.AssemblyInfo.cs
+C:\ANTHONY\PERSO\Projet Inventaire\Project-Inventory\Project Inventory\Project Inventory\obj\Debug\netcoreapp3.1\Project Inventory.csproj.CoreCompileInputs.cache
+C:\ANTHONY\PERSO\Projet Inventaire\Project-Inventory\Project Inventory\Project Inventory\obj\Debug\netcoreapp3.1\Project Inventory.dll
+C:\ANTHONY\PERSO\Projet Inventaire\Project-Inventory\Project Inventory\Project Inventory\obj\Debug\netcoreapp3.1\Project Inventory.pdb
+C:\ANTHONY\PERSO\Projet Inventaire\Project-Inventory\Project Inventory\Project Inventory\obj\Debug\netcoreapp3.1\Project Inventory.genruntimeconfig.cache
