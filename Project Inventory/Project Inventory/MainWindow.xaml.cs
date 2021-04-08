@@ -57,28 +57,4 @@ namespace Project_Inventory
             }
         }
     }
-
-    /*
-        <ListBox 
-            VerticalAlignment="Bottom"
-            x:Name="LbxUtilisateurs">
-            
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    
-                    <Grid ShowGridLines="True">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="300"/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        
-                        <Label Content="{Binding Nom}" />
-                        <Label Grid.Column="1" Content="Utilisateur" />
-                    </Grid>
-                    
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-            
-        </ListBox>
-    */
 }

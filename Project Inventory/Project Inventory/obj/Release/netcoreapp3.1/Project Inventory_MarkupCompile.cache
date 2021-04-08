@@ -4,11 +4,11 @@
 winexe
 C#
 .cs
-C:\ANTHONY\PERSO\Projet Inventaire\Project-Inventory\Project Inventory\Project Inventory\obj\Debug\netcoreapp3.1\
+C:\ANTHONY\PERSO\Projet Inventaire\Project-Inventory\Project Inventory\Project Inventory\obj\Release\netcoreapp3.1\
 Project_Inventory
 none
 false
-TRACE;DEBUG;NETCOREAPP;NETCOREAPP3_1;
+TRACE;RELEASE;NETCOREAPP;NETCOREAPP3_1;
 C:\ANTHONY\PERSO\Projet Inventaire\Project-Inventory\Project Inventory\Project Inventory\App.xaml
 11407045341
 
