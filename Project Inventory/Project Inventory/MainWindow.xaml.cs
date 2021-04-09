@@ -1,60 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Project_Inventory
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
+        private VisualElements_ToolBox toolBox;
+
         public MainWindow()
         {
+            DataContext = this;
             InitializeComponent();
+            NavigationService navService = NavigationService.GetNavigationService(this);
 
-            List<Utilisateur> newList = new List<Utilisateur> {
+            toolBox = new VisualElements_ToolBox(navService, this);
 
-                new Utilisateur {
-                    Nom = "Didier",
-                    horizontalAlign = HorizontalAlignment.Left,
-                    verticalAlign = VerticalAlignment.Center
-                },
+            Init();
+        }
 
-                new Utilisateur {
-                    Nom = "Patrick",
-                    horizontalAlign = HorizontalAlignment.Center,
-                    verticalAlign = VerticalAlignment.Center
-                }
-            };
+        private void Init()
+        {
+            windowGrid = toolBox.ChangeGrid(windowGrid, 1, 1);
 
-            List<Button> buttonList = new List<Button>();
-
-            Button temp;
-            foreach (Utilisateur utilisateur in newList)
-            {
-                temp = new Button();
-                temp.Content = utilisateur.Nom;
-                temp.HorizontalAlignment = utilisateur.horizontalAlign;
-                temp.VerticalAlignment = utilisateur.verticalAlign;
-                buttonList.Add(temp);
-            }
-
-            foreach (Button button in buttonList)
-            {
-                WindowGrid.Children.Add(button);
-            }
+            windowGrid = toolBox.CreateButtonToGrid(windowGrid, "ceci est un text à la con", HorizontalAlignment.Center, VerticalAlignment.Top);
+            windowGrid = toolBox.CreateButtonToGrid(windowGrid, "lui aussi", HorizontalAlignment.Center, VerticalAlignment.Center);
         }
     }
 }
