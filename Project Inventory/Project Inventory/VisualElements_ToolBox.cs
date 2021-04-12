@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Navigation;
 
@@ -13,33 +10,37 @@ namespace Project_Inventory
     {
         private NavigationService navServiceContext;
         private Window context;
+        private WpfScreen wpfScreen;
+
 
         public VisualElements_ToolBox(NavigationService navService, Window context)
         {
             navServiceContext = navService;
             this.context = context;
+            wpfScreen = new WpfScreen();
         }
 
-        public Button CreateButton(string content,
-                                   HorizontalAlignment horizontalAlign,
-                                   VerticalAlignment verticalAlign)
+        // BUTTON PART //
+
+        public Button CreateButton(string content, string skinName)
         {
             Button temp = new Button();
 
             temp.Content = content;
-            temp.HorizontalAlignment = horizontalAlign;
-            temp.VerticalAlignment = verticalAlign;
+            temp.HorizontalAlignment = HorizontalAlignment.Center;
+            temp.VerticalAlignment = VerticalAlignment.Center;
+
+            temp = LoadButtonSkin(temp, skinName);
 
             return temp;
         }
 
         public Button CreateButtonWithNavigation(string content,
-                                                  HorizontalAlignment horizontalAlign,
-                                                  VerticalAlignment verticalAlign,
-                                                  string nextPageName)
+                                                 string nextPageName, 
+                                                 string skinName)
         {
 
-            Button temp = CreateButton(content, horizontalAlign, verticalAlign);
+            Button temp = CreateButton(content, skinName);
             temp = AddOnClickButton(temp, nextPageName);
 
             return temp;
@@ -55,20 +56,27 @@ namespace Project_Inventory
             return button;
         }
 
-        private void PageNavigation(object sender, RoutedEventArgs e, string nextPageName)
+        private Button LoadButtonSkin(Button button, string skinName) 
         {
-            Uri uri = new Uri(nextPageName, UriKind.Relative);
-            navServiceContext.Navigate(uri);
-            context.Close();
+            switch(skinName) 
+            {
+                case "standart":
+                    button = ButtonSkins.StandartButtonSkin(button);
+                    break;
+            }
+
+            return button;
         }
+
+        // GRID PART //
 
         public Grid ChangeGrid(Grid temp,
                                int columnNb,
                                int rowNb)
         {
 
-            temp.Width = 400;
-            temp.Height = 400;
+            temp.Width = wpfScreen.PrimaryScreenSizeWidth();
+            temp.Height = wpfScreen.PrimaryScreenSizeHeight();
 
             temp.HorizontalAlignment = HorizontalAlignment.Left;
 
@@ -78,23 +86,26 @@ namespace Project_Inventory
 
             temp.Background = new SolidColorBrush(Colors.LightSteelBlue);
 
-            int i;
-
-            for(i = 0; i < columnNb; i++)
-            {
-                temp.ColumnDefinitions.Add(new ColumnDefinition());
-            }
-
-            for (i = 0; i < rowNb; i++)
-            {
-                temp.RowDefinitions.Add(new RowDefinition());
-            }
+            temp = CreateRowsInGrid(temp, rowNb);
+            temp = CreateColumnsInGrid(temp, columnNb);
 
             return temp;
         }
 
-        public Grid AddButtonToGrid(Grid grid, Button button)
+        public Grid AddButtonToGrid(Grid grid, Button button, int rowNb, int columnNb)
         {
+
+            Grid.SetRow(button, rowNb);
+            Grid.SetColumn(button, columnNb);
+            grid.Children.Add(button);
+
+            return grid;
+        }
+        public Grid AddButtonToGrid(Grid grid, Button button, int rowNb)
+        {
+
+            Grid.SetRow(button, rowNb);
+            Grid.SetColumnSpan(button, grid.ColumnDefinitions.Count);
             grid.Children.Add(button);
 
             return grid;
@@ -102,27 +113,73 @@ namespace Project_Inventory
 
         public Grid CreateButtonToGrid(Grid grid,
                                        string content,
-                                       HorizontalAlignment horizontalAlign,
-                                       VerticalAlignment verticalAlign)
+                                       int rowNb,
+                                       int columnNb, 
+                                       string skinName)
         {
-            Button button = CreateButton(content, horizontalAlign, verticalAlign);
+            Button button = CreateButton(content, skinName);
 
-            grid = AddButtonToGrid(grid, button);
+            grid = AddButtonToGrid(grid, button, rowNb, columnNb);
+
+            return grid;
+        }
+        public Grid CreateButtonToGrid(Grid grid,
+                                      string content,
+                                      int rowNb,
+                                      string skinName)
+        {
+            Button button = CreateButton(content, skinName);
+
+            grid = AddButtonToGrid(grid, button, rowNb);
 
             return grid;
         }
 
-        public Grid CreateButtonNavigateToGrid(Grid grid, 
+        public Grid CreateButtonNavigateToGrid(Grid grid,
                                                string content,
-                                               HorizontalAlignment horizontalAlign,
-                                               VerticalAlignment verticalAlign,
-                                               string nextPageName)
+                                               string nextPageName,
+                                               int rowNb,
+                                               int columnNb, 
+                                               string skinName)
         {
-            Button button = CreateButtonWithNavigation(content, horizontalAlign, verticalAlign, nextPageName);
+            Button button = CreateButtonWithNavigation(content, nextPageName, skinName);
 
-            grid = AddButtonToGrid(grid, button);
+            grid = AddButtonToGrid(grid, button, rowNb, columnNb);
 
             return grid;
+        }
+
+        public Grid CreateRowsInGrid(Grid grid, int nbRows)
+        {
+            int i;
+
+            for (i = 0; i < nbRows; i++)
+            {
+                grid.RowDefinitions.Add(new RowDefinition());
+            }
+
+            return grid;
+        }
+
+        public Grid CreateColumnsInGrid(Grid grid, int nbColumns)
+        {
+            int i;
+
+            for (i = 0; i < nbColumns; i++)
+            {
+                grid.ColumnDefinitions.Add(new ColumnDefinition());
+            }
+
+            return grid;
+        }
+
+        // OTHERS //
+
+        private void PageNavigation(object sender, RoutedEventArgs e, string nextPageName)
+        {
+            Uri uri = new Uri(nextPageName, UriKind.Relative);
+            navServiceContext.Navigate(uri);
+            context.Close();
         }
     }
 }

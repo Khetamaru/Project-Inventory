@@ -13,6 +13,7 @@
         "packagesPath": "C:\\Users\\Khetamaru\\.nuget\\packages\\",
         "outputPath": "C:\\ANTHONY\\PERSO\\Projet Inventaire\\Project-Inventory\\Project Inventory\\Project Inventory\\obj\\",
         "projectStyle": "PackageReference",
+        "crossTargeting": true,
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
           "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
@@ -24,6 +25,7 @@
           "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
         "originalTargetFrameworks": [
+          "net472",
           "netcoreapp3.1"
         ],
         "sources": {
@@ -33,6 +35,10 @@
         "frameworks": {
           "netcoreapp3.1": {
             "targetAlias": "netcoreapp3.1",
+            "projectReferences": {}
+          },
+          "net472": {
+            "targetAlias": "net472",
             "projectReferences": {}
           }
         },
@@ -64,6 +70,15 @@
             }
           },
           "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.201\\RuntimeIdentifierGraph.json"
+        },
+        "net472": {
+          "targetAlias": "net472",
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.201\\RuntimeIdentifierGraph.json"
+        }
+      },
+      "runtimes": {
+        "win7-x86": {
+          "#import": []
         }
       }
     }

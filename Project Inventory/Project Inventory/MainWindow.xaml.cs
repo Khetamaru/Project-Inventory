@@ -21,10 +21,14 @@ namespace Project_Inventory
 
         private void Init()
         {
-            windowGrid = toolBox.ChangeGrid(windowGrid, 1, 1);
+            windowGrid = toolBox.ChangeGrid(windowGrid, 2, 2);
 
-            windowGrid = toolBox.CreateButtonToGrid(windowGrid, "ceci est un text à la con", HorizontalAlignment.Center, VerticalAlignment.Top);
-            windowGrid = toolBox.CreateButtonToGrid(windowGrid, "lui aussi", HorizontalAlignment.Center, VerticalAlignment.Center);
+            
+            windowGrid = toolBox.CreateButtonToGrid(windowGrid, "ceci est un text à la con", 1, 0, "standart");
+            windowGrid = toolBox.CreateButtonToGrid(windowGrid, "lui aussi", 1, 1, "standart");
+
+            windowGrid = toolBox.CreateButtonToGrid(windowGrid, "ceci est une image", 0, "standart");
+
         }
     }
 }
