@@ -7,8 +7,17 @@
         mc:Ignorable="d"
         Title="MainWindow"
         WindowStartupLocation="CenterScreen" WindowState="Maximized">
-    <Grid 
-        x:Name="windowGrid">
+    
+    <Grid>
+        
+        <Grid 
+            x:Name="topGrid">
+        </Grid>
+        
+        <Grid
+            x:Name="bottomGrid">
+        </Grid>
+        
     </Grid>
-
+    
 </Window>

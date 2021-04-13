@@ -72,19 +72,11 @@ namespace Project_Inventory
 
         public Grid ChangeGrid(Grid temp,
                                int columnNb,
-                               int rowNb)
+                               int rowNb,
+                               string skinName)
         {
 
-            temp.Width = wpfScreen.PrimaryScreenSizeWidth();
-            temp.Height = wpfScreen.PrimaryScreenSizeHeight();
-
-            temp.HorizontalAlignment = HorizontalAlignment.Left;
-
-            temp.VerticalAlignment = VerticalAlignment.Top;
-
-            temp.ShowGridLines = true;
-
-            temp.Background = new SolidColorBrush(Colors.LightSteelBlue);
+            temp = LoadGridSkin(temp, skinName);
 
             temp = CreateRowsInGrid(temp, rowNb);
             temp = CreateColumnsInGrid(temp, columnNb);
@@ -92,9 +84,24 @@ namespace Project_Inventory
             return temp;
         }
 
+        public Grid LoadGridSkin(Grid grid, string skinName)
+        {
+            switch (skinName)
+            {
+                case "row":
+                    grid = GridSkins.RowGridSkin(grid, wpfScreen.PrimaryScreenSizeWidth());
+                    break;
+
+                case "column":
+                    grid = GridSkins.ColumnGridSkin(grid, wpfScreen.PrimaryScreenSizeHeight());
+                    break;
+            }
+
+            return grid;
+        }
+
         public Grid AddButtonToGrid(Grid grid, Button button, int rowNb, int columnNb)
         {
-
             Grid.SetRow(button, rowNb);
             Grid.SetColumn(button, columnNb);
             grid.Children.Add(button);
@@ -103,7 +110,6 @@ namespace Project_Inventory
         }
         public Grid AddButtonToGrid(Grid grid, Button button, int rowNb)
         {
-
             Grid.SetRow(button, rowNb);
             Grid.SetColumnSpan(button, grid.ColumnDefinitions.Count);
             grid.Children.Add(button);
