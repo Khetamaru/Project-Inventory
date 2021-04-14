@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 using System.Windows.Navigation;
 
 namespace Project_Inventory
@@ -70,16 +69,15 @@ namespace Project_Inventory
 
         // GRID PART //
 
-        public Grid ChangeGrid(Grid temp,
-                               int columnNb,
+        public Grid SetUpGrid(Grid temp,
                                int rowNb,
+                               int columnNb,
                                string skinName)
         {
-
-            temp = LoadGridSkin(temp, skinName);
-
             temp = CreateRowsInGrid(temp, rowNb);
             temp = CreateColumnsInGrid(temp, columnNb);
+
+            temp = LoadGridSkin(temp, skinName);
 
             return temp;
         }
@@ -88,8 +86,16 @@ namespace Project_Inventory
         {
             switch (skinName)
             {
-                case "row":
-                    grid = GridSkins.RowGridSkin(grid, wpfScreen.PrimaryScreenSizeWidth());
+                case "RowTopTier":
+                    grid = GridSkins.RowTopTier(grid, wpfScreen.PrimaryScreenSizeHeight());
+                    break;
+
+                case "RowCenterTier":
+                    grid = GridSkins.RowCenterTier(grid, wpfScreen.PrimaryScreenSizeHeight());
+                    break;
+
+                case "RowBottomTier":
+                    grid = GridSkins.RowBottomTier(grid, wpfScreen.PrimaryScreenSizeHeight());
                     break;
 
                 case "column":

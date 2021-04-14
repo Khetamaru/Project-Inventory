@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
@@ -9,12 +6,30 @@ namespace Project_Inventory
 {
     public static class GridSkins
     {
-        public static Grid RowGridSkin(Grid grid, double screenWidth)
+        public static Grid RowTopTier(Grid grid, double screenHeight)
         {
-            grid.Width = screenWidth;
-
-            grid.HorizontalAlignment = HorizontalAlignment.Left;
             grid.VerticalAlignment = VerticalAlignment.Top;
+            grid.HorizontalAlignment = HorizontalAlignment.Stretch;
+
+            grid.ShowGridLines = true;
+            grid.Background = new SolidColorBrush(Colors.LightSteelBlue);
+
+            return grid;
+        }
+        public static Grid RowBottomTier(Grid grid, double screenHeight)
+        {
+            grid.VerticalAlignment = VerticalAlignment.Bottom;
+            grid.HorizontalAlignment = HorizontalAlignment.Stretch;
+
+            grid.ShowGridLines = true;
+            grid.Background = new SolidColorBrush(Colors.LightSteelBlue);
+
+            return grid;
+        }
+        public static Grid RowCenterTier(Grid grid, double screenHeight)
+        {
+            grid.VerticalAlignment = VerticalAlignment.Center;
+            grid.HorizontalAlignment = HorizontalAlignment.Stretch;
 
             grid.ShowGridLines = true;
             grid.Background = new SolidColorBrush(Colors.LightSteelBlue);

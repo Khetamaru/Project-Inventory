@@ -11,11 +11,18 @@
     <Grid>
         
         <Grid 
-            x:Name="topGrid">
+            x:Name="topGrid"
+            Height="3*">
+        </Grid>
+
+        <Grid
+            x:Name="centerGrid"
+            Height="3*">
         </Grid>
         
         <Grid
-            x:Name="bottomGrid">
+            x:Name="bottomGrid"
+            Height="3*">
         </Grid>
         
     </Grid>

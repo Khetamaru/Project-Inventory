@@ -11,11 +11,11 @@ namespace Project_Inventory
     {
         public double PrimaryScreenSizeWidth()
         {
-            return System.Windows.SystemParameters.PrimaryScreenWidth;
+            return SystemParameters.WorkArea.Width;
         }
         public double PrimaryScreenSizeHeight()
         {
-            return System.Windows.SystemParameters.PrimaryScreenHeight;
+            return SystemParameters.WorkArea.Height;
         }
 
         /*public static IEnumerable<WpfScreen> AllScreens()

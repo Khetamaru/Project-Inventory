@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Navigation;
 
 namespace Project_Inventory
@@ -21,12 +20,18 @@ namespace Project_Inventory
 
         private void Init()
         {
-            topGrid = toolBox.ChangeGrid(topGrid, 1, 1, "row");
-            bottomGrid = toolBox.ChangeGrid(bottomGrid, 2, 1, "row");
+            topGrid = toolBox.SetUpGrid(topGrid, 1, 1, "RowTopTier");
 
-            topGrid = toolBox.CreateButtonToGrid(topGrid,       "ceci est une image",        0, 0, "standart");
+            topGrid = toolBox.CreateButtonToGrid(topGrid, "ceci est une image", 0, 0, "standart");
+
+
+            //centerGrid = toolBox.SetUpGrid(centerGrid, 1, 1, "RowCenterTier");
+
+
+            bottomGrid = toolBox.SetUpGrid(bottomGrid, 1, 2, "RowBottomTier");
+
             bottomGrid = toolBox.CreateButtonToGrid(bottomGrid, "ceci est un text à la con", 0, 0, "standart");
-            bottomGrid = toolBox.CreateButtonToGrid(bottomGrid, "lui aussi",                 1, 0, "standart");
+            bottomGrid = toolBox.CreateButtonToGrid(bottomGrid, "lui aussi",                 0, 1, "standart");
         }
     }
 }
