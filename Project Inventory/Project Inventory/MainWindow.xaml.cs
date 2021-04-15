@@ -1,84 +1,51 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Project_Inventory
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
+        private VisualElements_ToolBox toolBox;
+        private double titleBarHeight;
+
         public MainWindow()
         {
+            DataContext = this;
+            ResizeMode = ResizeMode.CanMinimize;
+
             InitializeComponent();
 
-            List<Utilisateur> newList = new List<Utilisateur> {
+            titleBarHeight = SystemParameters.WindowCaptionHeight;
 
-                new Utilisateur {
-                    Nom = "Didier",
-                    horizontalAlign = HorizontalAlignment.Left,
-                    verticalAlign = VerticalAlignment.Center
-                },
+            toolBox = new VisualElements_ToolBox(this, titleBarHeight);
 
-                new Utilisateur {
-                    Nom = "Patrick",
-                    horizontalAlign = HorizontalAlignment.Center,
-                    verticalAlign = VerticalAlignment.Center
-                }
-            };
+            Init();
+        }
 
-            List<Button> buttonList = new List<Button>();
+        private void Init()
+        {
+            TopGridInit();
+            BottomGridInit();
+        }
 
-            Button temp;
-            foreach (Utilisateur utilisateur in newList)
-            {
-                temp = new Button();
-                temp.Content = utilisateur.Nom;
-                temp.HorizontalAlignment = utilisateur.horizontalAlign;
-                temp.VerticalAlignment = utilisateur.verticalAlign;
-                buttonList.Add(temp);
-            }
+        private void TopGridInit()
+        {
+            topGrid = toolBox.SetUpGrid(topGrid, 1, 1, "RowTopTier", "HeightOneTier");
 
-            foreach (Button button in buttonList)
-            {
-                WindowGrid.Children.Add(button);
-            }
+            string[] topGridButtons = new string[1] { "Logo Application" };
+
+            topGrid = toolBox.CreateButtonsToGridByTab(topGrid, topGridButtons, "standart");
+        }
+
+        private void BottomGridInit()
+        {
+            bottomGrid = toolBox.SetUpGrid(bottomGrid, 1, 2, "RowBottomTier", "HeightTwoTier");
+
+            string[] bottomGridButtons = new string[2] {"Réserve n°1", "Réserve n°2"};
+            Type[] rederectType = new Type[2] { typeof(StorageSelectionPage), typeof(StorageSelectionPage) };
+
+            bottomGrid = toolBox.CreateRederectButtonsToGridByTab(bottomGrid, bottomGridButtons, rederectType, "standart");
         }
     }
-
-    /*
-        <ListBox 
-            VerticalAlignment="Bottom"
-            x:Name="LbxUtilisateurs">
-            
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    
-                    <Grid ShowGridLines="True">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="300"/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        
-                        <Label Content="{Binding Nom}" />
-                        <Label Grid.Column="1" Content="Utilisateur" />
-                    </Grid>
-                    
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-            
-        </ListBox>
-    */
 }
