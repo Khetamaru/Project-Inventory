@@ -7,16 +7,19 @@ namespace Project_Inventory
 {
     class VisualElements_ToolBox
     {
-        private NavigationService navServiceContext;
         private Window context;
         private WpfScreen wpfScreen;
 
+        private double windowWidth;
+        private double windowHeight;
 
-        public VisualElements_ToolBox(NavigationService navService, Window context)
+        public VisualElements_ToolBox(Window context, double titleBarHeight)
         {
-            navServiceContext = navService;
             this.context = context;
             wpfScreen = new WpfScreen();
+
+            windowWidth = wpfScreen.PrimaryScreenSizeWidth();
+            windowHeight = wpfScreen.PrimaryScreenSizeHeight() - titleBarHeight;
         }
 
         // BUTTON PART //
@@ -34,8 +37,8 @@ namespace Project_Inventory
             return temp;
         }
 
-        public Button CreateButtonWithNavigation(string content,
-                                                 string nextPageName, 
+        public Button CreateRederectButton(string content,
+                                                 Type nextPageName, 
                                                  string skinName)
         {
 
@@ -46,7 +49,7 @@ namespace Project_Inventory
 
         }
 
-        private Button AddOnClickButton(Button button, string nextPageName)
+        private Button AddOnClickButton(Button button, Type nextPageName)
         {
             button.Click += (object sender, RoutedEventArgs e) => 
             {
@@ -72,34 +75,60 @@ namespace Project_Inventory
         public Grid SetUpGrid(Grid temp,
                                int rowNb,
                                int columnNb,
-                               string skinName)
+                               string skinName,
+                               string lengthName)
         {
             temp = CreateRowsInGrid(temp, rowNb);
             temp = CreateColumnsInGrid(temp, columnNb);
 
-            temp = LoadGridSkin(temp, skinName);
+            temp = LoadGridLocation(temp, skinName);
+            temp = LoadGridLength(temp, lengthName);
 
             return temp;
         }
 
-        public Grid LoadGridSkin(Grid grid, string skinName)
+        public Grid LoadGridLocation(Grid grid, string skinName)
         {
             switch (skinName)
             {
                 case "RowTopTier":
-                    grid = GridSkins.RowTopTier(grid, wpfScreen.PrimaryScreenSizeHeight());
+                    grid = GridSkins.RowTopTier(grid);
                     break;
 
                 case "RowCenterTier":
-                    grid = GridSkins.RowCenterTier(grid, wpfScreen.PrimaryScreenSizeHeight());
+                    grid = GridSkins.RowCenterTier(grid);
                     break;
 
                 case "RowBottomTier":
-                    grid = GridSkins.RowBottomTier(grid, wpfScreen.PrimaryScreenSizeHeight());
+                    grid = GridSkins.RowBottomTier(grid);
                     break;
 
                 case "column":
-                    grid = GridSkins.ColumnGridSkin(grid, wpfScreen.PrimaryScreenSizeHeight());
+                    grid = GridSkins.ColumnGridSkin(grid);
+                    break;
+            }
+
+            return grid;
+        }
+
+        public Grid LoadGridLength(Grid grid, string lengthName)
+        {
+            switch (lengthName)
+            {
+                case "WidthOneTier":
+                    grid = GridSkins.WidthOneTier(grid, windowWidth);
+                    break;
+
+                case "WidthTwoTier":
+                    grid = GridSkins.WidthTwoTier(grid, windowWidth);
+                    break;
+
+                case "HeightOneTier":
+                    grid = GridSkins.HeightOneTier(grid, windowHeight);
+                    break;
+
+                case "HeightTwoTier":
+                    grid = GridSkins.HeightTwoTier(grid, windowHeight);
                     break;
             }
 
@@ -147,14 +176,14 @@ namespace Project_Inventory
             return grid;
         }
 
-        public Grid CreateButtonNavigateToGrid(Grid grid,
+        public Grid CreateRederectButtonToGrid(Grid grid,
                                                string content,
-                                               string nextPageName,
+                                               Type nextPageName,
                                                int rowNb,
                                                int columnNb, 
                                                string skinName)
         {
-            Button button = CreateButtonWithNavigation(content, nextPageName, skinName);
+            Button button = CreateRederectButton(content, nextPageName, skinName);
 
             grid = AddButtonToGrid(grid, button, rowNb, columnNb);
 
@@ -185,12 +214,60 @@ namespace Project_Inventory
             return grid;
         }
 
+        public Grid CreateButtonsToGridByTab(Grid grid, string[] buttonsTab, string buttonsSkin)
+        {
+            int i;
+            int j;
+            int k = 0;
+
+            int rowNb = grid.RowDefinitions.Count;
+            int columnNb = grid.ColumnDefinitions.Count;
+
+            for (i = 0; i < rowNb; i++)
+            {
+                for (j = 0; j < columnNb; j++)
+                {
+                    if (buttonsTab[k] != null)
+                    {
+                        grid = CreateButtonToGrid(grid, buttonsTab[k], i, j, buttonsSkin);
+                        k++;
+                    }
+                }
+            }
+
+            return grid;
+        }
+
+        public Grid CreateRederectButtonsToGridByTab(Grid grid, string[] buttonsTab, Type[] rederectTab, string buttonsSkin)
+        {
+            int i;
+            int j;
+            int k = 0;
+
+            int rowNb = grid.RowDefinitions.Count;
+            int columnNb = grid.ColumnDefinitions.Count;
+
+            for (i = 0; i < rowNb; i++)
+            {
+                for (j = 0; j < columnNb; j++)
+                {
+                    if (buttonsTab[k] != null)
+                    {
+                        grid = CreateRederectButtonToGrid(grid, buttonsTab[k], rederectTab[k], i, j, buttonsSkin);
+                        k++;
+                    }
+                }
+            }
+
+            return grid;
+        }
+
         // OTHERS //
 
-        private void PageNavigation(object sender, RoutedEventArgs e, string nextPageName)
+        private void PageNavigation(object sender, RoutedEventArgs e, Type nextPageName)
         {
-            Uri uri = new Uri(nextPageName, UriKind.Relative);
-            navServiceContext.Navigate(uri);
+            var nextWindow = Activator.CreateInstance(nextPageName);
+            (nextWindow as Window).Show();
             context.Close();
         }
     }

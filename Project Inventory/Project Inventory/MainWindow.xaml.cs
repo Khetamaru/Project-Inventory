@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Navigation;
 
 namespace Project_Inventory
@@ -6,32 +7,45 @@ namespace Project_Inventory
     public partial class MainWindow : Window
     {
         private VisualElements_ToolBox toolBox;
+        private double titleBarHeight;
 
         public MainWindow()
         {
             DataContext = this;
-            InitializeComponent();
-            NavigationService navService = NavigationService.GetNavigationService(this);
+            ResizeMode = ResizeMode.CanMinimize;
 
-            toolBox = new VisualElements_ToolBox(navService, this);
+            InitializeComponent();
+
+            titleBarHeight = SystemParameters.WindowCaptionHeight;
+
+            toolBox = new VisualElements_ToolBox(this, titleBarHeight);
 
             Init();
         }
 
         private void Init()
         {
-            topGrid = toolBox.SetUpGrid(topGrid, 1, 1, "RowTopTier");
+            TopGridInit();
+            BottomGridInit();
+        }
 
-            topGrid = toolBox.CreateButtonToGrid(topGrid, "ceci est une image", 0, 0, "standart");
+        private void TopGridInit()
+        {
+            topGrid = toolBox.SetUpGrid(topGrid, 1, 1, "RowTopTier", "HeightOneTier");
 
+            string[] topGridButtons = new string[1] { "Logo Application" };
 
-            //centerGrid = toolBox.SetUpGrid(centerGrid, 1, 1, "RowCenterTier");
+            topGrid = toolBox.CreateButtonsToGridByTab(topGrid, topGridButtons, "standart");
+        }
 
+        private void BottomGridInit()
+        {
+            bottomGrid = toolBox.SetUpGrid(bottomGrid, 1, 2, "RowBottomTier", "HeightTwoTier");
 
-            bottomGrid = toolBox.SetUpGrid(bottomGrid, 1, 2, "RowBottomTier");
+            string[] bottomGridButtons = new string[2] {"Réserve n°1", "Réserve n°2"};
+            Type[] rederectType = new Type[2] { typeof(StorageSelectionPage), typeof(StorageSelectionPage) };
 
-            bottomGrid = toolBox.CreateButtonToGrid(bottomGrid, "ceci est un text à la con", 0, 0, "standart");
-            bottomGrid = toolBox.CreateButtonToGrid(bottomGrid, "lui aussi",                 0, 1, "standart");
+            bottomGrid = toolBox.CreateRederectButtonsToGridByTab(bottomGrid, bottomGridButtons, rederectType, "standart");
         }
     }
 }

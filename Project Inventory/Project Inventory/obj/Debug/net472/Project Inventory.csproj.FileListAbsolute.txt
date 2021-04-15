@@ -5,7 +5,6 @@ C:\ANTHONY\PERSO\Projet Inventaire\Project-Inventory\Project Inventory\Project I
 C:\ANTHONY\PERSO\Projet Inventaire\Project-Inventory\Project Inventory\Project Inventory\obj\Debug\net472\MainWindow.g.cs
 C:\ANTHONY\PERSO\Projet Inventaire\Project-Inventory\Project Inventory\Project Inventory\obj\Debug\net472\App.g.cs
 C:\ANTHONY\PERSO\Projet Inventaire\Project-Inventory\Project Inventory\Project Inventory\obj\Debug\net472\Project Inventory_MarkupCompile.cache
-C:\ANTHONY\PERSO\Projet Inventaire\Project-Inventory\Project Inventory\Project Inventory\obj\Debug\net472\Project Inventory_MarkupCompile.lref
 C:\ANTHONY\PERSO\Projet Inventaire\Project-Inventory\Project Inventory\Project Inventory\obj\Debug\net472\MainWindow.baml
 C:\ANTHONY\PERSO\Projet Inventaire\Project-Inventory\Project Inventory\Project Inventory\obj\Debug\net472\Project Inventory.g.resources
 C:\ANTHONY\PERSO\Projet Inventaire\Project-Inventory\Project Inventory\Project Inventory\obj\Debug\net472\Project Inventory.AssemblyInfoInputs.cache
@@ -13,3 +12,5 @@ C:\ANTHONY\PERSO\Projet Inventaire\Project-Inventory\Project Inventory\Project I
 C:\ANTHONY\PERSO\Projet Inventaire\Project-Inventory\Project Inventory\Project Inventory\obj\Debug\net472\Project Inventory.csproj.CoreCompileInputs.cache
 C:\ANTHONY\PERSO\Projet Inventaire\Project-Inventory\Project Inventory\Project Inventory\obj\Debug\net472\Project Inventory.exe
 C:\ANTHONY\PERSO\Projet Inventaire\Project-Inventory\Project Inventory\Project Inventory\obj\Debug\net472\Project Inventory.pdb
+C:\ANTHONY\PERSO\Projet Inventaire\Project-Inventory\Project Inventory\Project Inventory\obj\Debug\net472\StorageSelectionPage.baml
+C:\ANTHONY\PERSO\Projet Inventaire\Project-Inventory\Project Inventory\Project Inventory\obj\Debug\net472\StorageSelectionPage.g.cs
