@@ -15,7 +15,11 @@
         </Grid>
         
         <Grid
-            x:Name="centralGrid">
+            x:Name="centerGrid">
+        </Grid>
+
+        <Grid
+            x:Name="bottomGrid">
         </Grid>
 
     </Grid>
