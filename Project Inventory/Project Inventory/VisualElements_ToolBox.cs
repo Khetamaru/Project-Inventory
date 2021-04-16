@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Navigation;
 
 namespace Project_Inventory
 {
@@ -24,14 +23,15 @@ namespace Project_Inventory
 
         // BUTTON PART //
 
-        public Button CreateButton(string content, string skinName)
+        public Button CreateButton(string content, 
+                                   string skinName, 
+                                   string skinPosition)
         {
             Button temp = new Button();
 
             temp.Content = content;
-            temp.HorizontalAlignment = HorizontalAlignment.Center;
-            temp.VerticalAlignment = VerticalAlignment.Center;
 
+            temp = LoadButtonPosition(temp, skinPosition);
             temp = LoadButtonSkin(temp, skinName);
 
             return temp;
@@ -39,10 +39,10 @@ namespace Project_Inventory
 
         public Button CreateRederectButton(string content,
                                                  Type nextPageName, 
-                                                 string skinName)
+                                                 string skinName,
+                                                 string skinPosition)
         {
-
-            Button temp = CreateButton(content, skinName);
+            Button temp = CreateButton(content, skinName, skinPosition);
             temp = AddOnClickButton(temp, nextPageName);
 
             return temp;
@@ -57,6 +57,49 @@ namespace Project_Inventory
             };
             return button;
         }
+        private Button LoadButtonPosition(Button button, string skinPosition)
+        {
+            switch (skinPosition)
+            {
+                case "TopLeft":
+                    button = ButtonSkins.TopLeft(button);
+                    break;
+
+                case "TopCenter":
+                    button = ButtonSkins.TopCenter(button);
+                    break;
+
+                case "TopRight":
+                    button = ButtonSkins.TopRight(button);
+                    break;
+
+                case "CenterLeft":
+                    button = ButtonSkins.CenterLeft(button);
+                    break;
+
+                case "CenterCenter":
+                    button = ButtonSkins.CenterCenter(button);
+                    break;
+
+                case "CenterRight":
+                    button = ButtonSkins.CenterRight(button);
+                    break;
+
+                case "BottomLeft":
+                    button = ButtonSkins.BottomLeft(button);
+                    break;
+
+                case "BottomCenter":
+                    button = ButtonSkins.BottomCenter(button);
+                    break;
+
+                case "BottomRight":
+                    button = ButtonSkins.BottomRight(button);
+                    break;
+            }
+
+            return button;
+        }
 
         private Button LoadButtonSkin(Button button, string skinName) 
         {
@@ -64,6 +107,10 @@ namespace Project_Inventory
             {
                 case "standart":
                     button = ButtonSkins.StandartButtonSkin(button);
+                    break;
+
+                case "StandartLittleMargin":
+                    button = ButtonSkins.StandartLittleMargin(button);
                     break;
             }
 
@@ -91,20 +138,44 @@ namespace Project_Inventory
         {
             switch (skinName)
             {
-                case "RowTopTier":
-                    grid = GridSkins.RowTopTier(grid);
+                case "TopLeft":
+                    grid = GridSkins.TopLeft(grid);
                     break;
 
-                case "RowCenterTier":
-                    grid = GridSkins.RowCenterTier(grid);
+                case "StretchLeft":
+                    grid = GridSkins.StretchLeft(grid);
                     break;
 
-                case "RowBottomTier":
-                    grid = GridSkins.RowBottomTier(grid);
+                case "BottomLeft":
+                    grid = GridSkins.BottomLeft(grid);
                     break;
 
-                case "column":
-                    grid = GridSkins.ColumnGridSkin(grid);
+                case "TopStretch":
+                    grid = GridSkins.TopStretch(grid);
+                    break;
+
+                case "BottomStretch":
+                    grid = GridSkins.BottomStretch(grid);
+                    break;
+
+                case "StretchStretch":
+                    grid = GridSkins.StretchStretch(grid);
+                    break;
+
+                case "CenterCenter":
+                    grid = GridSkins.CenterCenter(grid);
+                    break;
+
+                case "TopRight":
+                    grid = GridSkins.TopRight(grid);
+                    break;
+
+                case "StretchRight":
+                    grid = GridSkins.StretchRight(grid);
+                    break;
+
+                case "BottomRight":
+                    grid = GridSkins.BottomRight(grid);
                     break;
             }
 
@@ -129,6 +200,14 @@ namespace Project_Inventory
 
                 case "HeightTwoTier":
                     grid = GridSkins.HeightTwoTier(grid, windowHeight);
+                    break;
+
+                case "HeightTenPercent":
+                    grid = GridSkins.HeightTenPercent(grid, windowHeight);
+                    break;
+
+                case "HeightNintyPercent":
+                    grid = GridSkins.HeightNintyPercent(grid, windowHeight);
                     break;
             }
 
@@ -156,9 +235,10 @@ namespace Project_Inventory
                                        string content,
                                        int rowNb,
                                        int columnNb, 
-                                       string skinName)
+                                       string skinName,
+                                       string skinPosition)
         {
-            Button button = CreateButton(content, skinName);
+            Button button = CreateButton(content, skinName, skinPosition);
 
             grid = AddButtonToGrid(grid, button, rowNb, columnNb);
 
@@ -167,9 +247,10 @@ namespace Project_Inventory
         public Grid CreateButtonToGrid(Grid grid,
                                       string content,
                                       int rowNb,
-                                      string skinName)
+                                      string skinName,
+                                      string skinPosition)
         {
-            Button button = CreateButton(content, skinName);
+            Button button = CreateButton(content, skinName, skinPosition);
 
             grid = AddButtonToGrid(grid, button, rowNb);
 
@@ -181,9 +262,10 @@ namespace Project_Inventory
                                                Type nextPageName,
                                                int rowNb,
                                                int columnNb, 
-                                               string skinName)
+                                               string skinName,
+                                               string skinPosition)
         {
-            Button button = CreateRederectButton(content, nextPageName, skinName);
+            Button button = CreateRederectButton(content, nextPageName, skinName, skinPosition);
 
             grid = AddButtonToGrid(grid, button, rowNb, columnNb);
 
@@ -214,7 +296,7 @@ namespace Project_Inventory
             return grid;
         }
 
-        public Grid CreateButtonsToGridByTab(Grid grid, string[] buttonsTab, string buttonsSkin)
+        public Grid CreateButtonsToGridByTab(Grid grid, string[] buttonsTab, string buttonsSkin, string skinPosition)
         {
             int i;
             int j;
@@ -229,7 +311,7 @@ namespace Project_Inventory
                 {
                     if (buttonsTab[k] != null)
                     {
-                        grid = CreateButtonToGrid(grid, buttonsTab[k], i, j, buttonsSkin);
+                        grid = CreateButtonToGrid(grid, buttonsTab[k], i, j, buttonsSkin, skinPosition);
                         k++;
                     }
                 }
@@ -238,7 +320,7 @@ namespace Project_Inventory
             return grid;
         }
 
-        public Grid CreateRederectButtonsToGridByTab(Grid grid, string[] buttonsTab, Type[] rederectTab, string buttonsSkin)
+        public Grid CreateRederectButtonsToGridByTab(Grid grid, string[] buttonsTab, Type[] rederectTab, string buttonsSkin, string skinPosition)
         {
             int i;
             int j;
@@ -251,9 +333,9 @@ namespace Project_Inventory
             {
                 for (j = 0; j < columnNb; j++)
                 {
-                    if (buttonsTab[k] != null)
+                    if (buttonsTab.Length >= (i+1) * (j+1))
                     {
-                        grid = CreateRederectButtonToGrid(grid, buttonsTab[k], rederectTab[k], i, j, buttonsSkin);
+                        grid = CreateRederectButtonToGrid(grid, buttonsTab[k], rederectTab[k], i, j, buttonsSkin, skinPosition);
                         k++;
                     }
                 }

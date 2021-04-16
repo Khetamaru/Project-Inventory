@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows;
-using System.Windows.Navigation;
 
 namespace Project_Inventory
 {
@@ -31,21 +30,21 @@ namespace Project_Inventory
 
         private void TopGridInit()
         {
-            topGrid = toolBox.SetUpGrid(topGrid, 1, 1, "RowTopTier", "HeightOneTier");
+            topGrid = toolBox.SetUpGrid(topGrid, 1, 1, "TopStretch", "HeightOneTier");
 
-            string[] topGridButtons = new string[1] { "Logo Application" };
+            string[] topGridButtons = new string[] { "Logo Application" };
 
-            topGrid = toolBox.CreateButtonsToGridByTab(topGrid, topGridButtons, "standart");
+            topGrid = toolBox.CreateButtonsToGridByTab(topGrid, topGridButtons, "standart", "CenterCenter");
         }
 
         private void BottomGridInit()
         {
-            bottomGrid = toolBox.SetUpGrid(bottomGrid, 1, 2, "RowBottomTier", "HeightTwoTier");
+            bottomGrid = toolBox.SetUpGrid(bottomGrid, 1, 2, "BottomStretch", "HeightTwoTier");
 
-            string[] bottomGridButtons = new string[2] {"Réserve n°1", "Réserve n°2"};
-            Type[] rederectType = new Type[2] { typeof(StorageSelectionPage), typeof(StorageSelectionPage) };
+            string[] bottomGridButtons = new string[] {"Menu n°1", "Menu n°2"};
+            Type[] rederectType = new Type[] { typeof(StorageSelectionPage), typeof(StorageSelectionPage) };
 
-            bottomGrid = toolBox.CreateRederectButtonsToGridByTab(bottomGrid, bottomGridButtons, rederectType, "standart");
+            bottomGrid = toolBox.CreateRederectButtonsToGridByTab(bottomGrid, bottomGridButtons, rederectType, "standart", "CenterCenter");
         }
     }
 }
