@@ -4,7 +4,7 @@ using System.Windows.Controls;
 
 namespace Project_Inventory
 {
-    class VisualElements_ToolBox
+    public class VisualElements_ToolBox
     {
         private Window context;
         private WpfScreen wpfScreen;
@@ -119,19 +119,41 @@ namespace Project_Inventory
 
         // GRID PART //
 
-        public Grid SetUpGrid(Grid temp,
+        public Grid SetUpGrid(Grid grid,
                                int rowNb,
                                int columnNb,
                                string skinName,
                                string lengthName)
         {
-            temp = CreateRowsInGrid(temp, rowNb);
-            temp = CreateColumnsInGrid(temp, columnNb);
+            grid = EmptyGrid(grid);
 
-            temp = LoadGridLocation(temp, skinName);
-            temp = LoadGridLength(temp, lengthName);
+            grid = CreateRowsInGrid(grid, rowNb);
+            grid = CreateColumnsInGrid(grid, columnNb);
 
-            return temp;
+            grid = LoadGridLocation(grid, skinName);
+            grid = LoadGridLength(grid, lengthName);
+
+            return grid;
+        }
+
+        public Grid EmptyGrid(Grid grid)
+        {
+            foreach (UIElement children in grid.Children)
+            {
+                grid.Children.Remove(children);
+            }
+
+            foreach (RowDefinition row in grid.RowDefinitions)
+            {
+                grid.RowDefinitions.Remove(row);
+            }
+
+            foreach (ColumnDefinition column in grid.ColumnDefinitions)
+            {
+                grid.ColumnDefinitions.Remove(column);
+            }
+
+            return grid;
         }
 
         public Grid LoadGridLocation(Grid grid, string skinName)
@@ -222,14 +244,15 @@ namespace Project_Inventory
 
             return grid;
         }
-        public Grid AddButtonToGrid(Grid grid, Button button, int rowNb)
+
+        /*public Grid AddButtonToGrid(Grid grid, Button button, int rowNb)
         {
             Grid.SetRow(button, rowNb);
             Grid.SetColumnSpan(button, grid.ColumnDefinitions.Count);
             grid.Children.Add(button);
 
             return grid;
-        }
+        }*/
 
         public Grid CreateButtonToGrid(Grid grid,
                                        string content,
@@ -244,7 +267,8 @@ namespace Project_Inventory
 
             return grid;
         }
-        public Grid CreateButtonToGrid(Grid grid,
+
+        /*public Grid CreateButtonToGrid(Grid grid,
                                       string content,
                                       int rowNb,
                                       string skinName,
@@ -255,7 +279,7 @@ namespace Project_Inventory
             grid = AddButtonToGrid(grid, button, rowNb);
 
             return grid;
-        }
+        }*/
 
         public Grid CreateRederectButtonToGrid(Grid grid,
                                                string content,
@@ -309,7 +333,7 @@ namespace Project_Inventory
             {
                 for (j = 0; j < columnNb; j++)
                 {
-                    if (buttonsTab[k] != null)
+                    if (buttonsTab.Length >= (i + 1) * (j + 1))
                     {
                         grid = CreateButtonToGrid(grid, buttonsTab[k], i, j, buttonsSkin, skinPosition);
                         k++;

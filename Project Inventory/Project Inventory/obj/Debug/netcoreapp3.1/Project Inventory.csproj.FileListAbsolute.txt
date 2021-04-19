@@ -18,3 +18,5 @@ C:\ANTHONY\PERSO\Projet Inventaire\Project-Inventory\Project Inventory\Project I
 C:\ANTHONY\PERSO\Projet Inventaire\Project-Inventory\Project Inventory\Project Inventory\obj\Debug\netcoreapp3.1\Project Inventory.genruntimeconfig.cache
 C:\ANTHONY\PERSO\Projet Inventaire\Project-Inventory\Project Inventory\Project Inventory\obj\Debug\netcoreapp3.1\StorageSelectionPage.baml
 C:\ANTHONY\PERSO\Projet Inventaire\Project-Inventory\Project Inventory\Project Inventory\obj\Debug\netcoreapp3.1\StorageSelectionPage.g.cs
+C:\ANTHONY\PERSO\Projet Inventaire\Project-Inventory\Project Inventory\Project Inventory\obj\Debug\netcoreapp3.1\View\MainWindow.baml
+C:\ANTHONY\PERSO\Projet Inventaire\Project-Inventory\Project Inventory\Project Inventory\obj\Debug\netcoreapp3.1\View\MainWindow.g.cs

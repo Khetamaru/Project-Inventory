@@ -1,35 +1,19 @@
 ﻿using System;
-using System.Windows;
-
+using System.Collections.Generic;
+using System.Text;
+using System.Windows.Controls;
 
 namespace Project_Inventory
 {
-    public partial class StorageSelectionPage : Window
+    public class StorageSelectionMenu : WindowContent
     {
-        private VisualElements_ToolBox toolBox;
-        private double titleBarHeight;
-
-        public StorageSelectionPage()
+        public StorageSelectionMenu(VisualElements_ToolBox visualElements_ToolBox)
+            : base(visualElements_ToolBox)
         {
-            DataContext = this;
-            ResizeMode = ResizeMode.CanMinimize;
 
-            InitializeComponent();
-
-            titleBarHeight = SystemParameters.WindowCaptionHeight;
-
-            toolBox = new VisualElements_ToolBox(this, titleBarHeight);
-
-            Init();
         }
 
-        private void Init()
-        {
-            TopGridInit();
-            CenterGridInit();
-        }
-
-        private void TopGridInit()
+        public new Grid TopGridInit(Grid topGrid)
         {
             topGrid = toolBox.SetUpGrid(topGrid, 1, 1, "TopStretch", "HeightTenPercent");
 
@@ -37,9 +21,11 @@ namespace Project_Inventory
             Type[] rederectType = new Type[] { typeof(MainWindow) };
 
             topGrid = toolBox.CreateRederectButtonsToGridByTab(topGrid, topGridButtons, rederectType, "StandartLittleMargin", "TopRight");
+
+            return topGrid;
         }
 
-        private void CenterGridInit()
+        public new Grid BottomGridInit(Grid bottomGrid)
         {
             bottomGrid = toolBox.SetUpGrid(bottomGrid, 5, 5, "BottomStretch", "HeightNintyPercent");
 
@@ -55,6 +41,8 @@ namespace Project_Inventory
                                                typeof(MainWindow), typeof(MainWindow), typeof(MainWindow), typeof(MainWindow), typeof(MainWindow)};
 
             bottomGrid = toolBox.CreateRederectButtonsToGridByTab(bottomGrid, topGridButtons, rederectType, "standart", "CenterCenter");
+
+            return bottomGrid;
         }
     }
 }
