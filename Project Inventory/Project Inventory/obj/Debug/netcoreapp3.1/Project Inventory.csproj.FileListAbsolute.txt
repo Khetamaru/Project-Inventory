@@ -5,10 +5,8 @@ C:\ANTHONY\PERSO\Projet Inventaire\Project-Inventory\Project Inventory\Project I
 C:\ANTHONY\PERSO\Projet Inventaire\Project-Inventory\Project Inventory\Project Inventory\bin\Debug\netcoreapp3.1\Project Inventory.dll
 C:\ANTHONY\PERSO\Projet Inventaire\Project-Inventory\Project Inventory\Project Inventory\bin\Debug\netcoreapp3.1\Project Inventory.pdb
 C:\ANTHONY\PERSO\Projet Inventaire\Project-Inventory\Project Inventory\Project Inventory\obj\Debug\netcoreapp3.1\Project Inventory.csprojAssemblyReference.cache
-C:\ANTHONY\PERSO\Projet Inventaire\Project-Inventory\Project Inventory\Project Inventory\obj\Debug\netcoreapp3.1\MainWindow.g.cs
 C:\ANTHONY\PERSO\Projet Inventaire\Project-Inventory\Project Inventory\Project Inventory\obj\Debug\netcoreapp3.1\App.g.cs
 C:\ANTHONY\PERSO\Projet Inventaire\Project-Inventory\Project Inventory\Project Inventory\obj\Debug\netcoreapp3.1\Project Inventory_MarkupCompile.cache
-C:\ANTHONY\PERSO\Projet Inventaire\Project-Inventory\Project Inventory\Project Inventory\obj\Debug\netcoreapp3.1\MainWindow.baml
 C:\ANTHONY\PERSO\Projet Inventaire\Project-Inventory\Project Inventory\Project Inventory\obj\Debug\netcoreapp3.1\Project Inventory.g.resources
 C:\ANTHONY\PERSO\Projet Inventaire\Project-Inventory\Project Inventory\Project Inventory\obj\Debug\netcoreapp3.1\Project Inventory.AssemblyInfoInputs.cache
 C:\ANTHONY\PERSO\Projet Inventaire\Project-Inventory\Project Inventory\Project Inventory\obj\Debug\netcoreapp3.1\Project Inventory.AssemblyInfo.cs
@@ -16,7 +14,5 @@ C:\ANTHONY\PERSO\Projet Inventaire\Project-Inventory\Project Inventory\Project I
 C:\ANTHONY\PERSO\Projet Inventaire\Project-Inventory\Project Inventory\Project Inventory\obj\Debug\netcoreapp3.1\Project Inventory.dll
 C:\ANTHONY\PERSO\Projet Inventaire\Project-Inventory\Project Inventory\Project Inventory\obj\Debug\netcoreapp3.1\Project Inventory.pdb
 C:\ANTHONY\PERSO\Projet Inventaire\Project-Inventory\Project Inventory\Project Inventory\obj\Debug\netcoreapp3.1\Project Inventory.genruntimeconfig.cache
-C:\ANTHONY\PERSO\Projet Inventaire\Project-Inventory\Project Inventory\Project Inventory\obj\Debug\netcoreapp3.1\StorageSelectionPage.baml
-C:\ANTHONY\PERSO\Projet Inventaire\Project-Inventory\Project Inventory\Project Inventory\obj\Debug\netcoreapp3.1\StorageSelectionPage.g.cs
 C:\ANTHONY\PERSO\Projet Inventaire\Project-Inventory\Project Inventory\Project Inventory\obj\Debug\netcoreapp3.1\View\MainWindow.baml
 C:\ANTHONY\PERSO\Projet Inventaire\Project-Inventory\Project Inventory\Project Inventory\obj\Debug\netcoreapp3.1\View\MainWindow.g.cs

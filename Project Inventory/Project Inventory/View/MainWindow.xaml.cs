@@ -9,6 +9,8 @@ namespace Project_Inventory
         public VisualElements_ToolBox toolBox;
         private double titleBarHeight;
 
+        private Router router;
+
         private MainMenu mainMenu;
         private StorageSelectionMenu storageSelectionMenu;
 
@@ -23,8 +25,10 @@ namespace Project_Inventory
 
             toolBox = new VisualElements_ToolBox(this, titleBarHeight);
 
-            mainMenu = new MainMenu(toolBox);
-            storageSelectionMenu = new StorageSelectionMenu(toolBox);
+            router = InitRouters();
+
+            mainMenu = new MainMenu(toolBox, router);
+            storageSelectionMenu = new StorageSelectionMenu(toolBox, router);
 
             Init();
         }
@@ -48,11 +52,11 @@ namespace Project_Inventory
             bottomGrid = storageSelectionMenu.BottomGridInit(bottomGrid);
         }
 
-        public void WindowSwitch(string windowName)
+        public void WindowSwitch(object sender, RoutedEventArgs e, string windowName) 
         {
             switch(windowName)
             {
-                case ("MainMneu"):
+                case ("MainMenu"):
                     MainMenuInit();
                     break;
 
@@ -60,6 +64,43 @@ namespace Project_Inventory
                     StorageSelectionMenuInit();
                     break;
             }
+        }
+
+        public RoutedEventHandler EnventHandlerGenerator(string windowName)
+        {
+            RoutedEventHandler router = new RoutedEventHandler((object sender, RoutedEventArgs e) =>
+            {
+                WindowSwitch(sender, e, windowName);
+            });
+
+            return router;
+        }
+
+        public RoutedEventHandler[] EnventHandlerGeneratorByTab(string[] windowName)
+        {
+            RoutedEventHandler[] routers = new RoutedEventHandler[windowName.Length];
+            var i = 0;
+
+            foreach(string name in windowName)
+            {
+                routers[i] = new RoutedEventHandler((object sender, RoutedEventArgs e) =>
+                {
+                    WindowSwitch(sender, e, name);
+                });
+
+                i++;
+            }
+
+            return routers;
+        }
+
+        public Router InitRouters()
+        {
+            string[] routersName = new string[] { "MainMenu", "StorageSelectionMenu" };
+
+            RoutedEventHandler[] routersRouter = EnventHandlerGeneratorByTab(routersName);
+
+            return new Router(routersName, routersRouter);
         }
     }
 }

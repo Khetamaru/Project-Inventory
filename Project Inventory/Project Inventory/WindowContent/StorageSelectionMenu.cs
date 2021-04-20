@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace Project_Inventory
 {
     public class StorageSelectionMenu : WindowContent
     {
-        public StorageSelectionMenu(VisualElements_ToolBox visualElements_ToolBox)
-            : base(visualElements_ToolBox)
+        public StorageSelectionMenu(VisualElements_ToolBox visualElements_ToolBox, Router _router)
+            : base(visualElements_ToolBox, _router)
         {
 
         }
@@ -18,7 +19,7 @@ namespace Project_Inventory
             topGrid = toolBox.SetUpGrid(topGrid, 1, 1, "TopStretch", "HeightTenPercent");
 
             string[] topGridButtons = new string[] { "Return" };
-            Type[] rederectType = new Type[] { typeof(MainWindow) };
+            RoutedEventHandler[] rederectType = new RoutedEventHandler[] { GetEventHandler("MainMenu") };
 
             topGrid = toolBox.CreateRederectButtonsToGridByTab(topGrid, topGridButtons, rederectType, "StandartLittleMargin", "TopRight");
 
@@ -34,11 +35,11 @@ namespace Project_Inventory
                                                      "Réserve N°11", "Réserve N°12", "Réserve N°13", "Réserve N°14", "Réserve N°15",
                                                      "Réserve N°16", "Réserve N°17", "Réserve N°18", "Réserve N°19", "Réserve N°20",
                                                      "Réserve N°21", "Réserve N°22", "Réserve N°23", "Réserve N°24"};
-            Type[] rederectType = new Type[] { typeof(MainWindow), typeof(MainWindow), typeof(MainWindow), typeof(MainWindow), typeof(MainWindow),
-                                               typeof(MainWindow), typeof(MainWindow), typeof(MainWindow), typeof(MainWindow), typeof(MainWindow),
-                                               typeof(MainWindow), typeof(MainWindow), typeof(MainWindow), typeof(MainWindow), typeof(MainWindow),
-                                               typeof(MainWindow), typeof(MainWindow), typeof(MainWindow), typeof(MainWindow), typeof(MainWindow),
-                                               typeof(MainWindow), typeof(MainWindow), typeof(MainWindow), typeof(MainWindow), typeof(MainWindow)};
+            RoutedEventHandler[] rederectType = new RoutedEventHandler[] { GetEventHandler("MainMenu"), GetEventHandler("MainMenu"), GetEventHandler("MainMenu"), GetEventHandler("MainMenu"), GetEventHandler("MainMenu"),
+                                                                           GetEventHandler("MainMenu"), GetEventHandler("MainMenu"), GetEventHandler("MainMenu"), GetEventHandler("MainMenu"), GetEventHandler("MainMenu"),
+                                                                           GetEventHandler("MainMenu"), GetEventHandler("MainMenu"), GetEventHandler("MainMenu"), GetEventHandler("MainMenu"), GetEventHandler("MainMenu"),
+                                                                           GetEventHandler("MainMenu"), GetEventHandler("MainMenu"), GetEventHandler("MainMenu"), GetEventHandler("MainMenu"), GetEventHandler("MainMenu"),
+                                                                           GetEventHandler("MainMenu"), GetEventHandler("MainMenu"), GetEventHandler("MainMenu"), GetEventHandler("MainMenu"), GetEventHandler("MainMenu")};
 
             bottomGrid = toolBox.CreateRederectButtonsToGridByTab(bottomGrid, topGridButtons, rederectType, "standart", "CenterCenter");
 

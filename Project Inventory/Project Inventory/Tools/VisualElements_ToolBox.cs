@@ -6,15 +6,15 @@ namespace Project_Inventory
 {
     public class VisualElements_ToolBox
     {
-        private Window context;
+        private MainWindow context;
         private WpfScreen wpfScreen;
 
         private double windowWidth;
         private double windowHeight;
 
-        public VisualElements_ToolBox(Window context, double titleBarHeight)
+        public VisualElements_ToolBox(MainWindow _context, double titleBarHeight)
         {
-            this.context = context;
+            context = _context;
             wpfScreen = new WpfScreen();
 
             windowWidth = wpfScreen.PrimaryScreenSizeWidth();
@@ -38,23 +38,20 @@ namespace Project_Inventory
         }
 
         public Button CreateRederectButton(string content,
-                                                 Type nextPageName, 
+                                                 RoutedEventHandler router, 
                                                  string skinName,
                                                  string skinPosition)
         {
             Button temp = CreateButton(content, skinName, skinPosition);
-            temp = AddOnClickButton(temp, nextPageName);
+            temp = AddOnClickButton(temp, router);
 
             return temp;
 
         }
 
-        private Button AddOnClickButton(Button button, Type nextPageName)
+        private Button AddOnClickButton(Button button, RoutedEventHandler router)
         {
-            button.Click += (object sender, RoutedEventArgs e) => 
-            {
-                PageNavigation(sender, e, nextPageName); 
-            };
+            button.Click += router;
             return button;
         }
         private Button LoadButtonPosition(Button button, string skinPosition)
@@ -138,19 +135,19 @@ namespace Project_Inventory
 
         public Grid EmptyGrid(Grid grid)
         {
-            foreach (UIElement children in grid.Children)
+            while (grid.Children.Count >= 1)
             {
-                grid.Children.Remove(children);
+                grid.Children.Remove(grid.Children[0]);
             }
 
-            foreach (RowDefinition row in grid.RowDefinitions)
+            while (grid.RowDefinitions.Count >= 1)
             {
-                grid.RowDefinitions.Remove(row);
+                grid.RowDefinitions.Remove(grid.RowDefinitions[0]);
             }
 
-            foreach (ColumnDefinition column in grid.ColumnDefinitions)
+            while (grid.ColumnDefinitions.Count >= 1)
             {
-                grid.ColumnDefinitions.Remove(column);
+                grid.ColumnDefinitions.Remove(grid.ColumnDefinitions[0]);
             }
 
             return grid;
@@ -283,13 +280,13 @@ namespace Project_Inventory
 
         public Grid CreateRederectButtonToGrid(Grid grid,
                                                string content,
-                                               Type nextPageName,
+                                               RoutedEventHandler router,
                                                int rowNb,
                                                int columnNb, 
                                                string skinName,
                                                string skinPosition)
         {
-            Button button = CreateRederectButton(content, nextPageName, skinName, skinPosition);
+            Button button = CreateRederectButton(content, router, skinName, skinPosition);
 
             grid = AddButtonToGrid(grid, button, rowNb, columnNb);
 
@@ -344,7 +341,7 @@ namespace Project_Inventory
             return grid;
         }
 
-        public Grid CreateRederectButtonsToGridByTab(Grid grid, string[] buttonsTab, Type[] rederectTab, string buttonsSkin, string skinPosition)
+        public Grid CreateRederectButtonsToGridByTab(Grid grid, string[] buttonsTab, RoutedEventHandler[] routerTab, string buttonsSkin, string skinPosition)
         {
             int i;
             int j;
@@ -359,7 +356,7 @@ namespace Project_Inventory
                 {
                     if (buttonsTab.Length >= (i+1) * (j+1))
                     {
-                        grid = CreateRederectButtonToGrid(grid, buttonsTab[k], rederectTab[k], i, j, buttonsSkin, skinPosition);
+                        grid = CreateRederectButtonToGrid(grid, buttonsTab[k], routerTab[k], i, j, buttonsSkin, skinPosition);
                         k++;
                     }
                 }
