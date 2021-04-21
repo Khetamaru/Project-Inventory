@@ -45,5 +45,28 @@ namespace Project_Inventory
 
             return null;
         }
+
+        public Grid ButtonPlacer(Grid grid, int tabLength, int widthLimit, string skinName, string lengthName)
+        {
+            int i;
+            int j = 1;
+
+            if (tabLength > widthLimit)
+            {
+                do
+                {
+                    i = widthLimit;
+                    j++;
+                    tabLength -= widthLimit;
+                }
+                while (tabLength > widthLimit);
+            }
+            else
+            {
+                i = tabLength;
+            }
+
+            return toolBox.SetUpGrid(grid, j, i, skinName, lengthName);
+        }
     }
 }

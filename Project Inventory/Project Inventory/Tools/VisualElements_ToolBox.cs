@@ -37,7 +37,7 @@ namespace Project_Inventory
             return temp;
         }
 
-        public Button CreateRederectButton(string content,
+        public Button CreateSwitchButton(string content,
                                                  RoutedEventHandler router, 
                                                  string skinName,
                                                  string skinPosition)
@@ -278,7 +278,7 @@ namespace Project_Inventory
             return grid;
         }*/
 
-        public Grid CreateRederectButtonToGrid(Grid grid,
+        public Grid CreateSwitchButtonToGrid(Grid grid,
                                                string content,
                                                RoutedEventHandler router,
                                                int rowNb,
@@ -286,7 +286,7 @@ namespace Project_Inventory
                                                string skinName,
                                                string skinPosition)
         {
-            Button button = CreateRederectButton(content, router, skinName, skinPosition);
+            Button button = CreateSwitchButton(content, router, skinName, skinPosition);
 
             grid = AddButtonToGrid(grid, button, rowNb, columnNb);
 
@@ -341,7 +341,7 @@ namespace Project_Inventory
             return grid;
         }
 
-        public Grid CreateRederectButtonsToGridByTab(Grid grid, string[] buttonsTab, RoutedEventHandler[] routerTab, string buttonsSkin, string skinPosition)
+        public Grid CreateSwitchButtonsToGridByTab(Grid grid, string[] buttonsTab, RoutedEventHandler[] routerTab, string buttonsSkin, string skinPosition)
         {
             int i;
             int j;
@@ -356,7 +356,7 @@ namespace Project_Inventory
                 {
                     if (buttonsTab.Length >= (i+1) * (j+1))
                     {
-                        grid = CreateRederectButtonToGrid(grid, buttonsTab[k], routerTab[k], i, j, buttonsSkin, skinPosition);
+                        grid = CreateSwitchButtonToGrid(grid, buttonsTab[k], routerTab[k], i, j, buttonsSkin, skinPosition);
                         k++;
                     }
                 }
@@ -365,13 +365,16 @@ namespace Project_Inventory
             return grid;
         }
 
+        // FORM UIElements //
+
+        public Grid CreateUIElementsToGridByTab(Grid grid, UIElement[] formElements, Type[] formElementsType)
+        {
+
+
+            return grid;
+        }
+
         // OTHERS //
 
-        private void PageNavigation(object sender, RoutedEventArgs e, Type nextPageName)
-        {
-            var nextWindow = Activator.CreateInstance(nextPageName);
-            (nextWindow as Window).Show();
-            context.Close();
-        }
     }
 }
