@@ -11,8 +11,9 @@ namespace Project_Inventory
         private string[] topGridButtons;
         private RoutedEventHandler[] topSwitchEvents;
 
-        private UIElement[] formElements;
-        private Type[] formElementsType;
+        private string[] formElements;
+        private string[] labels;
+
         private RoutedEventHandler formValidButton;
 
         public FormPage(VisualElements_ToolBox visualElements_ToolBox, Router _router)
@@ -21,6 +22,9 @@ namespace Project_Inventory
             topGridButtons = new string[] { "Return" };
 
             topSwitchEvents = new RoutedEventHandler[] { GetEventHandler("MainMenu") };
+
+            formElements = new string[] { "TextBox", "TextBox", "TextBoxNumber", "DatePicker", "ListBox" };
+            labels = new string[] { "Nom", "Prénom", "Numéro De Table", "Date De Naissance", "Choix Du Repas" };
         }
 
         public new Grid TopGridInit(Grid topGrid)
@@ -34,9 +38,9 @@ namespace Project_Inventory
 
         public new Grid BottomGridInit(Grid bottomGrid)
         {
-            bottomGrid = toolBox.SetUpGrid(bottomGrid, formElements.Length, 1, "BottomStretch", "HeightNintyPercent");
+            bottomGrid = toolBox.SetUpGrid(bottomGrid, formElements.Length, 2, "BottomStretch", "HeightNintyPercent");
 
-            bottomGrid = toolBox.CreateUIElementsToGridByTab(bottomGrid, formElements, formElementsType);
+            bottomGrid = toolBox.CreateFormToGridByTab(bottomGrid, formElements, labels);
 
             return bottomGrid;
         }

@@ -17,7 +17,7 @@ namespace Project_Inventory
         {
             topGridButtons = new string[] { "Logo Application" };
             bottomGridButtons = new string[] { "Menu n°1", "Menu n°2" };
-            switchEvents = new RoutedEventHandler[] { GetEventHandler("StorageSelectionMenu"), GetEventHandler("StorageSelectionMenu") };
+            switchEvents = new RoutedEventHandler[] { GetEventHandler("StorageSelectionMenu"), GetEventHandler("FormPage") };
 
             widthLimit = 5;
         }

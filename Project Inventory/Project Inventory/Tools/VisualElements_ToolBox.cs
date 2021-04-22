@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace Project_Inventory
 {
@@ -242,15 +244,6 @@ namespace Project_Inventory
             return grid;
         }
 
-        /*public Grid AddButtonToGrid(Grid grid, Button button, int rowNb)
-        {
-            Grid.SetRow(button, rowNb);
-            Grid.SetColumnSpan(button, grid.ColumnDefinitions.Count);
-            grid.Children.Add(button);
-
-            return grid;
-        }*/
-
         public Grid CreateButtonToGrid(Grid grid,
                                        string content,
                                        int rowNb,
@@ -264,19 +257,6 @@ namespace Project_Inventory
 
             return grid;
         }
-
-        /*public Grid CreateButtonToGrid(Grid grid,
-                                      string content,
-                                      int rowNb,
-                                      string skinName,
-                                      string skinPosition)
-        {
-            Button button = CreateButton(content, skinName, skinPosition);
-
-            grid = AddButtonToGrid(grid, button, rowNb);
-
-            return grid;
-        }*/
 
         public Grid CreateSwitchButtonToGrid(Grid grid,
                                                string content,
@@ -365,16 +345,96 @@ namespace Project_Inventory
             return grid;
         }
 
-        // FORM UIElements //
-
-        public Grid CreateUIElementsToGridByTab(Grid grid, UIElement[] formElements, Type[] formElementsType)
+        public Grid CreateFormToGridByTab(Grid grid, string[] formElements, string[] Labels)
         {
+            Label label;
+            UIElement uIElement;
+            int i = 0;
 
+            grid.ColumnDefinitions[0].Width = new GridLength(20, GridUnitType.Star);
+            grid.ColumnDefinitions[1].Width = new GridLength(80, GridUnitType.Star);
+
+            foreach (string name in formElements)
+            {
+                label = new Label();
+                label.HorizontalAlignment = HorizontalAlignment.Center;
+                label.VerticalAlignment = VerticalAlignment.Center;
+                label.Content = Labels[i];
+                Grid.SetRow(label, i);
+                Grid.SetColumn(label, 0);
+                grid.Children.Add(label);
+
+                switch (name)
+                {
+                    case ("TextBox"):
+
+                        uIElement = new TextBox();
+                        (uIElement as TextBox).Width = 80;
+                        (uIElement as TextBox).Height = 30;
+                        (uIElement as TextBox).HorizontalAlignment = HorizontalAlignment.Center;
+                        (uIElement as TextBox).VerticalAlignment = VerticalAlignment.Center;
+                        Grid.SetRow(uIElement, i);
+                        Grid.SetColumn(uIElement, 1);
+                        grid.Children.Add(uIElement as TextBox);
+
+                        break;
+
+                    case ("TextBoxNumber"):
+
+                        uIElement = new TextBox();
+                        (uIElement as TextBox).Width = 80;
+                        (uIElement as TextBox).Height = 30;
+                        (uIElement as TextBox).HorizontalAlignment = HorizontalAlignment.Center;
+                        (uIElement as TextBox).VerticalAlignment = VerticalAlignment.Center;
+                        (uIElement as TextBox).PreviewTextInput += new TextCompositionEventHandler((object sender, TextCompositionEventArgs e) =>
+                        {
+                            NumberValidationTextBox(sender, e);
+                        });
+                        Grid.SetRow(uIElement, i);
+                        Grid.SetColumn(uIElement, 1);
+                        grid.Children.Add(uIElement as TextBox);
+
+                        break;
+
+                    case ("DatePicker"):
+
+                        uIElement = new DatePicker();
+                        (uIElement as DatePicker).HorizontalAlignment = HorizontalAlignment.Center;
+                        (uIElement as DatePicker).VerticalAlignment = VerticalAlignment.Center;
+                        Grid.SetRow(uIElement, i);
+                        Grid.SetColumn(uIElement, 1);
+                        grid.Children.Add(uIElement as DatePicker);
+
+                        break;
+
+                    case ("ListBox"):
+
+                        uIElement = new ListBox();
+                        (uIElement as ListBox).HorizontalAlignment = HorizontalAlignment.Center;
+                        (uIElement as ListBox).VerticalAlignment = VerticalAlignment.Center;
+                        (uIElement as ListBox).Items.Add("Choix 1");
+                        (uIElement as ListBox).Items.Add("Choix 2");
+                        (uIElement as ListBox).Items.Add("Choix 3");
+
+                        Grid.SetRow(uIElement, i);
+                        Grid.SetColumn(uIElement, 1);
+                        grid.Children.Add(uIElement as ListBox);
+
+                        break;
+                }
+
+                i++;
+            }
 
             return grid;
         }
 
-        // OTHERS //
+        // FORM UIElements //
 
+        private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text);
+        }
     }
 }
