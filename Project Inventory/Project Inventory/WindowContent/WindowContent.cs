@@ -17,16 +17,22 @@ namespace Project_Inventory
 
         public Grid TopGridInit(Grid topGrid)
         {
-            return null;
+            topGrid = toolBox.EmptyGrid(topGrid);
+
+            return topGrid;
         }
 
         public Grid CenterGridInit(Grid centerGrid)
         {
-            return null;
+            centerGrid = toolBox.EmptyGrid(centerGrid);
+
+            return centerGrid;
         }
         public Grid BottomGridInit(Grid bottomGrid)
         {
-            return null;
+            bottomGrid = toolBox.EmptyGrid(bottomGrid);
+
+            return bottomGrid;
         }
 
         public RoutedEventHandler GetEventHandler(string routerName)
@@ -44,6 +50,29 @@ namespace Project_Inventory
             }
 
             return null;
+        }
+
+        public Grid ButtonPlacer(Grid grid, int tabLength, int widthLimit, string skinName, string lengthName)
+        {
+            int i;
+            int j = 1;
+
+            if (tabLength > widthLimit)
+            {
+                do
+                {
+                    i = widthLimit;
+                    j++;
+                    tabLength -= widthLimit;
+                }
+                while (tabLength > widthLimit);
+            }
+            else
+            {
+                i = tabLength;
+            }
+
+            return toolBox.SetUpGrid(grid, j, i, skinName, lengthName);
         }
     }
 }

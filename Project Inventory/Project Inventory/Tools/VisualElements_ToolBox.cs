@@ -1,6 +1,9 @@
-﻿using System;
+﻿using Project_Inventory.Tools;
+using System;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace Project_Inventory
 {
@@ -37,7 +40,7 @@ namespace Project_Inventory
             return temp;
         }
 
-        public Button CreateRederectButton(string content,
+        public Button CreateSwitchButton(string content,
                                                  RoutedEventHandler router, 
                                                  string skinName,
                                                  string skinPosition)
@@ -150,6 +153,9 @@ namespace Project_Inventory
                 grid.ColumnDefinitions.Remove(grid.ColumnDefinitions[0]);
             }
 
+            //grid.Width = 0;
+            grid.Height = 0;
+
             return grid;
         }
 
@@ -183,6 +189,14 @@ namespace Project_Inventory
 
                 case "CenterCenter":
                     grid = GridSkins.CenterCenter(grid);
+                    break;
+
+                case "StretchCenter":
+                    grid = GridSkins.StretchCenter(grid);
+                    break;
+
+                case "CenterStretch":
+                    grid = GridSkins.CenterStretch(grid);
                     break;
 
                 case "TopRight":
@@ -225,6 +239,10 @@ namespace Project_Inventory
                     grid = GridSkins.HeightTenPercent(grid, windowHeight);
                     break;
 
+                case "HeightEightPercent":
+                    grid = GridSkins.HeightEightPercent(grid, windowHeight);
+                    break;
+
                 case "HeightNintyPercent":
                     grid = GridSkins.HeightNintyPercent(grid, windowHeight);
                     break;
@@ -242,15 +260,6 @@ namespace Project_Inventory
             return grid;
         }
 
-        /*public Grid AddButtonToGrid(Grid grid, Button button, int rowNb)
-        {
-            Grid.SetRow(button, rowNb);
-            Grid.SetColumnSpan(button, grid.ColumnDefinitions.Count);
-            grid.Children.Add(button);
-
-            return grid;
-        }*/
-
         public Grid CreateButtonToGrid(Grid grid,
                                        string content,
                                        int rowNb,
@@ -265,20 +274,7 @@ namespace Project_Inventory
             return grid;
         }
 
-        /*public Grid CreateButtonToGrid(Grid grid,
-                                      string content,
-                                      int rowNb,
-                                      string skinName,
-                                      string skinPosition)
-        {
-            Button button = CreateButton(content, skinName, skinPosition);
-
-            grid = AddButtonToGrid(grid, button, rowNb);
-
-            return grid;
-        }*/
-
-        public Grid CreateRederectButtonToGrid(Grid grid,
+        public Grid CreateSwitchButtonToGrid(Grid grid,
                                                string content,
                                                RoutedEventHandler router,
                                                int rowNb,
@@ -286,7 +282,7 @@ namespace Project_Inventory
                                                string skinName,
                                                string skinPosition)
         {
-            Button button = CreateRederectButton(content, router, skinName, skinPosition);
+            Button button = CreateSwitchButton(content, router, skinName, skinPosition);
 
             grid = AddButtonToGrid(grid, button, rowNb, columnNb);
 
@@ -341,7 +337,7 @@ namespace Project_Inventory
             return grid;
         }
 
-        public Grid CreateRederectButtonsToGridByTab(Grid grid, string[] buttonsTab, RoutedEventHandler[] routerTab, string buttonsSkin, string skinPosition)
+        public Grid CreateSwitchButtonsToGridByTab(Grid grid, string[] buttonsTab, RoutedEventHandler[] routerTab, string buttonsSkin, string skinPosition)
         {
             int i;
             int j;
@@ -356,7 +352,7 @@ namespace Project_Inventory
                 {
                     if (buttonsTab.Length >= (i+1) * (j+1))
                     {
-                        grid = CreateRederectButtonToGrid(grid, buttonsTab[k], routerTab[k], i, j, buttonsSkin, skinPosition);
+                        grid = CreateSwitchButtonToGrid(grid, buttonsTab[k], routerTab[k], i, j, buttonsSkin, skinPosition);
                         k++;
                     }
                 }
@@ -365,13 +361,73 @@ namespace Project_Inventory
             return grid;
         }
 
-        // OTHERS //
-
-        private void PageNavigation(object sender, RoutedEventArgs e, Type nextPageName)
+        public Grid CreateFormToGridByTab(Grid grid, string[] formElements, string[] labels)
         {
-            var nextWindow = Activator.CreateInstance(nextPageName);
-            (nextWindow as Window).Show();
-            context.Close();
+            Label label;
+            UIElement uIElement;
+            int i = 0;
+
+            grid.ColumnDefinitions[0].Width = new GridLength(20, GridUnitType.Star);
+            grid.ColumnDefinitions[1].Width = new GridLength(80, GridUnitType.Star);
+
+            foreach (string name in formElements)
+            {
+                label = new Label();
+                label = FormSkin.LabelSkin(label, labels[i]);
+                Grid.SetRow(label, i);
+                Grid.SetColumn(label, 0);
+                grid.Children.Add(label);
+
+                switch (name)
+                {
+                    case ("TextBox"):
+
+                        uIElement = new TextBox();
+                        uIElement = FormSkin.TextBoxSkin(uIElement as TextBox);
+                        Grid.SetRow(uIElement, i);
+                        Grid.SetColumn(uIElement, 1);
+                        grid.Children.Add(uIElement as TextBox);
+
+                        break;
+
+                    case ("TextBoxNumber"):
+
+                        uIElement = new TextBox();
+                        uIElement = FormSkin.TextBoxSkin(uIElement as TextBox);
+                        uIElement = FormSkin.TextBoxNumberSkin(uIElement as TextBox);
+                        Grid.SetRow(uIElement, i);
+                        Grid.SetColumn(uIElement, 1);
+                        grid.Children.Add(uIElement as TextBox);
+
+                        break;
+
+                    case ("DatePicker"):
+
+                        uIElement = new DatePicker();
+                        uIElement = FormSkin.DatePickerSkin(uIElement as DatePicker);
+                        Grid.SetRow(uIElement, i);
+                        Grid.SetColumn(uIElement, 1);
+                        grid.Children.Add(uIElement as DatePicker);
+
+                        break;
+
+                    case ("ListBox"):
+
+                        uIElement = new ListBox();
+                        uIElement = FormSkin.ListBoxSkin(uIElement as ListBox, new string[] { "Option N°1", "Option N°2", "Option N°3" });
+                        Grid.SetRow(uIElement, i);
+                        Grid.SetColumn(uIElement, 1);
+                        grid.Children.Add(uIElement as ListBox);
+
+                        break;
+                }
+
+                i++;
+            }
+
+            return grid;
         }
+
+        // FORM UIElements //
     }
 }

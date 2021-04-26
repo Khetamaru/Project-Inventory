@@ -13,6 +13,7 @@ namespace Project_Inventory
 
         private MainMenu mainMenu;
         private StorageSelectionMenu storageSelectionMenu;
+        private FormPage formPage;
 
         public MainWindow()
         {
@@ -29,6 +30,7 @@ namespace Project_Inventory
 
             mainMenu = new MainMenu(toolBox, router);
             storageSelectionMenu = new StorageSelectionMenu(toolBox, router);
+            formPage = new FormPage(toolBox, router);
 
             Init();
         }
@@ -52,6 +54,13 @@ namespace Project_Inventory
             bottomGrid = storageSelectionMenu.BottomGridInit(bottomGrid);
         }
 
+        public void FormPageInit()
+        {
+            topGrid = formPage.TopGridInit(topGrid);
+            centerGrid = formPage.CenterGridInit(centerGrid);
+            bottomGrid = formPage.BottomGridInit(bottomGrid);
+        }
+
         public void WindowSwitch(object sender, RoutedEventArgs e, string windowName) 
         {
             switch(windowName)
@@ -62,6 +71,10 @@ namespace Project_Inventory
 
                 case ("StorageSelectionMenu"):
                     StorageSelectionMenuInit();
+                    break;
+
+                case ("FormPage"):
+                    FormPageInit();
                     break;
             }
         }
@@ -96,7 +109,12 @@ namespace Project_Inventory
 
         public Router InitRouters()
         {
-            string[] routersName = new string[] { "MainMenu", "StorageSelectionMenu" };
+            string[] routersName = new string[] 
+            { 
+                "MainMenu", 
+                "StorageSelectionMenu", 
+                "FormPage" 
+            };
 
             RoutedEventHandler[] routersRouter = EnventHandlerGeneratorByTab(routersName);
 
