@@ -17,16 +17,22 @@ namespace Project_Inventory
 
         public Grid TopGridInit(Grid topGrid)
         {
-            return null;
+            topGrid = toolBox.EmptyGrid(topGrid);
+
+            return topGrid;
         }
 
         public Grid CenterGridInit(Grid centerGrid)
         {
-            return null;
+            centerGrid = toolBox.EmptyGrid(centerGrid);
+
+            return centerGrid;
         }
         public Grid BottomGridInit(Grid bottomGrid)
         {
-            return null;
+            bottomGrid = toolBox.EmptyGrid(bottomGrid);
+
+            return bottomGrid;
         }
 
         public RoutedEventHandler GetEventHandler(string routerName)

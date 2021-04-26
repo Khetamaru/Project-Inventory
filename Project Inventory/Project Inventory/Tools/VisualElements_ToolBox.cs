@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Project_Inventory.Tools;
+using System;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
@@ -152,6 +153,9 @@ namespace Project_Inventory
                 grid.ColumnDefinitions.Remove(grid.ColumnDefinitions[0]);
             }
 
+            //grid.Width = 0;
+            grid.Height = 0;
+
             return grid;
         }
 
@@ -185,6 +189,14 @@ namespace Project_Inventory
 
                 case "CenterCenter":
                     grid = GridSkins.CenterCenter(grid);
+                    break;
+
+                case "StretchCenter":
+                    grid = GridSkins.StretchCenter(grid);
+                    break;
+
+                case "CenterStretch":
+                    grid = GridSkins.CenterStretch(grid);
                     break;
 
                 case "TopRight":
@@ -225,6 +237,10 @@ namespace Project_Inventory
 
                 case "HeightTenPercent":
                     grid = GridSkins.HeightTenPercent(grid, windowHeight);
+                    break;
+
+                case "HeightEightPercent":
+                    grid = GridSkins.HeightEightPercent(grid, windowHeight);
                     break;
 
                 case "HeightNintyPercent":
@@ -345,7 +361,7 @@ namespace Project_Inventory
             return grid;
         }
 
-        public Grid CreateFormToGridByTab(Grid grid, string[] formElements, string[] Labels)
+        public Grid CreateFormToGridByTab(Grid grid, string[] formElements, string[] labels)
         {
             Label label;
             UIElement uIElement;
@@ -357,9 +373,7 @@ namespace Project_Inventory
             foreach (string name in formElements)
             {
                 label = new Label();
-                label.HorizontalAlignment = HorizontalAlignment.Center;
-                label.VerticalAlignment = VerticalAlignment.Center;
-                label.Content = Labels[i];
+                label = FormSkin.LabelSkin(label, labels[i]);
                 Grid.SetRow(label, i);
                 Grid.SetColumn(label, 0);
                 grid.Children.Add(label);
@@ -369,10 +383,7 @@ namespace Project_Inventory
                     case ("TextBox"):
 
                         uIElement = new TextBox();
-                        (uIElement as TextBox).Width = 80;
-                        (uIElement as TextBox).Height = 30;
-                        (uIElement as TextBox).HorizontalAlignment = HorizontalAlignment.Center;
-                        (uIElement as TextBox).VerticalAlignment = VerticalAlignment.Center;
+                        uIElement = FormSkin.TextBoxSkin(uIElement as TextBox);
                         Grid.SetRow(uIElement, i);
                         Grid.SetColumn(uIElement, 1);
                         grid.Children.Add(uIElement as TextBox);
@@ -382,14 +393,8 @@ namespace Project_Inventory
                     case ("TextBoxNumber"):
 
                         uIElement = new TextBox();
-                        (uIElement as TextBox).Width = 80;
-                        (uIElement as TextBox).Height = 30;
-                        (uIElement as TextBox).HorizontalAlignment = HorizontalAlignment.Center;
-                        (uIElement as TextBox).VerticalAlignment = VerticalAlignment.Center;
-                        (uIElement as TextBox).PreviewTextInput += new TextCompositionEventHandler((object sender, TextCompositionEventArgs e) =>
-                        {
-                            NumberValidationTextBox(sender, e);
-                        });
+                        uIElement = FormSkin.TextBoxSkin(uIElement as TextBox);
+                        uIElement = FormSkin.TextBoxNumberSkin(uIElement as TextBox);
                         Grid.SetRow(uIElement, i);
                         Grid.SetColumn(uIElement, 1);
                         grid.Children.Add(uIElement as TextBox);
@@ -399,8 +404,7 @@ namespace Project_Inventory
                     case ("DatePicker"):
 
                         uIElement = new DatePicker();
-                        (uIElement as DatePicker).HorizontalAlignment = HorizontalAlignment.Center;
-                        (uIElement as DatePicker).VerticalAlignment = VerticalAlignment.Center;
+                        uIElement = FormSkin.DatePickerSkin(uIElement as DatePicker);
                         Grid.SetRow(uIElement, i);
                         Grid.SetColumn(uIElement, 1);
                         grid.Children.Add(uIElement as DatePicker);
@@ -410,12 +414,7 @@ namespace Project_Inventory
                     case ("ListBox"):
 
                         uIElement = new ListBox();
-                        (uIElement as ListBox).HorizontalAlignment = HorizontalAlignment.Center;
-                        (uIElement as ListBox).VerticalAlignment = VerticalAlignment.Center;
-                        (uIElement as ListBox).Items.Add("Choix 1");
-                        (uIElement as ListBox).Items.Add("Choix 2");
-                        (uIElement as ListBox).Items.Add("Choix 3");
-
+                        uIElement = FormSkin.ListBoxSkin(uIElement as ListBox, new string[] { "Option N°1", "Option N°2", "Option N°3" });
                         Grid.SetRow(uIElement, i);
                         Grid.SetColumn(uIElement, 1);
                         grid.Children.Add(uIElement as ListBox);
@@ -430,11 +429,5 @@ namespace Project_Inventory
         }
 
         // FORM UIElements //
-
-        private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
-        {
-            Regex regex = new Regex("[^0-9]+");
-            e.Handled = regex.IsMatch(e.Text);
-        }
     }
 }

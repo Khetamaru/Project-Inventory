@@ -83,6 +83,28 @@ namespace Project_Inventory
             return grid;
         }
 
+        public static Grid CenterStretch(Grid grid)
+        {
+            grid.VerticalAlignment = VerticalAlignment.Center;
+            grid.HorizontalAlignment = HorizontalAlignment.Stretch;
+
+            grid.ShowGridLines = true;
+            grid.Background = new SolidColorBrush(Colors.LightSteelBlue);
+
+            return grid;
+        }
+
+        public static Grid StretchCenter(Grid grid)
+        {
+            grid.VerticalAlignment = VerticalAlignment.Stretch;
+            grid.HorizontalAlignment = HorizontalAlignment.Center;
+
+            grid.ShowGridLines = true;
+            grid.Background = new SolidColorBrush(Colors.LightSteelBlue);
+
+            return grid;
+        }
+
         public static Grid TopRight(Grid grid)
         {
             grid.VerticalAlignment = VerticalAlignment.Top;
@@ -186,6 +208,13 @@ namespace Project_Inventory
         public static Grid HeightTenPercent(Grid grid, double screenHeight)
         {
             grid.Height = screenHeight / tenPercentMultiplier;
+
+            return grid;
+        }
+
+        public static Grid HeightEightPercent(Grid grid, double screenHeight)
+        {
+            grid.Height = screenHeight / tenPercentMultiplier * 8;
 
             return grid;
         }

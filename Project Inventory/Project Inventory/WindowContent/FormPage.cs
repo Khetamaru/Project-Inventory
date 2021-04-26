@@ -14,7 +14,8 @@ namespace Project_Inventory
         private string[] formElements;
         private string[] labels;
 
-        private RoutedEventHandler formValidButton;
+        private string[] bottomGridButtons;
+        private RoutedEventHandler[] formValidButton;
 
         public FormPage(VisualElements_ToolBox visualElements_ToolBox, Router _router)
             : base(visualElements_ToolBox, _router)
@@ -25,6 +26,10 @@ namespace Project_Inventory
 
             formElements = new string[] { "TextBox", "TextBox", "TextBoxNumber", "DatePicker", "ListBox" };
             labels = new string[] { "Nom", "Prénom", "Numéro De Table", "Date De Naissance", "Choix Du Repas" };
+
+            bottomGridButtons = new string[] { "Valid" };
+
+            formValidButton = new RoutedEventHandler[] { GetEventHandler("MainMenu") };
         }
 
         public new Grid TopGridInit(Grid topGrid)
@@ -36,11 +41,20 @@ namespace Project_Inventory
             return topGrid;
         }
 
+        public new Grid CenterGridInit(Grid centerGrid)
+        {
+            centerGrid = toolBox.SetUpGrid(centerGrid, formElements.Length, 2, "StretchStretch", "HeightEightPercent");
+
+            centerGrid = toolBox.CreateFormToGridByTab(centerGrid, formElements, labels);
+
+            return centerGrid;
+        }
+
         public new Grid BottomGridInit(Grid bottomGrid)
         {
-            bottomGrid = toolBox.SetUpGrid(bottomGrid, formElements.Length, 2, "BottomStretch", "HeightNintyPercent");
+            bottomGrid = toolBox.SetUpGrid(bottomGrid, 1, 1, "BottomStretch", "HeightTenPercent");
 
-            bottomGrid = toolBox.CreateFormToGridByTab(bottomGrid, formElements, labels);
+            bottomGrid = toolBox.CreateSwitchButtonsToGridByTab(bottomGrid, bottomGridButtons, formValidButton, "StandartLittleMargin", "CenterCenter");
 
             return bottomGrid;
         }
