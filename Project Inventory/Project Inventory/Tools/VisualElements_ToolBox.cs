@@ -428,6 +428,48 @@ namespace Project_Inventory
             return grid;
         }
 
+        public Grid CreateTabToGrid(Grid grid, string[,] stringTab, string[,] indicTab, string stringSkin, string skinPosition)
+        {
+            int i;
+            int j;
+            int k = 0;
+
+            int rowNb = grid.RowDefinitions.Count;
+            int columnNb = grid.ColumnDefinitions.Count;
+
+            for (i = 0; i < rowNb; i++)
+            {
+                for (j = 0; j < columnNb; j++)
+                {
+                    if (stringTab.Length >= (i + 1) * (j + 1))
+                    {
+                        grid = CreateTabCellToGrid(grid, stringTab[i, j], indicTab[i, j], i, j, stringSkin, skinPosition);
+                        k++;
+                    }
+                }
+            }
+
+            return grid;
+        }
+
+        public Grid CreateTabCellToGrid(Grid grid, string text, string indication, int row, int column, string stringSkin, string skinPosition)
+        {
+            Label label = new Label();
+            label.Content = text;
+
+            label = StorageViewerSkin.LoadLabelSkin(label, stringSkin);
+            label = StorageViewerSkin.LoadLabelSkinPosition(label, skinPosition);
+
+            // insert potential clickEvent
+
+            Grid.SetRow(label, row);
+            Grid.SetColumn(label, column);
+
+            grid.Children.Add(label);
+
+            return grid;
+        }
+
         // FORM UIElements //
     }
 }

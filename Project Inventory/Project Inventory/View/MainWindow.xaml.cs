@@ -14,6 +14,7 @@ namespace Project_Inventory
         private MainMenu mainMenu;
         private StorageSelectionMenu storageSelectionMenu;
         private FormPage formPage;
+        private StorageViewerPage storageViewerPage;
 
         public MainWindow()
         {
@@ -28,9 +29,7 @@ namespace Project_Inventory
 
             router = InitRouters();
 
-            mainMenu = new MainMenu(toolBox, router);
-            storageSelectionMenu = new StorageSelectionMenu(toolBox, router);
-            formPage = new FormPage(toolBox, router);
+            InitWindows();
 
             Init();
         }
@@ -38,6 +37,14 @@ namespace Project_Inventory
         private void Init()
         {
             MainMenuInit();
+        }
+
+        private void InitWindows()
+        {
+            mainMenu = new MainMenu(toolBox, router);
+            storageSelectionMenu = new StorageSelectionMenu(toolBox, router);
+            formPage = new FormPage(toolBox, router);
+            storageViewerPage = new StorageViewerPage(toolBox, router);
         }
 
         public void MainMenuInit()
@@ -61,6 +68,13 @@ namespace Project_Inventory
             bottomGrid = formPage.BottomGridInit(bottomGrid);
         }
 
+        public void storageViewerPageInit()
+        {
+            topGrid = storageViewerPage.TopGridInit(topGrid);
+            centerGrid = storageViewerPage.CenterGridInit(centerGrid);
+            bottomGrid = storageViewerPage.BottomGridInit(bottomGrid);
+        }
+
         public void WindowSwitch(object sender, RoutedEventArgs e, string windowName) 
         {
             switch(windowName)
@@ -75,6 +89,10 @@ namespace Project_Inventory
 
                 case ("FormPage"):
                     FormPageInit();
+                    break;
+
+                case ("storageViewerPage"):
+                    storageViewerPageInit();
                     break;
             }
         }
@@ -113,7 +131,8 @@ namespace Project_Inventory
             { 
                 "MainMenu", 
                 "StorageSelectionMenu", 
-                "FormPage" 
+                "FormPage",
+                "storageViewerPage"
             };
 
             RoutedEventHandler[] routersRouter = EnventHandlerGeneratorByTab(routersName);
