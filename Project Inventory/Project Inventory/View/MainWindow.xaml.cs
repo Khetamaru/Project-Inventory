@@ -6,7 +6,7 @@ namespace Project_Inventory
 {
     public partial class MainWindow : Window
     {
-        public VisualElements_ToolBox toolBox;
+        public ToolBox toolBox;
         private double titleBarHeight;
 
         private Router router;
@@ -25,7 +25,7 @@ namespace Project_Inventory
 
             titleBarHeight = SystemParameters.WindowCaptionHeight;
 
-            toolBox = new VisualElements_ToolBox(this, titleBarHeight);
+            toolBox = new ToolBox(this, titleBarHeight);
 
             router = InitRouters();
 
@@ -49,30 +49,30 @@ namespace Project_Inventory
 
         public void MainMenuInit()
         {
-            topGrid = mainMenu.TopGridInit(topGrid);
-            centerGrid = mainMenu.CenterGridInit(centerGrid);
-            bottomGrid = mainMenu.BottomGridInit(bottomGrid);
+            mainMenu.TopGridInit(topGrid);
+            mainMenu.CenterGridInit(centerGrid);
+            mainMenu.BottomGridInit(bottomGrid);
         }
 
         public void StorageSelectionMenuInit()
         {
-            topGrid = storageSelectionMenu.TopGridInit(topGrid);
-            centerGrid = storageSelectionMenu.CenterGridInit(centerGrid);
-            bottomGrid = storageSelectionMenu.BottomGridInit(bottomGrid);
+            storageSelectionMenu.TopGridInit(topGrid);
+            storageSelectionMenu.CenterGridInit(centerGrid);
+            storageSelectionMenu.BottomGridInit(bottomGrid);
         }
 
         public void FormPageInit()
         {
-            topGrid = formPage.TopGridInit(topGrid);
-            centerGrid = formPage.CenterGridInit(centerGrid);
-            bottomGrid = formPage.BottomGridInit(bottomGrid);
+            formPage.TopGridInit(topGrid);
+            formPage.CenterGridInit(centerGrid);
+            formPage.BottomGridInit(bottomGrid);
         }
 
         public void storageViewerPageInit()
         {
-            topGrid = storageViewerPage.TopGridInit(topGrid);
-            centerGrid = storageViewerPage.CenterGridInit(centerGrid);
-            bottomGrid = storageViewerPage.BottomGridInit(bottomGrid);
+            storageViewerPage.TopGridInit(topGrid);
+            storageViewerPage.CenterGridInit(centerGrid);
+            storageViewerPage.BottomGridInit(bottomGrid);
         }
 
         public void WindowSwitch(object sender, RoutedEventArgs e, string windowName) 

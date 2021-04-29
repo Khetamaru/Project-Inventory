@@ -7,7 +7,7 @@ using System.Windows.Input;
 
 namespace Project_Inventory
 {
-    public class VisualElements_ToolBox
+    public class ToolBox
     {
         private MainWindow context;
         private WpfScreen wpfScreen;
@@ -15,7 +15,7 @@ namespace Project_Inventory
         private double windowWidth;
         private double windowHeight;
 
-        public VisualElements_ToolBox(MainWindow _context, double titleBarHeight)
+        public ToolBox(MainWindow _context, double titleBarHeight)
         {
             context = _context;
             wpfScreen = new WpfScreen();
@@ -34,30 +34,28 @@ namespace Project_Inventory
 
             temp.Content = content;
 
-            temp = LoadButtonPosition(temp, skinPosition);
-            temp = LoadButtonSkin(temp, skinName);
+            LoadButtonPosition(temp, skinPosition);
+            LoadButtonSkin(temp, skinName);
 
             return temp;
         }
 
         public Button CreateSwitchButton(string content,
-                                                 RoutedEventHandler router, 
-                                                 string skinName,
-                                                 string skinPosition)
+                                         RoutedEventHandler router, 
+                                         string skinName,
+                                         string skinPosition)
         {
             Button temp = CreateButton(content, skinName, skinPosition);
-            temp = AddOnClickButton(temp, router);
+            AddOnClickButton(temp, router);
 
             return temp;
-
         }
 
-        private Button AddOnClickButton(Button button, RoutedEventHandler router)
+        private void AddOnClickButton(Button button, RoutedEventHandler router)
         {
             button.Click += router;
-            return button;
         }
-        private Button LoadButtonPosition(Button button, string skinPosition)
+        private void LoadButtonPosition(Button button, string skinPosition)
         {
             switch (skinPosition)
             {
@@ -97,11 +95,9 @@ namespace Project_Inventory
                     button = ButtonSkins.BottomRight(button);
                     break;
             }
-
-            return button;
         }
 
-        private Button LoadButtonSkin(Button button, string skinName) 
+        private void LoadButtonSkin(Button button, string skinName) 
         {
             switch(skinName) 
             {
@@ -113,30 +109,26 @@ namespace Project_Inventory
                     button = ButtonSkins.StandartLittleMargin(button);
                     break;
             }
-
-            return button;
         }
 
         // GRID PART //
 
-        public Grid SetUpGrid(Grid grid,
+        public void SetUpGrid(Grid grid,
                                int rowNb,
                                int columnNb,
                                string skinName,
                                string lengthName)
         {
-            grid = EmptyGrid(grid);
+            EmptyGrid(grid);
 
-            grid = CreateRowsInGrid(grid, rowNb);
-            grid = CreateColumnsInGrid(grid, columnNb);
+            CreateRowsInGrid(grid, rowNb);
+            CreateColumnsInGrid(grid, columnNb);
 
-            grid = LoadGridLocation(grid, skinName);
-            grid = LoadGridLength(grid, lengthName);
-
-            return grid;
+            LoadGridLocation(grid, skinName);
+            LoadGridLength(grid, lengthName);
         }
 
-        public Grid EmptyGrid(Grid grid)
+        public void EmptyGrid(Grid grid)
         {
             while (grid.Children.Count >= 1)
             {
@@ -155,11 +147,9 @@ namespace Project_Inventory
 
             //grid.Width = 0;
             grid.Height = 0;
-
-            return grid;
         }
 
-        public Grid LoadGridLocation(Grid grid, string skinName)
+        public void LoadGridLocation(Grid grid, string skinName)
         {
             switch (skinName)
             {
@@ -211,11 +201,9 @@ namespace Project_Inventory
                     grid = GridSkins.BottomRight(grid);
                     break;
             }
-
-            return grid;
         }
 
-        public Grid LoadGridLength(Grid grid, string lengthName)
+        public void LoadGridLength(Grid grid, string lengthName)
         {
             switch (lengthName)
             {
@@ -247,20 +235,16 @@ namespace Project_Inventory
                     grid = GridSkins.HeightNintyPercent(grid, windowHeight);
                     break;
             }
-
-            return grid;
         }
 
-        public Grid AddButtonToGrid(Grid grid, Button button, int rowNb, int columnNb)
+        public void AddButtonToGrid(Grid grid, Button button, int rowNb, int columnNb)
         {
             Grid.SetRow(button, rowNb);
             Grid.SetColumn(button, columnNb);
             grid.Children.Add(button);
-
-            return grid;
         }
 
-        public Grid CreateButtonToGrid(Grid grid,
+        public void CreateButtonToGrid(Grid grid,
                                        string content,
                                        int rowNb,
                                        int columnNb, 
@@ -269,12 +253,10 @@ namespace Project_Inventory
         {
             Button button = CreateButton(content, skinName, skinPosition);
 
-            grid = AddButtonToGrid(grid, button, rowNb, columnNb);
-
-            return grid;
+            AddButtonToGrid(grid, button, rowNb, columnNb);
         }
 
-        public Grid CreateSwitchButtonToGrid(Grid grid,
+        public void CreateSwitchButtonToGrid(Grid grid,
                                                string content,
                                                RoutedEventHandler router,
                                                int rowNb,
@@ -284,12 +266,10 @@ namespace Project_Inventory
         {
             Button button = CreateSwitchButton(content, router, skinName, skinPosition);
 
-            grid = AddButtonToGrid(grid, button, rowNb, columnNb);
-
-            return grid;
+            AddButtonToGrid(grid, button, rowNb, columnNb);
         }
 
-        public Grid CreateRowsInGrid(Grid grid, int nbRows)
+        public void CreateRowsInGrid(Grid grid, int nbRows)
         {
             int i;
 
@@ -297,11 +277,9 @@ namespace Project_Inventory
             {
                 grid.RowDefinitions.Add(new RowDefinition());
             }
-
-            return grid;
         }
 
-        public Grid CreateColumnsInGrid(Grid grid, int nbColumns)
+        public void CreateColumnsInGrid(Grid grid, int nbColumns)
         {
             int i;
 
@@ -309,11 +287,9 @@ namespace Project_Inventory
             {
                 grid.ColumnDefinitions.Add(new ColumnDefinition());
             }
-
-            return grid;
         }
 
-        public Grid CreateButtonsToGridByTab(Grid grid, string[] buttonsTab, string buttonsSkin, string skinPosition)
+        public void CreateButtonsToGridByTab(Grid grid, string[] buttonsTab, string buttonsSkin, string skinPosition)
         {
             int i;
             int j;
@@ -328,16 +304,14 @@ namespace Project_Inventory
                 {
                     if (buttonsTab.Length >= (i + 1) * (j + 1))
                     {
-                        grid = CreateButtonToGrid(grid, buttonsTab[k], i, j, buttonsSkin, skinPosition);
+                        CreateButtonToGrid(grid, buttonsTab[k], i, j, buttonsSkin, skinPosition);
                         k++;
                     }
                 }
             }
-
-            return grid;
         }
 
-        public Grid CreateSwitchButtonsToGridByTab(Grid grid, string[] buttonsTab, RoutedEventHandler[] routerTab, string buttonsSkin, string skinPosition)
+        public void CreateSwitchButtonsToGridByTab(Grid grid, string[] buttonsTab, RoutedEventHandler[] routerTab, string buttonsSkin, string skinPosition)
         {
             int i;
             int j;
@@ -352,16 +326,14 @@ namespace Project_Inventory
                 {
                     if (buttonsTab.Length >= (i+1) * (j+1))
                     {
-                        grid = CreateSwitchButtonToGrid(grid, buttonsTab[k], routerTab[k], i, j, buttonsSkin, skinPosition);
+                        CreateSwitchButtonToGrid(grid, buttonsTab[k], routerTab[k], i, j, buttonsSkin, skinPosition);
                         k++;
                     }
                 }
             }
-
-            return grid;
         }
 
-        public Grid CreateFormToGridByTab(Grid grid, string[] formElements, string[] labels)
+        public void CreateFormToGridByTab(Grid grid, string[] formElements, string[] labels)
         {
             Label label;
             UIElement uIElement;
@@ -424,11 +396,9 @@ namespace Project_Inventory
 
                 i++;
             }
-
-            return grid;
         }
 
-        public Grid CreateTabToGrid(Grid grid, string[,] stringTab, string[,] indicTab, string stringSkin, string skinPosition)
+        public void CreateTabToGrid(Grid grid, string[,] stringTab, string[,] indicTab, string stringSkin, string skinPosition)
         {
             int i;
             int j;
@@ -443,16 +413,14 @@ namespace Project_Inventory
                 {
                     if (stringTab.Length >= (i + 1) * (j + 1))
                     {
-                        grid = CreateTabCellToGrid(grid, stringTab[i, j], indicTab[i, j], i, j, stringSkin, skinPosition);
+                        CreateTabCellToGrid(grid, stringTab[i, j], indicTab[i, j], i, j, stringSkin, skinPosition);
                         k++;
                     }
                 }
             }
-
-            return grid;
         }
 
-        public Grid CreateTabCellToGrid(Grid grid, string text, string indication, int row, int column, string stringSkin, string skinPosition)
+        public void CreateTabCellToGrid(Grid grid, string text, string indication, int row, int column, string stringSkin, string skinPosition)
         {
             Label label = new Label();
             label.Content = text;
@@ -465,11 +433,17 @@ namespace Project_Inventory
             Grid.SetRow(label, row);
             Grid.SetColumn(label, column);
 
-            grid.Children.Add(label);
+            ScrollViewer scrollViewer = new ScrollViewer();
 
-            return grid;
+            grid.Children.Add(label);
         }
 
-        // FORM UIElements //
+        public void CreateScrollableGrid(Grid grid, Grid embededGrid)
+        {
+            ScrollViewer scrollViewer = new ScrollViewer();
+
+            scrollViewer.Content = embededGrid;
+            grid.Children.Add(scrollViewer);
+        }
     }
 }

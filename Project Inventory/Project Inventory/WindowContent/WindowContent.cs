@@ -6,33 +6,28 @@ namespace Project_Inventory
     public class WindowContent
     {
 
-        public VisualElements_ToolBox toolBox;
+        public ToolBox toolBox;
         public Router router;
 
-        public WindowContent(VisualElements_ToolBox visualElements_ToolBox, Router _router)
+        public WindowContent(ToolBox _toolBox, Router _router)
         {
-            toolBox = visualElements_ToolBox;
+            toolBox = _toolBox;
             router = _router;
         }
 
-        public Grid TopGridInit(Grid topGrid)
+        public void TopGridInit(Grid topGrid)
         {
-            topGrid = toolBox.EmptyGrid(topGrid);
-
-            return topGrid;
+            toolBox.EmptyGrid(topGrid);
         }
 
-        public Grid CenterGridInit(Grid centerGrid)
+        public void CenterGridInit(Grid centerGrid)
         {
-            centerGrid = toolBox.EmptyGrid(centerGrid);
-
-            return centerGrid;
+            toolBox.EmptyGrid(centerGrid);
         }
-        public Grid BottomGridInit(Grid bottomGrid)
-        {
-            bottomGrid = toolBox.EmptyGrid(bottomGrid);
 
-            return bottomGrid;
+        public void BottomGridInit(Grid bottomGrid)
+        {
+            toolBox.EmptyGrid(bottomGrid);
         }
 
         public RoutedEventHandler GetEventHandler(string routerName)
@@ -52,7 +47,7 @@ namespace Project_Inventory
             return null;
         }
 
-        public Grid ButtonPlacer(Grid grid, int tabLength, int widthLimit, string skinName, string lengthName)
+        public void ButtonPlacer(Grid grid, int tabLength, int widthLimit, string skinName, string lengthName)
         {
             int i;
             int j = 1;
@@ -72,7 +67,7 @@ namespace Project_Inventory
                 i = tabLength;
             }
 
-            return toolBox.SetUpGrid(grid, j, i, skinName, lengthName);
+            toolBox.SetUpGrid(grid, j, i, skinName, lengthName);
         }
     }
 }
