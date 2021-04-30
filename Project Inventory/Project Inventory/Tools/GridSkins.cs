@@ -11,219 +11,188 @@ namespace Project_Inventory
 
         // Grid Location //
 
-        public static Grid TopLeft(Grid grid)
+        public static void TopLeft(Grid grid)
         {
             grid.VerticalAlignment = VerticalAlignment.Top;
             grid.HorizontalAlignment = HorizontalAlignment.Left;
 
             grid.ShowGridLines = true;
             grid.Background = new SolidColorBrush(Colors.LightSteelBlue);
-
-            return grid;
         }
-        public static Grid StretchLeft(Grid grid)
+        public static void StretchLeft(Grid grid)
         {
             grid.VerticalAlignment = VerticalAlignment.Stretch;
             grid.HorizontalAlignment = HorizontalAlignment.Left;
 
             grid.ShowGridLines = true;
             grid.Background = new SolidColorBrush(Colors.LightSteelBlue);
-
-            return grid;
         }
-        public static Grid BottomLeft(Grid grid)
+        public static void BottomLeft(Grid grid)
         {
             grid.VerticalAlignment = VerticalAlignment.Bottom;
             grid.HorizontalAlignment = HorizontalAlignment.Left;
 
             grid.ShowGridLines = true;
             grid.Background = new SolidColorBrush(Colors.LightSteelBlue);
-
-            return grid;
         }
 
-        public static Grid TopStretch(Grid grid)
+        public static void TopStretch(Grid grid)
         {
             grid.VerticalAlignment = VerticalAlignment.Top;
             grid.HorizontalAlignment = HorizontalAlignment.Stretch;
 
             grid.ShowGridLines = true;
             grid.Background = new SolidColorBrush(Colors.LightSteelBlue);
-
-            return grid;
         }
-        public static Grid BottomStretch(Grid grid)
+        public static void BottomStretch(Grid grid)
         {
             grid.VerticalAlignment = VerticalAlignment.Bottom;
             grid.HorizontalAlignment = HorizontalAlignment.Stretch;
 
             grid.ShowGridLines = true;
             grid.Background = new SolidColorBrush(Colors.LightSteelBlue);
-
-            return grid;
         }
-        public static Grid StretchStretch(Grid grid)
+        public static void StretchStretch(Grid grid)
         {
             grid.VerticalAlignment = VerticalAlignment.Stretch;
             grid.HorizontalAlignment = HorizontalAlignment.Stretch;
 
             grid.ShowGridLines = true;
             grid.Background = new SolidColorBrush(Colors.LightSteelBlue);
-
-            return grid;
         }
-        public static Grid CenterCenter(Grid grid)
+        public static void CenterCenter(Grid grid)
         {
             grid.VerticalAlignment = VerticalAlignment.Center;
             grid.HorizontalAlignment = HorizontalAlignment.Center;
 
             grid.ShowGridLines = true;
             grid.Background = new SolidColorBrush(Colors.LightSteelBlue);
-
-            return grid;
         }
 
-        public static Grid CenterStretch(Grid grid)
+        public static void CenterStretch(Grid grid)
         {
             grid.VerticalAlignment = VerticalAlignment.Center;
             grid.HorizontalAlignment = HorizontalAlignment.Stretch;
 
             grid.ShowGridLines = true;
             grid.Background = new SolidColorBrush(Colors.LightSteelBlue);
-
-            return grid;
         }
 
-        public static Grid StretchCenter(Grid grid)
+        public static void StretchCenter(Grid grid)
         {
             grid.VerticalAlignment = VerticalAlignment.Stretch;
             grid.HorizontalAlignment = HorizontalAlignment.Center;
 
             grid.ShowGridLines = true;
             grid.Background = new SolidColorBrush(Colors.LightSteelBlue);
-
-            return grid;
         }
 
-        public static Grid TopRight(Grid grid)
+        public static void TopRight(Grid grid)
         {
             grid.VerticalAlignment = VerticalAlignment.Top;
             grid.HorizontalAlignment = HorizontalAlignment.Right;
 
             grid.ShowGridLines = true;
             grid.Background = new SolidColorBrush(Colors.LightSteelBlue);
-
-            return grid;
         }
-        public static Grid StretchRight(Grid grid)
+        public static void StretchRight(Grid grid)
         {
             grid.VerticalAlignment = VerticalAlignment.Stretch;
             grid.HorizontalAlignment = HorizontalAlignment.Right;
 
             grid.ShowGridLines = true;
             grid.Background = new SolidColorBrush(Colors.LightSteelBlue);
-
-            return grid;
         }
-        public static Grid BottomRight(Grid grid)
+        public static void BottomRight(Grid grid)
         {
             grid.VerticalAlignment = VerticalAlignment.Bottom;
             grid.HorizontalAlignment = HorizontalAlignment.Right;
 
             grid.ShowGridLines = true;
             grid.Background = new SolidColorBrush(Colors.LightSteelBlue);
-
-            return grid;
         }
-        public static Grid TopCenter(Grid grid)
+        public static void TopCenter(Grid grid)
         {
             grid.VerticalAlignment = VerticalAlignment.Top;
             grid.HorizontalAlignment = HorizontalAlignment.Center;
 
             grid.ShowGridLines = true;
             grid.Background = new SolidColorBrush(Colors.LightSteelBlue);
-
-            return grid;
         }
-        public static Grid BottomCenter(Grid grid)
+        public static void BottomCenter(Grid grid)
         {
             grid.VerticalAlignment = VerticalAlignment.Bottom;
             grid.HorizontalAlignment = HorizontalAlignment.Center;
 
             grid.ShowGridLines = true;
             grid.Background = new SolidColorBrush(Colors.LightSteelBlue);
-
-            return grid;
         }
-        public static Grid CenterRight(Grid grid)
+        public static void CenterRight(Grid grid)
         {
             grid.VerticalAlignment = VerticalAlignment.Center;
             grid.HorizontalAlignment = HorizontalAlignment.Right;
 
             grid.ShowGridLines = true;
             grid.Background = new SolidColorBrush(Colors.LightSteelBlue);
-
-            return grid;
         }
-        public static Grid CenterLeft(Grid grid)
+        public static void CenterLeft(Grid grid)
         {
             grid.VerticalAlignment = VerticalAlignment.Center;
             grid.HorizontalAlignment = HorizontalAlignment.Left;
 
             grid.ShowGridLines = true;
             grid.Background = new SolidColorBrush(Colors.LightSteelBlue);
-
-            return grid;
         }
 
         // Grid Length //
 
-        public static Grid WidthOneTier(Grid grid, double screenWidth)
+        public static void WidthOneTier(Grid grid, double screenWidth)
         {
             grid.Width = screenWidth / tierMultiplier;
-
-            return grid;
         }
-        public static Grid WidthTwoTier(Grid grid, double screenWidth)
+        public static void WidthTwoTier(Grid grid, double screenWidth)
         {
             grid.Width = screenWidth / tierMultiplier * 2;
-
-            return grid;
         }
 
-        public static Grid HeightOneTier(Grid grid, double screenHeight)
+        public static void HeightOneTier(Grid grid, double screenHeight)
         {
             grid.Height = screenHeight / tierMultiplier;
-
-            return grid;
         }
 
-        public static Grid HeightTwoTier(Grid grid, double screenHeight)
+        public static void HeightTwoTier(Grid grid, double screenHeight)
         {
             grid.Height = screenHeight / tierMultiplier * 2;
-
-            return grid;
         }
 
-        public static Grid HeightTenPercent(Grid grid, double screenHeight)
+        public static void HeightTenPercent(Grid grid, double screenHeight)
         {
             grid.Height = screenHeight / tenPercentMultiplier;
-
-            return grid;
         }
 
-        public static Grid HeightEightPercent(Grid grid, double screenHeight)
+        public static void HeightEightPercent(Grid grid, double screenHeight)
         {
             grid.Height = screenHeight / tenPercentMultiplier * 8;
-
-            return grid;
         }
 
-        public static Grid HeightNintyPercent(Grid grid, double screenHeight)
+        public static void HeightNintyPercent(Grid grid, double screenHeight)
         {
             grid.Height = screenHeight / tenPercentMultiplier * 9;
+        }
 
-            return grid;
+        public static void ColumnHeightTwentyPercent(ColumnDefinition column, double screenWidth)
+        {
+            column.Width = new GridLength(screenWidth / tenPercentMultiplier * 2, GridUnitType.Pixel);
+        }
+
+        public static void RowHeightTenPercent(RowDefinition row, double screenHeight)
+        {
+            row.Height = new GridLength(screenHeight / tenPercentMultiplier * 0.5, GridUnitType.Pixel);
+        }
+
+        public static void RowHeightTwentyPercent(RowDefinition row, double screenHeight)
+        {
+            row.Height = new GridLength(screenHeight / tenPercentMultiplier * 2, GridUnitType.Pixel);
         }
     }
 }

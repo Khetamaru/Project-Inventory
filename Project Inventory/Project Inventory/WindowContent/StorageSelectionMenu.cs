@@ -15,8 +15,8 @@ namespace Project_Inventory
 
         private int widthLimit;
 
-        public StorageSelectionMenu(VisualElements_ToolBox visualElements_ToolBox, Router _router)
-            : base(visualElements_ToolBox, _router)
+        public StorageSelectionMenu(ToolBox toolBox, Router _router)
+            : base(toolBox, _router)
         {
             topGridButtons = new string[] { "Return" };
 
@@ -37,22 +37,18 @@ namespace Project_Inventory
             widthLimit = 5;
         }
 
-        public new Grid TopGridInit(Grid topGrid)
+        public new void TopGridInit(Grid topGrid)
         {
-            topGrid = toolBox.SetUpGrid(topGrid, 1, 1, "TopStretch", "HeightTenPercent");
+            toolBox.SetUpGrid(topGrid, 1, 1, "TopStretch", "HeightTenPercent");
 
-            topGrid = toolBox.CreateSwitchButtonsToGridByTab(topGrid, topGridButtons, topSwitchEvents, "StandartLittleMargin", "TopRight");
-
-            return topGrid;
+            toolBox.CreateSwitchButtonsToGridByTab(topGrid, topGridButtons, topSwitchEvents, "StandartLittleMargin", "TopRight");
         }
 
-        public new Grid BottomGridInit(Grid bottomGrid)
+        public new void BottomGridInit(Grid bottomGrid)
         {
-            bottomGrid = ButtonPlacer(bottomGrid, bottomGridButtons.Length, widthLimit, "BottomStretch", "HeightNintyPercent");
+            ButtonPlacer(bottomGrid, bottomGridButtons.Length, widthLimit, "BottomStretch", "HeightNintyPercent");
 
-            bottomGrid = toolBox.CreateSwitchButtonsToGridByTab(bottomGrid, bottomGridButtons, bottomSwitchEvents, "standart", "CenterCenter");
-
-            return bottomGrid;
+            toolBox.CreateSwitchButtonsToGridByTab(bottomGrid, bottomGridButtons, bottomSwitchEvents, "standart", "CenterCenter");
         }
     }
 }

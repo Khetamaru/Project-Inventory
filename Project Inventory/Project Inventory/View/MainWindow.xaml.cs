@@ -6,7 +6,7 @@ namespace Project_Inventory
 {
     public partial class MainWindow : Window
     {
-        public VisualElements_ToolBox toolBox;
+        public ToolBox toolBox;
         private double titleBarHeight;
 
         private Router router;
@@ -14,6 +14,7 @@ namespace Project_Inventory
         private MainMenu mainMenu;
         private StorageSelectionMenu storageSelectionMenu;
         private FormPage formPage;
+        private StorageViewerPage storageViewerPage;
 
         public MainWindow()
         {
@@ -24,13 +25,9 @@ namespace Project_Inventory
 
             titleBarHeight = SystemParameters.WindowCaptionHeight;
 
-            toolBox = new VisualElements_ToolBox(this, titleBarHeight);
+            toolBox = new ToolBox(this, titleBarHeight);
 
             router = InitRouters();
-
-            mainMenu = new MainMenu(toolBox, router);
-            storageSelectionMenu = new StorageSelectionMenu(toolBox, router);
-            formPage = new FormPage(toolBox, router);
 
             Init();
         }
@@ -42,23 +39,34 @@ namespace Project_Inventory
 
         public void MainMenuInit()
         {
-            topGrid = mainMenu.TopGridInit(topGrid);
-            centerGrid = mainMenu.CenterGridInit(centerGrid);
-            bottomGrid = mainMenu.BottomGridInit(bottomGrid);
+            mainMenu = new MainMenu(toolBox, router);
+            mainMenu.TopGridInit(topGrid);
+            mainMenu.CenterGridInit(centerGrid);
+            mainMenu.BottomGridInit(bottomGrid);
         }
 
         public void StorageSelectionMenuInit()
         {
-            topGrid = storageSelectionMenu.TopGridInit(topGrid);
-            centerGrid = storageSelectionMenu.CenterGridInit(centerGrid);
-            bottomGrid = storageSelectionMenu.BottomGridInit(bottomGrid);
+            storageSelectionMenu = new StorageSelectionMenu(toolBox, router);
+            storageSelectionMenu.TopGridInit(topGrid);
+            storageSelectionMenu.CenterGridInit(centerGrid);
+            storageSelectionMenu.BottomGridInit(bottomGrid);
         }
 
         public void FormPageInit()
         {
-            topGrid = formPage.TopGridInit(topGrid);
-            centerGrid = formPage.CenterGridInit(centerGrid);
-            bottomGrid = formPage.BottomGridInit(bottomGrid);
+            formPage = new FormPage(toolBox, router);
+            formPage.TopGridInit(topGrid);
+            formPage.CenterGridInit(centerGrid);
+            formPage.BottomGridInit(bottomGrid);
+        }
+
+        public void storageViewerPageInit()
+        {
+            storageViewerPage = new StorageViewerPage(toolBox, router);
+            storageViewerPage.TopGridInit(topGrid);
+            storageViewerPage.CenterGridInit(centerGrid);
+            storageViewerPage.BottomGridInit(bottomGrid);
         }
 
         public void WindowSwitch(object sender, RoutedEventArgs e, string windowName) 
@@ -75,6 +83,10 @@ namespace Project_Inventory
 
                 case ("FormPage"):
                     FormPageInit();
+                    break;
+
+                case ("storageViewerPage"):
+                    storageViewerPageInit();
                     break;
             }
         }
@@ -113,7 +125,8 @@ namespace Project_Inventory
             { 
                 "MainMenu", 
                 "StorageSelectionMenu", 
-                "FormPage" 
+                "FormPage",
+                "storageViewerPage"
             };
 
             RoutedEventHandler[] routersRouter = EnventHandlerGeneratorByTab(routersName);

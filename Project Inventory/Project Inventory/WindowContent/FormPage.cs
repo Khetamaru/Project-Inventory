@@ -17,8 +17,8 @@ namespace Project_Inventory
         private string[] bottomGridButtons;
         private RoutedEventHandler[] formValidButton;
 
-        public FormPage(VisualElements_ToolBox visualElements_ToolBox, Router _router)
-            : base(visualElements_ToolBox, _router)
+        public FormPage(ToolBox toolBox, Router _router)
+            : base(toolBox, _router)
         {
             topGridButtons = new string[] { "Return" };
 
@@ -32,31 +32,25 @@ namespace Project_Inventory
             formValidButton = new RoutedEventHandler[] { GetEventHandler("MainMenu") };
         }
 
-        public new Grid TopGridInit(Grid topGrid)
+        public new void TopGridInit(Grid topGrid)
         {
-            topGrid = toolBox.SetUpGrid(topGrid, 1, 1, "TopStretch", "HeightTenPercent");
+            toolBox.SetUpGrid(topGrid, 1, 1, "TopStretch", "HeightTenPercent");
 
-            topGrid = toolBox.CreateSwitchButtonsToGridByTab(topGrid, topGridButtons, topSwitchEvents, "StandartLittleMargin", "TopRight");
-
-            return topGrid;
+            toolBox.CreateSwitchButtonsToGridByTab(topGrid, topGridButtons, topSwitchEvents, "StandartLittleMargin", "TopRight");
         }
 
-        public new Grid CenterGridInit(Grid centerGrid)
+        public new void CenterGridInit(Grid centerGrid)
         {
-            centerGrid = toolBox.SetUpGrid(centerGrid, formElements.Length, 2, "StretchStretch", "HeightEightPercent");
+            toolBox.SetUpGrid(centerGrid, formElements.Length, 2, "StretchStretch", "HeightEightPercent");
 
-            centerGrid = toolBox.CreateFormToGridByTab(centerGrid, formElements, labels);
-
-            return centerGrid;
+            toolBox.CreateFormToGridByTab(centerGrid, formElements, labels);
         }
 
-        public new Grid BottomGridInit(Grid bottomGrid)
+        public new void BottomGridInit(Grid bottomGrid)
         {
-            bottomGrid = toolBox.SetUpGrid(bottomGrid, 1, 1, "BottomStretch", "HeightTenPercent");
+            toolBox.SetUpGrid(bottomGrid, 1, 1, "BottomStretch", "HeightTenPercent");
 
-            bottomGrid = toolBox.CreateSwitchButtonsToGridByTab(bottomGrid, bottomGridButtons, formValidButton, "StandartLittleMargin", "CenterCenter");
-
-            return bottomGrid;
+            toolBox.CreateSwitchButtonsToGridByTab(bottomGrid, bottomGridButtons, formValidButton, "StandartLittleMargin", "CenterCenter");
         }
     }
 }

@@ -12,32 +12,28 @@ namespace Project_Inventory
 
         private int widthLimit;
 
-        public MainMenu(VisualElements_ToolBox visualElements_ToolBox, Router _router)
-            : base(visualElements_ToolBox, _router)
+        public MainMenu(ToolBox toolBox, Router _router)
+            : base(toolBox, _router)
         {
             topGridButtons = new string[] { "Logo Application" };
-            bottomGridButtons = new string[] { "Menu n°1", "Menu n°2" };
-            switchEvents = new RoutedEventHandler[] { GetEventHandler("StorageSelectionMenu"), GetEventHandler("FormPage") };
+            bottomGridButtons = new string[] { "Storage Selection", "Formulaire Type", "Storage Viewer" };
+            switchEvents = new RoutedEventHandler[] { GetEventHandler("StorageSelectionMenu"), GetEventHandler("FormPage"), GetEventHandler("storageViewerPage") };
 
             widthLimit = 5;
         }
 
-        public new Grid TopGridInit(Grid topGrid)
+        public new void TopGridInit(Grid topGrid)
         {
-            topGrid = toolBox.SetUpGrid(topGrid, 1, 1, "TopStretch", "HeightOneTier");
+            toolBox.SetUpGrid(topGrid, 1, 1, "TopStretch", "HeightOneTier");
 
-            topGrid = toolBox.CreateButtonsToGridByTab(topGrid, topGridButtons, "standart", "CenterCenter");
-
-            return topGrid;
+            toolBox.CreateButtonsToGridByTab(topGrid, topGridButtons, "standart", "CenterCenter");
         }
 
-        public new Grid BottomGridInit(Grid bottomGrid)
+        public new void BottomGridInit(Grid bottomGrid)
         {
-            bottomGrid = ButtonPlacer(bottomGrid, bottomGridButtons.Length, widthLimit, "BottomStretch", "HeightTwoTier");
+            ButtonPlacer(bottomGrid, bottomGridButtons.Length, widthLimit, "BottomStretch", "HeightTwoTier");
 
-            bottomGrid = toolBox.CreateSwitchButtonsToGridByTab(bottomGrid, bottomGridButtons, switchEvents, "standart", "CenterCenter");
-
-            return bottomGrid;
+            toolBox.CreateSwitchButtonsToGridByTab(bottomGrid, bottomGridButtons, switchEvents, "standart", "CenterCenter");
         }
     }
 }

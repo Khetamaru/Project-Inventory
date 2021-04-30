@@ -8,99 +8,77 @@ namespace Project_Inventory
 
         // Button Location //
 
-        public static Button TopLeft(Button button)
+        public static void TopLeft(Button button)
         {
             button.HorizontalAlignment = HorizontalAlignment.Left;
             button.VerticalAlignment = VerticalAlignment.Top;
-
-            return button;
         }
 
-        public static Button TopCenter(Button button)
+        public static void TopCenter(Button button)
         {
             button.HorizontalAlignment = HorizontalAlignment.Center;
             button.VerticalAlignment = VerticalAlignment.Top;
-
-            return button;
         }
 
-        public static Button TopRight(Button button)
+        public static void TopRight(Button button)
         {
             button.HorizontalAlignment = HorizontalAlignment.Right;
             button.VerticalAlignment = VerticalAlignment.Top;
-
-            return button;
         }
 
-        public static Button CenterLeft(Button button)
+        public static void CenterLeft(Button button)
         {
             button.HorizontalAlignment = HorizontalAlignment.Left;
             button.VerticalAlignment = VerticalAlignment.Center;
-
-            return button;
         }
 
-        public static Button CenterCenter(Button button)
+        public static void CenterCenter(Button button)
         {
             button.HorizontalAlignment = HorizontalAlignment.Center;
             button.VerticalAlignment = VerticalAlignment.Center;
-
-            return button;
         }
 
-        public static Button CenterRight(Button button)
+        public static void CenterRight(Button button)
         {
             button.HorizontalAlignment = HorizontalAlignment.Right;
             button.VerticalAlignment = VerticalAlignment.Center;
-
-            return button;
         }
 
-        public static Button BottomLeft(Button button)
+        public static void BottomLeft(Button button)
         {
             button.HorizontalAlignment = HorizontalAlignment.Left;
             button.VerticalAlignment = VerticalAlignment.Bottom;
-
-            return button;
         }
 
-        public static Button BottomCenter(Button button)
+        public static void BottomCenter(Button button)
         {
             button.HorizontalAlignment = HorizontalAlignment.Center;
             button.VerticalAlignment = VerticalAlignment.Bottom;
-
-            return button;
         }
 
-        public static Button BottomRight(Button button)
+        public static void BottomRight(Button button)
         {
             button.HorizontalAlignment = HorizontalAlignment.Right;
             button.VerticalAlignment = VerticalAlignment.Bottom;
-
-            return button;
         }
 
         // Button Skin //
 
-        public static Button StandartButtonSkin(Button button)
+        public static void StandartButtonSkin(Button button)
         {
 
             button.Width *= 3;
             button.Height *= 3;
             button.Padding = new Thickness(10);
-
-            return button;
         }
 
-        public static Button StandartLittleMargin(Button button)
+        public static void StandartLittleMargin(Button button)
         {
 
             button.Width *= 3;
             button.Height *= 3;
             button.Padding = new Thickness(10);
             button.Margin = new Thickness(10);
-
-            return button;
         }
     }
 }
