@@ -60,39 +60,39 @@ namespace Project_Inventory
             switch (skinPosition)
             {
                 case "TopLeft":
-                    button = ButtonSkins.TopLeft(button);
+                    ButtonSkins.TopLeft(button);
                     break;
 
                 case "TopCenter":
-                    button = ButtonSkins.TopCenter(button);
+                    ButtonSkins.TopCenter(button);
                     break;
 
                 case "TopRight":
-                    button = ButtonSkins.TopRight(button);
+                    ButtonSkins.TopRight(button);
                     break;
 
                 case "CenterLeft":
-                    button = ButtonSkins.CenterLeft(button);
+                    ButtonSkins.CenterLeft(button);
                     break;
 
                 case "CenterCenter":
-                    button = ButtonSkins.CenterCenter(button);
+                    ButtonSkins.CenterCenter(button);
                     break;
 
                 case "CenterRight":
-                    button = ButtonSkins.CenterRight(button);
+                    ButtonSkins.CenterRight(button);
                     break;
 
                 case "BottomLeft":
-                    button = ButtonSkins.BottomLeft(button);
+                    ButtonSkins.BottomLeft(button);
                     break;
 
                 case "BottomCenter":
-                    button = ButtonSkins.BottomCenter(button);
+                    ButtonSkins.BottomCenter(button);
                     break;
 
                 case "BottomRight":
-                    button = ButtonSkins.BottomRight(button);
+                    ButtonSkins.BottomRight(button);
                     break;
             }
         }
@@ -102,11 +102,11 @@ namespace Project_Inventory
             switch(skinName) 
             {
                 case "standart":
-                    button = ButtonSkins.StandartButtonSkin(button);
+                    ButtonSkins.StandartButtonSkin(button);
                     break;
 
                 case "StandartLittleMargin":
-                    button = ButtonSkins.StandartLittleMargin(button);
+                    ButtonSkins.StandartLittleMargin(button);
                     break;
             }
         }
@@ -154,51 +154,51 @@ namespace Project_Inventory
             switch (skinName)
             {
                 case "TopLeft":
-                    grid = GridSkins.TopLeft(grid);
+                    GridSkins.TopLeft(grid);
                     break;
 
                 case "StretchLeft":
-                    grid = GridSkins.StretchLeft(grid);
+                    GridSkins.StretchLeft(grid);
                     break;
 
                 case "BottomLeft":
-                    grid = GridSkins.BottomLeft(grid);
+                    GridSkins.BottomLeft(grid);
                     break;
 
                 case "TopStretch":
-                    grid = GridSkins.TopStretch(grid);
+                    GridSkins.TopStretch(grid);
                     break;
 
                 case "BottomStretch":
-                    grid = GridSkins.BottomStretch(grid);
+                    GridSkins.BottomStretch(grid);
                     break;
 
                 case "StretchStretch":
-                    grid = GridSkins.StretchStretch(grid);
+                    GridSkins.StretchStretch(grid);
                     break;
 
                 case "CenterCenter":
-                    grid = GridSkins.CenterCenter(grid);
+                    GridSkins.CenterCenter(grid);
                     break;
 
                 case "StretchCenter":
-                    grid = GridSkins.StretchCenter(grid);
+                    GridSkins.StretchCenter(grid);
                     break;
 
                 case "CenterStretch":
-                    grid = GridSkins.CenterStretch(grid);
+                    GridSkins.CenterStretch(grid);
                     break;
 
                 case "TopRight":
-                    grid = GridSkins.TopRight(grid);
+                    GridSkins.TopRight(grid);
                     break;
 
                 case "StretchRight":
-                    grid = GridSkins.StretchRight(grid);
+                    GridSkins.StretchRight(grid);
                     break;
 
                 case "BottomRight":
-                    grid = GridSkins.BottomRight(grid);
+                    GridSkins.BottomRight(grid);
                     break;
             }
         }
@@ -208,31 +208,31 @@ namespace Project_Inventory
             switch (lengthName)
             {
                 case "WidthOneTier":
-                    grid = GridSkins.WidthOneTier(grid, windowWidth);
+                    GridSkins.WidthOneTier(grid, windowWidth);
                     break;
 
                 case "WidthTwoTier":
-                    grid = GridSkins.WidthTwoTier(grid, windowWidth);
+                    GridSkins.WidthTwoTier(grid, windowWidth);
                     break;
 
                 case "HeightOneTier":
-                    grid = GridSkins.HeightOneTier(grid, windowHeight);
+                    GridSkins.HeightOneTier(grid, windowHeight);
                     break;
 
                 case "HeightTwoTier":
-                    grid = GridSkins.HeightTwoTier(grid, windowHeight);
+                    GridSkins.HeightTwoTier(grid, windowHeight);
                     break;
 
                 case "HeightTenPercent":
-                    grid = GridSkins.HeightTenPercent(grid, windowHeight);
+                    GridSkins.HeightTenPercent(grid, windowHeight);
                     break;
 
                 case "HeightEightPercent":
-                    grid = GridSkins.HeightEightPercent(grid, windowHeight);
+                    GridSkins.HeightEightPercent(grid, windowHeight);
                     break;
 
                 case "HeightNintyPercent":
-                    grid = GridSkins.HeightNintyPercent(grid, windowHeight);
+                    GridSkins.HeightNintyPercent(grid, windowHeight);
                     break;
             }
         }
@@ -345,7 +345,7 @@ namespace Project_Inventory
             foreach (string name in formElements)
             {
                 label = new Label();
-                label = FormSkin.LabelSkin(label, labels[i]);
+                FormSkin.LabelSkin(label, labels[i]);
                 Grid.SetRow(label, i);
                 Grid.SetColumn(label, 0);
                 grid.Children.Add(label);
@@ -355,7 +355,7 @@ namespace Project_Inventory
                     case ("TextBox"):
 
                         uIElement = new TextBox();
-                        uIElement = FormSkin.TextBoxSkin(uIElement as TextBox);
+                        FormSkin.TextBoxSkin(uIElement as TextBox);
                         Grid.SetRow(uIElement, i);
                         Grid.SetColumn(uIElement, 1);
                         grid.Children.Add(uIElement as TextBox);
@@ -365,8 +365,8 @@ namespace Project_Inventory
                     case ("TextBoxNumber"):
 
                         uIElement = new TextBox();
-                        uIElement = FormSkin.TextBoxSkin(uIElement as TextBox);
-                        uIElement = FormSkin.TextBoxNumberSkin(uIElement as TextBox);
+                        FormSkin.TextBoxSkin(uIElement as TextBox);
+                        FormSkin.TextBoxNumberSkin(uIElement as TextBox);
                         Grid.SetRow(uIElement, i);
                         Grid.SetColumn(uIElement, 1);
                         grid.Children.Add(uIElement as TextBox);
@@ -376,7 +376,7 @@ namespace Project_Inventory
                     case ("DatePicker"):
 
                         uIElement = new DatePicker();
-                        uIElement = FormSkin.DatePickerSkin(uIElement as DatePicker);
+                        FormSkin.DatePickerSkin(uIElement as DatePicker);
                         Grid.SetRow(uIElement, i);
                         Grid.SetColumn(uIElement, 1);
                         grid.Children.Add(uIElement as DatePicker);
@@ -386,7 +386,7 @@ namespace Project_Inventory
                     case ("ListBox"):
 
                         uIElement = new ListBox();
-                        uIElement = FormSkin.ListBoxSkin(uIElement as ListBox, new string[] { "Option N°1", "Option N°2", "Option N°3" });
+                        FormSkin.ListBoxSkin(uIElement as ListBox, new string[] { "Option N°1", "Option N°2", "Option N°3" });
                         Grid.SetRow(uIElement, i);
                         Grid.SetColumn(uIElement, 1);
                         grid.Children.Add(uIElement as ListBox);
@@ -425,25 +425,132 @@ namespace Project_Inventory
             Label label = new Label();
             label.Content = text;
 
-            label = StorageViewerSkin.LoadLabelSkin(label, stringSkin);
-            label = StorageViewerSkin.LoadLabelSkinPosition(label, skinPosition);
+            StorageViewerSkin.LoadLabelSkin(label, stringSkin);
+            StorageViewerSkin.LoadLabelSkinPosition(label, skinPosition);
 
             // insert potential clickEvent
 
             Grid.SetRow(label, row);
             Grid.SetColumn(label, column);
 
-            ScrollViewer scrollViewer = new ScrollViewer();
-
             grid.Children.Add(label);
         }
 
-        public void CreateScrollableGrid(Grid grid, Grid embededGrid)
+        // StorageViewer //
+
+        public void CreateScrollableGrid(Grid grid, Grid embededGrid, int gridRowOne, int gridColumnOne, int gridRowTwo, int gridColumnTwo, string gridSkin, string skinHeight, string tabSkin, string tabPos, string[,] stringTab, string[,] indicTab)
         {
             ScrollViewer scrollViewer = new ScrollViewer();
 
+            SetUpGrid(grid, gridRowOne, gridColumnOne, gridSkin, skinHeight);
+
+            SetUpNewGrid(embededGrid, gridRowTwo, gridColumnTwo, gridSkin, "");
+
+            ScrollGridInit(embededGrid, gridRowTwo, gridColumnTwo, scrollViewer);
+
+            CreateTabToGrid(embededGrid, stringTab, indicTab, tabSkin, tabPos);
+
+            EmbedScrollableGrid(grid, embededGrid, scrollViewer);
+        }
+
+        public void SetUpNewGrid(Grid grid,
+                               int rowNb,
+                               int columnNb,
+                               string skinName,
+                               string lengthName)
+        {
+            CreateRowsInGrid(grid, rowNb);
+            CreateColumnsInGrid(grid, columnNb);
+
+            LoadGridLocation(grid, skinName);
+            LoadGridLength(grid, lengthName);
+        }
+
+        public void EmbedScrollableGrid(Grid grid, Grid embededGrid, ScrollViewer scrollViewer)
+        {
             scrollViewer.Content = embededGrid;
             grid.Children.Add(scrollViewer);
+        }
+
+        public void ScrollGridInit(Grid embededGrid, int gridRowTwo, int gridColumnTwo, ScrollViewer scrollViewer)
+        {
+            if(gridRowTwo > 5)
+            {
+                if(gridColumnTwo > 5) 
+                { 
+                    ScrollViewerBoth(scrollViewer);
+                    SetScrollGridHeight(embededGrid);
+                    SetScrollGridWidth(embededGrid);
+                }
+                else 
+                { 
+                    ScrollViewerVertical(scrollViewer);
+                    SetScrollGridHeight(embededGrid);
+                }
+            }
+            else
+            {
+                if (gridColumnTwo > 5) 
+                { 
+                    ScrollViewerHorizontal(scrollViewer);
+                    SetScrollGridWidth(embededGrid); 
+                    GridSkins.RowHeightTenPercent(embededGrid.RowDefinitions[0], windowHeight);
+                    GridSkins.HeightNintyPercent(embededGrid, windowHeight);
+                }
+                else 
+                { 
+                    ScrollViewerNoOne(scrollViewer);
+                    GridSkins.RowHeightTenPercent(embededGrid.RowDefinitions[0], windowHeight);
+                    GridSkins.HeightNintyPercent(embededGrid, windowHeight);
+                }
+            }
+        }
+
+        public void ScrollViewerBoth(ScrollViewer scrollViewer)
+        {
+            scrollViewer.VerticalScrollBarVisibility = ScrollBarVisibility.Visible;
+            scrollViewer.HorizontalScrollBarVisibility = ScrollBarVisibility.Visible;
+        }
+
+        public void ScrollViewerVertical(ScrollViewer scrollViewer)
+        {
+            scrollViewer.VerticalScrollBarVisibility = ScrollBarVisibility.Visible;
+            scrollViewer.HorizontalScrollBarVisibility = ScrollBarVisibility.Hidden;
+        }
+
+        public void ScrollViewerHorizontal(ScrollViewer scrollViewer)
+        {
+            scrollViewer.VerticalScrollBarVisibility = ScrollBarVisibility.Hidden;
+            scrollViewer.HorizontalScrollBarVisibility = ScrollBarVisibility.Visible;
+        }
+
+        public void ScrollViewerNoOne(ScrollViewer scrollViewer)
+        {
+            scrollViewer.VerticalScrollBarVisibility = ScrollBarVisibility.Hidden;
+            scrollViewer.HorizontalScrollBarVisibility = ScrollBarVisibility.Hidden;
+        }
+
+        public void SetScrollGridWidth(Grid grid)
+        {
+            foreach(ColumnDefinition column in grid.ColumnDefinitions) 
+            { 
+                GridSkins.ColumnHeightTwentyPercent(column, windowWidth);
+            }
+        }
+
+        public void SetScrollGridHeight(Grid grid)
+        {
+            foreach (RowDefinition row in grid.RowDefinitions)
+            {
+                if (row.Equals(grid.RowDefinitions[0]))
+                {
+                    GridSkins.RowHeightTenPercent(row, windowHeight);
+                }
+                else
+                {
+                    GridSkins.RowHeightTwentyPercent(row, windowHeight);
+                }
+            }
         }
     }
 }

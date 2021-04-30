@@ -29,8 +29,6 @@ namespace Project_Inventory
 
             router = InitRouters();
 
-            InitWindows();
-
             Init();
         }
 
@@ -39,16 +37,9 @@ namespace Project_Inventory
             MainMenuInit();
         }
 
-        private void InitWindows()
-        {
-            mainMenu = new MainMenu(toolBox, router);
-            storageSelectionMenu = new StorageSelectionMenu(toolBox, router);
-            formPage = new FormPage(toolBox, router);
-            storageViewerPage = new StorageViewerPage(toolBox, router);
-        }
-
         public void MainMenuInit()
         {
+            mainMenu = new MainMenu(toolBox, router);
             mainMenu.TopGridInit(topGrid);
             mainMenu.CenterGridInit(centerGrid);
             mainMenu.BottomGridInit(bottomGrid);
@@ -56,6 +47,7 @@ namespace Project_Inventory
 
         public void StorageSelectionMenuInit()
         {
+            storageSelectionMenu = new StorageSelectionMenu(toolBox, router);
             storageSelectionMenu.TopGridInit(topGrid);
             storageSelectionMenu.CenterGridInit(centerGrid);
             storageSelectionMenu.BottomGridInit(bottomGrid);
@@ -63,6 +55,7 @@ namespace Project_Inventory
 
         public void FormPageInit()
         {
+            formPage = new FormPage(toolBox, router);
             formPage.TopGridInit(topGrid);
             formPage.CenterGridInit(centerGrid);
             formPage.BottomGridInit(bottomGrid);
@@ -70,6 +63,7 @@ namespace Project_Inventory
 
         public void storageViewerPageInit()
         {
+            storageViewerPage = new StorageViewerPage(toolBox, router);
             storageViewerPage.TopGridInit(topGrid);
             storageViewerPage.CenterGridInit(centerGrid);
             storageViewerPage.BottomGridInit(bottomGrid);

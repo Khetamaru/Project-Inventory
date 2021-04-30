@@ -24,16 +24,22 @@ namespace Project_Inventory
 
             capGrid = new Grid();
 
-            stringTab = new string[,] { { "Nom de la console", "Date de sortie", "nombre de manettes", "connectique", "possédé" },
-                                        { "PSP", "03/12/1997", "1", "USB", "true" },
-                                        { "PS2", "05/03/2002", "4", "USB", "false" },
-                                        { "PS3", "25/07/2015", "4", "USB", "true" },
-                                        { "PS15", "18/02/2048", "8", "ZURGLUK", "true" } };
-            indicTab = new string[,] {  { "title", "title", "title", "title", "title" },
-                                        { "string", "date", "int", "string", "boolean" },
-                                        { "string", "date", "int", "string", "boolean" },
-                                        { "string", "date", "int", "string", "boolean" },
-                                        { "string", "date", "int", "string", "boolean" } };
+            stringTab = new string[,] { { "Nom de la console", "Date de sortie", "nombre de manettes", "connectique", "possédé"/*, "possédé"*/ },
+                                        { "PSP", "03/12/1997", "1", "USB", "true"/*, "possédé"*/ },
+                                        { "PS2", "05/03/2002", "4", "USB", "false"/*, "possédé"*/ },
+                                        { "PS3", "25/07/2015", "4", "USB", "true"/*, "possédé"*/ },
+                                        { "PS15", "18/02/2048", "8", "ZURGLUK", "true"/*, "possédé"*/ }/*,
+                                        { "PS15", "18/02/2048", "8", "ZURGLUK", "true", "possédé" },
+                                        { "PS15", "18/02/2048", "8", "ZURGLUK", "true", "possédé" },
+                                        { "PS15", "18/02/2048", "8", "ZURGLUK", "true", "possédé" }*/ };
+            indicTab = new string[,] {  { "title", "title", "title", "title", "title"/*, "title"*/ },
+                                        { "string", "date", "int", "string", "boolean"/*, "title"*/ },
+                                        { "string", "date", "int", "string", "boolean"/*, "title"*/ },
+                                        { "string", "date", "int", "string", "boolean"/*, "title"*/ },
+                                        { "string", "date", "int", "string", "boolean"/*, "title"*/ }/*,
+                                        { "string", "date", "int", "string", "boolean", "title" },
+                                        { "string", "date", "int", "string", "boolean", "title" },
+                                        { "string", "date", "int", "string", "boolean", "title" }*/ };
     }
 
         public new void TopGridInit(Grid topGrid)
@@ -45,13 +51,12 @@ namespace Project_Inventory
 
         public new void BottomGridInit(Grid bottomGrid)
         {
-            toolBox.SetUpGrid(bottomGrid, 1, 1, "BottomStretch", "HeightNintyPercent");
-
-            toolBox.SetUpGrid(capGrid, stringTab.GetLength(0), stringTab.GetLength(1), "BottomStretch", "HeightNintyPercent");
-
-            toolBox.CreateTabToGrid(capGrid, stringTab, indicTab, "standart", "center");
-
-            toolBox.CreateScrollableGrid(bottomGrid, capGrid);
+            toolBox.CreateScrollableGrid(bottomGrid, capGrid, 
+                                         1, 1, 
+                                         stringTab.GetLength(0), stringTab.GetLength(1), 
+                                         "BottomStretch", "HeightNintyPercent", 
+                                         "standart", "center", 
+                                         stringTab, indicTab);
         }
     }
 }
