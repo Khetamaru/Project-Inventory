@@ -11,6 +11,7 @@ namespace Project_Inventory
         private string[] topGridButtons;
         private RoutedEventHandler[] topSwitchEvents;
 
+        private Grid capGrid;
         private string[] formElements;
         private string[] labels;
 
@@ -24,8 +25,11 @@ namespace Project_Inventory
 
             topSwitchEvents = new RoutedEventHandler[] { GetEventHandler("MainMenu") };
 
+            capGrid = new Grid();
             formElements = new string[] { "TextBox", "TextBox", "TextBoxNumber", "DatePicker", "ListBox" };
             labels = new string[] { "Nom", "Prénom", "Numéro De Table", "Date De Naissance", "Choix Du Repas" };
+            /*formElements = new string[] { "TextBox", "TextBox", "TextBoxNumber", "DatePicker", "ListBox", "DatePicker" };
+            labels = new string[] { "Nom", "Prénom", "Numéro De Table", "Date De Naissance", "Choix Du Repas", "Date De Naissance" };*/
 
             bottomGridButtons = new string[] { "Valid" };
 
@@ -41,9 +45,11 @@ namespace Project_Inventory
 
         public new void CenterGridInit(Grid centerGrid)
         {
-            toolBox.SetUpGrid(centerGrid, formElements.Length, 2, "StretchStretch", "HeightEightPercent");
-
-            toolBox.CreateFormToGridByTab(centerGrid, formElements, labels);
+            toolBox.CreateScrollableForm(centerGrid, capGrid,
+                                         1, 1,
+                                         formElements.Length, 2,
+                                         "StretchStretch", "HeightEightPercent",
+                                         formElements, labels);
         }
 
         public new void BottomGridInit(Grid bottomGrid)

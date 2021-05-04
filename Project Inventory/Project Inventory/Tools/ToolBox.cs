@@ -338,9 +338,9 @@ namespace Project_Inventory
             Label label;
             UIElement uIElement;
             int i = 0;
-
-            grid.ColumnDefinitions[0].Width = new GridLength(20, GridUnitType.Star);
-            grid.ColumnDefinitions[1].Width = new GridLength(80, GridUnitType.Star);
+            
+            grid.ColumnDefinitions[0].Width = new GridLength(windowWidth * 0.2, GridUnitType.Pixel);
+            grid.ColumnDefinitions[1].Width = new GridLength(windowWidth * 0.8, GridUnitType.Pixel);
 
             foreach (string name in formElements)
             {
@@ -436,6 +436,45 @@ namespace Project_Inventory
             grid.Children.Add(label);
         }
 
+        // Form //
+
+        public void CreateScrollableForm(Grid grid, Grid embededGrid, int gridRowOne, int gridColumnOne, int gridRowTwo, int gridColumnTwo, string gridSkin, string skinHeight, string[] stringTab, string[] indicTab)
+        {
+            ScrollViewer scrollViewer = new ScrollViewer();
+
+            SetUpGrid(grid, gridRowOne, gridColumnOne, gridSkin, skinHeight);
+
+            SetUpNewGrid(embededGrid, gridRowTwo, gridColumnTwo, "TopLeft", "");
+
+            ScrollFormInit(embededGrid, gridRowTwo, scrollViewer);
+
+            CreateFormToGridByTab(embededGrid, stringTab, indicTab);
+
+            EmbedScrollableGrid(grid, embededGrid, scrollViewer);
+        }
+
+        public void ScrollFormInit(Grid embededGrid, int gridRowTwo, ScrollViewer scrollViewer)
+        {
+            SetScrollFormHeight(embededGrid);
+
+            if (gridRowTwo > 5)
+            {
+                ScrollViewerVertical(scrollViewer);
+            }
+            else
+            {
+                ScrollViewerNoOne(scrollViewer);
+            }
+        }
+
+        public void SetScrollFormHeight(Grid grid)
+        {
+            foreach (RowDefinition row in grid.RowDefinitions)
+            {
+                GridSkins.RowHeightFifteenPercent(row, windowHeight);
+            }
+        }
+
         // StorageViewer //
 
         public void CreateScrollableGrid(Grid grid, Grid embededGrid, int gridRowOne, int gridColumnOne, int gridRowTwo, int gridColumnTwo, string gridSkin, string skinHeight, string tabSkin, string tabPos, string[,] stringTab, string[,] indicTab)
@@ -444,7 +483,7 @@ namespace Project_Inventory
 
             SetUpGrid(grid, gridRowOne, gridColumnOne, gridSkin, skinHeight);
 
-            SetUpNewGrid(embededGrid, gridRowTwo, gridColumnTwo, gridSkin, "");
+            SetUpNewGrid(embededGrid, gridRowTwo, gridColumnTwo, "StretchStretch", skinHeight);
 
             ScrollGridInit(embededGrid, gridRowTwo, gridColumnTwo, scrollViewer);
 
@@ -474,34 +513,29 @@ namespace Project_Inventory
 
         public void ScrollGridInit(Grid embededGrid, int gridRowTwo, int gridColumnTwo, ScrollViewer scrollViewer)
         {
-            if(gridRowTwo > 5)
+            SetScrollGridHeight(embededGrid);
+            SetScrollGridWidth(embededGrid);
+
+            if (gridRowTwo > 6)
             {
-                if(gridColumnTwo > 5) 
+                if(gridColumnTwo > 9) 
                 { 
                     ScrollViewerBoth(scrollViewer);
-                    SetScrollGridHeight(embededGrid);
-                    SetScrollGridWidth(embededGrid);
                 }
                 else 
                 { 
                     ScrollViewerVertical(scrollViewer);
-                    SetScrollGridHeight(embededGrid);
                 }
             }
             else
             {
-                if (gridColumnTwo > 5) 
+                if (gridColumnTwo > 9) 
                 { 
                     ScrollViewerHorizontal(scrollViewer);
-                    SetScrollGridWidth(embededGrid); 
-                    GridSkins.RowHeightTenPercent(embededGrid.RowDefinitions[0], windowHeight);
-                    GridSkins.HeightNintyPercent(embededGrid, windowHeight);
                 }
                 else 
                 { 
                     ScrollViewerNoOne(scrollViewer);
-                    GridSkins.RowHeightTenPercent(embededGrid.RowDefinitions[0], windowHeight);
-                    GridSkins.HeightNintyPercent(embededGrid, windowHeight);
                 }
             }
         }
@@ -534,7 +568,7 @@ namespace Project_Inventory
         {
             foreach(ColumnDefinition column in grid.ColumnDefinitions) 
             { 
-                GridSkins.ColumnHeightTwentyPercent(column, windowWidth);
+                GridSkins.ColumnHeightTenPercent(column, windowWidth);
             }
         }
 
@@ -548,7 +582,7 @@ namespace Project_Inventory
                 }
                 else
                 {
-                    GridSkins.RowHeightTwentyPercent(row, windowHeight);
+                    GridSkins.RowHeightFifteenPercent(row, windowHeight);
                 }
             }
         }
