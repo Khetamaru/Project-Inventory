@@ -29,6 +29,11 @@ namespace Project_Inventory
                                         { "PS2", "05/03/2002", "4", "USB", "false" },
                                         { "PS3", "25/07/2015", "4", "USB", "true" },
                                         { "PS15", "18/02/2048", "8", "ZURGLUK", "true" } };
+            indicTab = new string[,] {  { "title", "title", "title", "title", "title" },
+                                        { "string", "date", "int", "string", "boolean" },
+                                        { "string", "date", "int", "string", "boolean" },
+                                        { "string", "date", "int", "string", "boolean" },
+                                        { "string", "date", "int", "string", "boolean" } };
             /*stringTab = new string[,] { { "Nom de la console", "Date de sortie", "nombre de manettes", "connectique", "possédé", "possédé", "possédé", "possédé", "possédé", "possédé" },
                                         { "PSP", "03/12/1997", "1", "USB", "true", "possédé", "possédé", "possédé", "possédé", "possédé" },
                                         { "PS2", "05/03/2002", "4", "USB", "false", "possédé", "possédé", "possédé", "possédé", "possédé" },
@@ -36,13 +41,8 @@ namespace Project_Inventory
                                         { "PS15", "18/02/2048", "8", "ZURGLUK", "true", "possédé", "possédé", "possédé", "possédé", "possédé" },
                                         { "PS15", "18/02/2048", "8", "ZURGLUK", "true", "possédé", "possédé", "possédé", "possédé", "possédé" },
                                         { "PS15", "18/02/2048", "8", "ZURGLUK", "true", "possédé", "possédé", "possédé", "possédé", "possédé" },
-                                        { "PS15", "18/02/2048", "8", "ZURGLUK", "true", "possédé", "possédé", "possédé", "possédé", "possédé" } };*/
-            indicTab = new string[,] {  { "title", "title", "title", "title", "title" },
-                                        { "string", "date", "int", "string", "boolean" },
-                                        { "string", "date", "int", "string", "boolean" },
-                                        { "string", "date", "int", "string", "boolean" },
-                                        { "string", "date", "int", "string", "boolean" } };
-            /*indicTab = new string[,] {  { "title", "title", "title", "title", "title", "title", "title", "title", "title", "title" },
+                                        { "PS15", "18/02/2048", "8", "ZURGLUK", "true", "possédé", "possédé", "possédé", "possédé", "possédé" } };
+            indicTab = new string[,] {  { "title", "title", "title", "title", "title", "title", "title", "title", "title", "title" },
                                         { "string", "date", "int", "string", "boolean", "title", "title", "title", "title", "title" },
                                         { "string", "date", "int", "string", "boolean", "title", "title", "title", "title", "title" },
                                         { "string", "date", "int", "string", "boolean", "title", "title", "title", "title", "title" },
