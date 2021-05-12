@@ -22,7 +22,7 @@ namespace Local_API_Server
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<StorageLibraryContext>(opt =>
-                                               opt.UseSqlServer());
+                                               opt.UseSqlServer("Data Source=desktop-tc1tmv3\\mssqlserver01;Initial Catalog=master;Integrated Security=True"));
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
