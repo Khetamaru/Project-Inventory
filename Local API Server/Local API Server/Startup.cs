@@ -22,8 +22,14 @@ namespace Local_API_Server
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<StorageLibraryContext>(opt =>
-                                               opt.UseSqlServer("Data Source=desktop-tc1tmv3\\mssqlserver01;Initial Catalog=master;Integrated Security=True"));
+                opt.UseSqlServer("Data Source=desktop-tc1tmv3\\mssqlserver01;Initial Catalog=master;Integrated Security=True"));
+            services.AddDbContext<DataLibraryContext>(opt =>
+                opt.UseSqlServer("Data Source=desktop-tc1tmv3\\mssqlserver01;Initial Catalog=master;Integrated Security=True"));
+            services.AddDbContext<StorageXDataContext>(opt =>
+                opt.UseSqlServer("Data Source=desktop-tc1tmv3\\mssqlserver01;Initial Catalog=master;Integrated Security=True"));
+
             services.AddControllers();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Local_API_Server", Version = "v1" });
