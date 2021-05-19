@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Net;
 using System.IO;
 
@@ -16,24 +14,31 @@ namespace Project_Inventory.Tools
 
     public class RequestCenter
     {
-        public string httpUrl { get; set; }
+        public string http { get; set; }
+        public string port { get; set; }
         public string endPoint { get; set; }
         public HttpVerb httpMethod { get; set; }
 
         public RequestCenter()
         {
-            httpUrl = string.Empty;
+            http = "http://localhost:";
+            port = "5000/";
             endPoint = string.Empty;
             httpMethod = HttpVerb.GET;
         }
 
-        public string MakeRequest()
+        public string MakeRequest(string json)
         {
             string strResponseValue = string.Empty;
 
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(httpUrl + endPoint);
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(http + port + endPoint);
 
             request.Method = httpMethod.ToString();
+
+            using (var streamWriter = new StreamWriter(request.GetRequestStream()))
+            {
+                streamWriter.Write(json);
+            }
 
             using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
             {
@@ -57,36 +62,36 @@ namespace Project_Inventory.Tools
             return strResponseValue;
         }
 
-        public string GetRequest(string requestString)
+        public string GetRequest(string requestString, string json)
         {
             endPoint = requestString;
             httpMethod = HttpVerb.GET;
 
-            return MakeRequest();
+            return MakeRequest(json);
         }
 
-        public string PostRequest(string requestString)
+        public string PostRequest(string requestString, string json)
         {
             endPoint = requestString;
             httpMethod = HttpVerb.POST;
 
-            return MakeRequest();
+            return MakeRequest(json);
         }
 
-        public string PutRequest(string requestString)
+        public string PutRequest(string requestString, string json)
         {
             endPoint = requestString;
             httpMethod = HttpVerb.PUT;
 
-            return MakeRequest();
+            return MakeRequest(json);
         }
 
-        public string DeleteRequest(string requestString)
+        public string DeleteRequest(string requestString, string json)
         {
             endPoint = requestString;
             httpMethod = HttpVerb.DELETE;
 
-            return MakeRequest();
+            return MakeRequest(json);
         }
     }
 }
