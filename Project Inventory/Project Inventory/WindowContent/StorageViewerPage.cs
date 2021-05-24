@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Project_Inventory.Tools;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -15,8 +16,8 @@ namespace Project_Inventory
         private string[,] stringTab;
         private string[,] indicTab;
 
-        public StorageViewerPage(ToolBox ToolBox, Router _router)
-            : base(ToolBox, _router)
+        public StorageViewerPage(ToolBox ToolBox, Router _router, RequestCenter requestCenter)
+            : base(ToolBox, _router, requestCenter)
         {
             topGridButtons = new string[] { "Return" };
 

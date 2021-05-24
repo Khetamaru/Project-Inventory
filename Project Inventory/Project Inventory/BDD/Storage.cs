@@ -4,11 +4,12 @@ using System.Text;
 
 namespace Project_Inventory.BDD
 {
-    public class Storage
+    public class Storage : BDDObject
     {
         public string Name { get; set; }
 
-        public Storage(string name)
+        public Storage(int id, string name)
+            : base(id)
         {
             Name = name;
         }

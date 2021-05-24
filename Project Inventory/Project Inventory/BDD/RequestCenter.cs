@@ -22,7 +22,7 @@ namespace Project_Inventory.Tools
         public RequestCenter()
         {
             http = "http://localhost:";
-            port = "5000/";
+            port = "5000/api/";
             endPoint = string.Empty;
             httpMethod = HttpVerb.GET;
         }
@@ -35,10 +35,10 @@ namespace Project_Inventory.Tools
 
             request.Method = httpMethod.ToString();
 
-            using (var streamWriter = new StreamWriter(request.GetRequestStream()))
+            /*using (var streamWriter = new StreamWriter(request.GetRequestStream()))
             {
                 streamWriter.Write(json);
-            }
+            }*/
 
             using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
             {

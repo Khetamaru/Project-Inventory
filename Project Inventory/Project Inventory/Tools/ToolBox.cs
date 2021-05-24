@@ -1,4 +1,5 @@
-﻿using Project_Inventory.Tools;
+﻿using Project_Inventory.BDD;
+using Project_Inventory.Tools;
 using System;
 using System.Text.RegularExpressions;
 using System.Windows;
@@ -327,6 +328,50 @@ namespace Project_Inventory
                     if (buttonsTab.Length >= (i+1) * (j+1))
                     {
                         CreateSwitchButtonToGrid(grid, buttonsTab[k], routerTab[k], i, j, buttonsSkin, skinPosition);
+                        k++;
+                    }
+                }
+            }
+        }
+
+        public void CreateSwitchButtonsToGridByTab(Grid grid, Storage[] buttonsTab, RoutedEventHandler[] routerTab, string buttonsSkin, string skinPosition)
+        {
+            int i;
+            int j;
+            int k = 0;
+
+            int rowNb = grid.RowDefinitions.Count;
+            int columnNb = grid.ColumnDefinitions.Count;
+
+            for (i = 0; i < rowNb; i++)
+            {
+                for (j = 0; j < columnNb; j++)
+                {
+                    if (buttonsTab.Length >= (i + 1) * (j + 1))
+                    {
+                        CreateSwitchButtonToGrid(grid, buttonsTab[k].Name, routerTab[k], i, j, buttonsSkin, skinPosition);
+                        k++;
+                    }
+                }
+            }
+        }
+
+        public void CreateSwitchButtonsToGridByTab(Grid grid, string[] buttonsTab, RoutedEventHandler[] routerTab, string[] buttonsSkin, string[] skinPosition)
+        {
+            int i;
+            int j;
+            int k = 0;
+
+            int rowNb = grid.RowDefinitions.Count;
+            int columnNb = grid.ColumnDefinitions.Count;
+
+            for (i = 0; i < rowNb; i++)
+            {
+                for (j = 0; j < columnNb; j++)
+                {
+                    if (buttonsTab.Length >= (i + 1) * (j + 1))
+                    {
+                        CreateSwitchButtonToGrid(grid, buttonsTab[k], routerTab[k], i, j, buttonsSkin[k], skinPosition[k]);
                         k++;
                     }
                 }

@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Project_Inventory.BDD;
+using Project_Inventory.Tools;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -10,38 +9,38 @@ namespace Project_Inventory
     {
         private string[] topGridButtons;
         private RoutedEventHandler[] topSwitchEvents;
-        private string[] bottomGridButtons;
+        private Storage[] bottomGridButtons;
         private RoutedEventHandler[] bottomSwitchEvents;
 
         private int widthLimit;
 
-        public StorageSelectionMenu(ToolBox toolBox, Router _router)
-            : base(toolBox, _router)
+        public StorageSelectionMenu(ToolBox toolBox, Router _router, RequestCenter requestCenter)
+            : base(toolBox, _router, requestCenter)
         {
-            topGridButtons = new string[] { "Return" };
+            topGridButtons = new string[] { "Create a Storage", "Return" };
 
-            topSwitchEvents = new RoutedEventHandler[] { GetEventHandler("MainMenu") };
+            topSwitchEvents = new RoutedEventHandler[] { GetEventHandler("MainMenu"), GetEventHandler("MainMenu") };
 
-            bottomGridButtons = new string[] { "Réserve N°1", "Réserve N°2", "Réserve N°3", "Réserve N°4", "Réserve N°5",
-                                                     "Réserve N°6", "Réserve N°7", "Réserve N°8", "Réserve N°9", "Réserve N°10",
-                                                     "Réserve N°11", "Réserve N°12", "Réserve N°13", "Réserve N°14", "Réserve N°15",
-                                                     "Réserve N°16", "Réserve N°17", "Réserve N°18", "Réserve N°19", "Réserve N°20",
-                                                     "Réserve N°21", "Réserve N°22", "Réserve N°23", "Réserve N°24"};
-
-            bottomSwitchEvents = new RoutedEventHandler[] { GetEventHandler("MainMenu"), GetEventHandler("MainMenu"), GetEventHandler("MainMenu"), GetEventHandler("MainMenu"), GetEventHandler("MainMenu"),
-                                                                           GetEventHandler("MainMenu"), GetEventHandler("MainMenu"), GetEventHandler("MainMenu"), GetEventHandler("MainMenu"), GetEventHandler("MainMenu"),
-                                                                           GetEventHandler("MainMenu"), GetEventHandler("MainMenu"), GetEventHandler("MainMenu"), GetEventHandler("MainMenu"), GetEventHandler("MainMenu"),
-                                                                           GetEventHandler("MainMenu"), GetEventHandler("MainMenu"), GetEventHandler("MainMenu"), GetEventHandler("MainMenu"), GetEventHandler("MainMenu"),
-                                                                           GetEventHandler("MainMenu"), GetEventHandler("MainMenu"), GetEventHandler("MainMenu"), GetEventHandler("MainMenu"), GetEventHandler("MainMenu")};
-
+            LoadBDDInfos();
+            
             widthLimit = 5;
+        }
+
+        public void LoadBDDInfos()
+        {
+            bottomGridButtons = JsonCenter.LoadStorageSelectionInfos(requestCenter);
+            bottomSwitchEvents = JsonCenter.SetEventHandlerTab(bottomGridButtons.Length, GetEventHandler("MainMenu"));
         }
 
         public new void TopGridInit(Grid topGrid)
         {
-            toolBox.SetUpGrid(topGrid, 1, 1, "TopStretch", "HeightTenPercent");
+            toolBox.SetUpGrid(topGrid, 1, 2, "TopStretch", "HeightTenPercent");
 
-            toolBox.CreateSwitchButtonsToGridByTab(topGrid, topGridButtons, topSwitchEvents, "StandartLittleMargin", "TopRight");
+            toolBox.CreateSwitchButtonsToGridByTab(topGrid, 
+                                                   topGridButtons, 
+                                                   topSwitchEvents, 
+                                                   new string[] { "StandartLittleMargin", "StandartLittleMargin" }, 
+                                                   new string[] { "TopLeft", "TopRight" });
         }
 
         public new void BottomGridInit(Grid bottomGrid)

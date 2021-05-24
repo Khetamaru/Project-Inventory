@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Project_Inventory.Tools;
+using System;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -10,6 +12,7 @@ namespace Project_Inventory
         private double titleBarHeight;
 
         private Router router;
+        private RequestCenter requestCenter;
 
         private MainMenu mainMenu;
         private StorageSelectionMenu storageSelectionMenu;
@@ -28,6 +31,7 @@ namespace Project_Inventory
             toolBox = new ToolBox(this, titleBarHeight);
 
             router = InitRouters();
+            requestCenter = new RequestCenter();
 
             Init();
         }
@@ -39,7 +43,7 @@ namespace Project_Inventory
 
         public void MainMenuInit()
         {
-            mainMenu = new MainMenu(toolBox, router);
+            mainMenu = new MainMenu(toolBox, router, requestCenter);
             mainMenu.TopGridInit(topGrid);
             mainMenu.CenterGridInit(centerGrid);
             mainMenu.BottomGridInit(bottomGrid);
@@ -47,7 +51,7 @@ namespace Project_Inventory
 
         public void StorageSelectionMenuInit()
         {
-            storageSelectionMenu = new StorageSelectionMenu(toolBox, router);
+            storageSelectionMenu = new StorageSelectionMenu(toolBox, router, requestCenter);
             storageSelectionMenu.TopGridInit(topGrid);
             storageSelectionMenu.CenterGridInit(centerGrid);
             storageSelectionMenu.BottomGridInit(bottomGrid);
@@ -55,7 +59,7 @@ namespace Project_Inventory
 
         public void FormPageInit()
         {
-            formPage = new FormPage(toolBox, router);
+            formPage = new FormPage(toolBox, router, requestCenter);
             formPage.TopGridInit(topGrid);
             formPage.CenterGridInit(centerGrid);
             formPage.BottomGridInit(bottomGrid);
@@ -63,7 +67,7 @@ namespace Project_Inventory
 
         public void storageViewerPageInit()
         {
-            storageViewerPage = new StorageViewerPage(toolBox, router);
+            storageViewerPage = new StorageViewerPage(toolBox, router, requestCenter);
             storageViewerPage.TopGridInit(topGrid);
             storageViewerPage.CenterGridInit(centerGrid);
             storageViewerPage.BottomGridInit(bottomGrid);

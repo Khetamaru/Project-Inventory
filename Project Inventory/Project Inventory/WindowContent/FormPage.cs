@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Project_Inventory.Tools;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -18,8 +19,8 @@ namespace Project_Inventory
         private string[] bottomGridButtons;
         private RoutedEventHandler[] formValidButton;
 
-        public FormPage(ToolBox toolBox, Router _router)
-            : base(toolBox, _router)
+        public FormPage(ToolBox toolBox, Router _router, RequestCenter requestCenter)
+            : base(toolBox, _router, requestCenter)
         {
             topGridButtons = new string[] { "Return" };
 
