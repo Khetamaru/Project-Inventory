@@ -17,7 +17,7 @@ namespace Project_Inventory
         {
             topGridButtons = new string[] { "Logo Application" };
             bottomGridButtons = new string[] { "Storage Selection", "Formulaire Type", "Storage Viewer" };
-            switchEvents = new RoutedEventHandler[] { GetEventHandler("StorageSelectionMenu"), GetEventHandler("FormPage"), GetEventHandler("storageViewerPage") };
+            switchEvents = new RoutedEventHandler[] { GetEventHandler("StorageSelectionMenu"), GetEventHandler("Add Storage"), GetEventHandler("storageViewerPage") };
 
             widthLimit = 5;
         }

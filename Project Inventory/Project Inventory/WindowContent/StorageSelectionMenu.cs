@@ -19,7 +19,7 @@ namespace Project_Inventory
         {
             topGridButtons = new string[] { "Create a Storage", "Return" };
 
-            topSwitchEvents = new RoutedEventHandler[] { GetEventHandler("MainMenu"), GetEventHandler("MainMenu") };
+            topSwitchEvents = new RoutedEventHandler[] { GetEventHandler("Add Storage"), GetEventHandler("MainMenu") };
 
             LoadBDDInfos();
             

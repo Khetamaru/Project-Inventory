@@ -1,5 +1,6 @@
 ﻿using Project_Inventory.Tools;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -57,9 +58,9 @@ namespace Project_Inventory
             storageSelectionMenu.BottomGridInit(bottomGrid);
         }
 
-        public void FormPageInit()
+        public void FormPageInit(string[] formElements, string[] labels)
         {
-            formPage = new FormPage(toolBox, router, requestCenter);
+            formPage = new FormPage(toolBox, router, requestCenter, formElements, labels);
             formPage.TopGridInit(topGrid);
             formPage.CenterGridInit(centerGrid);
             formPage.BottomGridInit(bottomGrid);
@@ -85,12 +86,21 @@ namespace Project_Inventory
                     StorageSelectionMenuInit();
                     break;
 
-                case ("FormPage"):
-                    FormPageInit();
-                    break;
-
                 case ("storageViewerPage"):
                     storageViewerPageInit();
+                    break;
+            }
+        }
+
+        public void WindowSwitch(object sender, RoutedEventArgs e,
+                                 string formRoutersName, 
+                                 string[] formElements, 
+                                 string[] labels)
+        {
+            switch (formRoutersName)
+            {
+                case ("Add Storage"):
+                    FormPageInit(formElements, labels);
                     break;
             }
         }
@@ -105,17 +115,42 @@ namespace Project_Inventory
             return router;
         }
 
-        public RoutedEventHandler[] EnventHandlerGeneratorByTab(string[] windowName)
+        public RoutedEventHandler[] EnventHandlerGeneratorByTab(string[] windowName, string[] formRoutersName, string[,] formElements, string[,] labels, string[] routersNameF)
         {
-            RoutedEventHandler[] routers = new RoutedEventHandler[windowName.Length];
+            RoutedEventHandler[] routers = new RoutedEventHandler[windowName.Length + formRoutersName.Length - 1];
             var i = 0;
+            var j = 0;
+            var string1 = string.Empty;
+            string[] string2;
+            string[] string3;
 
-            foreach(string name in windowName)
+            foreach (string name in windowName)
             {
-                routers[i] = new RoutedEventHandler((object sender, RoutedEventArgs e) =>
+                if (name != "FormPage")
                 {
-                    WindowSwitch(sender, e, name);
-                });
+                    routers[i] = new RoutedEventHandler((object sender, RoutedEventArgs e) =>
+                    {
+                        WindowSwitch(sender, e, name);
+                    });
+                    routersNameF[i] = name;
+                }
+                else
+                {
+                    foreach(string formName in formRoutersName)
+                    {
+                        string1 = formRoutersName[j];
+                        string2 = Enumerable.Range(0, formElements.GetLength(1)).Select(x => formElements[j, x]).ToArray();
+                        string3 = Enumerable.Range(0, labels.GetLength(1)).Select(x => labels[j, x]).ToArray();
+
+                        routers[i + j] = new RoutedEventHandler((object sender, RoutedEventArgs e) =>
+                        {
+                            WindowSwitch(sender, e, string1, string2, string3);
+                        });
+                        routersNameF[i + j] = formName;
+
+                        j++;
+                    }
+                }
 
                 i++;
             }
@@ -128,14 +163,34 @@ namespace Project_Inventory
             string[] routersName = new string[] 
             { 
                 "MainMenu", 
-                "StorageSelectionMenu", 
-                "FormPage",
-                "storageViewerPage"
+                "StorageSelectionMenu",
+                "storageViewerPage",
+                "FormPage"
             };
 
-            RoutedEventHandler[] routersRouter = EnventHandlerGeneratorByTab(routersName);
+            string[] formRoutersName = new string[]
+            {
+                "Add Storage"
+            };
 
-            return new Router(routersName, routersRouter);
+            string[,] formElements = new string[,]
+            {
+                { "TextBox" }
+                /*{ "TextBox", "TextBox", "TextBoxNumber", "DatePicker", "ListBox" }*/
+            };
+
+            string[,] labels = new string[,]
+            {
+                { "Storage's Name" }
+                /*{ "Nom", "Prénom", "Numéro De Table", "Date De Naissance", "Choix Du Repas" }*/
+            };
+
+            string[] routersNameF = new string[routersName.Length - 1 + formRoutersName.Length];
+
+
+            RoutedEventHandler[] routersRouter = EnventHandlerGeneratorByTab(routersName, formRoutersName, formElements, labels, routersNameF);
+
+            return new Router(routersNameF, routersRouter);
         }
     }
 }

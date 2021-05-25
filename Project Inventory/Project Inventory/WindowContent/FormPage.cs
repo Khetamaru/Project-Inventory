@@ -19,7 +19,8 @@ namespace Project_Inventory
         private string[] bottomGridButtons;
         private RoutedEventHandler[] formValidButton;
 
-        public FormPage(ToolBox toolBox, Router _router, RequestCenter requestCenter)
+        public FormPage(ToolBox toolBox, Router _router, RequestCenter requestCenter, 
+                        string[] _formElements, string[] _labels)
             : base(toolBox, _router, requestCenter)
         {
             topGridButtons = new string[] { "Return" };
@@ -27,14 +28,15 @@ namespace Project_Inventory
             topSwitchEvents = new RoutedEventHandler[] { GetEventHandler("MainMenu") };
 
             capGrid = new Grid();
-            formElements = new string[] { "TextBox", "TextBox", "TextBoxNumber", "DatePicker", "ListBox" };
-            labels = new string[] { "Nom", "Prénom", "Numéro De Table", "Date De Naissance", "Choix Du Repas" };
-            /*formElements = new string[] { "TextBox", "TextBox", "TextBoxNumber", "DatePicker", "ListBox", "DatePicker" };
-            labels = new string[] { "Nom", "Prénom", "Numéro De Table", "Date De Naissance", "Choix Du Repas", "Date De Naissance" };*/
 
             bottomGridButtons = new string[] { "Valid" };
 
             formValidButton = new RoutedEventHandler[] { GetEventHandler("MainMenu") };
+
+            formElements = _formElements;
+            labels = _labels;
+            /*formElements = new string[] { "TextBox", "TextBox", "TextBoxNumber", "DatePicker", "ListBox" };
+            labels = new string[] { "Nom", "Prénom", "Numéro De Table", "Date De Naissance", "Choix Du Repas" };*/
         }
 
         public new void TopGridInit(Grid topGrid)
