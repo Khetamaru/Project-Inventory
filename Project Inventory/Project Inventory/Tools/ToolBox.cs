@@ -520,6 +520,97 @@ namespace Project_Inventory
             }
         }
 
+        public void GetUiElementResult(Grid grid, string[] uiReselt, string[] formElements)
+        {
+            int i = 0;
+            int j = 0;
+
+            foreach (UIElement element in grid.Children)
+            {
+                if (i % 2 != 0)
+                {
+                    switch (formElements[i])
+                    {
+                        case ("TextBox"):
+
+                            uiReselt[j] = (element as TextBox).Text;
+
+                            break;
+
+                        case ("TextBoxNumber"):
+
+                            uiReselt[j] = (element as TextBox).Text;
+
+                            break;
+
+                        case ("DatePicker"):
+
+                            uiReselt[j] = (element as DatePicker).Text;
+
+                            break;
+
+                        case ("ListBox"):
+
+                            uiReselt[j] = (element as ListBox).SelectedItem.ToString();
+
+                            break;
+                    }
+
+                    j++;
+                }
+
+                i++;
+            }
+        }
+
+        public bool FormResultValidation(string[] uiElements, string[] formElements)
+        {
+            int i = 0;
+            int j = 0;
+
+            foreach (string element in uiElements)
+            {
+                switch (formElements[i])
+                {
+                    case ("TextBox"):
+
+                        for(j = 0; j < element.Length; j++)
+                        {
+                            if(element[j] == '~' || 
+                               element[j] == ',' || 
+                               element[j] == '{' ||
+                               element[j] == '}')
+                            {
+                                element.Remove(j, 1);
+                            }
+                        }
+
+                        break;
+
+                    case ("TextBoxNumber"):
+
+                        break;
+
+                    case ("DatePicker"):
+
+                        break;
+
+                    case ("ListBox"):
+
+                        break;
+                }
+
+                if (element == "")
+                {
+                    return false;
+                }
+
+                i++;
+            }
+
+            return true;
+        }
+
         // StorageViewer //
 
         public void CreateScrollableGrid(Grid grid, Grid embededGrid, int gridRowOne, int gridColumnOne, int gridRowTwo, int gridColumnTwo, string gridSkin, string skinHeight, string tabSkin, string tabPos, string[,] stringTab, string[,] indicTab)

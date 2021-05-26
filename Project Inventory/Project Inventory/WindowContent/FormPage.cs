@@ -1,4 +1,5 @@
-﻿using Project_Inventory.Tools;
+﻿using Project_Inventory.BDD;
+using Project_Inventory.Tools;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -15,12 +16,13 @@ namespace Project_Inventory
         private Grid capGrid;
         private string[] formElements;
         private string[] labels;
+        private string formType;
 
         private string[] bottomGridButtons;
         private RoutedEventHandler[] formValidButton;
 
         public FormPage(ToolBox toolBox, Router _router, RequestCenter requestCenter, 
-                        string[] _formElements, string[] _labels)
+                        string[] _formElements, string[] _labels, string _formType)
             : base(toolBox, _router, requestCenter)
         {
             topGridButtons = new string[] { "Return" };
@@ -35,6 +37,7 @@ namespace Project_Inventory
 
             formElements = _formElements;
             labels = _labels;
+            formType = _formType;
             /*formElements = new string[] { "TextBox", "TextBox", "TextBoxNumber", "DatePicker", "ListBox" };
             labels = new string[] { "Nom", "Prénom", "Numéro De Table", "Date De Naissance", "Choix Du Repas" };*/
         }
@@ -60,6 +63,35 @@ namespace Project_Inventory
             toolBox.SetUpGrid(bottomGrid, 1, 1, "BottomStretch", "HeightTenPercent");
 
             toolBox.CreateSwitchButtonsToGridByTab(bottomGrid, bottomGridButtons, formValidButton, "StandartLittleMargin", "CenterCenter");
+        }
+
+        public void formValidation()
+        {
+            string[] uiElements = new string[capGrid.Children.Count / 2];
+            int i = 0;
+            toolBox.GetUiElementResult(capGrid, uiElements, formElements);
+
+            if (toolBox.FormResultValidation(uiElements, formElements))
+            {
+                switch(formType)
+                {
+                    case "Add Storage":
+
+                        AddStorage(new Storage(uiElements[0]));
+                        break;
+                }
+            }
+            else
+            {
+                // POP UP REFUS
+            }
+        }
+
+        public void AddStorage(Storage storage)
+        {
+            string json = storage.ToJson();
+
+            requestCenter.PostRequest("StorageLibraries", json);
         }
     }
 }

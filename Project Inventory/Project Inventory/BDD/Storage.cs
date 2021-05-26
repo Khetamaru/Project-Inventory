@@ -13,5 +13,16 @@ namespace Project_Inventory.BDD
         {
             Name = name;
         }
+
+        public Storage(string name)
+            : base(42)
+        {
+            Name = name;
+        }
+
+        public string ToJson()
+        {
+            return "{\"name\":\"" + Name + "\"}";
+        }
     }
 }
