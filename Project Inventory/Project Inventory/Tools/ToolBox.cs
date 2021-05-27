@@ -339,6 +339,7 @@ namespace Project_Inventory
             int i;
             int j;
             int k = 0;
+            int z;
 
             int rowNb = grid.RowDefinitions.Count;
             int columnNb = grid.ColumnDefinitions.Count;
@@ -347,7 +348,18 @@ namespace Project_Inventory
             {
                 for (j = 0; j < columnNb; j++)
                 {
-                    if (buttonsTab.Length >= (i + 1) * (j + 1))
+                    if (i >= 1)
+                    {
+                        if (j >= 1) { z = (i * 5) + j; }
+                        else { z = i * 5; }
+                    }
+                    else
+                    {
+                        if (j >= 1) { z = j; }
+                        else { z = 1; }
+                    }
+
+                    if (buttonsTab.Length > z)
                     {
                         CreateSwitchButtonToGrid(grid, buttonsTab[k].Name, routerTab[k], i, j, buttonsSkin, skinPosition);
                         k++;
@@ -529,7 +541,7 @@ namespace Project_Inventory
             {
                 if (i % 2 != 0)
                 {
-                    switch (formElements[i])
+                    switch (formElements[j])
                     {
                         case ("TextBox"):
 

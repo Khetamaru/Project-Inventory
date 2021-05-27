@@ -23,9 +23,9 @@ namespace Project_Inventory.Tools
 
         public static Storage[] LoadStorageSelectionInfos(RequestCenter requestCenter)
         {
-            //string responseBdd = requestCenter.GetRequest("StorageLibraries", "");
+            string responseBdd = requestCenter.GetRequest("StorageLibraries");
 
-            string responseBdd = "[{\"id\":1,\"name\":\"walk dog\"},{\"id\":2,\"name\":\"walk dog\"},{\"id\":3,\"name\":\"walk dog\"},{\"id\":4,\"name\":\"walk dog\"},{\"id\":5,\"name\":\"walk dog\"}]";
+            //string responseBdd = "[{\"id\":1,\"name\":\"walk dog\"},{\"id\":2,\"name\":\"walk dog\"},{\"id\":3,\"name\":\"walk dog\"},{\"id\":4,\"name\":\"walk dog\"},{\"id\":5,\"name\":\"walk dog\"}]";
 
             return FormatToBDDObject(responseBdd, "storage") as Storage[];
         }

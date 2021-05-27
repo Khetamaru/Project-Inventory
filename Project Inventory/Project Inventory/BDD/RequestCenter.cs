@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.IO;
+using System.Text;
 
 namespace Project_Inventory.Tools
 {
@@ -31,14 +32,41 @@ namespace Project_Inventory.Tools
         {
             string strResponseValue = string.Empty;
 
+            HttpWebRequest request = (HttpWebRequest) WebRequest.Create(http + port + endPoint); 
+            request.KeepAlive = false;
+            request.ProtocolVersion = HttpVersion.Version10;
+            request.Method = httpMethod.ToString();
+
+            // turn our request string into a byte stream
+            byte[] postBytes = Encoding.UTF8.GetBytes(json);
+
+            request.ContentType = "application/json; charset=UTF-8";
+            request.Accept = "application/json";
+            request.ContentLength = postBytes.Length;
+            Stream requestStream = request.GetRequestStream();
+
+            // now send it
+            requestStream.Write(postBytes, 0, postBytes.Length);
+            requestStream.Close();
+
+            // grab te response and print it out to the console along with the status code
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            string result;
+            using (StreamReader rdr = new StreamReader(response.GetResponseStream()))
+            {
+                result = rdr.ReadToEnd();
+            }
+
+            return strResponseValue;
+        }
+
+        public string MakeRequest()
+        {
+            string strResponseValue = string.Empty;
+
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(http + port + endPoint);
 
             request.Method = httpMethod.ToString();
-
-            /*using (var streamWriter = new StreamWriter(request.GetRequestStream()))
-            {
-                streamWriter.Write(json);
-            }*/
 
             using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
             {
@@ -70,12 +98,28 @@ namespace Project_Inventory.Tools
             return MakeRequest(json);
         }
 
+        public string GetRequest(string requestString)
+        {
+            endPoint = requestString;
+            httpMethod = HttpVerb.GET;
+
+            return MakeRequest();
+        }
+
         public string PostRequest(string requestString, string json)
         {
             endPoint = requestString;
             httpMethod = HttpVerb.POST;
 
             return MakeRequest(json);
+        }
+
+        public string PostRequest(string requestString)
+        {
+            endPoint = requestString;
+            httpMethod = HttpVerb.POST;
+
+            return MakeRequest();
         }
 
         public string PutRequest(string requestString, string json)
@@ -86,12 +130,28 @@ namespace Project_Inventory.Tools
             return MakeRequest(json);
         }
 
+        public string PutRequest(string requestString)
+        {
+            endPoint = requestString;
+            httpMethod = HttpVerb.PUT;
+
+            return MakeRequest();
+        }
+
         public string DeleteRequest(string requestString, string json)
         {
             endPoint = requestString;
             httpMethod = HttpVerb.DELETE;
 
             return MakeRequest(json);
+        }
+
+        public string DeleteRequest(string requestString)
+        {
+            endPoint = requestString;
+            httpMethod = HttpVerb.DELETE;
+
+            return MakeRequest();
         }
     }
 }

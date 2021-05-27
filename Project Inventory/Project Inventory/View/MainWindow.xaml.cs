@@ -58,9 +58,9 @@ namespace Project_Inventory
             storageSelectionMenu.BottomGridInit(bottomGrid);
         }
 
-        public void FormPageInit(string[] formElements, string[] labels)
+        public void FormPageInit(string[] formElements, string[] labels, string formType)
         {
-            formPage = new FormPage(toolBox, router, requestCenter, formElements, labels);
+            formPage = new FormPage(toolBox, router, requestCenter, formElements, labels, formType);
             formPage.TopGridInit(topGrid);
             formPage.CenterGridInit(centerGrid);
             formPage.BottomGridInit(bottomGrid);
@@ -100,7 +100,7 @@ namespace Project_Inventory
             switch (formRoutersName)
             {
                 case ("Add Storage"):
-                    FormPageInit(formElements, labels);
+                    FormPageInit(formElements, labels, formRoutersName);
                     break;
             }
         }

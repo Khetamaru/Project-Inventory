@@ -33,13 +33,11 @@ namespace Project_Inventory
 
             bottomGridButtons = new string[] { "Valid" };
 
-            formValidButton = new RoutedEventHandler[] { GetEventHandler("MainMenu") };
+            formValidButton = new RoutedEventHandler[] { GetEventHandler("StorageSelectionMenu") };
 
             formElements = _formElements;
             labels = _labels;
             formType = _formType;
-            /*formElements = new string[] { "TextBox", "TextBox", "TextBoxNumber", "DatePicker", "ListBox" };
-            labels = new string[] { "Nom", "Prénom", "Numéro De Table", "Date De Naissance", "Choix Du Repas" };*/
         }
 
         public new void TopGridInit(Grid topGrid)
@@ -63,9 +61,13 @@ namespace Project_Inventory
             toolBox.SetUpGrid(bottomGrid, 1, 1, "BottomStretch", "HeightTenPercent");
 
             toolBox.CreateSwitchButtonsToGridByTab(bottomGrid, bottomGridButtons, formValidButton, "StandartLittleMargin", "CenterCenter");
+            (bottomGrid.Children[0] as Button).Click += new RoutedEventHandler((object sender, RoutedEventArgs e) =>
+            {
+                formValidation(sender, e);
+            });
         }
 
-        public void formValidation()
+        public void formValidation(object sender, RoutedEventArgs e)
         {
             string[] uiElements = new string[capGrid.Children.Count / 2];
             int i = 0;
