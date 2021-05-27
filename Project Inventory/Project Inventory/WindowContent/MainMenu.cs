@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Project_Inventory.Tools;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -12,12 +12,12 @@ namespace Project_Inventory
 
         private int widthLimit;
 
-        public MainMenu(ToolBox toolBox, Router _router)
-            : base(toolBox, _router)
+        public MainMenu(ToolBox toolBox, Router _router, RequestCenter requestCenter)
+            : base(toolBox, _router, requestCenter)
         {
             topGridButtons = new string[] { "Logo Application" };
             bottomGridButtons = new string[] { "Storage Selection", "Formulaire Type", "Storage Viewer" };
-            switchEvents = new RoutedEventHandler[] { GetEventHandler("StorageSelectionMenu"), GetEventHandler("FormPage"), GetEventHandler("storageViewerPage") };
+            switchEvents = new RoutedEventHandler[] { GetEventHandler("StorageSelectionMenu"), GetEventHandler("Add Storage"), GetEventHandler("storageViewerPage") };
 
             widthLimit = 5;
         }

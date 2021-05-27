@@ -1,4 +1,5 @@
-﻿using Project_Inventory.Tools;
+﻿using Project_Inventory.BDD;
+using Project_Inventory.Tools;
 using System;
 using System.Text.RegularExpressions;
 using System.Windows;
@@ -333,6 +334,62 @@ namespace Project_Inventory
             }
         }
 
+        public void CreateSwitchButtonsToGridByTab(Grid grid, Storage[] buttonsTab, RoutedEventHandler[] routerTab, string buttonsSkin, string skinPosition)
+        {
+            int i;
+            int j;
+            int k = 0;
+            int z;
+
+            int rowNb = grid.RowDefinitions.Count;
+            int columnNb = grid.ColumnDefinitions.Count;
+
+            for (i = 0; i < rowNb; i++)
+            {
+                for (j = 0; j < columnNb; j++)
+                {
+                    if (i >= 1)
+                    {
+                        if (j >= 1) { z = (i * 5) + j; }
+                        else { z = i * 5; }
+                    }
+                    else
+                    {
+                        if (j >= 1) { z = j; }
+                        else { z = 1; }
+                    }
+
+                    if (buttonsTab.Length > z)
+                    {
+                        CreateSwitchButtonToGrid(grid, buttonsTab[k].Name, routerTab[k], i, j, buttonsSkin, skinPosition);
+                        k++;
+                    }
+                }
+            }
+        }
+
+        public void CreateSwitchButtonsToGridByTab(Grid grid, string[] buttonsTab, RoutedEventHandler[] routerTab, string[] buttonsSkin, string[] skinPosition)
+        {
+            int i;
+            int j;
+            int k = 0;
+
+            int rowNb = grid.RowDefinitions.Count;
+            int columnNb = grid.ColumnDefinitions.Count;
+
+            for (i = 0; i < rowNb; i++)
+            {
+                for (j = 0; j < columnNb; j++)
+                {
+                    if (buttonsTab.Length >= (i + 1) * (j + 1))
+                    {
+                        CreateSwitchButtonToGrid(grid, buttonsTab[k], routerTab[k], i, j, buttonsSkin[k], skinPosition[k]);
+                        k++;
+                    }
+                }
+            }
+        }
+
         public void CreateFormToGridByTab(Grid grid, string[] formElements, string[] labels)
         {
             Label label;
@@ -473,6 +530,97 @@ namespace Project_Inventory
             {
                 GridSkins.RowHeightFifteenPercent(row, windowHeight);
             }
+        }
+
+        public void GetUiElementResult(Grid grid, string[] uiReselt, string[] formElements)
+        {
+            int i = 0;
+            int j = 0;
+
+            foreach (UIElement element in grid.Children)
+            {
+                if (i % 2 != 0)
+                {
+                    switch (formElements[j])
+                    {
+                        case ("TextBox"):
+
+                            uiReselt[j] = (element as TextBox).Text;
+
+                            break;
+
+                        case ("TextBoxNumber"):
+
+                            uiReselt[j] = (element as TextBox).Text;
+
+                            break;
+
+                        case ("DatePicker"):
+
+                            uiReselt[j] = (element as DatePicker).Text;
+
+                            break;
+
+                        case ("ListBox"):
+
+                            uiReselt[j] = (element as ListBox).SelectedItem.ToString();
+
+                            break;
+                    }
+
+                    j++;
+                }
+
+                i++;
+            }
+        }
+
+        public bool FormResultValidation(string[] uiElements, string[] formElements)
+        {
+            int i = 0;
+            int j = 0;
+
+            foreach (string element in uiElements)
+            {
+                switch (formElements[i])
+                {
+                    case ("TextBox"):
+
+                        for(j = 0; j < element.Length; j++)
+                        {
+                            if(element[j] == '~' || 
+                               element[j] == ',' || 
+                               element[j] == '{' ||
+                               element[j] == '}')
+                            {
+                                element.Remove(j, 1);
+                            }
+                        }
+
+                        break;
+
+                    case ("TextBoxNumber"):
+
+                        break;
+
+                    case ("DatePicker"):
+
+                        break;
+
+                    case ("ListBox"):
+
+                        break;
+                }
+
+                if (element == "")
+                {
+                    return false;
+                }
+
+                i++;
+            }
+
+            return true;
         }
 
         // StorageViewer //

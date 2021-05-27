@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using Project_Inventory.Tools;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace Project_Inventory
@@ -8,11 +9,13 @@ namespace Project_Inventory
 
         public ToolBox toolBox;
         public Router router;
+        public RequestCenter requestCenter;
 
-        public WindowContent(ToolBox _toolBox, Router _router)
+        public WindowContent(ToolBox _toolBox, Router _router, RequestCenter _requestCenter)
         {
             toolBox = _toolBox;
             router = _router;
+            requestCenter = _requestCenter;
         }
 
         public void TopGridInit(Grid topGrid)
