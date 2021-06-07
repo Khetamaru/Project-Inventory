@@ -21,23 +21,18 @@ namespace Project_Inventory
         private string[] bottomGridButtons;
         private RoutedEventHandler[] formValidButton;
 
-        public FormPage(ToolBox toolBox, Router _router, RequestCenter requestCenter, 
-                        string[] _formElements, string[] _labels, string _formType)
-            : base(toolBox, _router, requestCenter)
+        public FormPage(ToolBox toolBox, Router _router, RequestCenter requestCenter, string _formType, int _actualStorageId, int _actualDataId)
+            : base(toolBox, _router, requestCenter, _actualStorageId, _actualDataId)
         {
             topGridButtons = new string[] { "Return" };
-
-            topSwitchEvents = new RoutedEventHandler[] { GetEventHandler("MainMenu") };
 
             capGrid = new Grid();
 
             bottomGridButtons = new string[] { "Valid" };
 
-            formValidButton = new RoutedEventHandler[] { GetEventHandler("StorageSelectionMenu") };
-
-            formElements = _formElements;
-            labels = _labels;
             formType = _formType;
+
+            formConfiguration();
         }
 
         public new void TopGridInit(Grid topGrid)
@@ -94,6 +89,22 @@ namespace Project_Inventory
             string json = storage.ToJson();
 
             requestCenter.PostRequest("StorageLibraries", json);
+        }
+
+        public void formConfiguration()
+        {
+            switch(formType)
+            {
+                case ("Add Storage"):
+
+                    topSwitchEvents = new RoutedEventHandler[] { GetEventHandler("MainMenu") };
+                    formValidButton = new RoutedEventHandler[] { GetEventHandler("StorageSelectionMenu") };
+
+                    formElements = new string[] { "TextBox" };
+                    labels = new string[] { "Storage's Name" };
+
+                    break;
+            }
         }
     }
 }

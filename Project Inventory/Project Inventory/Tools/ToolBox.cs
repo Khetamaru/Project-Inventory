@@ -270,6 +270,21 @@ namespace Project_Inventory
             AddButtonToGrid(grid, button, rowNb, columnNb);
         }
 
+        public void CreateSwitchButtonToGrid(Grid grid,
+                                               Storage storage,
+                                               RoutedEventHandler routerID,
+                                               RoutedEventHandler router,
+                                               int rowNb,
+                                               int columnNb,
+                                               string skinName,
+                                               string skinPosition)
+        {
+            Button button = CreateSwitchButton(storage.Name, routerID, skinName, skinPosition);
+            button.Click += router;
+
+            AddButtonToGrid(grid, button, rowNb, columnNb);
+        }
+
         public void CreateRowsInGrid(Grid grid, int nbRows)
         {
             int i;
@@ -334,7 +349,7 @@ namespace Project_Inventory
             }
         }
 
-        public void CreateSwitchButtonsToGridByTab(Grid grid, Storage[] buttonsTab, RoutedEventHandler[] routerTab, string buttonsSkin, string skinPosition)
+        public void CreateSwitchButtonsToGridByTab(Grid grid, Storage[] buttonsTab, RoutedEventHandler[] routerIDTab, RoutedEventHandler[] routerTab, string buttonsSkin, string skinPosition)
         {
             int i;
             int j;
@@ -361,7 +376,7 @@ namespace Project_Inventory
 
                     if (buttonsTab.Length > z)
                     {
-                        CreateSwitchButtonToGrid(grid, buttonsTab[k].Name, routerTab[k], i, j, buttonsSkin, skinPosition);
+                        CreateSwitchButtonToGrid(grid, buttonsTab[k], routerIDTab[k], routerTab[k], i, j, buttonsSkin, skinPosition);
                         k++;
                     }
                 }

@@ -8,6 +8,7 @@ namespace Local_API_Server.Models
     public class DataLibrary
     {
         public int Id { get; set; }
+        public int StorageId { get; set; }
         public string DataText { get; set; }
         public string DataType { get; set; }
     }

@@ -15,10 +15,15 @@ namespace Project_Inventory
         private Router router;
         private RequestCenter requestCenter;
 
+        private string actualWindow;
+
         private MainMenu mainMenu;
         private StorageSelectionMenu storageSelectionMenu;
         private FormPage formPage;
         private StorageViewerPage storageViewerPage;
+
+        private int actualStorageId;
+        private int actualDataId;
 
         public MainWindow()
         {
@@ -34,6 +39,9 @@ namespace Project_Inventory
             router = InitRouters();
             requestCenter = new RequestCenter();
 
+            actualStorageId = 42;
+            actualDataId = 42;
+
             Init();
         }
 
@@ -44,7 +52,8 @@ namespace Project_Inventory
 
         public void MainMenuInit()
         {
-            mainMenu = new MainMenu(toolBox, router, requestCenter);
+            mainMenu = new MainMenu(toolBox, router, requestCenter, actualStorageId, actualDataId);
+            actualWindow = "mainMenu";
             mainMenu.TopGridInit(topGrid);
             mainMenu.CenterGridInit(centerGrid);
             mainMenu.BottomGridInit(bottomGrid);
@@ -52,15 +61,17 @@ namespace Project_Inventory
 
         public void StorageSelectionMenuInit()
         {
-            storageSelectionMenu = new StorageSelectionMenu(toolBox, router, requestCenter);
+            storageSelectionMenu = new StorageSelectionMenu(toolBox, router, requestCenter, actualStorageId, actualDataId);
+            actualWindow = "storageSelectionMenu";
             storageSelectionMenu.TopGridInit(topGrid);
             storageSelectionMenu.CenterGridInit(centerGrid);
             storageSelectionMenu.BottomGridInit(bottomGrid);
         }
 
-        public void FormPageInit(string[] formElements, string[] labels, string formType)
+        public void FormPageInit(string formType)
         {
-            formPage = new FormPage(toolBox, router, requestCenter, formElements, labels, formType);
+            formPage = new FormPage(toolBox, router, requestCenter, formType, actualStorageId, actualDataId);
+            actualWindow = "formPage";
             formPage.TopGridInit(topGrid);
             formPage.CenterGridInit(centerGrid);
             formPage.BottomGridInit(bottomGrid);
@@ -68,14 +79,40 @@ namespace Project_Inventory
 
         public void storageViewerPageInit()
         {
-            storageViewerPage = new StorageViewerPage(toolBox, router, requestCenter);
+            storageViewerPage = new StorageViewerPage(toolBox, router, requestCenter, actualStorageId, actualDataId);
+            actualWindow = "storageViewerPage";
             storageViewerPage.TopGridInit(topGrid);
             storageViewerPage.CenterGridInit(centerGrid);
             storageViewerPage.BottomGridInit(bottomGrid);
         }
 
+        public void IDBackups()
+        {
+            switch(actualWindow)
+            {
+                case ("mainMenu"):
+                    actualStorageId = mainMenu.StorageIDBackups();
+                    actualDataId = mainMenu.DataIDBackups();
+                    break;
+                case ("storageSelectionMenu"):
+                    actualStorageId = storageSelectionMenu.StorageIDBackups();
+                    actualDataId = storageSelectionMenu.DataIDBackups();
+                    break;
+                case ("formPage"):
+                    actualStorageId = formPage.StorageIDBackups();
+                    actualDataId = formPage.DataIDBackups();
+                    break;
+                case ("storageViewerPage"):
+                    actualStorageId = storageViewerPage.StorageIDBackups();
+                    actualDataId = storageViewerPage.DataIDBackups();
+                    break;
+            }
+        }
+
         public void WindowSwitch(object sender, RoutedEventArgs e, string windowName) 
         {
+            IDBackups();
+
             switch(windowName)
             {
                 case ("MainMenu"):
@@ -89,18 +126,9 @@ namespace Project_Inventory
                 case ("storageViewerPage"):
                     storageViewerPageInit();
                     break;
-            }
-        }
 
-        public void WindowSwitch(object sender, RoutedEventArgs e,
-                                 string formRoutersName, 
-                                 string[] formElements, 
-                                 string[] labels)
-        {
-            switch (formRoutersName)
-            {
                 case ("Add Storage"):
-                    FormPageInit(formElements, labels, formRoutersName);
+                    FormPageInit(windowName);
                     break;
             }
         }
@@ -115,14 +143,12 @@ namespace Project_Inventory
             return router;
         }
 
-        public RoutedEventHandler[] EnventHandlerGeneratorByTab(string[] windowName, string[] formRoutersName, string[,] formElements, string[,] labels, string[] routersNameF)
+        public RoutedEventHandler[] EnventHandlerGeneratorByTab(string[] windowName, string[] formRoutersName, string[] routersNameF)
         {
             RoutedEventHandler[] routers = new RoutedEventHandler[windowName.Length + formRoutersName.Length - 1];
             var i = 0;
             var j = 0;
             var string1 = string.Empty;
-            string[] string2;
-            string[] string3;
 
             foreach (string name in windowName)
             {
@@ -139,12 +165,10 @@ namespace Project_Inventory
                     foreach(string formName in formRoutersName)
                     {
                         string1 = formRoutersName[j];
-                        string2 = Enumerable.Range(0, formElements.GetLength(1)).Select(x => formElements[j, x]).ToArray();
-                        string3 = Enumerable.Range(0, labels.GetLength(1)).Select(x => labels[j, x]).ToArray();
 
                         routers[i + j] = new RoutedEventHandler((object sender, RoutedEventArgs e) =>
                         {
-                            WindowSwitch(sender, e, string1, string2, string3);
+                            WindowSwitch(sender, e, string1);
                         });
                         routersNameF[i + j] = formName;
 
@@ -173,22 +197,10 @@ namespace Project_Inventory
                 "Add Storage"
             };
 
-            string[,] formElements = new string[,]
-            {
-                { "TextBox" }
-                /*{ "TextBox", "TextBox", "TextBoxNumber", "DatePicker", "ListBox" }*/
-            };
-
-            string[,] labels = new string[,]
-            {
-                { "Storage's Name" }
-                /*{ "Nom", "Prénom", "Numéro De Table", "Date De Naissance", "Choix Du Repas" }*/
-            };
-
             string[] routersNameF = new string[routersName.Length - 1 + formRoutersName.Length];
 
 
-            RoutedEventHandler[] routersRouter = EnventHandlerGeneratorByTab(routersName, formRoutersName, formElements, labels, routersNameF);
+            RoutedEventHandler[] routersRouter = EnventHandlerGeneratorByTab(routersName, formRoutersName, routersNameF);
 
             return new Router(routersNameF, routersRouter);
         }

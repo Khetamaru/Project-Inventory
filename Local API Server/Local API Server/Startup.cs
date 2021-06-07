@@ -25,8 +25,6 @@ namespace Local_API_Server
                 opt.UseSqlServer("Data Source=desktop-tc1tmv3\\mssqlserver01;Initial Catalog=master;Integrated Security=True"));
             services.AddDbContext<DataLibraryContext>(opt =>
                 opt.UseSqlServer("Data Source=desktop-tc1tmv3\\mssqlserver01;Initial Catalog=master;Integrated Security=True"));
-            services.AddDbContext<StorageXDataContext>(opt =>
-                opt.UseSqlServer("Data Source=desktop-tc1tmv3\\mssqlserver01;Initial Catalog=master;Integrated Security=True"));
 
             services.AddControllers();
 
