@@ -12,8 +12,8 @@ namespace Project_Inventory
 
         private int widthLimit;
 
-        public MainMenu(ToolBox toolBox, Router _router, RequestCenter requestCenter)
-            : base(toolBox, _router, requestCenter)
+        public MainMenu(ToolBox toolBox, Router _router, RequestCenter requestCenter, int _actualStorageId, int _actualDataId)
+            : base(toolBox, _router, requestCenter, _actualStorageId, _actualDataId)
         {
             topGridButtons = new string[] { "Logo Application" };
             bottomGridButtons = new string[] { "Storage Selection", "Formulaire Type", "Storage Viewer" };

@@ -1,4 +1,5 @@
-﻿using Project_Inventory.Tools;
+﻿using Project_Inventory.BDD;
+using Project_Inventory.Tools;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -13,11 +14,12 @@ namespace Project_Inventory
         private RoutedEventHandler[] topSwitchEvents;
 
         private Grid capGrid;
+        private Data[] dataTab;
         private string[,] stringTab;
         private string[,] indicTab;
 
-        public StorageViewerPage(ToolBox ToolBox, Router _router, RequestCenter requestCenter)
-            : base(ToolBox, _router, requestCenter)
+        public StorageViewerPage(ToolBox ToolBox, Router _router, RequestCenter requestCenter, int _actualStorageId, int _actualDataId)
+            : base(ToolBox, _router, requestCenter, _actualStorageId, _actualDataId)
         {
             topGridButtons = new string[] { "Return" };
 
@@ -25,32 +27,27 @@ namespace Project_Inventory
 
             capGrid = new Grid();
 
-            stringTab = new string[,] { { "Nom de la console", "Date de sortie", "nombre de manettes", "connectique", "possédé" },
-                                        { "PSP", "03/12/1997", "1", "USB", "true" },
-                                        { "PS2", "05/03/2002", "4", "USB", "false" },
-                                        { "PS3", "25/07/2015", "4", "USB", "true" },
-                                        { "PS15", "18/02/2048", "8", "ZURGLUK", "true" } };
-            indicTab = new string[,] {  { "title", "title", "title", "title", "title" },
-                                        { "string", "date", "int", "string", "boolean" },
-                                        { "string", "date", "int", "string", "boolean" },
-                                        { "string", "date", "int", "string", "boolean" },
-                                        { "string", "date", "int", "string", "boolean" } };
-            /*stringTab = new string[,] { { "Nom de la console", "Date de sortie", "nombre de manettes", "connectique", "possédé", "possédé", "possédé", "possédé", "possédé", "possédé" },
-                                        { "PSP", "03/12/1997", "1", "USB", "true", "possédé", "possédé", "possédé", "possédé", "possédé" },
-                                        { "PS2", "05/03/2002", "4", "USB", "false", "possédé", "possédé", "possédé", "possédé", "possédé" },
-                                        { "PS3", "25/07/2015", "4", "USB", "true", "possédé", "possédé", "possédé", "possédé", "possédé" },
-                                        { "PS15", "18/02/2048", "8", "ZURGLUK", "true", "possédé", "possédé", "possédé", "possédé", "possédé" },
-                                        { "PS15", "18/02/2048", "8", "ZURGLUK", "true", "possédé", "possédé", "possédé", "possédé", "possédé" },
-                                        { "PS15", "18/02/2048", "8", "ZURGLUK", "true", "possédé", "possédé", "possédé", "possédé", "possédé" },
-                                        { "PS15", "18/02/2048", "8", "ZURGLUK", "true", "possédé", "possédé", "possédé", "possédé", "possédé" } };
-            indicTab = new string[,] {  { "title", "title", "title", "title", "title", "title", "title", "title", "title", "title" },
-                                        { "string", "date", "int", "string", "boolean", "title", "title", "title", "title", "title" },
-                                        { "string", "date", "int", "string", "boolean", "title", "title", "title", "title", "title" },
-                                        { "string", "date", "int", "string", "boolean", "title", "title", "title", "title", "title" },
-                                        { "string", "date", "int", "string", "boolean", "title", "title", "title", "title", "title" },
-                                        { "string", "date", "int", "string", "boolean", "title", "title", "title", "title", "title" },
-                                        { "string", "date", "int", "string", "boolean", "title", "title", "title", "title", "title" },
-                                        { "string", "date", "int", "string", "boolean", "title", "title", "title", "title", "title" } };*/
+            LoadBDDInfos();
+        }
+
+        public void LoadBDDInfos()
+        {
+            dataTab = JsonCenter.LoadStorageViewerInfos(requestCenter, actualStorageId);
+
+            int i;
+            int j;
+
+            stringTab = new string[dataTab.Length, dataTab[0].DataText.Length];
+            indicTab = new string[dataTab.Length, dataTab[0].DataText.Length];
+
+            for (i = 0; i < dataTab.Length; i++)
+            {
+                for (j = 0; j < dataTab[0].DataText.Length; j++)
+                {
+                    stringTab[i, j] = dataTab[i].DataText[j];
+                    indicTab[i, j] = dataTab[i].DataType[j];
+                }
+            }
         }
 
         public new void TopGridInit(Grid topGrid)

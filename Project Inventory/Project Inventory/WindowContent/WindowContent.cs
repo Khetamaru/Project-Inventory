@@ -11,11 +11,17 @@ namespace Project_Inventory
         public Router router;
         public RequestCenter requestCenter;
 
-        public WindowContent(ToolBox _toolBox, Router _router, RequestCenter _requestCenter)
+        public int actualStorageId;
+        public int actualDataId;
+
+        public WindowContent(ToolBox _toolBox, Router _router, RequestCenter _requestCenter, int _actualStorageId, int _actualDataId)
         {
             toolBox = _toolBox;
             router = _router;
             requestCenter = _requestCenter;
+
+            actualStorageId = _actualStorageId;
+            actualDataId = _actualDataId;
         }
 
         public void TopGridInit(Grid topGrid)
@@ -31,6 +37,16 @@ namespace Project_Inventory
         public void BottomGridInit(Grid bottomGrid)
         {
             toolBox.EmptyGrid(bottomGrid);
+        }
+
+        public int StorageIDBackups()
+        {
+            return actualStorageId;
+        }
+
+        public int DataIDBackups()
+        {
+            return actualDataId;
         }
 
         public RoutedEventHandler GetEventHandler(string routerName)

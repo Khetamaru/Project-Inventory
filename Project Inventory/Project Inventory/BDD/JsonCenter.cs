@@ -30,6 +30,15 @@ namespace Project_Inventory.Tools
             return FormatToBDDObject(responseBdd, "storage") as Storage[];
         }
 
+        public static Data[] LoadStorageViewerInfos(RequestCenter requestCenter, int storageId)
+        {
+            string responseBdd = requestCenter.GetRequest("DataLibraries/storage/" + storageId);
+
+            //string responseBdd = "[{\"id\":1,\"name\":\"walk dog\"},{\"id\":2,\"name\":\"walk dog\"},{\"id\":3,\"name\":\"walk dog\"},{\"id\":4,\"name\":\"walk dog\"},{\"id\":5,\"name\":\"walk dog\"}]";
+
+            return FormatToBDDObject(responseBdd, "data") as Data[];
+        }
+
         public static RoutedEventHandler[] SetEventHandlerTab(int length, RoutedEventHandler eventHandler)
         {
             RoutedEventHandler[] bottomSwitchEvents = new RoutedEventHandler[length];
@@ -53,7 +62,7 @@ namespace Project_Inventory.Tools
                     Data[] dataLibrary = new Data[splitTab.Length];
                     foreach(string sf in splitTab)
                     {
-                        dataLibrary[i] = FormatObject(sf, new string [] {"id", "dataText", "dataType"}, dataLibrary[i]);
+                        dataLibrary[i] = FormatObject(sf, new string [] {"id", "storageId", "dataText", "dataType"}, dataLibrary[i]);
                         i++;
                     }
                     return dataLibrary;
@@ -74,6 +83,7 @@ namespace Project_Inventory.Tools
         private static Data FormatObject(string stf, string[] separators, Data data)
         {
             int id = 42;
+            int storageId = 42;
             string[] dataText;
             string dataTextTemp = string.Empty;
             string[] dataType;
@@ -92,7 +102,15 @@ namespace Project_Inventory.Tools
                     temp = temp.Remove(temp.Length - 1, 1);
 
                     id = Int32.Parse(temp);
-                } 
+                }
+                if (split == "storageId")
+                {
+                    string temp = splitTab[i + 1];
+                    temp = temp.Remove(0, 1);
+                    temp = temp.Remove(temp.Length - 1, 1);
+
+                    storageId = Int32.Parse(temp);
+                }
                 else if (split == "dataText")
                 {
                     dataTextTemp = splitTab[i + 2];
@@ -106,9 +124,9 @@ namespace Project_Inventory.Tools
             }
 
             dataText = dataTextTemp.Split(new string[] {"~"}, StringSplitOptions.None);
-            dataType = dataTypeTemp.Split(new string[] { "~" }, StringSplitOptions.None);
+            dataType = dataTypeTemp.Split(new string[] {"~"}, StringSplitOptions.None);
 
-            data = new Data(id, dataText, dataType);
+            data = new Data(id, storageId, dataText, dataType);
 
             return data;
         }

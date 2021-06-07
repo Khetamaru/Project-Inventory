@@ -6,26 +6,29 @@ namespace Project_Inventory.BDD
 {
     public class Data : BDDObject
     {
+        public int StorageId { get; set; }
         public string[] DataText { get; set; }
         public string[] DataType { get; set; }
 
-        public Data(int id, string[] dataText, string[] dataType)
+        public Data(int id, int storageId, string[] dataText, string[] dataType)
             : base(id)
         {
+            StorageId = storageId;
             DataText = dataText;
             DataType = dataType;
         }
 
-        public Data(string[] dataText, string[] dataType)
+        public Data(int storageId, string[] dataText, string[] dataType)
             : base(42)
         {
+            StorageId = storageId;
             DataText = dataText;
             DataType = dataType;
         }
 
         public string ToJson()
         {
-            return "{\"dataText\":\"" + ToStringDataText() + ",\"dataType\":\"" + ToStringDataType() + "\"}";
+            return "{\"storageId\":" + StorageId + ",\"dataText\":\"" + ToStringDataText() + ",\"dataType\":\"" + ToStringDataType() + "\"}";
         }
 
         public string ToStringDataText()
