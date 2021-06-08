@@ -1,5 +1,4 @@
 ﻿using Project_Inventory.Tools;
-using System.Windows;
 using System.Windows.Controls;
 
 namespace Project_Inventory
@@ -8,7 +7,7 @@ namespace Project_Inventory
     {
         private string[] topGridButtons;
         private string[] bottomGridButtons;
-        private RoutedEventHandler[] switchEvents;
+        private RoutedEventLibrary[] switchEvents;
 
         private int widthLimit;
 
@@ -17,7 +16,12 @@ namespace Project_Inventory
         {
             topGridButtons = new string[] { "Logo Application" };
             bottomGridButtons = new string[] { "Storage Selection", "Formulaire Type", "Storage Viewer" };
-            switchEvents = new RoutedEventHandler[] { GetEventHandler("StorageSelectionMenu"), GetEventHandler("Add Storage"), GetEventHandler("storageViewerPage") };
+
+            switchEvents = new RoutedEventLibrary[3];
+            RoutedEventLibrariesInit(switchEvents);
+            switchEvents[0].changePageEvent = GetEventHandler("StorageSelectionMenu");
+            switchEvents[1].changePageEvent = GetEventHandler("Add Storage");
+            switchEvents[2].changePageEvent = GetEventHandler("storageViewerPage");
 
             widthLimit = 5;
         }

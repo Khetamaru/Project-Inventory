@@ -1,8 +1,5 @@
 ﻿using Project_Inventory.BDD;
 using Project_Inventory.Tools;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -11,7 +8,7 @@ namespace Project_Inventory
     class FormPage : WindowContent
     {
         private string[] topGridButtons;
-        private RoutedEventHandler[] topSwitchEvents;
+        private RoutedEventLibrary[] topSwitchEvents;
 
         private Grid capGrid;
         private string[] formElements;
@@ -19,7 +16,7 @@ namespace Project_Inventory
         private string formType;
 
         private string[] bottomGridButtons;
-        private RoutedEventHandler[] formValidButton;
+        private RoutedEventLibrary[] formValidButton;
 
         public FormPage(ToolBox toolBox, Router _router, RequestCenter requestCenter, string _formType, int _actualStorageId, int _actualDataId)
             : base(toolBox, _router, requestCenter, _actualStorageId, _actualDataId)
@@ -56,10 +53,6 @@ namespace Project_Inventory
             toolBox.SetUpGrid(bottomGrid, 1, 1, "BottomStretch", "HeightTenPercent");
 
             toolBox.CreateSwitchButtonsToGridByTab(bottomGrid, bottomGridButtons, formValidButton, "StandartLittleMargin", "CenterCenter");
-            (bottomGrid.Children[0] as Button).Click += new RoutedEventHandler((object sender, RoutedEventArgs e) =>
-            {
-                formValidation(sender, e);
-            });
         }
 
         public void formValidation(object sender, RoutedEventArgs e)
@@ -97,14 +90,24 @@ namespace Project_Inventory
             {
                 case ("Add Storage"):
 
-                    topSwitchEvents = new RoutedEventHandler[] { GetEventHandler("MainMenu") };
-                    formValidButton = new RoutedEventHandler[] { GetEventHandler("StorageSelectionMenu") };
+                    topSwitchEvents = new RoutedEventLibrary[1];
+                    RoutedEventLibrariesInit(topSwitchEvents);
+                    topSwitchEvents[0].changePageEvent = GetEventHandler("MainMenu");
+
+                    formValidButton = new RoutedEventLibrary[1];
+                    RoutedEventLibrariesInit(formValidButton);
+                    formValidButton[0].changePageEvent = GetEventHandler("StorageSelectionMenu");
 
                     formElements = new string[] { "TextBox" };
                     labels = new string[] { "Storage's Name" };
 
                     break;
             }
+
+            formValidButton[0].optionalEventOne = new RoutedEventHandler((object sender, RoutedEventArgs e) =>
+            {
+                formValidation(sender, e);
+            });
         }
     }
 }

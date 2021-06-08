@@ -1,34 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Project_Inventory.BDD
+﻿namespace Project_Inventory.BDD
 {
     public class Data : BDDObject
     {
         public int StorageId { get; set; }
         public string[] DataText { get; set; }
         public string[] DataType { get; set; }
+        public bool IsHeader { get; set; }
 
-        public Data(int id, int storageId, string[] dataText, string[] dataType)
+        public Data(int id, int storageId, string[] dataText, string[] dataType, bool isHeader)
             : base(id)
         {
             StorageId = storageId;
             DataText = dataText;
             DataType = dataType;
+            IsHeader = isHeader;
         }
 
-        public Data(int storageId, string[] dataText, string[] dataType)
+        public Data(int storageId, string[] dataText, string[] dataType, bool isHeader)
             : base(42)
         {
             StorageId = storageId;
             DataText = dataText;
             DataType = dataType;
+            IsHeader = isHeader;
         }
 
         public string ToJson()
         {
-            return "{\"storageId\":" + StorageId + ",\"dataText\":\"" + ToStringDataText() + ",\"dataType\":\"" + ToStringDataType() + "\"}";
+            return "{\"storageId\":" + StorageId + ",\"dataText\":\"" + ToStringDataText() + ",\"dataType\":\"" + ToStringDataType() + ",\"isHeader\":\"" + IsHeader + "\"}";
         }
 
         public string ToStringDataText()

@@ -39,13 +39,14 @@ namespace Project_Inventory.Tools
             return FormatToBDDObject(responseBdd, "data") as Data[];
         }
 
-        public static RoutedEventHandler[] SetEventHandlerTab(int length, RoutedEventHandler eventHandler)
+        public static RoutedEventLibrary[] SetEventHandlerTab(int length, RoutedEventHandler eventHandler)
         {
-            RoutedEventHandler[] bottomSwitchEvents = new RoutedEventHandler[length];
+            RoutedEventLibrary[] bottomSwitchEvents = new RoutedEventLibrary[length];
 
             for (int i = 0; i < length; i++)
             {
-                bottomSwitchEvents[i] = eventHandler;
+                bottomSwitchEvents[i] = new RoutedEventLibrary();
+                bottomSwitchEvents[i].changePageEvent = eventHandler;
             }
 
             return bottomSwitchEvents;
@@ -62,7 +63,7 @@ namespace Project_Inventory.Tools
                     Data[] dataLibrary = new Data[splitTab.Length];
                     foreach(string sf in splitTab)
                     {
-                        dataLibrary[i] = FormatObject(sf, new string [] {"id", "storageId", "dataText", "dataType"}, dataLibrary[i]);
+                        dataLibrary[i] = FormatObject(sf, new string [] {"id", "storageId", "dataText", "dataType", "isHeader"}, dataLibrary[i]);
                         i++;
                     }
                     return dataLibrary;
@@ -88,6 +89,7 @@ namespace Project_Inventory.Tools
             string dataTextTemp = string.Empty;
             string[] dataType;
             string dataTypeTemp = string.Empty;
+            bool isHeader = false;
 
             int i = 0;
 
@@ -103,7 +105,7 @@ namespace Project_Inventory.Tools
 
                     id = Int32.Parse(temp);
                 }
-                if (split == "storageId")
+                else if (split == "storageId")
                 {
                     string temp = splitTab[i + 1];
                     temp = temp.Remove(0, 1);
@@ -119,6 +121,17 @@ namespace Project_Inventory.Tools
                 {
                     dataTypeTemp = splitTab[i + 2];
                 }
+                else if (split == "isHeader")
+                {
+                    if(splitTab[i + 2] == "true")
+                    {
+                        isHeader = true;
+                    }
+                    else if(splitTab[i + 2] == "false")
+                    {
+                        isHeader = false;
+                    }
+                }
 
                 i++;
             }
@@ -126,7 +139,7 @@ namespace Project_Inventory.Tools
             dataText = dataTextTemp.Split(new string[] {"~"}, StringSplitOptions.None);
             dataType = dataTypeTemp.Split(new string[] {"~"}, StringSplitOptions.None);
 
-            data = new Data(id, storageId, dataText, dataType);
+            data = new Data(id, storageId, dataText, dataType, isHeader);
 
             return data;
         }

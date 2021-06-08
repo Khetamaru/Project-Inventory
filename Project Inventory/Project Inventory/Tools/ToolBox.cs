@@ -1,10 +1,7 @@
 ﻿using Project_Inventory.BDD;
 using Project_Inventory.Tools;
-using System;
-using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 
 namespace Project_Inventory
 {
@@ -42,7 +39,7 @@ namespace Project_Inventory
         }
 
         public Button CreateSwitchButton(string content,
-                                         RoutedEventHandler router, 
+                                         RoutedEventLibrary router, 
                                          string skinName,
                                          string skinPosition)
         {
@@ -52,9 +49,9 @@ namespace Project_Inventory
             return temp;
         }
 
-        private void AddOnClickButton(Button button, RoutedEventHandler router)
+        private void AddOnClickButton(Button button, RoutedEventLibrary routedEventLibrary)
         {
-            button.Click += router;
+            routedEventLibrary.EventInjection(button);
         }
         private void LoadButtonPosition(Button button, string skinPosition)
         {
@@ -259,7 +256,7 @@ namespace Project_Inventory
 
         public void CreateSwitchButtonToGrid(Grid grid,
                                                string content,
-                                               RoutedEventHandler router,
+                                               RoutedEventLibrary router,
                                                int rowNb,
                                                int columnNb, 
                                                string skinName,
@@ -272,15 +269,13 @@ namespace Project_Inventory
 
         public void CreateSwitchButtonToGrid(Grid grid,
                                                Storage storage,
-                                               RoutedEventHandler routerID,
-                                               RoutedEventHandler router,
+                                               RoutedEventLibrary router,
                                                int rowNb,
                                                int columnNb,
                                                string skinName,
                                                string skinPosition)
         {
-            Button button = CreateSwitchButton(storage.Name, routerID, skinName, skinPosition);
-            button.Click += router;
+            Button button = CreateSwitchButton(storage.Name, router, skinName, skinPosition);
 
             AddButtonToGrid(grid, button, rowNb, columnNb);
         }
@@ -327,7 +322,7 @@ namespace Project_Inventory
             }
         }
 
-        public void CreateSwitchButtonsToGridByTab(Grid grid, string[] buttonsTab, RoutedEventHandler[] routerTab, string buttonsSkin, string skinPosition)
+        public void CreateSwitchButtonsToGridByTab(Grid grid, string[] buttonsTab, RoutedEventLibrary[] routerTab, string buttonsSkin, string skinPosition)
         {
             int i;
             int j;
@@ -349,7 +344,7 @@ namespace Project_Inventory
             }
         }
 
-        public void CreateSwitchButtonsToGridByTab(Grid grid, Storage[] buttonsTab, RoutedEventHandler[] routerIDTab, RoutedEventHandler[] routerTab, string buttonsSkin, string skinPosition)
+        public void CreateSwitchButtonsToGridByTab(Grid grid, Storage[] buttonsTab, RoutedEventLibrary[] routerTab, string buttonsSkin, string skinPosition)
         {
             int i;
             int j;
@@ -376,14 +371,14 @@ namespace Project_Inventory
 
                     if (buttonsTab.Length > z)
                     {
-                        CreateSwitchButtonToGrid(grid, buttonsTab[k], routerIDTab[k], routerTab[k], i, j, buttonsSkin, skinPosition);
+                        CreateSwitchButtonToGrid(grid, buttonsTab[k], routerTab[k], i, j, buttonsSkin, skinPosition);
                         k++;
                     }
                 }
             }
         }
 
-        public void CreateSwitchButtonsToGridByTab(Grid grid, string[] buttonsTab, RoutedEventHandler[] routerTab, string[] buttonsSkin, string[] skinPosition)
+        public void CreateSwitchButtonsToGridByTab(Grid grid, string[] buttonsTab, RoutedEventLibrary[] routerTab, string[] buttonsSkin, string[] skinPosition)
         {
             int i;
             int j;

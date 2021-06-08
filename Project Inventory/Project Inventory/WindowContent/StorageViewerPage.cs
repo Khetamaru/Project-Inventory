@@ -1,9 +1,5 @@
 ﻿using Project_Inventory.BDD;
 using Project_Inventory.Tools;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows;
 using System.Windows.Controls;
 
 namespace Project_Inventory
@@ -11,7 +7,7 @@ namespace Project_Inventory
     class StorageViewerPage : WindowContent
     {
         private string[] topGridButtons;
-        private RoutedEventHandler[] topSwitchEvents;
+        private RoutedEventLibrary[] topSwitchEvents;
 
         private Grid capGrid;
         private Data[] dataTab;
@@ -23,7 +19,9 @@ namespace Project_Inventory
         {
             topGridButtons = new string[] { "Return" };
 
-            topSwitchEvents = new RoutedEventHandler[] { GetEventHandler("MainMenu") };
+            topSwitchEvents = new RoutedEventLibrary[1];
+            RoutedEventLibrariesInit(topSwitchEvents);
+            topSwitchEvents[0].changePageEvent = GetEventHandler("MainMenu");
 
             capGrid = new Grid();
 

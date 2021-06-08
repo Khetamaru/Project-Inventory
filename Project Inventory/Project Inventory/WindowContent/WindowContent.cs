@@ -88,5 +88,13 @@ namespace Project_Inventory
 
             toolBox.SetUpGrid(grid, j, i, skinName, lengthName);
         }
+
+        public void RoutedEventLibrariesInit(RoutedEventLibrary[] routedEventLibrary)
+        {
+            for( int i = 0 ; i < routedEventLibrary.Length ; i++)
+            {
+                routedEventLibrary[i] = new RoutedEventLibrary();
+            }
+        }
     }
 }
