@@ -1,4 +1,5 @@
-﻿using Project_Inventory.Tools;
+﻿using Project_Inventory.BDD;
+using Project_Inventory.Tools;
 using System.Windows;
 
 namespace Project_Inventory
@@ -75,11 +76,20 @@ namespace Project_Inventory
 
         public void storageViewerPageInit()
         {
-            storageViewerPage = new StorageViewerPage(toolBox, router, requestCenter, actualStorageId, actualDataId);
-            actualWindow = "storageViewerPage";
-            storageViewerPage.TopGridInit(topGrid);
-            storageViewerPage.CenterGridInit(centerGrid);
-            storageViewerPage.BottomGridInit(bottomGrid);
+            Data[] data = JsonCenter.LoadStorageViewerInfos(requestCenter, actualStorageId);
+
+            if (data.Length < 1)
+            {
+                FormPageInit("Init Storage");
+            }
+            else
+            {
+                storageViewerPage = new StorageViewerPage(toolBox, router, requestCenter, actualStorageId, actualDataId);
+                actualWindow = "storageViewerPage";
+                storageViewerPage.TopGridInit(topGrid);
+                storageViewerPage.CenterGridInit(centerGrid);
+                storageViewerPage.BottomGridInit(bottomGrid);
+            }
         }
 
         public void IDBackups()
@@ -124,6 +134,10 @@ namespace Project_Inventory
                     break;
 
                 case ("Add Storage"):
+                    FormPageInit(windowName);
+                    break;
+
+                case ("Init Storage"):
                     FormPageInit(windowName);
                     break;
             }
@@ -190,7 +204,8 @@ namespace Project_Inventory
 
             string[] formRoutersName = new string[]
             {
-                "Add Storage"
+                "Add Storage",
+                "Init Storage"
             };
 
             string[] routersNameF = new string[routersName.Length - 1 + formRoutersName.Length];

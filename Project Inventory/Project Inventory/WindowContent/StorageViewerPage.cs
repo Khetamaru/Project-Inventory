@@ -9,6 +9,13 @@ namespace Project_Inventory
         private string[] topGridButtons;
         private RoutedEventLibrary[] topSwitchEvents;
 
+        private enum status {
+            VIEWER,
+            MODIFIER
+        }
+
+        private status viewerStatus;
+
         private Grid capGrid;
         private Data[] dataTab;
         private string[,] stringTab;
@@ -17,6 +24,8 @@ namespace Project_Inventory
         public StorageViewerPage(ToolBox ToolBox, Router _router, RequestCenter requestCenter, int _actualStorageId, int _actualDataId)
             : base(ToolBox, _router, requestCenter, _actualStorageId, _actualDataId)
         {
+            viewerStatus = status.VIEWER;
+
             topGridButtons = new string[] { "Return" };
 
             topSwitchEvents = new RoutedEventLibrary[1];

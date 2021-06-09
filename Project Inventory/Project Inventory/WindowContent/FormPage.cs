@@ -1,5 +1,6 @@
 ﻿using Project_Inventory.BDD;
 using Project_Inventory.Tools;
+using System;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -69,6 +70,11 @@ namespace Project_Inventory
 
                         AddStorage(new Storage(uiElements[0]));
                         break;
+
+                    case "Init Storage":
+
+                        InitStorage(Int32.Parse(uiElements[0]));
+                        break;
                 }
             }
             else
@@ -82,6 +88,11 @@ namespace Project_Inventory
             string json = storage.ToJson();
 
             requestCenter.PostRequest("StorageLibraries", json);
+        }
+
+        public void InitStorage(int nbColumns)
+        {
+            return false; //A remplir
         }
 
         public void formConfiguration()
@@ -100,6 +111,21 @@ namespace Project_Inventory
 
                     formElements = new string[] { "TextBox" };
                     labels = new string[] { "Storage's Name" };
+
+                    break;
+
+                case ("Init Storage"):
+
+                    topSwitchEvents = new RoutedEventLibrary[1];
+                    RoutedEventLibrariesInit(topSwitchEvents);
+                    topSwitchEvents[0].changePageEvent = GetEventHandler("StorageSelectionMenu");
+
+                    formValidButton = new RoutedEventLibrary[1];
+                    RoutedEventLibrariesInit(formValidButton);
+                    formValidButton[0].changePageEvent = GetEventHandler("storageViewerPage");
+
+                    formElements = new string[] { "TextBoxNumber" };
+                    labels = new string[] { "Number Of Columns" };
 
                     break;
             }
