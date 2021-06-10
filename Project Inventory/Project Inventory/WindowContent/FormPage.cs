@@ -1,6 +1,5 @@
 ﻿using Project_Inventory.BDD;
 using Project_Inventory.Tools;
-using System;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -12,14 +11,14 @@ namespace Project_Inventory
         private RoutedEventLibrary[] topSwitchEvents;
 
         private Grid capGrid;
-        private string[] formElements;
+        private UIElementsName[] formElements;
         private string[] labels;
-        private string formType;
+        private WindowsName formType;
 
         private string[] bottomGridButtons;
         private RoutedEventLibrary[] formValidButton;
 
-        public FormPage(ToolBox toolBox, Router _router, RequestCenter requestCenter, string _formType, int _actualStorageId, int _actualDataId)
+        public FormPage(ToolBox toolBox, Router _router, RequestCenter requestCenter, WindowsName _formType, int _actualStorageId, int _actualDataId)
             : base(toolBox, _router, requestCenter, _actualStorageId, _actualDataId)
         {
             topGridButtons = new string[] { "Return" };
@@ -35,9 +34,9 @@ namespace Project_Inventory
 
         public new void TopGridInit(Grid topGrid)
         {
-            toolBox.SetUpGrid(topGrid, 1, 1, "TopStretch", "HeightTenPercent");
+            toolBox.SetUpGrid(topGrid, 1, 1, SkinsName.TopStretch, SkinsName.HeightTenPercent);
 
-            toolBox.CreateSwitchButtonsToGridByTab(topGrid, topGridButtons, topSwitchEvents, "StandartLittleMargin", "TopRight");
+            toolBox.CreateSwitchButtonsToGridByTab(topGrid, topGridButtons, topSwitchEvents, SkinsName.StandartLittleMargin, SkinsName.TopRight);
         }
 
         public new void CenterGridInit(Grid centerGrid)
@@ -45,15 +44,15 @@ namespace Project_Inventory
             toolBox.CreateScrollableForm(centerGrid, capGrid,
                                          1, 1,
                                          formElements.Length, 2,
-                                         "StretchStretch", "HeightEightPercent",
+                                         SkinsName.StretchStretch, SkinsName.HeightEightPercent,
                                          formElements, labels);
         }
 
         public new void BottomGridInit(Grid bottomGrid)
         {
-            toolBox.SetUpGrid(bottomGrid, 1, 1, "BottomStretch", "HeightTenPercent");
+            toolBox.SetUpGrid(bottomGrid, 1, 1, SkinsName.BottomStretch, SkinsName.HeightTenPercent);
 
-            toolBox.CreateSwitchButtonsToGridByTab(bottomGrid, bottomGridButtons, formValidButton, "StandartLittleMargin", "CenterCenter");
+            toolBox.CreateSwitchButtonsToGridByTab(bottomGrid, bottomGridButtons, formValidButton, SkinsName.StandartLittleMargin, SkinsName.CenterCenter);
         }
 
         public void formValidation(object sender, RoutedEventArgs e)
@@ -66,14 +65,14 @@ namespace Project_Inventory
             {
                 switch(formType)
                 {
-                    case "Add Storage":
+                    case WindowsName.AddStorage:
 
                         AddStorage(new Storage(uiElements[0]));
                         break;
 
-                    case "Init Storage":
+                    case WindowsName.InitStorage:
 
-                        InitStorage(Int32.Parse(uiElements[0]));
+                        InitStorage();
                         break;
                 }
             }
@@ -90,7 +89,7 @@ namespace Project_Inventory
             requestCenter.PostRequest("StorageLibraries", json);
         }
 
-        public void InitStorage(int nbColumns)
+        public void InitStorage(RoutedEventHandler reloadEvent)
         {
             return false; //A remplir
         }
@@ -99,32 +98,32 @@ namespace Project_Inventory
         {
             switch(formType)
             {
-                case ("Add Storage"):
+                case (WindowsName.AddStorage):
 
                     topSwitchEvents = new RoutedEventLibrary[1];
                     RoutedEventLibrariesInit(topSwitchEvents);
-                    topSwitchEvents[0].changePageEvent = GetEventHandler("MainMenu");
+                    topSwitchEvents[0].changePageEvent = GetEventHandler(WindowsName.MainMenu);
 
                     formValidButton = new RoutedEventLibrary[1];
                     RoutedEventLibrariesInit(formValidButton);
-                    formValidButton[0].changePageEvent = GetEventHandler("StorageSelectionMenu");
+                    formValidButton[0].changePageEvent = GetEventHandler(WindowsName.StorageSelectionMenu);
 
-                    formElements = new string[] { "TextBox" };
+                    formElements = new UIElementsName[] { UIElementsName.TextBox };
                     labels = new string[] { "Storage's Name" };
 
                     break;
 
-                case ("Init Storage"):
+                case (WindowsName.InitStorage):
 
                     topSwitchEvents = new RoutedEventLibrary[1];
                     RoutedEventLibrariesInit(topSwitchEvents);
-                    topSwitchEvents[0].changePageEvent = GetEventHandler("StorageSelectionMenu");
+                    topSwitchEvents[0].changePageEvent = GetEventHandler(WindowsName.StorageSelectionMenu);
 
                     formValidButton = new RoutedEventLibrary[1];
                     RoutedEventLibrariesInit(formValidButton);
-                    formValidButton[0].changePageEvent = GetEventHandler("storageViewerPage");
+                    formValidButton[0].changePageEvent = GetEventHandler(WindowsName.StorageViewerPage);
 
-                    formElements = new string[] { "TextBoxNumber" };
+                    formElements = new UIElementsName[] { UIElementsName.TextBoxNumber };
                     labels = new string[] { "Number Of Columns" };
 
                     break;

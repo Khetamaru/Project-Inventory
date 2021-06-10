@@ -19,25 +19,25 @@ namespace Project_Inventory
 
             switchEvents = new RoutedEventLibrary[3];
             RoutedEventLibrariesInit(switchEvents);
-            switchEvents[0].changePageEvent = GetEventHandler("StorageSelectionMenu");
-            switchEvents[1].changePageEvent = GetEventHandler("Add Storage");
-            switchEvents[2].changePageEvent = GetEventHandler("storageViewerPage");
+            switchEvents[0].changePageEvent = GetEventHandler(WindowsName.StorageSelectionMenu);
+            switchEvents[1].changePageEvent = GetEventHandler(WindowsName.AddStorage);
+            switchEvents[2].changePageEvent = GetEventHandler(WindowsName.StorageViewerPage);
 
             widthLimit = 5;
         }
 
         public new void TopGridInit(Grid topGrid)
         {
-            toolBox.SetUpGrid(topGrid, 1, 1, "TopStretch", "HeightOneTier");
+            toolBox.SetUpGrid(topGrid, 1, 1, SkinsName.TopStretch, SkinsName.HeightOneTier);
 
-            toolBox.CreateButtonsToGridByTab(topGrid, topGridButtons, "standart", "CenterCenter");
+            toolBox.CreateButtonsToGridByTab(topGrid, topGridButtons, SkinsName.Standart, SkinsName.CenterCenter);
         }
 
         public new void BottomGridInit(Grid bottomGrid)
         {
-            ButtonPlacer(bottomGrid, bottomGridButtons.Length, widthLimit, "BottomStretch", "HeightTwoTier");
+            ButtonPlacer(bottomGrid, bottomGridButtons.Length, widthLimit, SkinsName.BottomStretch, SkinsName.HeightTwoTier);
 
-            toolBox.CreateSwitchButtonsToGridByTab(bottomGrid, bottomGridButtons, switchEvents, "standart", "CenterCenter");
+            toolBox.CreateSwitchButtonsToGridByTab(bottomGrid, bottomGridButtons, switchEvents, SkinsName.Standart, SkinsName.CenterCenter);
         }
     }
 }

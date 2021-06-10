@@ -8,7 +8,7 @@ namespace Project_Inventory.Tools
     {
         MainMenu, 
         StorageSelectionMenu,
-        storageViewerPage,
+        StorageViewerPage,
         FormPage,
         AddStorage,
         InitStorage

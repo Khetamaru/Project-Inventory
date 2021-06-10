@@ -21,8 +21,8 @@ namespace Project_Inventory
 
             topSwitchEvents = new RoutedEventLibrary[2];
             RoutedEventLibrariesInit(topSwitchEvents);
-            topSwitchEvents[0].changePageEvent = GetEventHandler("Add Storage");
-            topSwitchEvents[1].changePageEvent = GetEventHandler("MainMenu");
+            topSwitchEvents[0].changePageEvent = GetEventHandler(WindowsName.AddStorage);
+            topSwitchEvents[1].changePageEvent = GetEventHandler(WindowsName.MainMenu);
 
             LoadBDDInfos();
             
@@ -32,26 +32,26 @@ namespace Project_Inventory
         public void LoadBDDInfos()
         {
             bottomGridButtons = JsonCenter.LoadStorageSelectionInfos(requestCenter);
-            bottomSwitchEvents = JsonCenter.SetEventHandlerTab(bottomGridButtons.Length, GetEventHandler("storageViewerPage"));
+            bottomSwitchEvents = JsonCenter.SetEventHandlerTab(bottomGridButtons.Length, GetEventHandler(WindowsName.StorageViewerPage));
         }
 
         public new void TopGridInit(Grid topGrid)
         {
-            toolBox.SetUpGrid(topGrid, 1, 2, "TopStretch", "HeightTenPercent");
+            toolBox.SetUpGrid(topGrid, 1, 2, SkinsName.TopStretch, SkinsName.HeightTenPercent);
 
             toolBox.CreateSwitchButtonsToGridByTab(topGrid, 
                                                    topGridButtons, 
                                                    topSwitchEvents, 
-                                                   new string[] { "StandartLittleMargin", "StandartLittleMargin" }, 
-                                                   new string[] { "TopLeft", "TopRight" });
+                                                   new SkinsName[] { SkinsName.StandartLittleMargin, SkinsName.StandartLittleMargin }, 
+                                                   new SkinsName[] { SkinsName.TopLeft, SkinsName.TopRight });
         }
 
         public new void BottomGridInit(Grid bottomGrid)
         {
-            ButtonPlacer(bottomGrid, bottomGridButtons.Length, widthLimit, "BottomStretch", "HeightNintyPercent");
+            ButtonPlacer(bottomGrid, bottomGridButtons.Length, widthLimit, SkinsName.BottomStretch, SkinsName.HeightNintyPercent);
             RoutedIdSetup(bottomGridButtons);
 
-            toolBox.CreateSwitchButtonsToGridByTab(bottomGrid, bottomGridButtons, bottomSwitchEvents, "standart", "CenterCenter");
+            toolBox.CreateSwitchButtonsToGridByTab(bottomGrid, bottomGridButtons, bottomSwitchEvents, SkinsName.Standart, SkinsName.CenterCenter);
         }
 
         public void RoutedIdSetup(Storage[] storageLibrary)

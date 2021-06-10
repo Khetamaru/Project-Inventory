@@ -30,7 +30,7 @@ namespace Project_Inventory
 
             topSwitchEvents = new RoutedEventLibrary[1];
             RoutedEventLibrariesInit(topSwitchEvents);
-            topSwitchEvents[0].changePageEvent = GetEventHandler("MainMenu");
+            topSwitchEvents[0].changePageEvent = GetEventHandler(WindowsName.MainMenu);
 
             capGrid = new Grid();
 
@@ -59,18 +59,18 @@ namespace Project_Inventory
 
         public new void TopGridInit(Grid topGrid)
         {
-            toolBox.SetUpGrid(topGrid, 1, 1, "TopStretch", "HeightTenPercent");
+            toolBox.SetUpGrid(topGrid, 1, 1, SkinsName.TopStretch, SkinsName.HeightTenPercent);
 
-            toolBox.CreateSwitchButtonsToGridByTab(topGrid, topGridButtons, topSwitchEvents, "StandartLittleMargin", "TopRight");
+            toolBox.CreateSwitchButtonsToGridByTab(topGrid, topGridButtons, topSwitchEvents, SkinsName.StandartLittleMargin, SkinsName.TopRight);
         }
 
         public new void BottomGridInit(Grid bottomGrid)
         {
             toolBox.CreateScrollableGrid(bottomGrid, capGrid, 
                                          1, 1, 
-                                         stringTab.GetLength(0), stringTab.GetLength(1), 
-                                         "BottomStretch", "HeightNintyPercent", 
-                                         "standart", "center", 
+                                         stringTab.GetLength(0), stringTab.GetLength(1),
+                                         SkinsName.BottomStretch, SkinsName.HeightNintyPercent,
+                                         SkinsName.Standart, SkinsName.Center, 
                                          stringTab, indicTab);
         }
     }
