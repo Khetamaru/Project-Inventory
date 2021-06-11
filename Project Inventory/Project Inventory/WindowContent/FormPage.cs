@@ -14,20 +14,22 @@ namespace Project_Inventory
         private UIElementsName[] formElements;
         private string[] labels;
         private WindowsName formType;
+        private ListBoxNames listBoxNames;
 
+        private int bottomColumnNb;
         private string[] bottomGridButtons;
         private RoutedEventLibrary[] formValidButton;
 
-        public FormPage(ToolBox toolBox, Router _router, RequestCenter requestCenter, WindowsName _formType, int _actualStorageId, int _actualDataId)
+        private RoutedEventHandler reloadEvent;
+
+        public FormPage(ToolBox toolBox, Router _router, RequestCenter requestCenter, WindowsName _formType, int _actualStorageId, int _actualDataId, RoutedEventHandler _reloadEvent)
             : base(toolBox, _router, requestCenter, _actualStorageId, _actualDataId)
         {
-            topGridButtons = new string[] { "Return" };
-
             capGrid = new Grid();
 
-            bottomGridButtons = new string[] { "Valid" };
-
             formType = _formType;
+
+            reloadEvent = _reloadEvent;
 
             formConfiguration();
         }
@@ -45,12 +47,12 @@ namespace Project_Inventory
                                          1, 1,
                                          formElements.Length, 2,
                                          SkinsName.StretchStretch, SkinsName.HeightEightPercent,
-                                         formElements, labels);
+                                         formElements, labels, listBoxNames);
         }
 
         public new void BottomGridInit(Grid bottomGrid)
         {
-            toolBox.SetUpGrid(bottomGrid, 1, 1, SkinsName.BottomStretch, SkinsName.HeightTenPercent);
+            toolBox.SetUpGrid(bottomGrid, 1, bottomColumnNb, SkinsName.BottomStretch, SkinsName.HeightTenPercent);
 
             toolBox.CreateSwitchButtonsToGridByTab(bottomGrid, bottomGridButtons, formValidButton, SkinsName.StandartLittleMargin, SkinsName.CenterCenter);
         }
@@ -72,7 +74,7 @@ namespace Project_Inventory
 
                     case WindowsName.InitStorage:
 
-                        InitStorage();
+                        InitStorage(uiElements);
                         break;
                 }
             }
@@ -89,8 +91,21 @@ namespace Project_Inventory
             requestCenter.PostRequest("StorageLibraries", json);
         }
 
-        public void InitStorage(RoutedEventHandler reloadEvent)
+        public void InitStorage()
         {
+            return false; //A remplir
+        }
+
+        public void InitStorageReload(object sender, RoutedEventArgs e)
+        {
+            //Get UIElements Status
+
+            //Extend By 1 Form Length
+
+            reloadEvent.Invoke(sender, e);
+
+            //Inject UiElements Status
+
             return false; //A remplir
         }
 
@@ -100,9 +115,16 @@ namespace Project_Inventory
             {
                 case (WindowsName.AddStorage):
 
+                    listBoxNames = ListBoxNames.None;
+
+                    topGridButtons = new string[] { "Return" };
+
                     topSwitchEvents = new RoutedEventLibrary[1];
                     RoutedEventLibrariesInit(topSwitchEvents);
                     topSwitchEvents[0].changePageEvent = GetEventHandler(WindowsName.MainMenu);
+
+                    bottomGridButtons = new string[] { "Valid" };
+                    bottomColumnNb = 1;
 
                     formValidButton = new RoutedEventLibrary[1];
                     RoutedEventLibrariesInit(formValidButton);
@@ -115,16 +137,24 @@ namespace Project_Inventory
 
                 case (WindowsName.InitStorage):
 
+                    listBoxNames = ListBoxNames.UIElementsType;
+
+                    topGridButtons = new string[] { "Return" };
+
                     topSwitchEvents = new RoutedEventLibrary[1];
                     RoutedEventLibrariesInit(topSwitchEvents);
                     topSwitchEvents[0].changePageEvent = GetEventHandler(WindowsName.StorageSelectionMenu);
 
-                    formValidButton = new RoutedEventLibrary[1];
-                    RoutedEventLibrariesInit(formValidButton);
-                    formValidButton[0].changePageEvent = GetEventHandler(WindowsName.StorageViewerPage);
+                    bottomGridButtons = new string[] { "Add Column", "Valid" };
+                    bottomColumnNb = 2;
 
-                    formElements = new UIElementsName[] { UIElementsName.TextBoxNumber };
-                    labels = new string[] { "Number Of Columns" };
+                    formValidButton = new RoutedEventLibrary[2];
+                    RoutedEventLibrariesInit(formValidButton);
+                    formValidButton[0].optionalEventOne = new RoutedEventHandler((object sender, RoutedEventArgs e) => InitStorageReload(sender, e));
+                    formValidButton[1].changePageEvent = GetEventHandler(WindowsName.StorageViewerPage);
+
+                    formElements = new UIElementsName[] { UIElementsName.ListBox, UIElementsName.TextBox };
+                    labels = new string[] { "Information Type", "Information Title" };
 
                     break;
             }

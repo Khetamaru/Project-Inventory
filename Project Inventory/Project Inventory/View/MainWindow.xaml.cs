@@ -67,7 +67,9 @@ namespace Project_Inventory
 
         public void FormPageInit(WindowsName formType)
         {
-            formPage = new FormPage(toolBox, router, requestCenter, formType, actualStorageId, actualDataId);
+            RoutedEventHandler reloadEvent = new RoutedEventHandler((object sender, RoutedEventArgs e) => ReloadView(sender, e));
+
+            formPage = new FormPage(toolBox, router, requestCenter, formType, actualStorageId, actualDataId, reloadEvent);
             actualWindow = WindowsName.FormPage;
             formPage.TopGridInit(topGrid);
             formPage.CenterGridInit(centerGrid);
@@ -214,6 +216,36 @@ namespace Project_Inventory
             RoutedEventHandler[] routersRouter = EnventHandlerGeneratorByTab(routersName, formRoutersName, routersNameF);
 
             return new Router(routersNameF, routersRouter);
+        }
+
+        public void ReloadView(object sender, RoutedEventArgs e)
+        {
+            switch (actualWindow)
+            {
+                case (WindowsName.MainMenu):
+                    mainMenu.TopGridInit(topGrid);
+                    mainMenu.CenterGridInit(centerGrid);
+                    mainMenu.BottomGridInit(bottomGrid);
+                    break;
+
+                case (WindowsName.StorageSelectionMenu):
+                    storageSelectionMenu.TopGridInit(topGrid);
+                    storageSelectionMenu.CenterGridInit(centerGrid);
+                    storageSelectionMenu.BottomGridInit(bottomGrid);
+                    break;
+
+                case (WindowsName.FormPage):
+                    formPage.TopGridInit(topGrid);
+                    formPage.CenterGridInit(centerGrid);
+                    formPage.BottomGridInit(bottomGrid);
+                    break;
+
+                case (WindowsName.StorageViewerPage):
+                    storageViewerPage.TopGridInit(topGrid);
+                    storageViewerPage.CenterGridInit(centerGrid);
+                    storageViewerPage.BottomGridInit(bottomGrid);
+                    break;
+            }
         }
     }
 }

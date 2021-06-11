@@ -400,7 +400,7 @@ namespace Project_Inventory
             }
         }
 
-        public void CreateFormToGridByTab(Grid grid, UIElementsName[] formElements, string[] labels)
+        public void CreateFormToGridByTab(Grid grid, UIElementsName[] formElements, string[] labels, ListBoxNames listBoxName)
         {
             Label label;
             UIElement uIElement;
@@ -453,7 +453,15 @@ namespace Project_Inventory
                     case (UIElementsName.ListBox):
 
                         uIElement = new ListBox();
-                        FormSkin.ListBoxSkin(uIElement as ListBox, new string[] { "Option N°1", "Option N°2", "Option N°3" });
+
+                        switch(listBoxName)
+                        {
+                            case ListBoxNames.UIElementsType:
+                                string[] listBoxStrings = listBoxStrings = new string[] { "TextBox", "TextBoxNumber", "DatePicker", "ListBox" };
+                                FormSkin.ListBoxSkin(uIElement as ListBox, listBoxStrings);
+                                break;
+                        }
+
                         Grid.SetRow(uIElement, i);
                         Grid.SetColumn(uIElement, 1);
                         grid.Children.Add(uIElement as ListBox);
@@ -505,7 +513,7 @@ namespace Project_Inventory
 
         // Form //
 
-        public void CreateScrollableForm(Grid grid, Grid embededGrid, int gridRowOne, int gridColumnOne, int gridRowTwo, int gridColumnTwo, SkinsName gridSkin, SkinsName skinHeight, UIElementsName[] stringTab, string[] indicTab)
+        public void CreateScrollableForm(Grid grid, Grid embededGrid, int gridRowOne, int gridColumnOne, int gridRowTwo, int gridColumnTwo, SkinsName gridSkin, SkinsName skinHeight, UIElementsName[] stringTab, string[] indicTab, ListBoxNames listBoxNames)
         {
             ScrollViewer scrollViewer = new ScrollViewer();
 
@@ -515,7 +523,7 @@ namespace Project_Inventory
 
             ScrollFormInit(embededGrid, gridRowTwo, scrollViewer);
 
-            CreateFormToGridByTab(embededGrid, stringTab, indicTab);
+            CreateFormToGridByTab(embededGrid, stringTab, indicTab, listBoxNames);
 
             EmbedScrollableGrid(grid, embededGrid, scrollViewer);
         }
