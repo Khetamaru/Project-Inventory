@@ -27,7 +27,14 @@ namespace Project_Inventory.Tools
 
             //string responseBdd = "[{\"id\":1,\"name\":\"walk dog\"},{\"id\":2,\"name\":\"walk dog\"},{\"id\":3,\"name\":\"walk dog\"},{\"id\":4,\"name\":\"walk dog\"},{\"id\":5,\"name\":\"walk dog\"}]";
 
-            return FormatToBDDObject(responseBdd, "storage") as Storage[];
+            if (responseBdd == "[]")
+            {
+                return new Storage[0];
+            }
+            else
+            {
+                return FormatToBDDObject(responseBdd, "storage") as Storage[];
+            }
         }
 
         public static Data[] LoadStorageViewerInfos(RequestCenter requestCenter, int storageId)
@@ -36,7 +43,14 @@ namespace Project_Inventory.Tools
 
             //string responseBdd = "[{\"id\":1,\"name\":\"walk dog\"},{\"id\":2,\"name\":\"walk dog\"},{\"id\":3,\"name\":\"walk dog\"},{\"id\":4,\"name\":\"walk dog\"},{\"id\":5,\"name\":\"walk dog\"}]";
 
-            return FormatToBDDObject(responseBdd, "data") as Data[];
+            if (responseBdd == "[]")
+            {
+                return new Data[0];
+            }
+            else
+            {
+                return FormatToBDDObject(responseBdd, "data") as Data[];
+            }
         }
 
         public static RoutedEventLibrary[] SetEventHandlerTab(int length, RoutedEventHandler eventHandler)

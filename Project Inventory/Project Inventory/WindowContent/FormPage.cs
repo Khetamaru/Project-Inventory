@@ -91,22 +91,120 @@ namespace Project_Inventory
             requestCenter.PostRequest("StorageLibraries", json);
         }
 
-        public void InitStorage()
+        public void InitStorage(string[] uIElements)
         {
-            return false; //A remplir
+            // create Storage Init Line (IsHeader = true)
+
+            //string json = storage.ToJson();
+
+            //requestCenter.PostRequest("StorageLibraries", json);
         }
 
         public void InitStorageReload(object sender, RoutedEventArgs e)
         {
-            //Get UIElements Status
+            UIElementsName[] uIElementsNames = new UIElementsName[formElements.Length / 2];
+            string[] columnNames = new string[formElements.Length / 2];
 
-            //Extend By 1 Form Length
+            GetInitStorageUIElement(uIElementsNames, columnNames);
 
+            ExtendLengthInitStorage();
+
+            capGrid = new Grid();
             reloadEvent.Invoke(sender, e);
 
-            //Inject UiElements Status
+            InjectInitStorageUIElement(uIElementsNames, columnNames);
+        }
 
-            return false; //A remplir
+        private void GetInitStorageUIElement(UIElementsName[] uIElementsNames, string[] columnNames)
+        {
+            int i = 0;
+            int j = 0;
+            int k = 0;
+            string temp = string.Empty;
+
+            foreach(UIElement uIElement in capGrid.Children)
+            {
+                if (i%2 != 0)
+                {
+                    if ((i+1)%4 == 0)
+                    {
+                        columnNames[j] = (uIElement as TextBox).Text;
+                        j++;
+                    }
+                    else
+                    {
+                        temp = (uIElement as ListBox).SelectedItem.ToString();
+                        uIElementsNames[k] = GetUIElementName(temp);
+                        k++;
+                    }
+                }
+
+                i++;
+            }
+        }
+
+        private void InjectInitStorageUIElement(UIElementsName[] uIElementsNames, string[] columnNames)
+        {
+            int j = 0;
+            int k = 0;
+            string temp = string.Empty;
+
+            for (int i = 0 ; i < (capGrid.Children.Count - 4) ; i++)
+            {
+                if (i % 2 != 0)
+                {
+                    if ((i + 1) % 4 == 0)
+                    {
+                        (capGrid.Children[i] as TextBox).Text = columnNames[j];
+                        j++;
+                    }
+                    else
+                    {
+                        (capGrid.Children[i] as ListBox).SelectedItem = uIElementsNames[k].ToString();
+                        k++;
+                    }
+                }
+            }
+        }
+
+        private UIElementsName GetUIElementName(string name)
+        {
+            switch (name)
+            {
+                case "TextBox":
+                    return UIElementsName.TextBox;
+                case "TextBoxNumber":
+                    return UIElementsName.TextBoxNumber;
+                case "DatePicker":
+                    return UIElementsName.DatePicker;
+                case "ListBox":
+                    return UIElementsName.ListBox;
+            }
+            return UIElementsName.TextBox;
+        }
+
+        private void ExtendLengthInitStorage()
+        {
+            UIElementsName[] formElementsTemp = new UIElementsName[formElements.Length + 2];
+            string[] labelsTemp = new string[labels.Length + 2];
+
+            int i = 0;
+
+            foreach (UIElementsName element in formElements)
+            {
+                formElementsTemp[i] = element;
+                labelsTemp[i] = labels[i];
+                i++;
+            }
+
+            formElementsTemp[formElements.Length] = UIElementsName.ListBox;
+            formElementsTemp[formElements.Length + 1] = UIElementsName.TextBox;
+
+            labelsTemp[labels.Length] = "Information Type";
+            labelsTemp[labels.Length + 1] = "Information Title";
+
+            formElements = formElementsTemp;
+            labels = labelsTemp;
         }
 
         public void formConfiguration()
@@ -133,6 +231,11 @@ namespace Project_Inventory
                     formElements = new UIElementsName[] { UIElementsName.TextBox };
                     labels = new string[] { "Storage's Name" };
 
+                    formValidButton[0].optionalEventOne = new RoutedEventHandler((object sender, RoutedEventArgs e) =>
+                    {
+                        formValidation(sender, e);
+                    });
+
                     break;
 
                 case (WindowsName.InitStorage):
@@ -156,13 +259,13 @@ namespace Project_Inventory
                     formElements = new UIElementsName[] { UIElementsName.ListBox, UIElementsName.TextBox };
                     labels = new string[] { "Information Type", "Information Title" };
 
+                    formValidButton[1].optionalEventOne = new RoutedEventHandler((object sender, RoutedEventArgs e) =>
+                    {
+                        formValidation(sender, e);
+                    });
+
                     break;
             }
-
-            formValidButton[0].optionalEventOne = new RoutedEventHandler((object sender, RoutedEventArgs e) =>
-            {
-                formValidation(sender, e);
-            });
         }
     }
 }
