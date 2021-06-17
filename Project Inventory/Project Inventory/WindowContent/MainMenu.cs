@@ -1,5 +1,4 @@
 ﻿using Project_Inventory.Tools;
-using System.Windows;
 using System.Windows.Controls;
 
 namespace Project_Inventory
@@ -8,7 +7,7 @@ namespace Project_Inventory
     {
         private string[] topGridButtons;
         private string[] bottomGridButtons;
-        private RoutedEventHandler[] switchEvents;
+        private RoutedEventLibrary[] switchEvents;
 
         private int widthLimit;
 
@@ -17,23 +16,28 @@ namespace Project_Inventory
         {
             topGridButtons = new string[] { "Logo Application" };
             bottomGridButtons = new string[] { "Storage Selection", "Formulaire Type", "Storage Viewer" };
-            switchEvents = new RoutedEventHandler[] { GetEventHandler("StorageSelectionMenu"), GetEventHandler("Add Storage"), GetEventHandler("storageViewerPage") };
+
+            switchEvents = new RoutedEventLibrary[3];
+            RoutedEventLibrariesInit(switchEvents);
+            switchEvents[0].changePageEvent = GetEventHandler(WindowsName.StorageSelectionMenu);
+            switchEvents[1].changePageEvent = GetEventHandler(WindowsName.AddStorage);
+            switchEvents[2].changePageEvent = GetEventHandler(WindowsName.StorageViewerPage);
 
             widthLimit = 5;
         }
 
         public new void TopGridInit(Grid topGrid)
         {
-            toolBox.SetUpGrid(topGrid, 1, 1, "TopStretch", "HeightOneTier");
+            toolBox.SetUpGrid(topGrid, 1, 1, SkinsName.TopStretch, SkinsName.HeightOneTier);
 
-            toolBox.CreateButtonsToGridByTab(topGrid, topGridButtons, "standart", "CenterCenter");
+            toolBox.CreateButtonsToGridByTab(topGrid, topGridButtons, SkinsName.Standart, SkinsName.CenterCenter);
         }
 
         public new void BottomGridInit(Grid bottomGrid)
         {
-            ButtonPlacer(bottomGrid, bottomGridButtons.Length, widthLimit, "BottomStretch", "HeightTwoTier");
+            ButtonPlacer(bottomGrid, bottomGridButtons.Length, widthLimit, SkinsName.BottomStretch, SkinsName.HeightTwoTier);
 
-            toolBox.CreateSwitchButtonsToGridByTab(bottomGrid, bottomGridButtons, switchEvents, "standart", "CenterCenter");
+            toolBox.CreateSwitchButtonsToGridByTab(bottomGrid, bottomGridButtons, switchEvents, SkinsName.Standart, SkinsName.CenterCenter);
         }
     }
 }

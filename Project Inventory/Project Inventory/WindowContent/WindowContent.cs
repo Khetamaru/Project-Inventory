@@ -49,11 +49,11 @@ namespace Project_Inventory
             return actualDataId;
         }
 
-        public RoutedEventHandler GetEventHandler(string routerName)
+        public RoutedEventHandler GetEventHandler(WindowsName routerName)
         {
             var i = 0;
 
-            foreach(string name in router.routersName)
+            foreach(WindowsName name in router.routersName)
             {
                 if(name == routerName)
                 {
@@ -66,7 +66,7 @@ namespace Project_Inventory
             return null;
         }
 
-        public void ButtonPlacer(Grid grid, int tabLength, int widthLimit, string skinName, string lengthName)
+        public void ButtonPlacer(Grid grid, int tabLength, int widthLimit, SkinsName skinName, SkinsName lengthName)
         {
             int i;
             int j = 1;
@@ -87,6 +87,14 @@ namespace Project_Inventory
             }
 
             toolBox.SetUpGrid(grid, j, i, skinName, lengthName);
+        }
+
+        public void RoutedEventLibrariesInit(RoutedEventLibrary[] routedEventLibrary)
+        {
+            for( int i = 0 ; i < routedEventLibrary.Length ; i++)
+            {
+                routedEventLibrary[i] = new RoutedEventLibrary();
+            }
         }
     }
 }

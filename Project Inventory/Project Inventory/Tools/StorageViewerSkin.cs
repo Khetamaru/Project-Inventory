@@ -1,28 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 
 namespace Project_Inventory.Tools
 {
     public static class StorageViewerSkin
     {
-        public static void LoadLabelSkin(Label label, string labelSkin)
+        public static void LoadLabelSkin(Label label, SkinsName labelSkin)
         {
             switch(labelSkin)
             {
-                case ("standart"):
+                case (SkinsName.Standart):
                     StandartLabel(label);
                     break;
             }
         }
 
-        public static void LoadLabelSkinPosition(Label label, string labelSkin)
+        public static void LoadLabelSkinPosition(Label label, SkinsName labelSkin)
         {
             switch (labelSkin)
             {
-                case ("center"):
+                case (SkinsName.Center):
                     Center(label);
                     break;
             }

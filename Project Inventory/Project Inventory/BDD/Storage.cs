@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Project_Inventory.BDD
+﻿namespace Project_Inventory.BDD
 {
     public class Storage : BDDObject
     {

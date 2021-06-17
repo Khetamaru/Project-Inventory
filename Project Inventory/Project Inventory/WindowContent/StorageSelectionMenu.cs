@@ -8,9 +8,9 @@ namespace Project_Inventory
     public class StorageSelectionMenu : WindowContent
     {
         private string[] topGridButtons;
-        private RoutedEventHandler[] topSwitchEvents;
+        private RoutedEventLibrary[] topSwitchEvents;
         private Storage[] bottomGridButtons;
-        private RoutedEventHandler[] bottomSwitchEvents;
+        private RoutedEventLibrary[] bottomSwitchEvents;
 
         private int widthLimit;
 
@@ -19,7 +19,10 @@ namespace Project_Inventory
         {
             topGridButtons = new string[] { "Create a Storage", "Return" };
 
-            topSwitchEvents = new RoutedEventHandler[] { GetEventHandler("Add Storage"), GetEventHandler("MainMenu") };
+            topSwitchEvents = new RoutedEventLibrary[2];
+            RoutedEventLibrariesInit(topSwitchEvents);
+            topSwitchEvents[0].changePageEvent = GetEventHandler(WindowsName.AddStorage);
+            topSwitchEvents[1].changePageEvent = GetEventHandler(WindowsName.MainMenu);
 
             LoadBDDInfos();
             
@@ -29,42 +32,40 @@ namespace Project_Inventory
         public void LoadBDDInfos()
         {
             bottomGridButtons = JsonCenter.LoadStorageSelectionInfos(requestCenter);
-            bottomSwitchEvents = JsonCenter.SetEventHandlerTab(bottomGridButtons.Length, GetEventHandler("storageViewerPage"));
+            bottomSwitchEvents = JsonCenter.SetEventHandlerTab(bottomGridButtons.Length, GetEventHandler(WindowsName.StorageViewerPage));
         }
 
         public new void TopGridInit(Grid topGrid)
         {
-            toolBox.SetUpGrid(topGrid, 1, 2, "TopStretch", "HeightTenPercent");
+            toolBox.SetUpGrid(topGrid, 1, 2, SkinsName.TopStretch, SkinsName.HeightTenPercent);
 
             toolBox.CreateSwitchButtonsToGridByTab(topGrid, 
                                                    topGridButtons, 
                                                    topSwitchEvents, 
-                                                   new string[] { "StandartLittleMargin", "StandartLittleMargin" }, 
-                                                   new string[] { "TopLeft", "TopRight" });
+                                                   new SkinsName[] { SkinsName.StandartLittleMargin, SkinsName.StandartLittleMargin }, 
+                                                   new SkinsName[] { SkinsName.TopLeft, SkinsName.TopRight });
         }
 
         public new void BottomGridInit(Grid bottomGrid)
         {
-            ButtonPlacer(bottomGrid, bottomGridButtons.Length, widthLimit, "BottomStretch", "HeightNintyPercent");
+            ButtonPlacer(bottomGrid, bottomGridButtons.Length, widthLimit, SkinsName.BottomStretch, SkinsName.HeightNintyPercent);
+            RoutedIdSetup(bottomGridButtons);
 
-            toolBox.CreateSwitchButtonsToGridByTab(bottomGrid, bottomGridButtons, RoutedIdSetup(bottomGridButtons), bottomSwitchEvents, "standart", "CenterCenter");
+            toolBox.CreateSwitchButtonsToGridByTab(bottomGrid, bottomGridButtons, bottomSwitchEvents, SkinsName.Standart, SkinsName.CenterCenter);
         }
 
-        public RoutedEventHandler[] RoutedIdSetup(Storage[] storageLibrary)
+        public void RoutedIdSetup(Storage[] storageLibrary)
         {
             var i = 0;
-            RoutedEventHandler[] RoutedIds = new RoutedEventHandler[storageLibrary.Length];
 
             foreach(Storage storage in storageLibrary)
             {
-                RoutedIds[i] = new RoutedEventHandler((object sender, RoutedEventArgs e) =>
+                bottomSwitchEvents[i].updateIdEvent = new RoutedEventHandler((object sender, RoutedEventArgs e) =>
                 {
                     IDSetup(sender, e, storage.id);
                 });
                 i++;
             }
-
-            return RoutedIds;
         }
 
         public void IDSetup(object sender, RoutedEventArgs e, int id)
