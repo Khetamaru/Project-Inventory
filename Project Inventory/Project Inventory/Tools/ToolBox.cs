@@ -630,7 +630,7 @@ namespace Project_Inventory
                         break;
                 }
 
-                if (element == "")
+                if (element == "" || element == null)
                 {
                     return false;
                 }

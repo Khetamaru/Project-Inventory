@@ -93,11 +93,22 @@ namespace Project_Inventory
 
         public void InitStorage(string[] uIElements)
         {
-            // create Storage Init Line (IsHeader = true)
+            UIElementsName[] uIElementsNames = new UIElementsName[formElements.Length / 2];
+            string[] columnNames = new string[formElements.Length / 2];
+            string[] dataType = new string[uIElementsNames.Length];
 
-            //string json = storage.ToJson();
+            GetInitStorageUIElement(uIElementsNames, columnNames);
 
-            //requestCenter.PostRequest("StorageLibraries", json);
+            for ( int i = 0 ; i < uIElementsNames.Length ; i++ )
+            {
+                dataType[i] = uIElementsNames[i].ToString();
+            }
+
+            Data data = new Data(actualStorageId, columnNames, dataType, true);
+
+            string json = data.ToJson();
+
+            requestCenter.PostRequest("DataLibraries", json);
         }
 
         public void InitStorageReload(object sender, RoutedEventArgs e)
@@ -133,7 +144,14 @@ namespace Project_Inventory
                     }
                     else
                     {
-                        temp = (uIElement as ListBox).SelectedItem.ToString();
+                        if ((uIElement as ListBox).SelectedItem != null)
+                        {
+                            temp = (uIElement as ListBox).SelectedItem.ToString();
+                        }
+                        else
+                        {
+                            temp = UIElementsName.TextBox.ToString();
+                        }
                         uIElementsNames[k] = GetUIElementName(temp);
                         k++;
                     }

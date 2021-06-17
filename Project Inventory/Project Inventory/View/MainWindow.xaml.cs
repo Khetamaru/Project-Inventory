@@ -178,10 +178,21 @@ namespace Project_Inventory
                     {
                         string1 = formRoutersName[j];
 
-                        routers[i + j] = new RoutedEventHandler((object sender, RoutedEventArgs e) =>
+                        switch (j)
                         {
-                            WindowSwitch(sender, e, string1);
-                        });
+                            case 0:
+                                routers[i + j] = new RoutedEventHandler((object sender, RoutedEventArgs e) =>
+                                {
+                                    WindowSwitch(sender, e, WindowsName.AddStorage);
+                                });
+                                break;
+                            case 1:
+                                routers[i + j] = new RoutedEventHandler((object sender, RoutedEventArgs e) =>
+                                {
+                                    WindowSwitch(sender, e, WindowsName.InitStorage);
+                                });
+                                break;
+                        }
                         routersNameF[i + j] = formName;
 
                         j++;

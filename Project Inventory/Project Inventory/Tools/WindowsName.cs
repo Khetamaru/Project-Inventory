@@ -11,6 +11,7 @@ namespace Project_Inventory.Tools
         StorageViewerPage,
         FormPage,
         AddStorage,
-        InitStorage
+        InitStorage,
+        None
     }
 }

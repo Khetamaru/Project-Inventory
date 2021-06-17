@@ -27,19 +27,24 @@
 
         public string ToJson()
         {
-            return "{\"storageId\":" + StorageId + ",\"dataText\":\"" + ToStringDataText() + ",\"dataType\":\"" + ToStringDataType() + ",\"isHeader\":\"" + IsHeader + "\"}";
+            return "{\"storageId\":" + StorageId + ",\"dataText\":\"" + ToStringDataText() + "\",\"dataType\":\"" + ToStringDataType() + "\",\"isHeader\":\"" + IsHeader + "\"}";
         }
 
         public string ToStringDataText()
         {
             string stg = "";
+            int i = 0;
 
             foreach(string text in DataText)
             {
-                stg += text + "~";
-            }
+                stg += text;
 
-            stg.Remove(stg.Length - 1, 1);
+                if (i < DataText.Length - 1)
+                {
+                    stg += "~";
+                }
+                i++;
+            }
 
             return stg;
         }
@@ -47,13 +52,18 @@
         public string ToStringDataType()
         {
             string stg = "";
+            int i = 0;
 
             foreach (string type in DataType)
             {
-                stg += type + "~";
-            }
+                stg += type;
 
-            stg.Remove(stg.Length - 1, 1);
+                if (i < DataType.Length - 1)
+                {
+                    stg += "~";
+                }
+                i++;
+            }
 
             return stg;
         }
