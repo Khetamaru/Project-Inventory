@@ -1,5 +1,6 @@
 ﻿using Project_Inventory.BDD;
 using Project_Inventory.Tools;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace Project_Inventory
@@ -8,6 +9,7 @@ namespace Project_Inventory
     {
         private string[] topGridButtons;
         private RoutedEventLibrary[] topSwitchEvents;
+        private RoutedEventHandler reloadEvent;
 
         private enum status {
             VIEWER,
@@ -21,16 +23,30 @@ namespace Project_Inventory
         private string[,] stringTab;
         private string[,] indicTab;
 
-        public StorageViewerPage(ToolBox ToolBox, Router _router, RequestCenter requestCenter, int _actualStorageId, int _actualDataId)
+        private string[] saveButton;
+        private RoutedEventLibrary[] saveEvents;
+
+        public StorageViewerPage(ToolBox ToolBox, Router _router, RequestCenter requestCenter, int _actualStorageId, int _actualDataId, RoutedEventHandler _reloadEvent)
             : base(ToolBox, _router, requestCenter, _actualStorageId, _actualDataId)
         {
             viewerStatus = status.VIEWER;
+            reloadEvent = _reloadEvent;
 
-            topGridButtons = new string[] { "Return" };
+            topGridButtons = new string[] { "Modify", "Return" };
+            saveButton = new string[] { "Save" };
 
-            topSwitchEvents = new RoutedEventLibrary[1];
+            topSwitchEvents = new RoutedEventLibrary[2];
             RoutedEventLibrariesInit(topSwitchEvents);
-            topSwitchEvents[0].changePageEvent = GetEventHandler(WindowsName.MainMenu);
+
+            topSwitchEvents[0].resetPageEvent = reloadEvent;
+            topSwitchEvents[0].optionalEventOne = new RoutedEventHandler((object sender, RoutedEventArgs e) => { SwitchStatus(sender, e); });
+            topSwitchEvents[1].changePageEvent = GetEventHandler(WindowsName.MainMenu);
+
+            saveEvents = new RoutedEventLibrary[1];
+            RoutedEventLibrariesInit(saveEvents);
+            saveEvents[0].resetPageEvent = reloadEvent;
+            saveEvents[0].optionalEventOne = new RoutedEventHandler((object sender, RoutedEventArgs e) => { SwitchStatus(sender, e); });
+            saveEvents[0].optionalEventTwo = new RoutedEventHandler((object sender, RoutedEventArgs e) => { SaveDatas(sender, e); });
 
             capGrid = new Grid();
 
@@ -59,19 +75,79 @@ namespace Project_Inventory
 
         public new void TopGridInit(Grid topGrid)
         {
-            toolBox.SetUpGrid(topGrid, 1, 1, SkinsName.TopStretch, SkinsName.HeightTenPercent);
+            toolBox.SetUpGrid(topGrid, 1, 2, SkinsName.TopStretch, SkinsName.HeightTenPercent);
 
-            toolBox.CreateSwitchButtonsToGridByTab(topGrid, topGridButtons, topSwitchEvents, SkinsName.StandartLittleMargin, SkinsName.TopRight);
+            toolBox.CreateSwitchButtonsToGridByTab(topGrid, topGridButtons, topSwitchEvents,
+                                                   new SkinsName[] { SkinsName.StandartLittleMargin, SkinsName.StandartLittleMargin },
+                                                   new SkinsName[] { SkinsName.TopLeft, SkinsName.TopRight });
         }
 
         public new void BottomGridInit(Grid bottomGrid)
         {
-            toolBox.CreateScrollableGrid(bottomGrid, capGrid, 
-                                         1, 1, 
+            switch (viewerStatus)
+            {
+                case status.VIEWER:
+                    toolBox.CreateScrollableGrid(bottomGrid, capGrid,
+                                         1, 1,
                                          stringTab.GetLength(0), stringTab.GetLength(1),
                                          SkinsName.BottomStretch, SkinsName.HeightNintyPercent,
-                                         SkinsName.Standart, SkinsName.Center, 
+                                         SkinsName.Standart, SkinsName.Center,
                                          stringTab, indicTab);
+                    break;
+
+                case status.MODIFIER:
+                    toolBox.SetUpGrid(bottomGrid, 1, 1, SkinsName.BottomStretch, SkinsName.HeightTenPercent);
+
+                    toolBox.CreateSwitchButtonsToGridByTab(bottomGrid, saveButton, saveEvents, SkinsName.StandartLittleMargin, SkinsName.BottomCenter);
+                    break;
+            }
+        }
+
+        public new void CenterGridInit(Grid centerGrid)
+        {
+            switch (viewerStatus)
+            {
+                case status.VIEWER:
+
+                    centerGrid = null;
+
+                    break;
+
+                case status.MODIFIER:
+
+                    toolBox.CreateScrollableGridModfiable(centerGrid, capGrid,
+                                         1, 1,
+                                         stringTab.GetLength(0), stringTab.GetLength(1),
+                                         SkinsName.BottomStretch, SkinsName.HeightEightPercent,
+                                         SkinsName.Standart, SkinsName.Center,
+                                         stringTab, indicTab);
+                    break;
+            }
+        }
+
+        private void SwitchStatus(object sender, RoutedEventArgs e)
+        {
+            switch(viewerStatus)
+            {
+                case status.VIEWER:
+
+                    viewerStatus = status.MODIFIER;
+                    topGridButtons[0] = "Cancel";
+
+                    break;
+
+                case status.MODIFIER:
+
+                    viewerStatus = status.VIEWER;
+                    topGridButtons[0] = "Modify";
+
+                    break;
+            }
+        }
+
+        private void SaveDatas(object sender, RoutedEventArgs e)
+        {
+            return PAS_ECRIT;
         }
     }
 }
