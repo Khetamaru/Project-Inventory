@@ -60,7 +60,7 @@ namespace Project_Inventory
         public void formValidation(object sender, RoutedEventArgs e)
         {
             string[] uiElements = new string[capGrid.Children.Count / 2];
-            int i = 0;
+
             toolBox.GetUiElementResult(capGrid, uiElements, formElements);
 
             if (toolBox.FormResultValidation(uiElements, formElements))

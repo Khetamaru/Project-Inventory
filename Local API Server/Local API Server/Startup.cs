@@ -11,6 +11,8 @@ namespace Local_API_Server
 {
     public class Startup
     {
+        public string dataStringConnection = "Server=localhost\\SQLEXPRESS;Database=master;Trusted_Connection=True";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -22,9 +24,9 @@ namespace Local_API_Server
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<StorageLibraryContext>(opt =>
-                opt.UseSqlServer("Data Source=desktop-tc1tmv3\\mssqlserver01;Initial Catalog=master;Integrated Security=True"));
+                opt.UseSqlServer(dataStringConnection));
             services.AddDbContext<DataLibraryContext>(opt =>
-                opt.UseSqlServer("Data Source=desktop-tc1tmv3\\mssqlserver01;Initial Catalog=master;Integrated Security=True"));
+                opt.UseSqlServer(dataStringConnection));
 
             services.AddControllers();
 

@@ -95,9 +95,9 @@ namespace Project_Inventory
             }
         }
 
-        private void LoadButtonSkin(Button button, SkinsName skinName) 
+        private void LoadButtonSkin(Button button, SkinsName skinName)
         {
-            switch(skinName) 
+            switch (skinName)
             {
                 case SkinsName.Standart:
                     ButtonSkins.StandartButtonSkin(button);
@@ -335,7 +335,7 @@ namespace Project_Inventory
             {
                 for (j = 0; j < columnNb; j++)
                 {
-                    if (buttonsTab.Length >= (i+1) * (j+1))
+                    if (buttonsTab.Length >= (i + 1) * (j + 1))
                     {
                         CreateSwitchButtonToGrid(grid, buttonsTab[k], routerTab[k], i, j, buttonsSkin, skinPosition);
                         k++;
@@ -405,7 +405,7 @@ namespace Project_Inventory
             Label label;
             UIElement uIElement;
             int i = 0;
-            
+
             grid.ColumnDefinitions[0].Width = new GridLength(windowWidth * 0.2, GridUnitType.Pixel);
             grid.ColumnDefinitions[1].Width = new GridLength(windowWidth * 0.8, GridUnitType.Pixel);
 
@@ -454,7 +454,7 @@ namespace Project_Inventory
 
                         uIElement = new ListBox();
 
-                        switch(listBoxName)
+                        switch (listBoxName)
                         {
                             case ListBoxNames.UIElementsType:
                                 string[] listBoxStrings = listBoxStrings = new string[] { "TextBox", "TextBoxNumber", "DatePicker", "ListBox" };
@@ -470,6 +470,28 @@ namespace Project_Inventory
                 }
 
                 i++;
+            }
+        }
+
+        public void CreateTabToGrid(Grid grid, string[,] stringTab, SkinsName stringSkin, SkinsName skinPosition)
+        {
+            int i;
+            int j;
+            int k = 0;
+
+            int rowNb = grid.RowDefinitions.Count;
+            int columnNb = grid.ColumnDefinitions.Count;
+
+            for (i = 0; i < rowNb; i++)
+            {
+                for (j = 0; j < columnNb; j++)
+                {
+                    if (stringTab.Length >= (i + 1) * (j + 1))
+                    {
+                        CreateTabCellToGrid(grid, stringTab[i, j], i, j, stringSkin, skinPosition);
+                        k++;
+                    }
+                }
             }
         }
 
@@ -496,6 +518,24 @@ namespace Project_Inventory
         }
 
         public void CreateTabCellToGrid(Grid grid, string text, string indication, int row, int column, SkinsName stringSkin, SkinsName skinPosition)
+        {
+            Label label = new Label();
+            label.Content = text;
+
+            StorageViewerSkin.LoadLabelSkin(label, stringSkin);
+            StorageViewerSkin.LoadLabelSkinPosition(label, skinPosition);
+
+            // insert potential clickEvent
+
+            Grid.SetRow(label, row);
+            Grid.SetColumn(label, column);
+
+            grid.Children.Add(label);
+
+            do your work;
+        }
+
+        public void CreateTabCellToGrid(Grid grid, string text, int row, int column, SkinsName stringSkin, SkinsName skinPosition)
         {
             Label label = new Label();
             label.Content = text;
@@ -604,10 +644,10 @@ namespace Project_Inventory
                 {
                     case (UIElementsName.TextBox):
 
-                        for(j = 0; j < element.Length; j++)
+                        for (j = 0; j < element.Length; j++)
                         {
-                            if(element[j] == '~' || 
-                               element[j] == ',' || 
+                            if (element[j] == '~' ||
+                               element[j] == ',' ||
                                element[j] == '{' ||
                                element[j] == '}')
                             {
@@ -658,11 +698,26 @@ namespace Project_Inventory
             EmbedScrollableGrid(grid, embededGrid, scrollViewer);
         }
 
+        public void CreateScrollableGridModfiable(Grid grid, Grid embededGrid, int gridRowOne, int gridColumnOne, int gridRowTwo, int gridColumnTwo, SkinsName gridSkin, SkinsName skinHeight, SkinsName tabSkin, SkinsName tabPos, string[,] stringTab, string[,] indicTab)
+        {
+            ScrollViewer scrollViewer = new ScrollViewer();
+
+            SetUpGrid(grid, gridRowOne, gridColumnOne, gridSkin, skinHeight);
+
+            SetUpNewGrid(embededGrid, gridRowTwo, gridColumnTwo, SkinsName.StretchStretch, skinHeight);
+
+            ScrollGridInit(embededGrid, gridRowTwo, gridColumnTwo, scrollViewer);
+
+            CreateTabToGridModifiable(embededGrid, stringTab, indicTab, tabSkin, tabPos);
+
+            EmbedScrollableGrid(grid, embededGrid, scrollViewer);
+        }
+
         public void SetUpNewGrid(Grid grid,
-                               int rowNb,
-                               int columnNb,
-                               SkinsName skinName,
-                               SkinsName lengthName)
+                           int rowNb,
+                           int columnNb,
+                           SkinsName skinName,
+                           SkinsName lengthName)
         {
             CreateRowsInGrid(grid, rowNb);
             CreateColumnsInGrid(grid, columnNb);
@@ -684,23 +739,23 @@ namespace Project_Inventory
 
             if (gridRowTwo > 6)
             {
-                if(gridColumnTwo > 9) 
-                { 
+                if (gridColumnTwo > 9)
+                {
                     ScrollViewerBoth(scrollViewer);
                 }
-                else 
-                { 
+                else
+                {
                     ScrollViewerVertical(scrollViewer);
                 }
             }
             else
             {
-                if (gridColumnTwo > 9) 
-                { 
+                if (gridColumnTwo > 9)
+                {
                     ScrollViewerHorizontal(scrollViewer);
                 }
-                else 
-                { 
+                else
+                {
                     ScrollViewerNoOne(scrollViewer);
                 }
             }
@@ -732,8 +787,8 @@ namespace Project_Inventory
 
         public void SetScrollGridWidth(Grid grid)
         {
-            foreach(ColumnDefinition column in grid.ColumnDefinitions) 
-            { 
+            foreach (ColumnDefinition column in grid.ColumnDefinitions)
+            {
                 GridSkins.ColumnHeightTenPercent(column, windowWidth);
             }
         }
