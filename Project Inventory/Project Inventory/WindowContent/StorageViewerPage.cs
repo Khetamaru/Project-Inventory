@@ -87,6 +87,9 @@ namespace Project_Inventory
             switch (viewerStatus)
             {
                 case status.VIEWER:
+
+                    capGrid = new Grid();
+
                     toolBox.CreateScrollableGrid(bottomGrid, capGrid,
                                          1, 1,
                                          stringTab.GetLength(0), stringTab.GetLength(1),
@@ -114,6 +117,8 @@ namespace Project_Inventory
                     break;
 
                 case status.MODIFIER:
+
+                    capGrid = new Grid();
 
                     toolBox.CreateScrollableGridModfiable(centerGrid, capGrid,
                                          1, 1,
@@ -147,7 +152,8 @@ namespace Project_Inventory
 
         private void SaveDatas(object sender, RoutedEventArgs e)
         {
-            return PAS_ECRIT;
+            toolBox.GetUIElements(capGrid, dataTab, indicTab);
+            requestCenter.PutRequest("DataLibraries", JsonCenter.ObjectJsonBuilder(dataTab));
         }
     }
 }

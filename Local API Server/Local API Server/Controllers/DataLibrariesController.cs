@@ -84,6 +84,17 @@ namespace Local_API_Server.Controllers
             return NoContent();
         }
 
+        // PUT: api/DataLibraries
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPut]
+        public async Task<IActionResult> PutDataLibrary(IEnumerable<DataLibrary> DataLibrary)
+        {
+            _context.Entry(DataLibrary).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
         // POST: api/DataLibraries
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
@@ -114,6 +125,25 @@ namespace Local_API_Server.Controllers
         private bool DataLibraryExists(long id)
         {
             return _context.DataLibraries.Any(e => e.Id == id);
+        }
+
+        // DELETE: api/DataLibraries
+        [HttpDelete]
+        public async Task<IActionResult> DeleteDataLibrary()
+        {
+            IEnumerable<DataLibrary> DataLibrary = await _context.DataLibraries.ToListAsync();
+            if (DataLibrary == null)
+            {
+                return NotFound();
+            }
+
+            foreach (DataLibrary data in DataLibrary)
+            {
+                _context.DataLibraries.Remove(data);
+                await _context.SaveChangesAsync();
+            }
+
+            return NoContent();
         }
     }
 }

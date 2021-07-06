@@ -5,34 +5,52 @@ namespace Project_Inventory.Tools
 {
     public static class StorageViewerSkin
     {
-        public static void LoadLabelSkin(Label label, SkinsName labelSkin)
+        public static void LoadLabelSkin(UIElement uiElement, SkinsName labelSkin)
         {
             switch(labelSkin)
             {
                 case (SkinsName.Standart):
-                    StandartLabel(label);
+                    StandartLabel(uiElement);
                     break;
             }
         }
 
-        public static void LoadLabelSkinPosition(Label label, SkinsName labelSkin)
+        public static void LoadLabelSkinPosition(UIElement uiElement, SkinsName labelSkin)
         {
             switch (labelSkin)
             {
                 case (SkinsName.Center):
-                    Center(label);
+                    Center(uiElement);
                     break;
             }
         }
 
-        private static void StandartLabel(Label label)
+        private static void StandartLabel(UIElement uiElement)
         {
         }
 
-        private static void Center(Label label)
+        private static void Center(UIElement uiElement)
         {
-            label.HorizontalAlignment = HorizontalAlignment.Center;
-            label.VerticalAlignment = VerticalAlignment.Center;
+            if (uiElement as TextBox != null)
+            {
+                (uiElement as TextBox).HorizontalAlignment = HorizontalAlignment.Center;
+                (uiElement as TextBox).VerticalAlignment = VerticalAlignment.Center;
+            }
+            else if(uiElement as ListBox != null)
+            {
+                (uiElement as ListBox).HorizontalAlignment = HorizontalAlignment.Center;
+                (uiElement as ListBox).VerticalAlignment = VerticalAlignment.Center;
+            }
+            else if(uiElement as DatePicker != null)
+            {
+                (uiElement as DatePicker).HorizontalAlignment = HorizontalAlignment.Center;
+                (uiElement as DatePicker).VerticalAlignment = VerticalAlignment.Center;
+            }
+            else if(uiElement as Label != null)
+            {
+                (uiElement as Label).HorizontalAlignment = HorizontalAlignment.Center;
+                (uiElement as Label).VerticalAlignment = VerticalAlignment.Center;
+            }
         }
 
         //private static 

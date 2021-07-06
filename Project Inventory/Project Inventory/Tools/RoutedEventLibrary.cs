@@ -24,10 +24,10 @@ namespace Project_Inventory.Tools
             int i = 0;
 
             if (updateIdEvent != null) { i++; }
-            if (resetPageEvent != null) { i++; }
             if (optionalEventOne != null) { i++; }
             if (optionalEventTwo != null) { i++; }
             if (optionalEventThree != null) { i++; }
+            if (resetPageEvent != null) { i++; }
             if (changePageEvent != null) { i++; }
 
             RoutedEventHandler[] routedEventHandlers = new RoutedEventHandler[i];
@@ -35,10 +35,10 @@ namespace Project_Inventory.Tools
             i = 0;
 
             if (updateIdEvent != null) { routedEventHandlers[i] = updateIdEvent; i++; }
-            if (resetPageEvent != null) { routedEventHandlers[i] = resetPageEvent; i++; }
             if (optionalEventOne != null) { routedEventHandlers[i] = optionalEventOne; i++; }
             if (optionalEventTwo != null) { routedEventHandlers[i] = optionalEventTwo; i++; }
             if (optionalEventThree != null) { routedEventHandlers[i] = optionalEventThree; i++; }
+            if (resetPageEvent != null) { routedEventHandlers[i] = resetPageEvent; i++; }
             if (changePageEvent != null) { routedEventHandlers[i] = changePageEvent; }
 
             return routedEventHandlers;
