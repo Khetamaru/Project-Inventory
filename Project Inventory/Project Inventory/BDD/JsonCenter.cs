@@ -8,22 +8,23 @@ namespace Project_Inventory.Tools
     {
         public static string ObjectJsonBuilder(Data[] dataTab)
         {
-            string json = "{";
+            string json = "[";
 
             foreach(Data data in dataTab)
             {
-                json += "{ " + ObjectJsonBuilder(data) + "},";
+                json += ObjectJsonBuilder(data) + ", ";
             }
 
-            json += "}";
+            json.Remove(json.Length - 1, 1);
+
+            json += "]";
 
             return json;
         }
 
         public static string ObjectJsonBuilder(Data data)
         {
-            string json = "\"DataText\":" + "\"" + data.DataText + "\"" + "," +
-                          "\"DataType\":" + "\"" + data.DataType + "\"";
+            string json = data.ToJson();
 
             return json;
         }

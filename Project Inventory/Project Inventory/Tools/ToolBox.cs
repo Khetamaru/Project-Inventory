@@ -1,6 +1,7 @@
 ﻿using Project_Inventory.BDD;
 using Project_Inventory.Tools;
 using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -502,8 +503,15 @@ namespace Project_Inventory
             int j;
             int k = 0;
 
-            int rowNb = grid.RowDefinitions.Count;
+            int rowNb = grid.RowDefinitions.Count - 1;
             int columnNb = grid.ColumnDefinitions.Count;
+
+            string[] addElemString = new string[columnNb];
+
+            for (i = 0; i < addElemString.Length; i++)
+            {
+                addElemString[i] = string.Empty;
+            }
 
             for (i = 0; i < rowNb; i++)
             {
@@ -529,6 +537,11 @@ namespace Project_Inventory
                         }
                     }
                 }
+            }
+
+            for (int l = 0; l < addElemString.Length; l++)
+            {
+                CreateTabCellToGrid(grid, addElemString[l], indicTab[0, l], rowNb + 1, l, stringSkin, skinPosition);
             }
         }
 
@@ -872,47 +885,92 @@ namespace Project_Inventory
             }
         }
 
-        public void GetUIElements(Grid grid, Data[] data, string[,] indicationTab)
+        public List<int> GetUIElements(Grid grid, Data[] data, string[,] indicationTab)
         {
             int rowNb = data.Length;
             int columnNb = data[0].DataText.Length;
 
             int k = 0;
 
-            string dataText;
-
-            
-                dataText = string.Empty;
+            string[] dataText;
+            List<int> changesList = new List<int>();
 
             for ( int i = 0; i < rowNb; i++) 
             {
+                dataText = new string[columnNb];
+
                 for ( int j = 0 ; j < columnNb ; j++ )
                 {
 
                     if (indicationTab[i, j] == UIElementsName.TextBox.ToString())
                     {
 
-                        data[i].DataText[j] = (grid.Children[k] as TextBox).Text;
+                        dataText[j] = (grid.Children[k] as TextBox).Text;
                     }
-                    else if (indicationTab[i, j] == UIElementsName.TextBox.ToString())
+                    else if (indicationTab[i, j] == UIElementsName.TextBoxNumber.ToString())
                     {
 
-                        data[i].DataText[j] = (grid.Children[k] as TextBox).Text;
+                        dataText[j] = (grid.Children[k] as TextBox).Text;
                     }
-                    else if (indicationTab[i, j] == UIElementsName.TextBox.ToString())
+                    else if (indicationTab[i, j] == UIElementsName.DatePicker.ToString())
                     {
 
-                        data[i].DataText[j] = (grid.Children[k] as DatePicker).Text;
+                        dataText[j] = (grid.Children[k] as DatePicker).Text;
                     }
-                    else if (indicationTab[i, j] == UIElementsName.TextBox.ToString())
+                    else if (indicationTab[i, j] == UIElementsName.ListBox.ToString())
                     {
 
-                        data[i].DataText[j] = (grid.Children[k] as ListBox).SelectedItem.ToString();
+                        dataText[j] = (grid.Children[k] as ListBox).SelectedItem.ToString();
                     }
 
                     k++;
                 }
+
+                if (dataText != data[i].DataText)
+                {
+                    changesList.Add(i);
+                    data[i].DataText = dataText;
+                }
             }
+
+            return changesList;
+        }
+
+        public bool OptionnalAdd(Grid grid, Data[] data, Data optionnalAdd)
+        {
+            int j = data.Length * data[0].DataText.Length;
+            bool trigger = false;
+
+            for (int i = 0; i < optionnalAdd.DataText.Length; i++)
+            {
+                if (optionnalAdd.DataType[i] == UIElementsName.TextBox.ToString())
+                {
+
+                    optionnalAdd.DataText[i] = (grid.Children[j + i] as TextBox).Text;
+                }
+                else if (optionnalAdd.DataType[i] == UIElementsName.TextBoxNumber.ToString())
+                {
+
+                    optionnalAdd.DataText[i] = (grid.Children[j + i] as TextBox).Text;
+                }
+                else if (optionnalAdd.DataType[i] == UIElementsName.DatePicker.ToString())
+                {
+
+                    optionnalAdd.DataText[i] = (grid.Children[j + i] as DatePicker).Text;
+                }
+                else if (optionnalAdd.DataType[i] == UIElementsName.ListBox.ToString())
+                {
+
+                    optionnalAdd.DataText[i] = (grid.Children[j + i] as ListBox).SelectedItem.ToString();
+                }
+
+                if (optionnalAdd.DataText[i] != string.Empty)
+                {
+                    trigger = true;
+                }
+            }
+
+            return trigger;
         }
     }
 }

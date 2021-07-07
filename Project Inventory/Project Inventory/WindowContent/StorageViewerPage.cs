@@ -1,5 +1,6 @@
 ﻿using Project_Inventory.BDD;
 using Project_Inventory.Tools;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -40,7 +41,7 @@ namespace Project_Inventory
 
             topSwitchEvents[0].resetPageEvent = reloadEvent;
             topSwitchEvents[0].optionalEventOne = new RoutedEventHandler((object sender, RoutedEventArgs e) => { SwitchStatus(sender, e); });
-            topSwitchEvents[1].changePageEvent = GetEventHandler(WindowsName.MainMenu);
+            topSwitchEvents[1].changePageEvent = GetEventHandler(WindowsName.StorageSelectionMenu);
 
             saveEvents = new RoutedEventLibrary[1];
             RoutedEventLibrariesInit(saveEvents);
@@ -122,7 +123,7 @@ namespace Project_Inventory
 
                     toolBox.CreateScrollableGridModfiable(centerGrid, capGrid,
                                          1, 1,
-                                         stringTab.GetLength(0), stringTab.GetLength(1),
+                                         stringTab.GetLength(0) + 1, stringTab.GetLength(1),
                                          SkinsName.BottomStretch, SkinsName.HeightEightPercent,
                                          SkinsName.Standart, SkinsName.Center,
                                          stringTab, indicTab);
@@ -152,8 +153,19 @@ namespace Project_Inventory
 
         private void SaveDatas(object sender, RoutedEventArgs e)
         {
-            toolBox.GetUIElements(capGrid, dataTab, indicTab);
-            requestCenter.PutRequest("DataLibraries", JsonCenter.ObjectJsonBuilder(dataTab));
+            List<int> changesList = toolBox.GetUIElements(capGrid, dataTab, indicTab);
+
+            Data optionnalAdd = new Data(42, actualStorageId, new string[dataTab[0].DataText.Length], dataTab[0].DataType, false);
+
+            if (toolBox.OptionnalAdd(capGrid, dataTab, optionnalAdd))
+            {
+                requestCenter.PostRequest("DataLibraries", optionnalAdd.ToJson());
+            }
+
+            foreach(int change in changesList)
+            {
+                requestCenter.PutRequest("DataLibraries/" + dataTab[change].id, dataTab[change].ToJsonId());
+            }
         }
     }
 }

@@ -27,7 +27,7 @@ namespace Local_API_Server.Controllers
 
         // GET: api/DataLibraries/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<DataLibrary>> GetDataLibrary(long id)
+        public async Task<ActionResult<DataLibrary>> GetDataLibrary(int id)
         {
             var DataLibrary = await _context.DataLibraries.FindAsync(id);
 
@@ -56,7 +56,7 @@ namespace Local_API_Server.Controllers
         // PUT: api/DataLibraries/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutDataLibrary(long id, DataLibrary DataLibrary)
+        public async Task<IActionResult> PutDataLibrary(int id, DataLibrary DataLibrary)
         {
             if (id != DataLibrary.Id)
             {
@@ -84,17 +84,6 @@ namespace Local_API_Server.Controllers
             return NoContent();
         }
 
-        // PUT: api/DataLibraries
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut]
-        public async Task<IActionResult> PutDataLibrary(IEnumerable<DataLibrary> DataLibrary)
-        {
-            _context.Entry(DataLibrary).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
         // POST: api/DataLibraries
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
@@ -108,7 +97,7 @@ namespace Local_API_Server.Controllers
 
         // DELETE: api/DataLibraries/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteDataLibrary(long id)
+        public async Task<IActionResult> DeleteDataLibrary(int id)
         {
             var DataLibrary = await _context.DataLibraries.FindAsync(id);
             if (DataLibrary == null)
