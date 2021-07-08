@@ -95,7 +95,7 @@ namespace Project_Inventory
                                          1, 1,
                                          stringTab.GetLength(0), stringTab.GetLength(1),
                                          SkinsName.BottomStretch, SkinsName.HeightNintyPercent,
-                                         SkinsName.Standart, SkinsName.Center,
+                                         SkinsName.Center,
                                          stringTab, indicTab);
                     break;
 
@@ -124,8 +124,8 @@ namespace Project_Inventory
                     toolBox.CreateScrollableGridModfiable(centerGrid, capGrid,
                                          1, 1,
                                          stringTab.GetLength(0) + 1, stringTab.GetLength(1),
-                                         SkinsName.BottomStretch, SkinsName.HeightEightPercent,
-                                         SkinsName.Standart, SkinsName.Center,
+                                         SkinsName.StretchStretch, SkinsName.HeightEightPercent,
+                                         SkinsName.Center,
                                          stringTab, indicTab);
                     break;
             }
@@ -157,14 +157,14 @@ namespace Project_Inventory
 
             Data optionnalAdd = new Data(42, actualStorageId, new string[dataTab[0].DataText.Length], dataTab[0].DataType, false);
 
-            if (toolBox.OptionnalAdd(capGrid, dataTab, optionnalAdd))
-            {
-                requestCenter.PostRequest("DataLibraries", optionnalAdd.ToJson());
-            }
-
             foreach(int change in changesList)
             {
                 requestCenter.PutRequest("DataLibraries/" + dataTab[change].id, dataTab[change].ToJsonId());
+            }
+
+            if (toolBox.OptionnalAdd(capGrid, dataTab, optionnalAdd))
+            {
+                requestCenter.PostRequest("DataLibraries", optionnalAdd.ToJson());
             }
         }
     }

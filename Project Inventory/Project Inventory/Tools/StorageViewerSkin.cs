@@ -15,7 +15,7 @@ namespace Project_Inventory.Tools
             }
         }
 
-        public static void LoadLabelSkinPosition(UIElement uiElement, SkinsName labelSkin)
+        public static void LoadSkinPosition(UIElement uiElement, SkinsName labelSkin)
         {
             switch (labelSkin)
             {
@@ -36,10 +36,10 @@ namespace Project_Inventory.Tools
                 (uiElement as TextBox).HorizontalAlignment = HorizontalAlignment.Center;
                 (uiElement as TextBox).VerticalAlignment = VerticalAlignment.Center;
             }
-            else if(uiElement as ListBox != null)
+            else if(uiElement as ComboBox != null)
             {
-                (uiElement as ListBox).HorizontalAlignment = HorizontalAlignment.Center;
-                (uiElement as ListBox).VerticalAlignment = VerticalAlignment.Center;
+                (uiElement as ComboBox).HorizontalAlignment = HorizontalAlignment.Center;
+                (uiElement as ComboBox).VerticalAlignment = VerticalAlignment.Center;
             }
             else if(uiElement as DatePicker != null)
             {
