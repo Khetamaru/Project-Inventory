@@ -30,7 +30,7 @@ namespace Project_Inventory
         {
             toolBox.SetUpGrid(topGrid, 1, 1, SkinsName.TopStretch, SkinsName.HeightOneTier);
 
-            toolBox.CreateButtonsToGridByTab(topGrid, topGridButtons, SkinsName.Standart, SkinsName.CenterCenter);
+            toolBox.CreateSwitchButtonsToGridByTab(topGrid, topGridButtons, SkinsName.Standart, SkinsName.CenterCenter);
         }
 
         public new void BottomGridInit(Grid bottomGrid)

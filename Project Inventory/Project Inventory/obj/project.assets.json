@@ -12,29 +12,21 @@
     ".NETFramework,Version=v4.7.2": []
   },
   "packageFolders": {
-    "C:\\Users\\Khetamaru\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {},
-    "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\": {}
+    "C:\\Users\\Anthony\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\ANTHONY\\PERSO\\Projet Inventaire\\Project-Inventory\\Project Inventory\\Project Inventory\\Project Inventory.csproj",
+      "projectUniqueName": "F:\\PROJECTS\\Project-Inventory\\Project Inventory\\Project Inventory\\Project Inventory.csproj",
       "projectName": "Project Inventory",
-      "projectPath": "C:\\ANTHONY\\PERSO\\Projet Inventaire\\Project-Inventory\\Project Inventory\\Project Inventory\\Project Inventory.csproj",
-      "packagesPath": "C:\\Users\\Khetamaru\\.nuget\\packages\\",
-      "outputPath": "C:\\ANTHONY\\PERSO\\Projet Inventaire\\Project-Inventory\\Project Inventory\\Project Inventory\\obj\\",
+      "projectPath": "F:\\PROJECTS\\Project-Inventory\\Project Inventory\\Project Inventory\\Project Inventory.csproj",
+      "packagesPath": "C:\\Users\\Anthony\\.nuget\\packages\\",
+      "outputPath": "F:\\PROJECTS\\Project-Inventory\\Project Inventory\\Project Inventory\\obj\\",
       "projectStyle": "PackageReference",
       "crossTargeting": true,
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
-        "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
-      ],
       "configFilePaths": [
-        "C:\\Users\\Khetamaru\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        "C:\\Users\\Anthony\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net472",
@@ -81,11 +73,11 @@
             "privateAssets": "none"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.204\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
       },
       "net472": {
         "targetAlias": "net472",
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.204\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
       }
     },
     "runtimes": {

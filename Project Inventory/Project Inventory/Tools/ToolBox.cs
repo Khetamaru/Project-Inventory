@@ -1,5 +1,7 @@
 ﻿using Project_Inventory.BDD;
 using Project_Inventory.Tools;
+using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -95,9 +97,9 @@ namespace Project_Inventory
             }
         }
 
-        private void LoadButtonSkin(Button button, SkinsName skinName) 
+        private void LoadButtonSkin(Button button, SkinsName skinName)
         {
-            switch(skinName) 
+            switch (skinName)
             {
                 case SkinsName.Standart:
                     ButtonSkins.StandartButtonSkin(button);
@@ -300,7 +302,7 @@ namespace Project_Inventory
             }
         }
 
-        public void CreateButtonsToGridByTab(Grid grid, string[] buttonsTab, SkinsName buttonsSkin, SkinsName skinPosition)
+        public void CreateSwitchButtonsToGridByTab(Grid grid, string[] buttonsTab, SkinsName buttonsSkin, SkinsName skinPosition)
         {
             int i;
             int j;
@@ -335,7 +337,7 @@ namespace Project_Inventory
             {
                 for (j = 0; j < columnNb; j++)
                 {
-                    if (buttonsTab.Length >= (i+1) * (j+1))
+                    if (buttonsTab.Length >= (i + 1) * (j + 1))
                     {
                         CreateSwitchButtonToGrid(grid, buttonsTab[k], routerTab[k], i, j, buttonsSkin, skinPosition);
                         k++;
@@ -405,14 +407,14 @@ namespace Project_Inventory
             Label label;
             UIElement uIElement;
             int i = 0;
-            
+
             grid.ColumnDefinitions[0].Width = new GridLength(windowWidth * 0.2, GridUnitType.Pixel);
             grid.ColumnDefinitions[1].Width = new GridLength(windowWidth * 0.8, GridUnitType.Pixel);
 
             foreach (UIElementsName name in formElements)
             {
                 label = new Label();
-                FormSkin.LabelSkin(label, labels[i]);
+                UIElementSkin.LabelSkinForm(label, labels[i]);
                 Grid.SetRow(label, i);
                 Grid.SetColumn(label, 0);
                 grid.Children.Add(label);
@@ -422,7 +424,7 @@ namespace Project_Inventory
                     case (UIElementsName.TextBox):
 
                         uIElement = new TextBox();
-                        FormSkin.TextBoxSkin(uIElement as TextBox);
+                        UIElementSkin.TextBoxSkinForm(uIElement as TextBox);
                         Grid.SetRow(uIElement, i);
                         Grid.SetColumn(uIElement, 1);
                         grid.Children.Add(uIElement as TextBox);
@@ -432,8 +434,8 @@ namespace Project_Inventory
                     case (UIElementsName.TextBoxNumber):
 
                         uIElement = new TextBox();
-                        FormSkin.TextBoxSkin(uIElement as TextBox);
-                        FormSkin.TextBoxNumberSkin(uIElement as TextBox);
+                        UIElementSkin.TextBoxSkinForm(uIElement as TextBox);
+                        UIElementSkin.TextBoxNumberSkinForm(uIElement as TextBox);
                         Grid.SetRow(uIElement, i);
                         Grid.SetColumn(uIElement, 1);
                         grid.Children.Add(uIElement as TextBox);
@@ -443,28 +445,28 @@ namespace Project_Inventory
                     case (UIElementsName.DatePicker):
 
                         uIElement = new DatePicker();
-                        FormSkin.DatePickerSkin(uIElement as DatePicker);
+                        UIElementSkin.DatePickerSkinForm(uIElement as DatePicker);
                         Grid.SetRow(uIElement, i);
                         Grid.SetColumn(uIElement, 1);
                         grid.Children.Add(uIElement as DatePicker);
 
                         break;
 
-                    case (UIElementsName.ListBox):
+                    case (UIElementsName.ComboBox):
 
-                        uIElement = new ListBox();
+                        uIElement = new ComboBox();
 
-                        switch(listBoxName)
+                        switch (listBoxName)
                         {
                             case ListBoxNames.UIElementsType:
-                                string[] listBoxStrings = listBoxStrings = new string[] { "TextBox", "TextBoxNumber", "DatePicker", "ListBox" };
-                                FormSkin.ListBoxSkin(uIElement as ListBox, listBoxStrings);
+                                string[] comboBoxStrings = comboBoxStrings = new string[] { "TextBox", "TextBoxNumber", "DatePicker", "ComboBox" };
+                                UIElementSkin.ComboBoxSkinForm(uIElement as ComboBox, comboBoxStrings);
                                 break;
                         }
 
                         Grid.SetRow(uIElement, i);
                         Grid.SetColumn(uIElement, 1);
-                        grid.Children.Add(uIElement as ListBox);
+                        grid.Children.Add(uIElement as ComboBox);
 
                         break;
                 }
@@ -473,7 +475,7 @@ namespace Project_Inventory
             }
         }
 
-        public void CreateTabToGrid(Grid grid, string[,] stringTab, string[,] indicTab, SkinsName stringSkin, SkinsName skinPosition)
+        public void CreateTabToGrid(Grid grid, string[,] stringTab, SkinsName skinPosition)
         {
             int i;
             int j;
@@ -488,20 +490,150 @@ namespace Project_Inventory
                 {
                     if (stringTab.Length >= (i + 1) * (j + 1))
                     {
-                        CreateTabCellToGrid(grid, stringTab[i, j], indicTab[i, j], i, j, stringSkin, skinPosition);
+                        CreateTabCellToGrid(grid, stringTab[i, j], i, j, skinPosition);
                         k++;
                     }
                 }
             }
         }
 
-        public void CreateTabCellToGrid(Grid grid, string text, string indication, int row, int column, SkinsName stringSkin, SkinsName skinPosition)
+        public void CreateTabToGrid(Grid grid, string[,] stringTab, string[,] indicTab, SkinsName skinPosition)
+        {
+            int i;
+            int j;
+            int k = 0;
+
+            int rowNb = grid.RowDefinitions.Count - 1;
+            int columnNb = grid.ColumnDefinitions.Count;
+
+            string[] addElemString = new string[columnNb];
+
+            for (i = 0; i < addElemString.Length; i++)
+            {
+                addElemString[i] = string.Empty;
+            }
+
+            for (i = 0; i < rowNb; i++)
+            {
+                if (i == 0)
+                {
+                    for (j = 0; j < columnNb; j++)
+                    {
+                        if (stringTab.Length >= (i + 1) * (j + 1))
+                        {
+                            CreateHeaderToGrid(grid, stringTab[i, j], i, j, skinPosition);
+                            k++;
+                        }
+                    }
+                }
+                else
+                {
+                    for (j = 0; j < columnNb; j++)
+                    {
+                        if (stringTab.Length >= (i + 1) * (j + 1))
+                        {
+                            CreateTabCellToGrid(grid, stringTab[i, j], indicTab[i, j], i, j, skinPosition);
+                            k++;
+                        }
+                    }
+                }
+            }
+
+            for (int l = 0; l < addElemString.Length; l++)
+            {
+                CreateTabCellToGrid(grid, addElemString[l], indicTab[0, l], rowNb + 1, l, skinPosition);
+            }
+        }
+
+        public void CreateTabCellToGrid(Grid grid, string text, string indication, int row, int column, SkinsName skinPosition)
+        {
+            if (indication == UIElementsName.DatePicker.ToString())
+            {
+                DatePicker uiElement = new DatePicker();
+                UIElementSkin.DatePickerSkinForm(uiElement);
+                if (text != "")
+                {
+                    uiElement.SelectedDate = DateTime.Parse(text);
+                }
+
+                UIElementSkin.DatePickerSkinModify(uiElement);
+                StorageViewerSkin.LoadSkinPosition(uiElement, skinPosition);
+
+                // insert potential clickEvent
+
+                Grid.SetRow(uiElement, row);
+                Grid.SetColumn(uiElement, column);
+
+                grid.Children.Add(uiElement);
+            }
+
+            if (indication == UIElementsName.TextBox.ToString())
+            {
+                TextBox uiElement = new TextBox();
+                uiElement.Text = text;
+
+                UIElementSkin.TextBoxSkinModify(uiElement);
+                StorageViewerSkin.LoadSkinPosition(uiElement, skinPosition);
+
+                // insert potential clickEvent
+
+                Grid.SetRow(uiElement, row);
+                Grid.SetColumn(uiElement, column);
+
+                grid.Children.Add(uiElement);
+            }
+
+            if (indication == UIElementsName.TextBoxNumber.ToString())
+            {
+                TextBox uiElement = new TextBox();
+                UIElementSkin.TextBoxNumberValidationHandler(uiElement);
+                uiElement.Text = text;
+
+                UIElementSkin.TextBoxNumberSkinModify(uiElement);
+                StorageViewerSkin.LoadSkinPosition(uiElement, skinPosition);
+
+                // insert potential clickEvent
+
+                Grid.SetRow(uiElement, row);
+                Grid.SetColumn(uiElement, column);
+
+                grid.Children.Add(uiElement);
+            }
+
+            if (indication == UIElementsName.ComboBox.ToString())
+            {
+                ComboBox uiElement = new ComboBox();
+                string[] comboBoxStrings = comboBoxStrings = new string[] { "TextBox", "TextBoxNumber", "DatePicker", "ComboBox" };
+                UIElementSkin.ComboBoxSkinForm(uiElement, comboBoxStrings);
+
+                if (text != null)
+                {
+                    uiElement.SelectedItem = text;
+                }
+                else
+                {
+                    uiElement.SelectedItem = uiElement.Items[0];
+                }
+
+                UIElementSkin.ComboBoxSkinModify(uiElement);
+                StorageViewerSkin.LoadSkinPosition(uiElement, skinPosition);
+
+                // insert potential clickEvent
+
+                Grid.SetRow(uiElement, row);
+                Grid.SetColumn(uiElement, column);
+
+                grid.Children.Add(uiElement);
+            }
+        }
+
+        public void CreateTabCellToGrid(Grid grid, string text, int row, int column, SkinsName skinPosition)
         {
             Label label = new Label();
             label.Content = text;
 
-            StorageViewerSkin.LoadLabelSkin(label, stringSkin);
-            StorageViewerSkin.LoadLabelSkinPosition(label, skinPosition);
+            UIElementSkin.LabelSkinModify(label);
+            StorageViewerSkin.LoadSkinPosition(label, skinPosition);
 
             // insert potential clickEvent
 
@@ -509,6 +641,20 @@ namespace Project_Inventory
             Grid.SetColumn(label, column);
 
             grid.Children.Add(label);
+        }
+
+        public void CreateHeaderToGrid(Grid grid, string text, int row, int column, SkinsName skinPosition)
+        {
+            TextBox textbox = new TextBox();
+            textbox.Text = text;
+
+            UIElementSkin.TextBoxSkinModify(textbox);
+            StorageViewerSkin.LoadSkinPosition(textbox, skinPosition);
+
+            Grid.SetRow(textbox, row);
+            Grid.SetColumn(textbox, column);
+
+            grid.Children.Add(textbox);
         }
 
         // Form //
@@ -579,9 +725,9 @@ namespace Project_Inventory
 
                             break;
 
-                        case (UIElementsName.ListBox):
+                        case (UIElementsName.ComboBox):
 
-                            uiReselt[j] = (element as ListBox).SelectedItem.ToString();
+                            uiReselt[j] = (element as ComboBox).SelectedItem.ToString();
 
                             break;
                     }
@@ -604,10 +750,10 @@ namespace Project_Inventory
                 {
                     case (UIElementsName.TextBox):
 
-                        for(j = 0; j < element.Length; j++)
+                        for (j = 0; j < element.Length; j++)
                         {
-                            if(element[j] == '~' || 
-                               element[j] == ',' || 
+                            if (element[j] == '~' ||
+                               element[j] == ',' ||
                                element[j] == '{' ||
                                element[j] == '}')
                             {
@@ -625,7 +771,7 @@ namespace Project_Inventory
 
                         break;
 
-                    case (UIElementsName.ListBox):
+                    case (UIElementsName.ComboBox):
 
                         break;
                 }
@@ -643,7 +789,7 @@ namespace Project_Inventory
 
         // StorageViewer //
 
-        public void CreateScrollableGrid(Grid grid, Grid embededGrid, int gridRowOne, int gridColumnOne, int gridRowTwo, int gridColumnTwo, SkinsName gridSkin, SkinsName skinHeight, SkinsName tabSkin, SkinsName tabPos, string[,] stringTab, string[,] indicTab)
+        public void CreateScrollableGrid(Grid grid, Grid embededGrid, int gridRowOne, int gridColumnOne, int gridRowTwo, int gridColumnTwo, SkinsName gridSkin, SkinsName skinHeight, SkinsName tabPos, string[,] stringTab, string[,] indicTab)
         {
             ScrollViewer scrollViewer = new ScrollViewer();
 
@@ -653,16 +799,31 @@ namespace Project_Inventory
 
             ScrollGridInit(embededGrid, gridRowTwo, gridColumnTwo, scrollViewer);
 
-            CreateTabToGrid(embededGrid, stringTab, indicTab, tabSkin, tabPos);
+            CreateTabToGrid(embededGrid, stringTab, tabPos);
+
+            EmbedScrollableGrid(grid, embededGrid, scrollViewer);
+        }
+
+        public void CreateScrollableGridModfiable(Grid grid, Grid embededGrid, int gridRowOne, int gridColumnOne, int gridRowTwo, int gridColumnTwo, SkinsName gridSkin, SkinsName skinHeight, SkinsName tabPos, string[,] stringTab, string[,] indicTab)
+        {
+            ScrollViewer scrollViewer = new ScrollViewer();
+
+            SetUpGrid(grid, gridRowOne, gridColumnOne, gridSkin, skinHeight);
+
+            SetUpNewGrid(embededGrid, gridRowTwo, gridColumnTwo, SkinsName.StretchStretch, skinHeight);
+
+            ScrollGridInit(embededGrid, gridRowTwo, gridColumnTwo, scrollViewer);
+
+            CreateTabToGrid(embededGrid, stringTab, indicTab, tabPos);
 
             EmbedScrollableGrid(grid, embededGrid, scrollViewer);
         }
 
         public void SetUpNewGrid(Grid grid,
-                               int rowNb,
-                               int columnNb,
-                               SkinsName skinName,
-                               SkinsName lengthName)
+                           int rowNb,
+                           int columnNb,
+                           SkinsName skinName,
+                           SkinsName lengthName)
         {
             CreateRowsInGrid(grid, rowNb);
             CreateColumnsInGrid(grid, columnNb);
@@ -684,23 +845,23 @@ namespace Project_Inventory
 
             if (gridRowTwo > 6)
             {
-                if(gridColumnTwo > 9) 
-                { 
+                if (gridColumnTwo > 9)
+                {
                     ScrollViewerBoth(scrollViewer);
                 }
-                else 
-                { 
+                else
+                {
                     ScrollViewerVertical(scrollViewer);
                 }
             }
             else
             {
-                if (gridColumnTwo > 9) 
-                { 
+                if (gridColumnTwo > 9)
+                {
                     ScrollViewerHorizontal(scrollViewer);
                 }
-                else 
-                { 
+                else
+                {
                     ScrollViewerNoOne(scrollViewer);
                 }
             }
@@ -732,8 +893,8 @@ namespace Project_Inventory
 
         public void SetScrollGridWidth(Grid grid)
         {
-            foreach(ColumnDefinition column in grid.ColumnDefinitions) 
-            { 
+            foreach (ColumnDefinition column in grid.ColumnDefinitions)
+            {
                 GridSkins.ColumnHeightTenPercent(column, windowWidth);
             }
         }
@@ -751,6 +912,104 @@ namespace Project_Inventory
                     GridSkins.RowHeightFifteenPercent(row, windowHeight);
                 }
             }
+        }
+
+        public List<int> GetUIElements(Grid grid, Data[] data, string[,] indicationTab)
+        {
+            int rowNb = data.Length;
+            int columnNb = data[0].DataText.Length;
+
+            int k = 0;
+
+            string[] dataText;
+            List<int> changesList = new List<int>();
+            bool trigger;
+
+            for ( int i = 0; i < rowNb; i++) 
+            {
+                dataText = new string[columnNb];
+                trigger = false;
+
+                for ( int j = 0 ; j < columnNb ; j++ )
+                {
+                    if (i == 0)
+                    {
+                        dataText[j] = (grid.Children[k] as TextBox).Text;
+                    }
+                    else if (indicationTab[i, j] == UIElementsName.TextBox.ToString())
+                    {
+
+                        dataText[j] = (grid.Children[k] as TextBox).Text;
+                    }
+                    else if (indicationTab[i, j] == UIElementsName.TextBoxNumber.ToString())
+                    {
+
+                        dataText[j] = (grid.Children[k] as TextBox).Text;
+                    }
+                    else if (indicationTab[i, j] == UIElementsName.DatePicker.ToString())
+                    {
+
+                        dataText[j] = (grid.Children[k] as DatePicker).Text;
+                    }
+                    else if (indicationTab[i, j] == UIElementsName.ComboBox.ToString())
+                    {
+
+                        dataText[j] = (grid.Children[k] as ComboBox).SelectedItem.ToString();
+                    }
+
+                    if (dataText[j] != data[i].DataText[j])
+                    {
+                        trigger = true;
+                    }
+
+                    k++;
+                }
+
+                if (trigger)
+                {
+                    changesList.Add(i);
+                    data[i].DataText = dataText;
+                }
+            }
+
+            return changesList;
+        }
+
+        public bool OptionnalAdd(Grid grid, Data[] data, Data optionnalAdd)
+        {
+            int j = data.Length * data[0].DataText.Length;
+            bool trigger = false;
+
+            for (int i = 0; i < optionnalAdd.DataText.Length; i++)
+            {
+                if (optionnalAdd.DataType[i] == UIElementsName.TextBox.ToString())
+                {
+
+                    optionnalAdd.DataText[i] = (grid.Children[j + i] as TextBox).Text;
+                }
+                else if (optionnalAdd.DataType[i] == UIElementsName.TextBoxNumber.ToString())
+                {
+
+                    optionnalAdd.DataText[i] = (grid.Children[j + i] as TextBox).Text;
+                }
+                else if (optionnalAdd.DataType[i] == UIElementsName.DatePicker.ToString())
+                {
+
+                    optionnalAdd.DataText[i] = (grid.Children[j + i] as DatePicker).Text;
+                }
+                else if (optionnalAdd.DataType[i] == UIElementsName.ComboBox.ToString())
+                {
+
+                    optionnalAdd.DataText[i] = (grid.Children[j + i] as ComboBox).SelectedItem.ToString();
+                }
+
+                if (optionnalAdd.DataText[i] != string.Empty)
+                {
+                    trigger = true;
+                }
+            }
+
+            return trigger;
         }
     }
 }

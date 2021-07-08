@@ -60,7 +60,7 @@ namespace Project_Inventory
         public void formValidation(object sender, RoutedEventArgs e)
         {
             string[] uiElements = new string[capGrid.Children.Count / 2];
-            int i = 0;
+
             toolBox.GetUiElementResult(capGrid, uiElements, formElements);
 
             if (toolBox.FormResultValidation(uiElements, formElements))
@@ -144,9 +144,9 @@ namespace Project_Inventory
                     }
                     else
                     {
-                        if ((uIElement as ListBox).SelectedItem != null)
+                        if ((uIElement as ComboBox).SelectedItem != null)
                         {
-                            temp = (uIElement as ListBox).SelectedItem.ToString();
+                            temp = (uIElement as ComboBox).SelectedItem.ToString();
                         }
                         else
                         {
@@ -178,7 +178,7 @@ namespace Project_Inventory
                     }
                     else
                     {
-                        (capGrid.Children[i] as ListBox).SelectedItem = uIElementsNames[k].ToString();
+                        (capGrid.Children[i] as ComboBox).SelectedItem = uIElementsNames[k].ToString();
                         k++;
                     }
                 }
@@ -195,8 +195,8 @@ namespace Project_Inventory
                     return UIElementsName.TextBoxNumber;
                 case "DatePicker":
                     return UIElementsName.DatePicker;
-                case "ListBox":
-                    return UIElementsName.ListBox;
+                case "ComboBox":
+                    return UIElementsName.ComboBox;
             }
             return UIElementsName.TextBox;
         }
@@ -215,7 +215,7 @@ namespace Project_Inventory
                 i++;
             }
 
-            formElementsTemp[formElements.Length] = UIElementsName.ListBox;
+            formElementsTemp[formElements.Length] = UIElementsName.ComboBox;
             formElementsTemp[formElements.Length + 1] = UIElementsName.TextBox;
 
             labelsTemp[labels.Length] = "Information Type";
@@ -274,7 +274,7 @@ namespace Project_Inventory
                     formValidButton[0].optionalEventOne = new RoutedEventHandler((object sender, RoutedEventArgs e) => InitStorageReload(sender, e));
                     formValidButton[1].changePageEvent = GetEventHandler(WindowsName.StorageViewerPage);
 
-                    formElements = new UIElementsName[] { UIElementsName.ListBox, UIElementsName.TextBox };
+                    formElements = new UIElementsName[] { UIElementsName.ComboBox, UIElementsName.TextBox };
                     labels = new string[] { "Information Type", "Information Title" };
 
                     formValidButton[1].optionalEventOne = new RoutedEventHandler((object sender, RoutedEventArgs e) =>

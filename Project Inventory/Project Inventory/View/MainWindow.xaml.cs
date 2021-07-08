@@ -86,7 +86,9 @@ namespace Project_Inventory
             }
             else
             {
-                storageViewerPage = new StorageViewerPage(toolBox, router, requestCenter, actualStorageId, actualDataId);
+                RoutedEventHandler reloadEvent = new RoutedEventHandler((object sender, RoutedEventArgs e) => ReloadView(sender, e));
+
+                storageViewerPage = new StorageViewerPage(toolBox, router, requestCenter, actualStorageId, actualDataId, reloadEvent);
                 actualWindow = WindowsName.StorageViewerPage;
                 storageViewerPage.TopGridInit(topGrid);
                 storageViewerPage.CenterGridInit(centerGrid);
@@ -233,25 +235,26 @@ namespace Project_Inventory
         {
             switch (actualWindow)
             {
-                case (WindowsName.MainMenu):
+                case WindowsName.MainMenu:
                     mainMenu.TopGridInit(topGrid);
                     mainMenu.CenterGridInit(centerGrid);
                     mainMenu.BottomGridInit(bottomGrid);
                     break;
 
-                case (WindowsName.StorageSelectionMenu):
+                case WindowsName.StorageSelectionMenu:
                     storageSelectionMenu.TopGridInit(topGrid);
                     storageSelectionMenu.CenterGridInit(centerGrid);
                     storageSelectionMenu.BottomGridInit(bottomGrid);
                     break;
 
-                case (WindowsName.FormPage):
+                case WindowsName.FormPage:
                     formPage.TopGridInit(topGrid);
                     formPage.CenterGridInit(centerGrid);
                     formPage.BottomGridInit(bottomGrid);
                     break;
 
-                case (WindowsName.StorageViewerPage):
+                case WindowsName.StorageViewerPage:
+                    storageViewerPage.LoadBDDInfos();
                     storageViewerPage.TopGridInit(topGrid);
                     storageViewerPage.CenterGridInit(centerGrid);
                     storageViewerPage.BottomGridInit(bottomGrid);
