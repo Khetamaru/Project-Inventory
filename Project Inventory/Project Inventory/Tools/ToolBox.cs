@@ -9,15 +9,13 @@ namespace Project_Inventory
 {
     public class ToolBox
     {
-        private MainWindow context;
         private WpfScreen wpfScreen;
 
         private double windowWidth;
         private double windowHeight;
 
-        public ToolBox(MainWindow _context, double titleBarHeight)
+        public ToolBox(double titleBarHeight)
         {
-            context = _context;
             wpfScreen = new WpfScreen();
 
             windowWidth = wpfScreen.PrimaryScreenSizeWidth();
@@ -402,7 +400,7 @@ namespace Project_Inventory
             }
         }
 
-        public void CreateFormToGridByTab(Grid grid, UIElementsName[] formElements, string[] labels, ListBoxNames listBoxName)
+        public void CreateFormToGridByTab(Grid grid, UIElementsName[] formElements, string[] labels, ComboBoxNames listBoxName)
         {
             Label label;
             UIElement uIElement;
@@ -458,7 +456,7 @@ namespace Project_Inventory
 
                         switch (listBoxName)
                         {
-                            case ListBoxNames.UIElementsType:
+                            case ComboBoxNames.UIElementsType:
                                 string[] comboBoxStrings = comboBoxStrings = new string[] { "TextBox", "TextBoxNumber", "DatePicker", "ComboBox" };
                                 UIElementSkin.ComboBoxSkinForm(uIElement as ComboBox, comboBoxStrings);
                                 break;
@@ -603,7 +601,7 @@ namespace Project_Inventory
             if (indication == UIElementsName.ComboBox.ToString())
             {
                 ComboBox uiElement = new ComboBox();
-                string[] comboBoxStrings = comboBoxStrings = new string[] { "TextBox", "TextBoxNumber", "DatePicker", "ComboBox" };
+                string[] comboBoxStrings = new string[] { "TextBox", "TextBoxNumber", "DatePicker", "ComboBox" };
                 UIElementSkin.ComboBoxSkinForm(uiElement, comboBoxStrings);
 
                 if (text != null)
@@ -659,7 +657,7 @@ namespace Project_Inventory
 
         // Form //
 
-        public void CreateScrollableForm(Grid grid, Grid embededGrid, int gridRowOne, int gridColumnOne, int gridRowTwo, int gridColumnTwo, SkinsName gridSkin, SkinsName skinHeight, UIElementsName[] stringTab, string[] indicTab, ListBoxNames listBoxNames)
+        public void CreateScrollableForm(Grid grid, Grid embededGrid, int gridRowOne, int gridColumnOne, int gridRowTwo, int gridColumnTwo, SkinsName gridSkin, SkinsName skinHeight, UIElementsName[] stringTab, string[] indicTab, ComboBoxNames listBoxNames)
         {
             ScrollViewer scrollViewer = new ScrollViewer();
 

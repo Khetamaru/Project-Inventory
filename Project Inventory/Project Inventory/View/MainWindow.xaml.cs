@@ -31,7 +31,7 @@ namespace Project_Inventory
 
             titleBarHeight = SystemParameters.WindowCaptionHeight;
 
-            toolBox = new ToolBox(this, titleBarHeight);
+            toolBox = new ToolBox(titleBarHeight);
 
             router = InitRouters();
             requestCenter = new RequestCenter();

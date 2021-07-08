@@ -4,6 +4,9 @@ using System.Windows.Controls;
 
 namespace Project_Inventory
 {
+    /// <summary>
+    /// Mother class of pages class
+    /// </summary>
     public class WindowContent
     {
 
@@ -24,16 +27,28 @@ namespace Project_Inventory
             actualDataId = _actualDataId;
         }
 
+        /// <summary>
+        /// Dispay top part of the UI if exist
+        /// </summary>
+        /// <param name="topGrid"></param>
         public void TopGridInit(Grid topGrid)
         {
             toolBox.EmptyGrid(topGrid);
         }
 
+        /// <summary>
+        /// Dispay center part of the UI if exist
+        /// </summary>
+        /// <param name="centerGrid"></param>
         public void CenterGridInit(Grid centerGrid)
         {
             toolBox.EmptyGrid(centerGrid);
         }
 
+        /// <summary>
+        /// Dispay bottom part of the UI if exist
+        /// </summary>
+        /// <param name="bottomGrid"></param>
         public void BottomGridInit(Grid bottomGrid)
         {
             toolBox.EmptyGrid(bottomGrid);
@@ -49,6 +64,11 @@ namespace Project_Inventory
             return actualDataId;
         }
 
+        /// <summary>
+        /// Give stored procedure needed
+        /// </summary>
+        /// <param name="routerName"></param>
+        /// <returns></returns>
         public RoutedEventHandler GetEventHandler(WindowsName routerName)
         {
             var i = 0;
@@ -66,6 +86,14 @@ namespace Project_Inventory
             return null;
         }
 
+        /// <summary>
+        /// Adapt view about number of button to show
+        /// </summary>
+        /// <param name="grid"></param>
+        /// <param name="tabLength"></param>
+        /// <param name="widthLimit"></param>
+        /// <param name="skinName"></param>
+        /// <param name="lengthName"></param>
         public void ButtonPlacer(Grid grid, int tabLength, int widthLimit, SkinsName skinName, SkinsName lengthName)
         {
             int i;
@@ -89,6 +117,10 @@ namespace Project_Inventory
             toolBox.SetUpGrid(grid, j, i, skinName, lengthName);
         }
 
+        /// <summary>
+        /// Init all routed event libraries
+        /// </summary>
+        /// <param name="routedEventLibrary"></param>
         public void RoutedEventLibrariesInit(RoutedEventLibrary[] routedEventLibrary)
         {
             for( int i = 0 ; i < routedEventLibrary.Length ; i++)

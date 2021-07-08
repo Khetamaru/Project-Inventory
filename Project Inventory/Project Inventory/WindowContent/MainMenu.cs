@@ -3,6 +3,9 @@ using System.Windows.Controls;
 
 namespace Project_Inventory
 {
+    /// <summary>
+    /// Page to access all menus
+    /// </summary>
     public class MainMenu : WindowContent
     {
         private string[] topGridButtons;

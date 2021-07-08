@@ -1,5 +1,8 @@
 ﻿namespace Project_Inventory.BDD
 {
+    /// <summary>
+    /// Use to save Storage Objects Informations
+    /// </summary>
     public class Data : BDDObject
     {
         public int StorageId { get; set; }
@@ -25,16 +28,29 @@
             IsHeader = isHeader;
         }
 
+        /// <summary>
+        /// Convert Data to json without the Id
+        /// </summary>
+        /// <returns></returns>
         public string ToJson()
         {
             return "{\"storageId\":" + StorageId + ",\"dataText\":\"" + ToStringDataText() + "\",\"dataType\":\"" + ToStringDataType() + "\",\"isHeader\":\"" + IsHeader + "\"}";
         }
 
+
+        /// <summary>
+        /// Convert Data to json with the Id
+        /// </summary>
+        /// <returns></returns>
         public string ToJsonId()
         {
             return "{\"Id\":" + id + ",\"storageId\":" + StorageId + ",\"dataText\":\"" + ToStringDataText() + "\",\"dataType\":\"" + ToStringDataType() + "\",\"isHeader\":\"" + IsHeader + "\"}";
         }
 
+        /// <summary>
+        /// Convert Data Text to json
+        /// </summary>
+        /// <returns></returns>
         public string ToStringDataText()
         {
             string stg = "";
@@ -54,6 +70,10 @@
             return stg;
         }
 
+        /// <summary>
+        /// Convert Data Type to json
+        /// </summary>
+        /// <returns></returns>
         public string ToStringDataType()
         {
             string stg = "";

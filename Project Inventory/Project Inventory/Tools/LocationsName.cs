@@ -4,6 +4,9 @@ using System.Text;
 
 namespace Project_Inventory.Tools
 {
+    /// <summary>
+    /// Library of names of all type of positions used.
+    /// </summary>
     public enum SkinsName
     {
         TopLeft,

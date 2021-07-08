@@ -3,6 +3,9 @@ using System.Windows.Controls;
 
 namespace Project_Inventory
 {
+    /// <summary>
+    /// Class to set up button skin
+    /// </summary>
     public static class ButtonSkins
     {
 

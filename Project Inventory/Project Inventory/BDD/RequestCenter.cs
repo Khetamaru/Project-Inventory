@@ -5,6 +5,9 @@ using System.Text;
 
 namespace Project_Inventory.Tools
 {
+    /// <summary>
+    /// Define request's type
+    /// </summary>
     public enum HttpVerb
     {
         GET,
@@ -13,6 +16,9 @@ namespace Project_Inventory.Tools
         DELETE
     }
 
+    /// <summary>
+    /// Use to speak with the API
+    /// </summary>
     public class RequestCenter
     {
         public string http { get; set; }
@@ -28,7 +34,12 @@ namespace Project_Inventory.Tools
             httpMethod = HttpVerb.GET;
         }
 
-        public string MakeRequest(string json)
+        /// <summary>
+        /// Call the API with a json
+        /// </summary>
+        /// <param name="json"></param>
+        /// <returns></returns>
+        private string MakeRequest(string json)
         {
             string strResponseValue = string.Empty;
 
@@ -60,7 +71,11 @@ namespace Project_Inventory.Tools
             return strResponseValue;
         }
 
-        public string MakeRequest()
+        /// <summary>
+        /// Call the API without json
+        /// </summary>
+        /// <returns></returns>
+        private string MakeRequest()
         {
             string strResponseValue = string.Empty;
 

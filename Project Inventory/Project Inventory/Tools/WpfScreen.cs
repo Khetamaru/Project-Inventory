@@ -7,12 +7,25 @@ using Point = System.Windows.Point;
 
 namespace Project_Inventory
 {
+
+    /// <summary>
+    /// Class to obtain screen Width and Height to adapt the view
+    /// </summary>
     public class WpfScreen
     {
+        /// <summary>
+        /// Give a static result of screen's width. Function to delete later.
+        /// </summary>
+        /// <returns></returns>
         public double PrimaryScreenSizeWidth()
         {
             return 1280;
         }
+
+        /// <summary>
+        /// Give a static result of screen's height. Function to delete later.
+        /// </summary>
+        /// <returns></returns>
         public double PrimaryScreenSizeHeight()
         {
             return 720;

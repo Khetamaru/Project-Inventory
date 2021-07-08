@@ -4,8 +4,16 @@ using System.Windows;
 
 namespace Project_Inventory.Tools
 {
+    /// <summary>
+    /// Use to convert jsons and Objects between UI and API
+    /// </summary>
     static class JsonCenter
     {
+        /// <summary>
+        /// Convert a Tab of Datas to json
+        /// </summary>
+        /// <param name="dataTab"></param>
+        /// <returns></returns>
         public static string ObjectJsonBuilder(Data[] dataTab)
         {
             string json = "[";
@@ -22,6 +30,11 @@ namespace Project_Inventory.Tools
             return json;
         }
 
+        /// <summary>
+        /// Convert a Data to json
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
         public static string ObjectJsonBuilder(Data data)
         {
             string json = data.ToJson();
@@ -29,6 +42,11 @@ namespace Project_Inventory.Tools
             return json;
         }
 
+        /// <summary>
+        /// Convert a Storage to json
+        /// </summary>
+        /// <param name="storage"></param>
+        /// <returns></returns>
         public static string ObjectJsonBuilder(Storage storage)
         {
             string json = "\"Name\":" + "\"" + storage.Name + "\"";
@@ -36,11 +54,14 @@ namespace Project_Inventory.Tools
             return json;
         }
 
+        /// <summary>
+        /// Get all infos for the Storage Selection Menu
+        /// </summary>
+        /// <param name="requestCenter"></param>
+        /// <returns></returns>
         public static Storage[] LoadStorageSelectionInfos(RequestCenter requestCenter)
         {
             string responseBdd = requestCenter.GetRequest("StorageLibraries");
-
-            //string responseBdd = "[{\"id\":1,\"name\":\"walk dog\"},{\"id\":2,\"name\":\"walk dog\"},{\"id\":3,\"name\":\"walk dog\"},{\"id\":4,\"name\":\"walk dog\"},{\"id\":5,\"name\":\"walk dog\"}]";
 
             if (responseBdd == "[]")
             {
@@ -52,11 +73,15 @@ namespace Project_Inventory.Tools
             }
         }
 
+        /// <summary>
+        /// Get all infos for the Storage Viewer
+        /// </summary>
+        /// <param name="requestCenter"></param>
+        /// <param name="storageId"></param>
+        /// <returns></returns>
         public static Data[] LoadStorageViewerInfos(RequestCenter requestCenter, int storageId)
         {
             string responseBdd = requestCenter.GetRequest("DataLibraries/storage/" + storageId);
-
-            //string responseBdd = "[{\"id\":1,\"name\":\"walk dog\"},{\"id\":2,\"name\":\"walk dog\"},{\"id\":3,\"name\":\"walk dog\"},{\"id\":4,\"name\":\"walk dog\"},{\"id\":5,\"name\":\"walk dog\"}]";
 
             if (responseBdd == "[]")
             {
@@ -68,6 +93,12 @@ namespace Project_Inventory.Tools
             }
         }
 
+        /// <summary>
+        /// Set up rederection in all buttons of Storage Selection Menu
+        /// </summary>
+        /// <param name="length"></param>
+        /// <param name="eventHandler"></param>
+        /// <returns></returns>
         public static RoutedEventLibrary[] SetEventHandlerTab(int length, RoutedEventHandler eventHandler)
         {
             RoutedEventLibrary[] bottomSwitchEvents = new RoutedEventLibrary[length];
@@ -81,6 +112,12 @@ namespace Project_Inventory.Tools
             return bottomSwitchEvents;
         }
 
+        /// <summary>
+        /// Convert a json to a BDD Object
+        /// </summary>
+        /// <param name="stf"></param>
+        /// <param name="objectType"></param>
+        /// <returns></returns>
         private static BDDObject[] FormatToBDDObject(string stf, string objectType)
         {
             string[] splitTab = stf.Split(new string[] { ",{" }, StringSplitOptions.None);
@@ -110,6 +147,13 @@ namespace Project_Inventory.Tools
             return null;
         }
 
+        /// <summary>
+        /// Convert a json to Data
+        /// </summary>
+        /// <param name="stf"></param>
+        /// <param name="separators"></param>
+        /// <param name="data"></param>
+        /// <returns></returns>
         private static Data FormatObject(string stf, string[] separators, Data data)
         {
             int id = 42;
@@ -173,6 +217,13 @@ namespace Project_Inventory.Tools
             return data;
         }
 
+        /// <summary>
+        /// Convert a json to Storage
+        /// </summary>
+        /// <param name="stf"></param>
+        /// <param name="separators"></param>
+        /// <param name="storage"></param>
+        /// <returns></returns>
         private static Storage FormatObject(string stf, string[] separators, Storage storage)
         {
 

@@ -5,6 +5,9 @@ using System.Windows.Controls;
 
 namespace Project_Inventory
 {
+    /// <summary>
+    /// Page to create a storage or select one to see details of it
+    /// </summary>
     public class StorageSelectionMenu : WindowContent
     {
         private string[] topGridButtons;
@@ -29,6 +32,9 @@ namespace Project_Inventory
             widthLimit = 5;
         }
 
+        /// <summary>
+        /// Get all needed BDD infos
+        /// </summary>
         public void LoadBDDInfos()
         {
             bottomGridButtons = JsonCenter.LoadStorageSelectionInfos(requestCenter);
@@ -54,6 +60,10 @@ namespace Project_Inventory
             toolBox.CreateSwitchButtonsToGridByTab(bottomGrid, bottomGridButtons, bottomSwitchEvents, SkinsName.Standart, SkinsName.CenterCenter);
         }
 
+        /// <summary>
+        /// Insert the stored procedure in the button
+        /// </summary>
+        /// <param name="storageLibrary"></param>
         public void RoutedIdSetup(Storage[] storageLibrary)
         {
             var i = 0;
@@ -68,6 +78,12 @@ namespace Project_Inventory
             }
         }
 
+        /// <summary>
+        /// Load actuel storage id
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        /// <param name="id"></param>
         public void IDSetup(object sender, RoutedEventArgs e, int id)
         {
             actualStorageId = id;

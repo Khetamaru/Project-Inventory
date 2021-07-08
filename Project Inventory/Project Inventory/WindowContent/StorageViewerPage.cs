@@ -6,12 +6,18 @@ using System.Windows.Controls;
 
 namespace Project_Inventory
 {
+    /// <summary>
+    /// Page to see what is in a specific storage and interact with it
+    /// </summary>
     class StorageViewerPage : WindowContent
     {
         private string[] topGridButtons;
         private RoutedEventLibrary[] topSwitchEvents;
         private RoutedEventHandler reloadEvent;
 
+        /// <summary>
+        /// Use to know whitch is the current status of the page
+        /// </summary>
         private enum status {
             VIEWER,
             MODIFIER
@@ -54,6 +60,9 @@ namespace Project_Inventory
             LoadBDDInfos();
         }
 
+        /// <summary>
+        /// Get all needed BDD infos
+        /// </summary>
         public void LoadBDDInfos()
         {
             dataTab = JsonCenter.LoadStorageViewerInfos(requestCenter, actualStorageId);
@@ -131,6 +140,11 @@ namespace Project_Inventory
             }
         }
 
+        /// <summary>
+        /// Switch between the two modes
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SwitchStatus(object sender, RoutedEventArgs e)
         {
             switch(viewerStatus)
@@ -151,6 +165,11 @@ namespace Project_Inventory
             }
         }
 
+        /// <summary>
+        /// Apply changes indicated in the "Modify" mode
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SaveDatas(object sender, RoutedEventArgs e)
         {
             List<int> changesList = toolBox.GetUIElements(capGrid, dataTab, indicTab);
