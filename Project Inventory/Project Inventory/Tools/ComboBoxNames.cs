@@ -4,7 +4,10 @@ using System.Text;
 
 namespace Project_Inventory.Tools
 {
-    public enum ListBoxNames
+    /// <summary>
+    /// Library of names of all UIElements used.
+    /// </summary>
+    public enum ComboBoxNames
     {
         UIElementsType,
 

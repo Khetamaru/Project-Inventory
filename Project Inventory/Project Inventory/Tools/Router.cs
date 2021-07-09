@@ -3,6 +3,9 @@ using System.Windows;
 
 namespace Project_Inventory
 {
+    /// <summary>
+    /// Class to store all routing stored procedure
+    /// </summary>
     public class Router
     {
         public WindowsName[] routersName;

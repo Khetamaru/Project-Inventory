@@ -5,6 +5,9 @@ using System.Windows.Controls;
 
 namespace Project_Inventory
 {
+    /// <summary>
+    /// Page use to proceduraly generated forms
+    /// </summary>
     class FormPage : WindowContent
     {
         private string[] topGridButtons;
@@ -14,7 +17,7 @@ namespace Project_Inventory
         private UIElementsName[] formElements;
         private string[] labels;
         private WindowsName formType;
-        private ListBoxNames listBoxNames;
+        private ComboBoxNames listBoxNames;
 
         private int bottomColumnNb;
         private string[] bottomGridButtons;
@@ -57,6 +60,11 @@ namespace Project_Inventory
             toolBox.CreateSwitchButtonsToGridByTab(bottomGrid, bottomGridButtons, formValidButton, SkinsName.StandartLittleMargin, SkinsName.CenterCenter);
         }
 
+        /// <summary>
+        /// Verify all fields are correctly fill
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void formValidation(object sender, RoutedEventArgs e)
         {
             string[] uiElements = new string[capGrid.Children.Count / 2];
@@ -84,6 +92,10 @@ namespace Project_Inventory
             }
         }
 
+        /// <summary>
+        /// Creation of a storage at form validation
+        /// </summary>
+        /// <param name="storage"></param>
         public void AddStorage(Storage storage)
         {
             string json = storage.ToJson();
@@ -91,6 +103,10 @@ namespace Project_Inventory
             requestCenter.PostRequest("StorageLibraries", json);
         }
 
+        /// <summary>
+        /// Create the originale data line that define all the storage structure
+        /// </summary>
+        /// <param name="uIElements"></param>
         public void InitStorage(string[] uIElements)
         {
             UIElementsName[] uIElementsNames = new UIElementsName[formElements.Length / 2];
@@ -111,6 +127,11 @@ namespace Project_Inventory
             requestCenter.PostRequest("DataLibraries", json);
         }
 
+        /// <summary>
+        /// Add a column to storage structure
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void InitStorageReload(object sender, RoutedEventArgs e)
         {
             UIElementsName[] uIElementsNames = new UIElementsName[formElements.Length / 2];
@@ -126,6 +147,11 @@ namespace Project_Inventory
             InjectInitStorageUIElement(uIElementsNames, columnNames);
         }
 
+        /// <summary>
+        /// Give all elements filled in the form
+        /// </summary>
+        /// <param name="uIElementsNames"></param>
+        /// <param name="columnNames"></param>
         private void GetInitStorageUIElement(UIElementsName[] uIElementsNames, string[] columnNames)
         {
             int i = 0;
@@ -161,6 +187,11 @@ namespace Project_Inventory
             }
         }
 
+        /// <summary>
+        /// Inject infos in fields already filled
+        /// </summary>
+        /// <param name="uIElementsNames"></param>
+        /// <param name="columnNames"></param>
         private void InjectInitStorageUIElement(UIElementsName[] uIElementsNames, string[] columnNames)
         {
             int j = 0;
@@ -201,6 +232,9 @@ namespace Project_Inventory
             return UIElementsName.TextBox;
         }
 
+        /// <summary>
+        /// Extend of two the number of fields in the form
+        /// </summary>
         private void ExtendLengthInitStorage()
         {
             UIElementsName[] formElementsTemp = new UIElementsName[formElements.Length + 2];
@@ -225,13 +259,16 @@ namespace Project_Inventory
             labels = labelsTemp;
         }
 
+        /// <summary>
+        /// Use form type name to generate the good form
+        /// </summary>
         public void formConfiguration()
         {
             switch(formType)
             {
                 case (WindowsName.AddStorage):
 
-                    listBoxNames = ListBoxNames.None;
+                    listBoxNames = ComboBoxNames.None;
 
                     topGridButtons = new string[] { "Return" };
 
@@ -258,7 +295,7 @@ namespace Project_Inventory
 
                 case (WindowsName.InitStorage):
 
-                    listBoxNames = ListBoxNames.UIElementsType;
+                    listBoxNames = ComboBoxNames.UIElementsType;
 
                     topGridButtons = new string[] { "Return" };
 

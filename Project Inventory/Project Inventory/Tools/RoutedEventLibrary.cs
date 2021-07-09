@@ -3,6 +3,9 @@ using System.Windows.Controls;
 
 namespace Project_Inventory.Tools
 {
+    /// <summary>
+    /// Class to Stock All stored procedure of a button
+    /// </summary>
     public class RoutedEventLibrary
     {
         public RoutedEventHandler changePageEvent { get; set; }
@@ -19,6 +22,10 @@ namespace Project_Inventory.Tools
             resetPageEvent = null;
         }
 
+        /// <summary>
+        /// Prepare all stored procedure for insertion in the button
+        /// </summary>
+        /// <returns></returns>
         private RoutedEventHandler[] LibraryToTab()
         {
             int i = 0;
@@ -44,6 +51,10 @@ namespace Project_Inventory.Tools
             return routedEventHandlers;
         }
 
+        /// <summary>
+        /// Insert all stored procedure in the button
+        /// </summary>
+        /// <param name="button"></param>
         public void EventInjection(Button button)
         {
             RoutedEventHandler[] routedEventHandlers = LibraryToTab();

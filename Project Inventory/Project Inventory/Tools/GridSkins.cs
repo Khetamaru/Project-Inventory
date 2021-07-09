@@ -4,6 +4,9 @@ using System.Windows.Media;
 
 namespace Project_Inventory
 {
+    /// <summary>
+    /// Class to set up skin of grids
+    /// </summary>
     public static class GridSkins
     {
         static double tierMultiplier = 3.07;

@@ -5,16 +5,11 @@ namespace Project_Inventory.Tools
 {
     public static class StorageViewerSkin
     {
-        public static void LoadLabelSkin(UIElement uiElement, SkinsName labelSkin)
-        {
-            switch(labelSkin)
-            {
-                case (SkinsName.Standart):
-                    StandartLabel(uiElement);
-                    break;
-            }
-        }
-
+        /// <summary>
+        /// Apply UIElement Position in Grid
+        /// </summary>
+        /// <param name="uiElement"></param>
+        /// <param name="labelSkin"></param>
         public static void LoadSkinPosition(UIElement uiElement, SkinsName labelSkin)
         {
             switch (labelSkin)
@@ -25,10 +20,10 @@ namespace Project_Inventory.Tools
             }
         }
 
-        private static void StandartLabel(UIElement uiElement)
-        {
-        }
-
+        /// <summary>
+        /// Set UIElement Position to Center
+        /// </summary>
+        /// <param name="uiElement"></param>
         private static void Center(UIElement uiElement)
         {
             if (uiElement as TextBox != null)
@@ -52,7 +47,5 @@ namespace Project_Inventory.Tools
                 (uiElement as Label).VerticalAlignment = VerticalAlignment.Center;
             }
         }
-
-        //private static 
     }
 }
