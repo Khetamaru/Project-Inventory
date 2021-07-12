@@ -19,7 +19,7 @@ namespace Project_Inventory
         /// <returns></returns>
         public double PrimaryScreenSizeWidth()
         {
-            return 1280;
+            return SystemParameters.WorkArea.Width;
         }
 
         /// <summary>
@@ -28,7 +28,7 @@ namespace Project_Inventory
         /// <returns></returns>
         public double PrimaryScreenSizeHeight()
         {
-            return 720;
+            return SystemParameters.WorkArea.Height;
         }
 
         /*public static IEnumerable<WpfScreen> AllScreens()

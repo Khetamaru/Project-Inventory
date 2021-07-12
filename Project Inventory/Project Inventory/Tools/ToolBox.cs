@@ -14,8 +14,8 @@ namespace Project_Inventory
     {
         private WpfScreen wpfScreen;
 
-        private double windowWidth;
-        private double windowHeight;
+        public double windowWidth;
+        public double windowHeight;
 
         public ToolBox(double titleBarHeight)
         {
