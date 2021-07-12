@@ -33,6 +33,9 @@ namespace Project_Inventory
 
             toolBox = new ToolBox(titleBarHeight);
 
+            Width = toolBox.windowWidth;
+            Height = toolBox.windowHeight;
+
             router = InitRouters();
             requestCenter = new RequestCenter();
 
