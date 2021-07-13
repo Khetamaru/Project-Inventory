@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace Project_Inventory
 {
@@ -49,6 +51,74 @@ namespace Project_Inventory
         }
 
         /// <summary>
+        /// Generate UIElement Button image without any event on click
+        /// </summary>
+        /// <param name="content"></param>
+        /// <param name="skinName"></param>
+        /// <param name="skinPosition"></param>
+        /// <returns></returns>
+        public Button CreateButton(ImagesName imagesName,
+                                   SkinsName skinName,
+                                   SkinsName skinPosition,
+                                   ImageSizesName imageSizesName)
+        {
+            Button temp = new Button();
+            string startupPath = Environment.CurrentDirectory;
+
+            switch (imageSizesName)
+            {
+                case ImageSizesName.Small:
+
+                    temp.Content = new Image
+                    {
+                        Source = new BitmapImage(new Uri(startupPath + "..\\..\\..\\..\\Images\\" + imagesName.ToString() + ".png", UriKind.Absolute)),
+                        Stretch = Stretch.Fill,
+                        Height = 32,
+                        Width = 32
+                    };
+                    break;
+                case ImageSizesName.Medium:
+
+                    temp.Content = new Image
+                    {
+                        Source = new BitmapImage(new Uri(startupPath + "..\\..\\..\\..\\Images\\" + imagesName.ToString() + ".png", UriKind.Absolute)),
+                        Stretch = Stretch.Fill,
+                        Height = 64,
+                        Width = 64
+                    };
+                    break;
+                case ImageSizesName.Large:
+
+                    temp.Content = new Image
+                    {
+                        Source = new BitmapImage(new Uri(startupPath + "..\\..\\..\\..\\Images\\" + imagesName.ToString() + ".png", UriKind.Absolute)),
+                        Stretch = Stretch.Fill,
+                        Height = 128,
+                        Width = 128
+                    };
+                    break;
+                case ImageSizesName.Logo:
+
+                    temp.Content = new Image
+                    {
+                        Source = new BitmapImage(new Uri(startupPath + "..\\..\\..\\..\\Images\\" + imagesName.ToString() + ".png", UriKind.Absolute)),
+                        Stretch = Stretch.Fill,
+                        Height = 256,
+                        Width = 256
+                    };
+                    break;
+            }
+
+
+            LoadButtonPosition(temp, skinPosition);
+            LoadButtonSkin(temp, skinName);
+            temp.BorderBrush = new SolidColorBrush(Colors.Transparent);
+            temp.Background = new SolidColorBrush(Colors.Transparent);
+
+            return temp;
+        }
+
+        /// <summary>
         /// Generate UIElement Button with event(s) on click
         /// </summary>
         /// <param name="content"></param>
@@ -62,6 +132,26 @@ namespace Project_Inventory
                                          SkinsName skinPosition)
         {
             Button temp = CreateButton(content, skinName, skinPosition);
+            AddOnClickButton(temp, router);
+
+            return temp;
+        }
+
+        /// <summary>
+        /// Generate UIElement Button image with event(s) on click
+        /// </summary>
+        /// <param name="content"></param>
+        /// <param name="router"></param>
+        /// <param name="skinName"></param>
+        /// <param name="skinPosition"></param>
+        /// <returns></returns>
+        public Button CreateSwitchButtonImage(ImagesName imagesName,
+                                         RoutedEventLibrary router,
+                                         SkinsName skinName,
+                                         SkinsName skinPosition,
+                                         ImageSizesName imageSizesName)
+        {
+            Button temp = CreateButton(imagesName, skinName, skinPosition, imageSizesName);
             AddOnClickButton(temp, router);
 
             return temp;
@@ -649,14 +739,14 @@ namespace Project_Inventory
         /// <param name="stringTab"></param>
         /// <param name="indicTab"></param>
         /// <param name="skinPosition"></param>
-        public void CreateTabToGrid(Grid grid, string[,] stringTab, string[,] indicTab, SkinsName skinPosition)
+        public void CreateTabToGrid(Grid grid, string[,] stringTab, string[,] indicTab, SkinsName skinPosition, List<Button> buttonList)
         {
             int i;
             int j;
             int k = 0;
 
             int rowNb = grid.RowDefinitions.Count - 1;
-            int columnNb = grid.ColumnDefinitions.Count;
+            int columnNb = grid.ColumnDefinitions.Count - 1;
 
             string[] addElemString = new string[columnNb];
 
@@ -673,18 +763,22 @@ namespace Project_Inventory
                     {
                         if (stringTab.Length >= (i + 1) * (j + 1))
                         {
-                            CreateHeaderToGrid(grid, stringTab[i, j], i, j, skinPosition);
+                            CreateHeaderToGrid(grid, stringTab[i, j], i, j + 1, skinPosition);
                             k++;
                         }
                     }
                 }
                 else
                 {
+                    Grid.SetRow(buttonList[i], i);
+                    Grid.SetColumn(buttonList[i], 0);
+                    grid.Children.Add(buttonList[i]);
+
                     for (j = 0; j < columnNb; j++)
                     {
                         if (stringTab.Length >= (i + 1) * (j + 1))
                         {
-                            CreateTabCellToGrid(grid, stringTab[i, j], indicTab[i, j], i, j, skinPosition);
+                            CreateTabCellToGrid(grid, stringTab[i, j], indicTab[i, j], i, j + 1, skinPosition);
                             k++;
                         }
                     }
@@ -693,7 +787,7 @@ namespace Project_Inventory
 
             for (int l = 0; l < addElemString.Length; l++)
             {
-                CreateTabCellToGrid(grid, addElemString[l], indicTab[0, l], rowNb + 1, l, skinPosition);
+                CreateTabCellToGrid(grid, addElemString[l], indicTab[0, l], rowNb + 1, l + 1, skinPosition);
             }
         }
 
@@ -1045,7 +1139,7 @@ namespace Project_Inventory
         /// <param name="tabPos"></param>
         /// <param name="stringTab"></param>
         /// <param name="indicTab"></param>
-        public void CreateScrollableGridModfiable(Grid grid, Grid embededGrid, int gridRowOne, int gridColumnOne, int gridRowTwo, int gridColumnTwo, SkinsName gridSkin, SkinsName skinHeight, SkinsName tabPos, string[,] stringTab, string[,] indicTab)
+        public void CreateScrollableGridModfiable(Grid grid, Grid embededGrid, int gridRowOne, int gridColumnOne, int gridRowTwo, int gridColumnTwo, SkinsName gridSkin, SkinsName skinHeight, SkinsName tabPos, string[,] stringTab, string[,] indicTab, List<Button> buttonList)
         {
             ScrollViewer scrollViewer = new ScrollViewer();
 
@@ -1055,7 +1149,7 @@ namespace Project_Inventory
 
             ScrollGridInit(embededGrid, gridRowTwo, gridColumnTwo, scrollViewer);
 
-            CreateTabToGrid(embededGrid, stringTab, indicTab, tabPos);
+            CreateTabToGrid(embededGrid, stringTab, indicTab, tabPos, buttonList);
 
             EmbedScrollableGrid(grid, embededGrid, scrollViewer);
         }

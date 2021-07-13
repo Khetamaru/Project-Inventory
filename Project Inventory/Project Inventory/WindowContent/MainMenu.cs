@@ -33,7 +33,11 @@ namespace Project_Inventory
         {
             toolBox.SetUpGrid(topGrid, 1, 1, SkinsName.TopStretch, SkinsName.HeightOneTier);
 
-            toolBox.CreateSwitchButtonsToGridByTab(topGrid, topGridButtons, SkinsName.Standart, SkinsName.CenterCenter);
+            //toolBox.CreateSwitchButtonsToGridByTab(topGrid, topGridButtons, SkinsName.Standart, SkinsName.CenterCenter);
+            Button button = toolBox.CreateSwitchButtonImage(ImagesName.logo, new RoutedEventLibrary(), SkinsName.Standart, SkinsName.CenterCenter, ImageSizesName.Logo);
+            Grid.SetRow(button, 0);
+            Grid.SetColumn(button, 0);
+            topGrid.Children.Add(button);
         }
 
         public new void BottomGridInit(Grid bottomGrid)

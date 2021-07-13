@@ -108,7 +108,7 @@ namespace Local_API_Server.Controllers
             _context.DataLibraries.Remove(DataLibrary);
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok();
         }
 
         private bool DataLibraryExists(long id)
