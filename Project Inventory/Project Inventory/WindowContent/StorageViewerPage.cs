@@ -3,6 +3,7 @@ using Project_Inventory.Tools;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 
 namespace Project_Inventory
 {
@@ -132,10 +133,11 @@ namespace Project_Inventory
 
                     toolBox.CreateScrollableGridModfiable(centerGrid, capGrid,
                                          1, 1,
-                                         stringTab.GetLength(0) + 1, stringTab.GetLength(1),
+                                         stringTab.GetLength(0) + 1, stringTab.GetLength(1) + 1,
                                          SkinsName.StretchStretch, SkinsName.HeightEightPercent,
                                          SkinsName.Center,
-                                         stringTab, indicTab);
+                                         stringTab, indicTab,
+                                         AddDeleteButtons());
                     break;
             }
         }
@@ -185,6 +187,67 @@ namespace Project_Inventory
             {
                 requestCenter.PostRequest("DataLibraries", optionnalAdd.ToJson());
             }
+        }
+
+        /// <summary>
+        /// Create buttons to add that delete selected data
+        /// </summary>
+        private List<Button> AddDeleteButtons()
+        {
+            List<Button> buttonList = new List<Button>();
+            Button tempButton;
+            RoutedEventLibrary tempRouter;
+
+            foreach(Data data in dataTab)
+            {
+                tempRouter = new RoutedEventLibrary();
+                tempRouter.optionalEventOne = new RoutedEventHandler((object sender, RoutedEventArgs e) =>
+                {
+                    DeleteData(sender, e, data.id);
+                });
+                tempRouter.resetPageEvent = reloadEvent;
+
+                tempButton = toolBox.CreateSwitchButtonImage(ImagesName.RedCross, tempRouter, SkinsName.Standart, SkinsName.CenterCenter, ImageSizesName.Small);
+                buttonList.Add(tempButton);
+            }
+
+            return buttonList;
+        }
+
+        /// <summary>
+        /// Stored procedure for data delete
+        /// </summary>
+        private void DeleteData(object sender, RoutedEventArgs e, int dataId)
+        {
+            if (ConfirmPopup())
+            {
+                requestCenter.DeleteRequest("DataLibraries/" + dataId);
+            }
+        }
+
+        private bool ConfirmPopup()
+        {
+            string sMessageBoxText = "Are you sure ?";
+            string sCaption = "Validation Pop Up";
+
+            MessageBoxButton btnMessageBox = MessageBoxButton.YesNoCancel;
+            MessageBoxImage icnMessageBox = MessageBoxImage.Warning;
+
+            MessageBoxResult rsltMessageBox = MessageBox.Show(sMessageBoxText, sCaption, btnMessageBox, icnMessageBox);
+
+            switch (rsltMessageBox)
+            {
+                case MessageBoxResult.Yes:
+                    return true;
+
+                case MessageBoxResult.No:
+                    break;
+
+                case MessageBoxResult.Cancel:
+                    break;
+            }
+
+            return false;
         }
     }
 }
