@@ -65,50 +65,36 @@ namespace Project_Inventory
             Button temp = new Button();
             string startupPath = Environment.CurrentDirectory;
 
+            int height = 0;
+            int width = 0;
+
             switch (imageSizesName)
             {
                 case ImageSizesName.Small:
 
-                    temp.Content = new Image
-                    {
-                        Source = new BitmapImage(new Uri(startupPath + "..\\..\\..\\..\\Images\\" + imagesName.ToString() + ".png", UriKind.Absolute)),
-                        Stretch = Stretch.Fill,
-                        Height = 32,
-                        Width = 32
-                    };
+                    height = width = 32;
                     break;
                 case ImageSizesName.Medium:
 
-                    temp.Content = new Image
-                    {
-                        Source = new BitmapImage(new Uri(startupPath + "..\\..\\..\\..\\Images\\" + imagesName.ToString() + ".png", UriKind.Absolute)),
-                        Stretch = Stretch.Fill,
-                        Height = 64,
-                        Width = 64
-                    };
+                    height = width = 64;
                     break;
                 case ImageSizesName.Large:
 
-                    temp.Content = new Image
-                    {
-                        Source = new BitmapImage(new Uri(startupPath + "..\\..\\..\\..\\Images\\" + imagesName.ToString() + ".png", UriKind.Absolute)),
-                        Stretch = Stretch.Fill,
-                        Height = 128,
-                        Width = 128
-                    };
+                    height = width = 128;
                     break;
                 case ImageSizesName.Logo:
 
-                    temp.Content = new Image
-                    {
-                        Source = new BitmapImage(new Uri(startupPath + "..\\..\\..\\..\\Images\\" + imagesName.ToString() + ".png", UriKind.Absolute)),
-                        Stretch = Stretch.Fill,
-                        Height = 256,
-                        Width = 256
-                    };
+                    height = width = 256;
                     break;
             }
 
+            temp.Content = new Image
+            {
+                Source = new BitmapImage(new Uri(startupPath + "..\\..\\..\\..\\Images\\" + imagesName.ToString() + ".png", UriKind.Absolute)),
+                Stretch = Stretch.Fill,
+                Height = height,
+                Width = width
+            };
 
             LoadButtonPosition(temp, skinPosition);
             LoadButtonSkin(temp, skinName);

@@ -8,7 +8,6 @@ namespace Project_Inventory
     /// </summary>
     public class MainMenu : WindowContent
     {
-        private string[] topGridButtons;
         private string[] bottomGridButtons;
         private RoutedEventLibrary[] switchEvents;
 
@@ -17,7 +16,6 @@ namespace Project_Inventory
         public MainMenu(ToolBox toolBox, Router _router, RequestCenter requestCenter, int _actualStorageId, int _actualDataId)
             : base(toolBox, _router, requestCenter, _actualStorageId, _actualDataId)
         {
-            topGridButtons = new string[] { "Logo Application" };
             bottomGridButtons = new string[] { "Storage Selection", "Formulaire Type", "Storage Viewer" };
 
             switchEvents = new RoutedEventLibrary[3];
