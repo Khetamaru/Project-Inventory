@@ -781,6 +781,45 @@ namespace Project_Inventory
         /// Create UIElements in the scroll grid
         /// </summary>
         /// <param name="grid"></param>
+        /// <param name="storageTab"></param>
+        /// <param name="skinPosition"></param>
+        public void CreateTabToGrid(Grid grid, Storage[] storageTab, SkinsName skinPosition)
+        {
+            int i = storageTab.Length;
+            int j = 1;
+            int k = 0;
+            while(i >= 5)
+            {
+                i -= 5;
+                j++;
+            }
+
+            int rowNb = j;
+
+            string addElemString = string.Empty;
+
+            for (i = 0; i < rowNb; i++)
+            {
+                for (j = 0; j < 5; j++)
+                {
+                    if (storageTab.Length > j + (i * 5))
+                    {
+                        CreateHeaderToGrid(grid, storageTab[j + (i * 5)].Name, i, j, skinPosition);
+                        k = j;
+                    }
+                }
+            }
+            k++;
+
+            if (k >= 5) { k = 0; }
+
+            CreateHeaderToGrid(grid, addElemString, rowNb, k, skinPosition);
+        }
+
+        /// <summary>
+        /// Create UIElements in the scroll grid
+        /// </summary>
+        /// <param name="grid"></param>
         /// <param name="text"></param>
         /// <param name="indication"></param>
         /// <param name="row"></param>
@@ -912,6 +951,37 @@ namespace Project_Inventory
             Grid.SetColumn(textbox, column);
 
             grid.Children.Add(textbox);
+        }
+
+        /// <summary>
+        /// Adapt view about number of button to show
+        /// </summary>
+        /// <param name="grid"></param>
+        /// <param name="tabLength"></param>
+        /// <param name="widthLimit"></param>
+        /// <param name="skinName"></param>
+        /// <param name="lengthName"></param>
+        public void ButtonPlacer(Grid grid, int tabLength, int widthLimit, SkinsName skinName, SkinsName lengthName)
+        {
+            int i;
+            int j = 1;
+
+            if (tabLength > widthLimit)
+            {
+                do
+                {
+                    i = widthLimit;
+                    j++;
+                    tabLength -= widthLimit;
+                }
+                while (tabLength > widthLimit);
+            }
+            else
+            {
+                i = tabLength;
+            }
+
+            SetUpGrid(grid, j, i, skinName, lengthName);
         }
 
         // Form //
@@ -1141,6 +1211,30 @@ namespace Project_Inventory
         }
 
         /// <summary>
+        /// Generate a scrollable grid to modify storages
+        /// </summary>
+        /// <param name="grid"></param>
+        /// <param name="embededGrid"></param>
+        /// <param name="gridRowTwo"></param>
+        /// <param name="gridColumnTwo"></param>
+        /// <param name="gridSkin"></param>
+        /// <param name="skinHeight"></param>
+        /// <param name="tabPos"></param>
+        /// <param name="stringTab"></param>
+        /// <param name="indicTab"></param>
+        /// <param name="buttonList"></param>
+        public void CreateScrollableGridModfiable(Grid grid, Grid embededGrid, int gridRowTwo, int gridColumnTwo, SkinsName tabPos, Storage[] stringTab)
+        {
+            ScrollViewer scrollViewer = new ScrollViewer();
+
+            ScrollGridInit(embededGrid, gridRowTwo, scrollViewer);
+
+            CreateTabToGrid(embededGrid, stringTab,  tabPos);
+
+            EmbedScrollableGrid(grid, embededGrid, scrollViewer);
+        }
+
+        /// <summary>
         /// Set up the grid that embed the scroll bar
         /// </summary>
         /// <param name="grid"></param>
@@ -1210,6 +1304,26 @@ namespace Project_Inventory
         }
 
         /// <summary>
+        /// Init the scroll grid
+        /// </summary>
+        /// <param name="gridRowTwo"></param>
+        /// <param name="scrollViewer"></param>
+        public void ScrollGridInit(Grid grid, int gridRowTwo, ScrollViewer scrollViewer)
+        {
+            //SetScrollGridWidth(grid, SkinsName.HeightTwentyPercent);
+            //SetScrollGridHeight(grid, SkinsName.HeightTwentyPercent);
+
+            if (gridRowTwo > 1)
+            {
+                ScrollViewerVertical(scrollViewer);
+            }
+            else
+            {
+                ScrollViewerNoOne(scrollViewer);
+            }
+        }
+
+        /// <summary>
         /// Init scroll bar verticaly and horizontaly
         /// </summary>
         /// <param name="scrollViewer"></param>
@@ -1262,6 +1376,29 @@ namespace Project_Inventory
         }
 
         /// <summary>
+        /// Set up scroll grid horizontal size
+        /// </summary>
+        /// <param name="grid"></param>
+        public void SetScrollGridWidth(Grid grid, SkinsName skinsName)
+        {
+            switch (skinsName)
+            {
+                case SkinsName.HeightTwentyPercent:
+                    foreach (ColumnDefinition column in grid.ColumnDefinitions)
+                    {
+                        GridSkins.ColumnHeightTwentyPercent(column, windowHeight);
+                    }
+                    break;
+                case SkinsName.HeightTenPercent:
+                    foreach (ColumnDefinition column in grid.ColumnDefinitions)
+                    {
+                        GridSkins.ColumnHeightTenPercent(column, windowHeight);
+                    }
+                    break;
+            }
+        }
+
+        /// <summary>
         /// Set up scroll grid vertical size
         /// </summary>
         /// <param name="grid"></param>
@@ -1281,6 +1418,35 @@ namespace Project_Inventory
         }
 
         /// <summary>
+        /// Set up scroll grid vertical size
+        /// </summary>
+        /// <param name="grid"></param>
+        public void SetScrollGridHeight(Grid grid, SkinsName skinsName)
+        {
+            switch(skinsName)
+            {
+                case SkinsName.HeightFifteenPercent:
+                    foreach (RowDefinition row in grid.RowDefinitions)
+                    {
+                        GridSkins.RowHeightFifteenPercent(row, windowHeight);
+                    }
+                    break;
+                case SkinsName.HeightTwentyPercent:
+                    foreach (RowDefinition row in grid.RowDefinitions)
+                    {
+                        GridSkins.RowHeightTwentyPercent(row, windowHeight);
+                    }
+                    break;
+                case SkinsName.HeightTenPercent:
+                    foreach (RowDefinition row in grid.RowDefinitions)
+                    {
+                        GridSkins.RowHeightTenPercent(row, windowHeight);
+                    }
+                    break;
+            }
+        }
+
+        /// <summary>
         /// get all UIElements result of modifiable tab in modify mode
         /// </summary>
         /// <param name="grid"></param>
@@ -1292,7 +1458,7 @@ namespace Project_Inventory
             int rowNb = data.Length;
             int columnNb = data[0].DataText.Length;
 
-            int k = 0;
+            int gridIndex = 0;
 
             string[] dataText;
             List<int> changesList = new List<int>();
@@ -1305,43 +1471,71 @@ namespace Project_Inventory
 
                 for ( int j = 0 ; j < columnNb ; j++ )
                 {
-                    if (i == 0)
+                    if (j != 0)
                     {
-                        dataText[j] = (grid.Children[k] as TextBox).Text;
-                    }
-                    else if (indicationTab[i, j] == UIElementsName.TextBox.ToString())
-                    {
+                        if (i == 0)
+                        {
+                            dataText[j] = (grid.Children[gridIndex] as TextBox).Text;
+                        }
+                        else if (indicationTab[i, j] == UIElementsName.TextBox.ToString())
+                        {
 
-                        dataText[j] = (grid.Children[k] as TextBox).Text;
-                    }
-                    else if (indicationTab[i, j] == UIElementsName.TextBoxNumber.ToString())
-                    {
+                            dataText[j] = (grid.Children[gridIndex] as TextBox).Text;
+                        }
+                        else if (indicationTab[i, j] == UIElementsName.TextBoxNumber.ToString())
+                        {
 
-                        dataText[j] = (grid.Children[k] as TextBox).Text;
-                    }
-                    else if (indicationTab[i, j] == UIElementsName.DatePicker.ToString())
-                    {
+                            dataText[j] = (grid.Children[gridIndex] as TextBox).Text;
+                        }
+                        else if (indicationTab[i, j] == UIElementsName.DatePicker.ToString())
+                        {
 
-                        dataText[j] = (grid.Children[k] as DatePicker).Text;
-                    }
-                    else if (indicationTab[i, j] == UIElementsName.ComboBox.ToString())
-                    {
+                            dataText[j] = (grid.Children[gridIndex] as DatePicker).Text;
+                        }
+                        else if (indicationTab[i, j] == UIElementsName.ComboBox.ToString())
+                        {
 
-                        dataText[j] = (grid.Children[k] as ComboBox).SelectedItem.ToString();
+                            dataText[j] = (grid.Children[gridIndex] as ComboBox).SelectedItem.ToString();
+                        }
+
+                        if (dataText[j] != data[i].DataText[j])
+                        {
+                            trigger = true;
+                        }
                     }
 
-                    if (dataText[j] != data[i].DataText[j])
-                    {
-                        trigger = true;
-                    }
-
-                    k++;
+                    gridIndex++;
                 }
 
                 if (trigger)
                 {
                     changesList.Add(i);
                     data[i].DataText = dataText;
+                }
+            }
+
+            return changesList;
+        }
+
+        /// <summary>
+        /// get all UIElements result of modifiable tab in modify mode
+        /// </summary>
+        /// <param name="grid"></param>
+        /// <param name="storage"></param>
+        /// <returns></returns>
+        public List<int> GetUIElements(Grid grid, Storage[] storage)
+        {
+            string text;
+            List<int> changesList = new List<int>();
+
+            for (int i = 0; i < storage.Length; i++)
+            {
+                text = (grid.Children[i] as TextBox).Text;
+
+                if (text != storage[i].Name)
+                {
+                    changesList.Add(i);
+                    storage[i].Name = text;
                 }
             }
 
@@ -1387,6 +1581,20 @@ namespace Project_Inventory
                 {
                     trigger = true;
                 }
+            }
+
+            return trigger;
+        }
+
+        public bool OptionnalAdd(Grid grid, Storage[] storage, Storage optionnalAdd)
+        {
+            bool trigger = false;
+
+            optionnalAdd.Name = (grid.Children[storage.Length] as TextBox).Text;
+
+            if (optionnalAdd.Name != string.Empty)
+            {
+                trigger = true;
             }
 
             return trigger;

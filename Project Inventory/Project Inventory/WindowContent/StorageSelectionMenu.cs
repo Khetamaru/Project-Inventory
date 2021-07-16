@@ -85,10 +85,12 @@ namespace Project_Inventory
             {
                 case status.VIEWER:
 
+                    LoadBDDInfos();
+
                     toolBox.SetUpGrid(bottomGrid, 1, 1, SkinsName.BottomStretch, SkinsName.HeightNintyPercent);
                     capGrid = new Grid();
 
-                    ButtonPlacer(capGrid, bottomGridButtons.Length, widthLimit, SkinsName.BottomStretch, SkinsName.HeightNintyPercent);
+                    toolBox.ButtonPlacer(capGrid, bottomGridButtons.Length, widthLimit, SkinsName.BottomStretch, SkinsName.HeightNintyPercent);
                     RoutedIdSetup(bottomGridButtons);
 
                     toolBox.CreateSwitchButtonsToGridByTab(capGrid, bottomGridButtons, bottomSwitchEvents, SkinsName.Standart, SkinsName.CenterCenter);
@@ -116,16 +118,17 @@ namespace Project_Inventory
 
                 case status.MODIFIER:
 
-                    //do_your_job;
+                    LoadBDDInfos();
 
                     toolBox.SetUpGrid(centerGrid, 1, 1, SkinsName.StretchStretch, SkinsName.HeightEightPercent);
                     capGrid = new Grid();
 
-                    ButtonPlacer(capGrid, bottomGridButtons.Length, widthLimit, SkinsName.BottomStretch, SkinsName.HeightEightPercent);
+                    toolBox.ButtonPlacer(capGrid, bottomGridButtons.Length, widthLimit, SkinsName.BottomStretch, SkinsName.HeightEightPercent);
                     RoutedIdSetup(bottomGridButtons);
 
-                    toolBox.CreateSwitchButtonsToGridByTab(capGrid, bottomGridButtons, bottomSwitchEvents, SkinsName.Standart, SkinsName.CenterCenter);
-                    centerGrid.Children.Add(capGrid);
+                    toolBox.CreateScrollableGridModfiable(centerGrid, capGrid, capGrid.RowDefinitions.Count, capGrid.ColumnDefinitions.Count, SkinsName.CenterCenter, bottomGridButtons);
+                    AddDeleteButtons();
+
                     break;
             }
         }
@@ -191,19 +194,104 @@ namespace Project_Inventory
         /// <param name="e"></param>
         private void SaveDatas(object sender, RoutedEventArgs e)
         {
-            /*List<int> changesList = toolBox.GetUIElements(capGrid, bottomGridButtons);
+            List<int> changesList = toolBox.GetUIElements(capGrid, bottomGridButtons);
 
             Storage optionnalAdd = new Storage(42, string.Empty);
 
             foreach (int change in changesList)
             {
-                requestCenter.PutRequest(BDDTabsName.DataLibraries.ToString() + "/" + bottomGridButtons[change].id, bottomGridButtons[change].ToJsonId());
+                requestCenter.PutRequest(BDDTabsName.StorageLibraries.ToString() + "/" + bottomGridButtons[change].id, bottomGridButtons[change].ToJsonId());
             }
 
             if (toolBox.OptionnalAdd(capGrid, bottomGridButtons, optionnalAdd))
             {
-                requestCenter.PostRequest(BDDTabsName.DataLibraries.ToString(), optionnalAdd.ToJson());
-            }*/
+                requestCenter.PostRequest(BDDTabsName.StorageLibraries.ToString(), optionnalAdd.ToJson());
+            }
+        }
+
+        /// <summary>
+        /// Create buttons to add that delete selected storage
+        /// </summary>
+        /// <returns></returns>
+        private void AddDeleteButtons()
+        {
+            List<Button> buttonList = new List<Button>();
+            Button tempButton;
+            RoutedEventLibrary tempRouter;
+
+            int i = bottomGridButtons.Length;
+            int j = 1;
+
+            while (i >= 5)
+            {
+                i -= 5;
+                j++;
+            }
+
+            int rowNb = j;
+
+            for (i = 0; i < rowNb; i++)
+            {
+                for (j = 0; j < 5; j++)
+                {
+                    if (bottomGridButtons.Length > j + (i * 5))
+                    {
+                        tempRouter = new RoutedEventLibrary();
+                        tempRouter.optionalEventOne = new RoutedEventHandler((object sender, RoutedEventArgs e) =>
+                        {
+                            DeleteData(sender, e, bottomGridButtons[j + (i * 5)].id);
+                        });
+                        tempRouter.resetPageEvent = reloadEvent;
+
+                        tempButton = toolBox.CreateSwitchButtonImage(ImagesName.RedCross, tempRouter, SkinsName.StandartLittleMargin, SkinsName.BottomCenter, ImageSizesName.Small);
+
+                        Grid.SetRow(tempButton, i);
+                        Grid.SetColumn(tempButton, j);
+
+                        capGrid.Children.Add(tempButton);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Stored procedure for storage delete
+        /// </summary>
+        private void DeleteData(object sender, RoutedEventArgs e, int dataId)
+        {
+            if (ConfirmPopup())
+            {
+                requestCenter.DeleteRequest(BDDTabsName.StorageLibraries.ToString() + "/" + dataId);
+            }
+        }
+
+        /// <summary>
+        /// A yes/no pop up to be sure user want to delete
+        /// </summary>
+        /// <returns></returns>
+        private bool ConfirmPopup()
+        {
+            string sMessageBoxText = "Are you sure ?";
+            string sCaption = "Validation Pop Up";
+
+            MessageBoxButton btnMessageBox = MessageBoxButton.YesNoCancel;
+            MessageBoxImage icnMessageBox = MessageBoxImage.Warning;
+
+            MessageBoxResult rsltMessageBox = MessageBox.Show(sMessageBoxText, sCaption, btnMessageBox, icnMessageBox);
+
+            switch (rsltMessageBox)
+            {
+                case MessageBoxResult.Yes:
+                    return true;
+
+                case MessageBoxResult.No:
+                    break;
+
+                case MessageBoxResult.Cancel:
+                    break;
+            }
+
+            return false;
         }
     }
 }

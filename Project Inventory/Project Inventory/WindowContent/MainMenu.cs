@@ -40,7 +40,7 @@ namespace Project_Inventory
 
         public new void BottomGridInit(Grid bottomGrid)
         {
-            ButtonPlacer(bottomGrid, bottomGridButtons.Length, widthLimit, SkinsName.BottomStretch, SkinsName.HeightTwoTier);
+            toolBox.ButtonPlacer(bottomGrid, bottomGridButtons.Length, widthLimit, SkinsName.BottomStretch, SkinsName.HeightTwoTier);
 
             toolBox.CreateSwitchButtonsToGridByTab(bottomGrid, bottomGridButtons, switchEvents, SkinsName.Standart, SkinsName.CenterCenter);
         }
