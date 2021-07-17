@@ -788,7 +788,7 @@ namespace Project_Inventory
             int i = storageTab.Length;
             int j = 1;
             int k = 0;
-            while(i >= 5)
+            while (i >= 5)
             {
                 i -= 5;
                 j++;
@@ -1211,30 +1211,6 @@ namespace Project_Inventory
         }
 
         /// <summary>
-        /// Generate a scrollable grid to modify storages
-        /// </summary>
-        /// <param name="grid"></param>
-        /// <param name="embededGrid"></param>
-        /// <param name="gridRowTwo"></param>
-        /// <param name="gridColumnTwo"></param>
-        /// <param name="gridSkin"></param>
-        /// <param name="skinHeight"></param>
-        /// <param name="tabPos"></param>
-        /// <param name="stringTab"></param>
-        /// <param name="indicTab"></param>
-        /// <param name="buttonList"></param>
-        public void CreateScrollableGridModfiable(Grid grid, Grid embededGrid, int gridRowTwo, int gridColumnTwo, SkinsName tabPos, Storage[] stringTab)
-        {
-            ScrollViewer scrollViewer = new ScrollViewer();
-
-            ScrollGridInit(embededGrid, gridRowTwo, scrollViewer);
-
-            CreateTabToGrid(embededGrid, stringTab,  tabPos);
-
-            EmbedScrollableGrid(grid, embededGrid, scrollViewer);
-        }
-
-        /// <summary>
         /// Set up the grid that embed the scroll bar
         /// </summary>
         /// <param name="grid"></param>
@@ -1300,26 +1276,6 @@ namespace Project_Inventory
                 {
                     ScrollViewerNoOne(scrollViewer);
                 }
-            }
-        }
-
-        /// <summary>
-        /// Init the scroll grid
-        /// </summary>
-        /// <param name="gridRowTwo"></param>
-        /// <param name="scrollViewer"></param>
-        public void ScrollGridInit(Grid grid, int gridRowTwo, ScrollViewer scrollViewer)
-        {
-            //SetScrollGridWidth(grid, SkinsName.HeightTwentyPercent);
-            //SetScrollGridHeight(grid, SkinsName.HeightTwentyPercent);
-
-            if (gridRowTwo > 1)
-            {
-                ScrollViewerVertical(scrollViewer);
-            }
-            else
-            {
-                ScrollViewerNoOne(scrollViewer);
             }
         }
 
@@ -1423,7 +1379,7 @@ namespace Project_Inventory
         /// <param name="grid"></param>
         public void SetScrollGridHeight(Grid grid, SkinsName skinsName)
         {
-            switch(skinsName)
+            switch (skinsName)
             {
                 case SkinsName.HeightFifteenPercent:
                     foreach (RowDefinition row in grid.RowDefinitions)
@@ -1456,65 +1412,112 @@ namespace Project_Inventory
         public List<int> GetUIElements(Grid grid, Data[] data, string[,] indicationTab)
         {
             int rowNb = data.Length;
-            int columnNb = data[0].DataText.Length;
+            int columnNb = data[0].DataText.Length + 1;
 
-            int gridIndex = 0;
+            List<Data> gridData = ConvertGridChildrenToDataList(grid, rowNb, columnNb, data[0].StorageId, data[0].DataType);
 
-            string[] dataText;
             List<int> changesList = new List<int>();
-            bool trigger;
+            bool trigger = false;
+            int i;
 
-            for ( int i = 0; i < rowNb; i++) 
+            for (i = 0; i < rowNb; i++)
             {
-                dataText = new string[columnNb];
                 trigger = false;
 
-                for ( int j = 0 ; j < columnNb ; j++ )
+                for (int j = 0; j < columnNb - 1; j++)
                 {
-                    if (j != 0)
+
+                    if (gridData[i].DataText[j] != data[i].DataText[j])
                     {
-                        if (i == 0)
-                        {
-                            dataText[j] = (grid.Children[gridIndex] as TextBox).Text;
-                        }
-                        else if (indicationTab[i, j] == UIElementsName.TextBox.ToString())
-                        {
-
-                            dataText[j] = (grid.Children[gridIndex] as TextBox).Text;
-                        }
-                        else if (indicationTab[i, j] == UIElementsName.TextBoxNumber.ToString())
-                        {
-
-                            dataText[j] = (grid.Children[gridIndex] as TextBox).Text;
-                        }
-                        else if (indicationTab[i, j] == UIElementsName.DatePicker.ToString())
-                        {
-
-                            dataText[j] = (grid.Children[gridIndex] as DatePicker).Text;
-                        }
-                        else if (indicationTab[i, j] == UIElementsName.ComboBox.ToString())
-                        {
-
-                            dataText[j] = (grid.Children[gridIndex] as ComboBox).SelectedItem.ToString();
-                        }
-
-                        if (dataText[j] != data[i].DataText[j])
-                        {
-                            trigger = true;
-                        }
+                        trigger = true;
                     }
-
-                    gridIndex++;
                 }
 
                 if (trigger)
                 {
                     changesList.Add(i);
-                    data[i].DataText = dataText;
+                    data[i].DataText = gridData[i].DataText;
                 }
             }
 
             return changesList;
+        }
+
+        /// <summary>
+        /// Convert Grid Children To list of data
+        /// </summary>
+        /// <param name="grid"></param>
+        /// <returns></returns>
+        public List<Data> ConvertGridChildrenToDataList(Grid grid, int rowNb, int columnNb, int storageId, string[] dataType)
+        {
+            List<Data> gridData = new List<Data>();
+            int j;
+            int k;
+            int gridIndex = 0;
+
+            string[] dataText;
+
+            for (int i = 0; i < rowNb; i++)
+            {
+                dataText = new string[columnNb];
+                k = 0;
+
+                for (j = 0; j < columnNb; j++)
+                {
+                    if (j != 0)
+                    {
+                        if (i == 0)
+                        {
+                            dataText[k] = (grid.Children[gridIndex] as TextBox).Text;
+                        }
+                        else
+                        {
+                            if (dataType[k] == UIElementsName.TextBox.ToString())
+                            {
+
+                                dataText[k] = (grid.Children[gridIndex] as TextBox).Text;
+                            }
+                            else if (dataType[k] == UIElementsName.TextBoxNumber.ToString())
+                            {
+
+                                dataText[k] = (grid.Children[gridIndex] as TextBox).Text;
+                            }
+                            else if (dataType[k] == UIElementsName.DatePicker.ToString())
+                            {
+
+                                dataText[k] = (grid.Children[gridIndex] as DatePicker).Text;
+                            }
+                            else if (dataType[k] == UIElementsName.ComboBox.ToString())
+                            {
+
+                                dataText[k] = (grid.Children[gridIndex] as ComboBox).SelectedItem.ToString();
+                            }
+                        }
+
+                        k++;
+                        gridIndex++;
+                    }
+                    else
+                    {
+                        if (i != 0)
+                        {
+                            gridIndex++;
+                        }
+                    }
+
+                }
+
+                if (i == 0)
+                {
+                    gridData.Add(new Data(storageId, dataText, dataType, true));
+                }
+                else
+                {
+                    gridData.Add(new Data(storageId, dataText, dataType, false));
+                }
+            }
+
+            return gridData;
         }
 
         /// <summary>
@@ -1551,7 +1554,7 @@ namespace Project_Inventory
         /// <returns></returns>
         public bool OptionnalAdd(Grid grid, Data[] data, Data optionnalAdd)
         {
-            int j = data.Length * data[0].DataText.Length;
+            int j = data.Length * data[0].DataText.Length + data.Length - 1;
             bool trigger = false;
 
             for (int i = 0; i < optionnalAdd.DataText.Length; i++)

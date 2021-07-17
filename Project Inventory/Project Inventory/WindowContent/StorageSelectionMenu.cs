@@ -123,10 +123,12 @@ namespace Project_Inventory
                     toolBox.SetUpGrid(centerGrid, 1, 1, SkinsName.StretchStretch, SkinsName.HeightEightPercent);
                     capGrid = new Grid();
 
-                    toolBox.ButtonPlacer(capGrid, bottomGridButtons.Length, widthLimit, SkinsName.BottomStretch, SkinsName.HeightEightPercent);
+                    toolBox.ButtonPlacer(capGrid, bottomGridButtons.Length + 1, widthLimit, SkinsName.BottomStretch, SkinsName.HeightEightPercent);
                     RoutedIdSetup(bottomGridButtons);
 
-                    toolBox.CreateScrollableGridModfiable(centerGrid, capGrid, capGrid.RowDefinitions.Count, capGrid.ColumnDefinitions.Count, SkinsName.CenterCenter, bottomGridButtons);
+                    toolBox.CreateTabToGrid(capGrid, bottomGridButtons, SkinsName.Center);
+                    centerGrid.Children.Add(capGrid);
+
                     AddDeleteButtons();
 
                     break;
@@ -243,7 +245,7 @@ namespace Project_Inventory
                         });
                         tempRouter.resetPageEvent = reloadEvent;
 
-                        tempButton = toolBox.CreateSwitchButtonImage(ImagesName.RedCross, tempRouter, SkinsName.StandartLittleMargin, SkinsName.BottomCenter, ImageSizesName.Small);
+                        tempButton = toolBox.CreateSwitchButtonImage(ImagesName.RedCross, tempRouter, SkinsName.StandartLittleMargin, SkinsName.CenterLeft, ImageSizesName.Small);
 
                         Grid.SetRow(tempButton, i);
                         Grid.SetColumn(tempButton, j);
