@@ -86,11 +86,11 @@ namespace Project_Inventory
 
         public new void TopGridInit(Grid topGrid)
         {
-            toolBox.SetUpGrid(topGrid, 1, 2, SkinsName.TopStretch, SkinsName.HeightTenPercent);
+            toolBox.SetUpGrid(topGrid, 1, 2, SkinLocation.TopStretch, SkinSize.HeightTenPercent);
 
             toolBox.CreateSwitchButtonsToGridByTab(topGrid, topGridButtons, topSwitchEvents,
-                                                   new SkinsName[] { SkinsName.StandartLittleMargin, SkinsName.StandartLittleMargin },
-                                                   new SkinsName[] { SkinsName.TopLeft, SkinsName.TopRight });
+                                                   new SkinName[] { SkinName.StandartLittleMargin, SkinName.StandartLittleMargin },
+                                                   new SkinLocation[] { SkinLocation.TopLeft, SkinLocation.TopRight });
         }
 
         public new void BottomGridInit(Grid bottomGrid)
@@ -104,15 +104,15 @@ namespace Project_Inventory
                     toolBox.CreateScrollableGrid(bottomGrid, capGrid,
                                          1, 1,
                                          stringTab.GetLength(0), stringTab.GetLength(1),
-                                         SkinsName.BottomStretch, SkinsName.HeightNintyPercent,
-                                         SkinsName.Center,
+                                         SkinLocation.BottomStretch, SkinSize.HeightNintyPercent,
+                                         SkinLocation.CenterCenter,
                                          stringTab, indicTab);
                     break;
 
                 case status.MODIFIER:
-                    toolBox.SetUpGrid(bottomGrid, 1, 1, SkinsName.BottomStretch, SkinsName.HeightTenPercent);
+                    toolBox.SetUpGrid(bottomGrid, 1, 1, SkinLocation.BottomStretch, SkinSize.HeightTenPercent);
 
-                    toolBox.CreateSwitchButtonsToGridByTab(bottomGrid, saveButton, saveEvents, SkinsName.StandartLittleMargin, SkinsName.BottomCenter);
+                    toolBox.CreateSwitchButtonsToGridByTab(bottomGrid, saveButton, saveEvents, SkinName.StandartLittleMargin, SkinLocation.BottomCenter);
                     break;
             }
         }
@@ -134,8 +134,8 @@ namespace Project_Inventory
                     toolBox.CreateScrollableGridModfiable(centerGrid, capGrid,
                                          1, 1,
                                          stringTab.GetLength(0) + 1, stringTab.GetLength(1) + 1,
-                                         SkinsName.StretchStretch, SkinsName.HeightEightPercent,
-                                         SkinsName.Center,
+                                         SkinLocation.StretchStretch, SkinSize.HeightEightPercent,
+                                         SkinLocation.CenterCenter,
                                          stringTab, indicTab,
                                          AddDeleteButtons());
                     break;
@@ -207,7 +207,7 @@ namespace Project_Inventory
                 });
                 tempRouter.resetPageEvent = reloadEvent;
 
-                tempButton = toolBox.CreateSwitchButtonImage(ImagesName.RedCross, tempRouter, SkinsName.Standart, SkinsName.CenterCenter, ImageSizesName.Small);
+                tempButton = toolBox.CreateSwitchButtonImage(ImagesName.RedCross, tempRouter, SkinName.Standart, SkinLocation.CenterCenter, ImageSizesName.Small);
                 buttonList.Add(tempButton);
             }
 

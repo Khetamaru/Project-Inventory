@@ -70,13 +70,13 @@ namespace Project_Inventory
 
         public new void TopGridInit(Grid topGrid)
         {
-            toolBox.SetUpGrid(topGrid, 1, 2, SkinsName.TopStretch, SkinsName.HeightTenPercent);
+            toolBox.SetUpGrid(topGrid, 1, 2, SkinLocation.TopStretch, SkinSize.HeightTenPercent);
 
             toolBox.CreateSwitchButtonsToGridByTab(topGrid, 
                                                    topGridButtons, 
                                                    topSwitchEvents, 
-                                                   new SkinsName[] { SkinsName.StandartLittleMargin, SkinsName.StandartLittleMargin }, 
-                                                   new SkinsName[] { SkinsName.TopLeft, SkinsName.TopRight });
+                                                   new SkinName[] { SkinName.StandartLittleMargin, SkinName.StandartLittleMargin }, 
+                                                   new SkinLocation[] { SkinLocation.TopLeft, SkinLocation.TopRight });
         }
 
         public new void BottomGridInit(Grid bottomGrid)
@@ -87,21 +87,21 @@ namespace Project_Inventory
 
                     LoadBDDInfos();
 
-                    toolBox.SetUpGrid(bottomGrid, 1, 1, SkinsName.BottomStretch, SkinsName.HeightNintyPercent);
+                    toolBox.SetUpGrid(bottomGrid, 1, 1, SkinLocation.BottomStretch, SkinSize.HeightNintyPercent);
                     capGrid = new Grid();
 
-                    toolBox.ButtonPlacer(capGrid, bottomGridButtons.Length, widthLimit, SkinsName.BottomStretch, SkinsName.HeightNintyPercent);
+                    toolBox.ButtonPlacer(capGrid, bottomGridButtons.Length, widthLimit, SkinLocation.BottomStretch, SkinSize.HeightNintyPercent);
                     RoutedIdSetup(bottomGridButtons);
 
-                    toolBox.CreateSwitchButtonsToGridByTab(capGrid, bottomGridButtons, bottomSwitchEvents, SkinsName.Standart, SkinsName.CenterCenter);
+                    toolBox.CreateSwitchButtonsToGridByTab(capGrid, bottomGridButtons, bottomSwitchEvents, SkinName.Standart, SkinLocation.CenterCenter);
                     bottomGrid.Children.Add(capGrid);
                     break;
 
                 case status.MODIFIER:
 
-                    toolBox.SetUpGrid(bottomGrid, 1, 1, SkinsName.BottomStretch, SkinsName.HeightTenPercent);
+                    toolBox.SetUpGrid(bottomGrid, 1, 1, SkinLocation.BottomStretch, SkinSize.HeightTenPercent);
 
-                    toolBox.CreateSwitchButtonsToGridByTab(bottomGrid, saveButton, saveEvents, SkinsName.StandartLittleMargin, SkinsName.BottomCenter);
+                    toolBox.CreateSwitchButtonsToGridByTab(bottomGrid, saveButton, saveEvents, SkinName.StandartLittleMargin, SkinLocation.BottomCenter);
                     break;
             }
         }
@@ -120,13 +120,13 @@ namespace Project_Inventory
 
                     LoadBDDInfos();
 
-                    toolBox.SetUpGrid(centerGrid, 1, 1, SkinsName.StretchStretch, SkinsName.HeightEightPercent);
+                    toolBox.SetUpGrid(centerGrid, 1, 1, SkinLocation.StretchStretch, SkinSize.HeightEightPercent);
                     capGrid = new Grid();
 
-                    toolBox.ButtonPlacer(capGrid, bottomGridButtons.Length + 1, widthLimit, SkinsName.BottomStretch, SkinsName.HeightEightPercent);
+                    toolBox.ButtonPlacer(capGrid, bottomGridButtons.Length + 1, widthLimit, SkinLocation.BottomStretch, SkinSize.HeightEightPercent);
                     RoutedIdSetup(bottomGridButtons);
 
-                    toolBox.CreateTabToGrid(capGrid, bottomGridButtons, SkinsName.Center);
+                    toolBox.CreateTabToGrid(capGrid, bottomGridButtons, SkinLocation.CenterCenter);
                     centerGrid.Children.Add(capGrid);
 
                     AddDeleteButtons();
@@ -246,7 +246,7 @@ namespace Project_Inventory
                         });
                         tempRouter.resetPageEvent = reloadEvent;
 
-                        tempButton = toolBox.CreateSwitchButtonImage(ImagesName.RedCross, tempRouter, SkinsName.StandartLittleMargin, SkinsName.CenterLeft, ImageSizesName.Small);
+                        tempButton = toolBox.CreateSwitchButtonImage(ImagesName.RedCross, tempRouter, SkinName.StandartLittleMargin, SkinLocation.CenterLeft, ImageSizesName.Small);
 
                         Grid.SetRow(tempButton, i);
                         Grid.SetColumn(tempButton, j);

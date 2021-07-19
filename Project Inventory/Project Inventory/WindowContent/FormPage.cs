@@ -39,9 +39,9 @@ namespace Project_Inventory
 
         public new void TopGridInit(Grid topGrid)
         {
-            toolBox.SetUpGrid(topGrid, 1, 1, SkinsName.TopStretch, SkinsName.HeightTenPercent);
+            toolBox.SetUpGrid(topGrid, 1, 1, SkinLocation.TopStretch, SkinSize.HeightTenPercent);
 
-            toolBox.CreateSwitchButtonsToGridByTab(topGrid, topGridButtons, topSwitchEvents, SkinsName.StandartLittleMargin, SkinsName.TopRight);
+            toolBox.CreateSwitchButtonsToGridByTab(topGrid, topGridButtons, topSwitchEvents, SkinName.StandartLittleMargin, SkinLocation.TopRight);
         }
 
         public new void CenterGridInit(Grid centerGrid)
@@ -49,15 +49,15 @@ namespace Project_Inventory
             toolBox.CreateScrollableForm(centerGrid, capGrid,
                                          1, 1,
                                          formElements.Length, 2,
-                                         SkinsName.StretchStretch, SkinsName.HeightEightPercent,
+                                         SkinLocation.StretchStretch, SkinSize.HeightEightPercent,
                                          formElements, labels, listBoxNames);
         }
 
         public new void BottomGridInit(Grid bottomGrid)
         {
-            toolBox.SetUpGrid(bottomGrid, 1, bottomColumnNb, SkinsName.BottomStretch, SkinsName.HeightTenPercent);
+            toolBox.SetUpGrid(bottomGrid, 1, bottomColumnNb, SkinLocation.BottomStretch, SkinSize.HeightTenPercent);
 
-            toolBox.CreateSwitchButtonsToGridByTab(bottomGrid, bottomGridButtons, formValidButton, SkinsName.StandartLittleMargin, SkinsName.CenterCenter);
+            toolBox.CreateSwitchButtonsToGridByTab(bottomGrid, bottomGridButtons, formValidButton, SkinName.StandartLittleMargin, SkinLocation.CenterCenter);
         }
 
         /// <summary>
