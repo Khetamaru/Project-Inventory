@@ -259,7 +259,14 @@ namespace Project_Inventory
                     break;
 
                 case WindowsName.StorageViewerPage:
-                    storageViewerPage.LoadBDDInfos();
+                    if (storageViewerPage.researchTextBox.Text != string.Empty)
+                    {
+                        storageViewerPage.LoadBDDInfos(storageViewerPage.researchTextBox.Text);
+                    }
+                    else
+                    {
+                        storageViewerPage.LoadBDDInfos();
+                    }
                     storageViewerPage.TopGridInit(topGrid);
                     storageViewerPage.CenterGridInit(centerGrid);
                     storageViewerPage.BottomGridInit(bottomGrid);

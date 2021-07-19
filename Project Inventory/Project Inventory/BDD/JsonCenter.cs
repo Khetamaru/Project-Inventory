@@ -94,6 +94,26 @@ namespace Project_Inventory.Tools
         }
 
         /// <summary>
+        /// Get all researched infos for the Storage Viewer
+        /// </summary>
+        /// <param name="requestCenter"></param>
+        /// <param name="storageId"></param>
+        /// <returns></returns>
+        public static Data[] LoadStorageViewerInfos(RequestCenter requestCenter, int storageId, string researchString)
+        {
+            string responseBdd = requestCenter.GetRequest("DataLibraries/storage/" + storageId + "/" + researchString);
+
+            if (responseBdd == "[]")
+            {
+                return new Data[0];
+            }
+            else
+            {
+                return FormatToBDDObject(responseBdd, "data") as Data[];
+            }
+        }
+
+        /// <summary>
         /// Set up rederection in all buttons of Storage Selection Menu
         /// </summary>
         /// <param name="length"></param>

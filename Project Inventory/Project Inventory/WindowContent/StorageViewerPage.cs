@@ -1,5 +1,6 @@
 ﻿using Project_Inventory.BDD;
 using Project_Inventory.Tools;
+using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
@@ -34,27 +35,32 @@ namespace Project_Inventory
         private string[] saveButton;
         private RoutedEventLibrary[] saveEvents;
 
+        public TextBox researchTextBox;
+
         public StorageViewerPage(ToolBox ToolBox, Router _router, RequestCenter requestCenter, int _actualStorageId, int _actualDataId, RoutedEventHandler _reloadEvent)
             : base(ToolBox, _router, requestCenter, _actualStorageId, _actualDataId)
         {
             viewerStatus = status.VIEWER;
             reloadEvent = _reloadEvent;
 
-            topGridButtons = new string[] { "Modify", "Return" };
+            topGridButtons = new string[] { "Modify", "Research", "Return" };
             saveButton = new string[] { "Save" };
 
-            topSwitchEvents = new RoutedEventLibrary[2];
+            topSwitchEvents = new RoutedEventLibrary[3];
             RoutedEventLibrariesInit(topSwitchEvents);
 
-            topSwitchEvents[0].resetPageEvent = reloadEvent;
+            topSwitchEvents[0].resetPageEvent = new RoutedEventHandler((object sender, RoutedEventArgs e) => { ResearchTrigger(sender, e, false); });
             topSwitchEvents[0].optionalEventOne = new RoutedEventHandler((object sender, RoutedEventArgs e) => { SwitchStatus(sender, e); });
-            topSwitchEvents[1].changePageEvent = GetEventHandler(WindowsName.StorageSelectionMenu);
+            topSwitchEvents[1].resetPageEvent = new RoutedEventHandler((object sender, RoutedEventArgs e) => { ResearchTrigger(sender, e, true); });
+            topSwitchEvents[2].changePageEvent = GetEventHandler(WindowsName.StorageSelectionMenu);
 
             saveEvents = new RoutedEventLibrary[1];
             RoutedEventLibrariesInit(saveEvents);
-            saveEvents[0].resetPageEvent = reloadEvent;
+            saveEvents[0].resetPageEvent = new RoutedEventHandler((object sender, RoutedEventArgs e) => { ResearchTrigger(sender, e, false); });
             saveEvents[0].optionalEventOne = new RoutedEventHandler((object sender, RoutedEventArgs e) => { SwitchStatus(sender, e); });
             saveEvents[0].optionalEventTwo = new RoutedEventHandler((object sender, RoutedEventArgs e) => { SaveDatas(sender, e); });
+
+            researchTextBox = new TextBox();
 
             capGrid = new Grid();
 
@@ -84,13 +90,38 @@ namespace Project_Inventory
             }
         }
 
+        /// <summary>
+        /// Get all needed BDD infos
+        /// </summary>
+        public void LoadBDDInfos(string researchString)
+        {
+            dataTab = JsonCenter.LoadStorageViewerInfos(requestCenter, actualStorageId, researchString);
+
+            int i;
+            int j;
+
+            stringTab = new string[dataTab.Length, dataTab[0].DataText.Length];
+            indicTab = new string[dataTab.Length, dataTab[0].DataText.Length];
+
+            for (i = 0; i < dataTab.Length; i++)
+            {
+                for (j = 0; j < dataTab[0].DataText.Length; j++)
+                {
+                    stringTab[i, j] = dataTab[i].DataText[j];
+                    indicTab[i, j] = dataTab[i].DataType[j];
+                }
+            }
+        }
+
         public new void TopGridInit(Grid topGrid)
         {
-            toolBox.SetUpGrid(topGrid, 1, 2, SkinLocation.TopStretch, SkinSize.HeightTenPercent);
+            toolBox.SetUpGrid(topGrid, 1, 3, SkinLocation.TopStretch, SkinSize.HeightTenPercent);
 
             toolBox.CreateSwitchButtonsToGridByTab(topGrid, topGridButtons, topSwitchEvents,
-                                                   new SkinName[] { SkinName.StandartLittleMargin, SkinName.StandartLittleMargin },
-                                                   new SkinLocation[] { SkinLocation.TopLeft, SkinLocation.TopRight });
+                                                   new SkinName[] { SkinName.StandartLittleMargin, SkinName.StandartLittleMargin, SkinName.StandartLittleMargin },
+                                                   new SkinLocation[] { SkinLocation.TopLeft, SkinLocation.TopRight, SkinLocation.TopRight });
+
+            toolBox.InsertUIElementInGrid(topGrid, researchTextBox, 0, 1, UIElementsName.TextBox, SkinLocation.CenterCenter);
         }
 
         public new void BottomGridInit(Grid bottomGrid)
@@ -205,7 +236,7 @@ namespace Project_Inventory
                 {
                     DeleteData(sender, e, data.id);
                 });
-                tempRouter.resetPageEvent = reloadEvent;
+                tempRouter.resetPageEvent = new RoutedEventHandler((object sender, RoutedEventArgs e) => { ResearchTrigger(sender, e, false); });
 
                 tempButton = toolBox.CreateSwitchButtonImage(ImagesName.RedCross, tempRouter, SkinName.Standart, SkinLocation.CenterCenter, ImageSizesName.Small);
                 buttonList.Add(tempButton);
@@ -223,6 +254,22 @@ namespace Project_Inventory
             {
                 requestCenter.DeleteRequest("DataLibraries/" + dataId);
             }
+        }
+
+        /// <summary>
+        /// Check if a research is tried else empty the research field
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        /// <param name="v"></param>
+        private void ResearchTrigger(object sender, RoutedEventArgs e, bool trigger)
+        {
+            if (!trigger)
+            {
+                researchTextBox.Text = string.Empty;
+            }
+
+            reloadEvent.Invoke(sender, e);
         }
     }
 }
