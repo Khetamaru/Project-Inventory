@@ -7,7 +7,16 @@ namespace Project_Inventory.Tools
     /// <summary>
     /// Library of names of all type of positions used.
     /// </summary>
-    public enum SkinsName
+    public enum SkinName
+
+    {
+        Standart,
+        StandartLittleMargin,
+
+        None
+    }
+
+    public enum SkinLocation
     {
         TopLeft,
         StretchLeft,
@@ -25,11 +34,12 @@ namespace Project_Inventory.Tools
         CenterLeft,
         CenterRight,
         BottomCenter,
-        Center,
 
-        Standart,
-        StandartLittleMargin,
+        None
+    }
 
+    public enum SkinSize
+    {
         WidthOneTier,
         WidthTwoTier,
         HeightOneTier,

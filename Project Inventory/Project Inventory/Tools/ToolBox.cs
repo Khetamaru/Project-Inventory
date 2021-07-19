@@ -37,8 +37,8 @@ namespace Project_Inventory
         /// <param name="skinPosition"></param>
         /// <returns></returns>
         public Button CreateButton(string content,
-                                   SkinsName skinName,
-                                   SkinsName skinPosition)
+                                   SkinName skinName,
+                                   SkinLocation skinPosition)
         {
             Button temp = new Button();
 
@@ -58,8 +58,8 @@ namespace Project_Inventory
         /// <param name="skinPosition"></param>
         /// <returns></returns>
         public Button CreateButton(ImagesName imagesName,
-                                   SkinsName skinName,
-                                   SkinsName skinPosition,
+                                   SkinName skinName,
+                                   SkinLocation skinPosition,
                                    ImageSizesName imageSizesName)
         {
             Button temp = new Button();
@@ -114,8 +114,8 @@ namespace Project_Inventory
         /// <returns></returns>
         public Button CreateSwitchButton(string content,
                                          RoutedEventLibrary router,
-                                         SkinsName skinName,
-                                         SkinsName skinPosition)
+                                         SkinName skinName,
+                                         SkinLocation skinPosition)
         {
             Button temp = CreateButton(content, skinName, skinPosition);
             AddOnClickButton(temp, router);
@@ -133,8 +133,8 @@ namespace Project_Inventory
         /// <returns></returns>
         public Button CreateSwitchButtonImage(ImagesName imagesName,
                                          RoutedEventLibrary router,
-                                         SkinsName skinName,
-                                         SkinsName skinPosition,
+                                         SkinName skinName,
+                                         SkinLocation skinPosition,
                                          ImageSizesName imageSizesName)
         {
             Button temp = CreateButton(imagesName, skinName, skinPosition, imageSizesName);
@@ -158,43 +158,43 @@ namespace Project_Inventory
         /// </summary>
         /// <param name="button"></param>
         /// <param name="skinPosition"></param>
-        private void LoadButtonPosition(Button button, SkinsName skinPosition)
+        private void LoadButtonPosition(Button button, SkinLocation skinPosition)
         {
             switch (skinPosition)
             {
-                case SkinsName.TopLeft:
+                case SkinLocation.TopLeft:
                     ButtonSkins.TopLeft(button);
                     break;
 
-                case SkinsName.TopCenter:
+                case SkinLocation.TopCenter:
                     ButtonSkins.TopCenter(button);
                     break;
 
-                case SkinsName.TopRight:
+                case SkinLocation.TopRight:
                     ButtonSkins.TopRight(button);
                     break;
 
-                case SkinsName.CenterLeft:
+                case SkinLocation.CenterLeft:
                     ButtonSkins.CenterLeft(button);
                     break;
 
-                case SkinsName.CenterCenter:
+                case SkinLocation.CenterCenter:
                     ButtonSkins.CenterCenter(button);
                     break;
 
-                case SkinsName.CenterRight:
+                case SkinLocation.CenterRight:
                     ButtonSkins.CenterRight(button);
                     break;
 
-                case SkinsName.BottomLeft:
+                case SkinLocation.BottomLeft:
                     ButtonSkins.BottomLeft(button);
                     break;
 
-                case SkinsName.BottomCenter:
+                case SkinLocation.BottomCenter:
                     ButtonSkins.BottomCenter(button);
                     break;
 
-                case SkinsName.BottomRight:
+                case SkinLocation.BottomRight:
                     ButtonSkins.BottomRight(button);
                     break;
             }
@@ -205,15 +205,15 @@ namespace Project_Inventory
         /// </summary>
         /// <param name="button"></param>
         /// <param name="skinName"></param>
-        private void LoadButtonSkin(Button button, SkinsName skinName)
+        private void LoadButtonSkin(Button button, SkinName skinName)
         {
             switch (skinName)
             {
-                case SkinsName.Standart:
+                case SkinName.Standart:
                     ButtonSkins.StandartButtonSkin(button);
                     break;
 
-                case SkinsName.StandartLittleMargin:
+                case SkinName.StandartLittleMargin:
                     ButtonSkins.StandartLittleMargin(button);
                     break;
             }
@@ -232,8 +232,8 @@ namespace Project_Inventory
         public void SetUpGrid(Grid grid,
                                int rowNb,
                                int columnNb,
-                               SkinsName skinName,
-                               SkinsName lengthName)
+                               SkinLocation skinName,
+                               SkinSize lengthName)
         {
             EmptyGrid(grid);
 
@@ -275,55 +275,55 @@ namespace Project_Inventory
         /// </summary>
         /// <param name="grid"></param>
         /// <param name="skinName"></param>
-        public void LoadGridLocation(Grid grid, SkinsName skinName)
+        public void LoadGridLocation(Grid grid, SkinLocation skinName)
         {
             switch (skinName)
             {
-                case SkinsName.TopLeft:
+                case SkinLocation.TopLeft:
                     GridSkins.TopLeft(grid);
                     break;
 
-                case SkinsName.StretchLeft:
+                case SkinLocation.StretchLeft:
                     GridSkins.StretchLeft(grid);
                     break;
 
-                case SkinsName.BottomLeft:
+                case SkinLocation.BottomLeft:
                     GridSkins.BottomLeft(grid);
                     break;
 
-                case SkinsName.TopStretch:
+                case SkinLocation.TopStretch:
                     GridSkins.TopStretch(grid);
                     break;
 
-                case SkinsName.BottomStretch:
+                case SkinLocation.BottomStretch:
                     GridSkins.BottomStretch(grid);
                     break;
 
-                case SkinsName.StretchStretch:
+                case SkinLocation.StretchStretch:
                     GridSkins.StretchStretch(grid);
                     break;
 
-                case SkinsName.CenterCenter:
+                case SkinLocation.CenterCenter:
                     GridSkins.CenterCenter(grid);
                     break;
 
-                case SkinsName.StretchCenter:
+                case SkinLocation.StretchCenter:
                     GridSkins.StretchCenter(grid);
                     break;
 
-                case SkinsName.CenterStretch:
+                case SkinLocation.CenterStretch:
                     GridSkins.CenterStretch(grid);
                     break;
 
-                case SkinsName.TopRight:
+                case SkinLocation.TopRight:
                     GridSkins.TopRight(grid);
                     break;
 
-                case SkinsName.StretchRight:
+                case SkinLocation.StretchRight:
                     GridSkins.StretchRight(grid);
                     break;
 
-                case SkinsName.BottomRight:
+                case SkinLocation.BottomRight:
                     GridSkins.BottomRight(grid);
                     break;
             }
@@ -334,35 +334,35 @@ namespace Project_Inventory
         /// </summary>
         /// <param name="grid"></param>
         /// <param name="lengthName"></param>
-        public void LoadGridLength(Grid grid, SkinsName lengthName)
+        public void LoadGridLength(Grid grid, SkinSize lengthName)
         {
             switch (lengthName)
             {
-                case SkinsName.WidthOneTier:
+                case SkinSize.WidthOneTier:
                     GridSkins.WidthOneTier(grid, windowWidth);
                     break;
 
-                case SkinsName.WidthTwoTier:
+                case SkinSize.WidthTwoTier:
                     GridSkins.WidthTwoTier(grid, windowWidth);
                     break;
 
-                case SkinsName.HeightOneTier:
+                case SkinSize.HeightOneTier:
                     GridSkins.HeightOneTier(grid, windowHeight);
                     break;
 
-                case SkinsName.HeightTwoTier:
+                case SkinSize.HeightTwoTier:
                     GridSkins.HeightTwoTier(grid, windowHeight);
                     break;
 
-                case SkinsName.HeightTenPercent:
+                case SkinSize.HeightTenPercent:
                     GridSkins.HeightTenPercent(grid, windowHeight);
                     break;
 
-                case SkinsName.HeightEightPercent:
+                case SkinSize.HeightEightPercent:
                     GridSkins.HeightEightPercent(grid, windowHeight);
                     break;
 
-                case SkinsName.HeightNintyPercent:
+                case SkinSize.HeightNintyPercent:
                     GridSkins.HeightNintyPercent(grid, windowHeight);
                     break;
             }
@@ -395,8 +395,8 @@ namespace Project_Inventory
                                        string content,
                                        int rowNb,
                                        int columnNb,
-                                       SkinsName skinName,
-                                       SkinsName skinPosition)
+                                       SkinName skinName,
+                                       SkinLocation skinPosition)
         {
             Button button = CreateButton(content, skinName, skinPosition);
 
@@ -418,8 +418,8 @@ namespace Project_Inventory
                                                RoutedEventLibrary router,
                                                int rowNb,
                                                int columnNb,
-                                               SkinsName skinName,
-                                               SkinsName skinPosition)
+                                               SkinName skinName,
+                                               SkinLocation skinPosition)
         {
             Button button = CreateSwitchButton(content, router, skinName, skinPosition);
 
@@ -441,8 +441,8 @@ namespace Project_Inventory
                                                RoutedEventLibrary router,
                                                int rowNb,
                                                int columnNb,
-                                               SkinsName skinName,
-                                               SkinsName skinPosition)
+                                               SkinName skinName,
+                                               SkinLocation skinPosition)
         {
             Button button = CreateSwitchButton(storage.Name, router, skinName, skinPosition);
 
@@ -486,7 +486,7 @@ namespace Project_Inventory
         /// <param name="buttonsTab"></param>
         /// <param name="buttonsSkin"></param>
         /// <param name="skinPosition"></param>
-        public void CreateSwitchButtonsToGridByTab(Grid grid, string[] buttonsTab, SkinsName buttonsSkin, SkinsName skinPosition)
+        public void CreateSwitchButtonsToGridByTab(Grid grid, string[] buttonsTab, SkinName buttonsSkin, SkinLocation skinPosition)
         {
             int i;
             int j;
@@ -516,7 +516,7 @@ namespace Project_Inventory
         /// <param name="routerTab"></param>
         /// <param name="buttonsSkin"></param>
         /// <param name="skinPosition"></param>
-        public void CreateSwitchButtonsToGridByTab(Grid grid, string[] buttonsTab, RoutedEventLibrary[] routerTab, SkinsName buttonsSkin, SkinsName skinPosition)
+        public void CreateSwitchButtonsToGridByTab(Grid grid, string[] buttonsTab, RoutedEventLibrary[] routerTab, SkinName buttonsSkin, SkinLocation skinPosition)
         {
             int i;
             int j;
@@ -546,7 +546,7 @@ namespace Project_Inventory
         /// <param name="routerTab"></param>
         /// <param name="buttonsSkin"></param>
         /// <param name="skinPosition"></param>
-        public void CreateSwitchButtonsToGridByTab(Grid grid, Storage[] buttonsTab, RoutedEventLibrary[] routerTab, SkinsName buttonsSkin, SkinsName skinPosition)
+        public void CreateSwitchButtonsToGridByTab(Grid grid, Storage[] buttonsTab, RoutedEventLibrary[] routerTab, SkinName buttonsSkin, SkinLocation skinPosition)
         {
             int i;
             int j;
@@ -588,7 +588,7 @@ namespace Project_Inventory
         /// <param name="routerTab"></param>
         /// <param name="buttonsSkin"></param>
         /// <param name="skinPosition"></param>
-        public void CreateSwitchButtonsToGridByTab(Grid grid, string[] buttonsTab, RoutedEventLibrary[] routerTab, SkinsName[] buttonsSkin, SkinsName[] skinPosition)
+        public void CreateSwitchButtonsToGridByTab(Grid grid, string[] buttonsTab, RoutedEventLibrary[] routerTab, SkinName[] buttonsSkin, SkinLocation[] skinPosition)
         {
             int i;
             int j;
@@ -696,7 +696,7 @@ namespace Project_Inventory
         /// <param name="grid"></param>
         /// <param name="stringTab"></param>
         /// <param name="skinPosition"></param>
-        public void CreateTabToGrid(Grid grid, string[,] stringTab, SkinsName skinPosition)
+        public void CreateTabToGrid(Grid grid, string[,] stringTab, SkinLocation skinPosition)
         {
             int i;
             int j;
@@ -725,7 +725,7 @@ namespace Project_Inventory
         /// <param name="stringTab"></param>
         /// <param name="indicTab"></param>
         /// <param name="skinPosition"></param>
-        public void CreateTabToGrid(Grid grid, string[,] stringTab, string[,] indicTab, SkinsName skinPosition, List<Button> buttonList)
+        public void CreateTabToGrid(Grid grid, string[,] stringTab, string[,] indicTab, SkinLocation skinPosition, List<Button> buttonList)
         {
             int i;
             int j;
@@ -783,7 +783,7 @@ namespace Project_Inventory
         /// <param name="grid"></param>
         /// <param name="storageTab"></param>
         /// <param name="skinPosition"></param>
-        public void CreateTabToGrid(Grid grid, Storage[] storageTab, SkinsName skinPosition)
+        public void CreateTabToGrid(Grid grid, Storage[] storageTab, SkinLocation skinPosition)
         {
             int i = storageTab.Length;
             int j = 1;
@@ -825,7 +825,7 @@ namespace Project_Inventory
         /// <param name="row"></param>
         /// <param name="column"></param>
         /// <param name="skinPosition"></param>
-        public void CreateTabCellToGrid(Grid grid, string text, string indication, int row, int column, SkinsName skinPosition)
+        public void CreateTabCellToGrid(Grid grid, string text, string indication, int row, int column, SkinLocation skinPosition)
         {
             if (indication == UIElementsName.DatePicker.ToString())
             {
@@ -915,7 +915,7 @@ namespace Project_Inventory
         /// <param name="row"></param>
         /// <param name="column"></param>
         /// <param name="skinPosition"></param>
-        public void CreateTabCellToGrid(Grid grid, string text, int row, int column, SkinsName skinPosition)
+        public void CreateTabCellToGrid(Grid grid, string text, int row, int column, SkinLocation skinPosition)
         {
             Label label = new Label();
             label.Content = text;
@@ -939,7 +939,7 @@ namespace Project_Inventory
         /// <param name="row"></param>
         /// <param name="column"></param>
         /// <param name="skinPosition"></param>
-        public void CreateHeaderToGrid(Grid grid, string text, int row, int column, SkinsName skinPosition)
+        public void CreateHeaderToGrid(Grid grid, string text, int row, int column, SkinLocation skinPosition)
         {
             TextBox textbox = new TextBox();
             textbox.Text = text;
@@ -961,7 +961,7 @@ namespace Project_Inventory
         /// <param name="widthLimit"></param>
         /// <param name="skinName"></param>
         /// <param name="lengthName"></param>
-        public void ButtonPlacer(Grid grid, int tabLength, int widthLimit, SkinsName skinName, SkinsName lengthName)
+        public void ButtonPlacer(Grid grid, int tabLength, int widthLimit, SkinLocation skinName, SkinSize lengthName)
         {
             int i;
             int j = 1;
@@ -1000,13 +1000,13 @@ namespace Project_Inventory
         /// <param name="stringTab"></param>
         /// <param name="indicTab"></param>
         /// <param name="listBoxNames"></param>
-        public void CreateScrollableForm(Grid grid, Grid embededGrid, int gridRowOne, int gridColumnOne, int gridRowTwo, int gridColumnTwo, SkinsName gridSkin, SkinsName skinHeight, UIElementsName[] stringTab, string[] indicTab, ComboBoxNames listBoxNames)
+        public void CreateScrollableForm(Grid grid, Grid embededGrid, int gridRowOne, int gridColumnOne, int gridRowTwo, int gridColumnTwo, SkinLocation gridSkin, SkinSize skinHeight, UIElementsName[] stringTab, string[] indicTab, ComboBoxNames listBoxNames)
         {
             ScrollViewer scrollViewer = new ScrollViewer();
 
             SetUpGrid(grid, gridRowOne, gridColumnOne, gridSkin, skinHeight);
 
-            SetUpNewGrid(embededGrid, gridRowTwo, gridColumnTwo, SkinsName.TopLeft, SkinsName.None);
+            SetUpNewGrid(embededGrid, gridRowTwo, gridColumnTwo, SkinLocation.TopLeft, SkinSize.None);
 
             ScrollFormInit(embededGrid, gridRowTwo, scrollViewer);
 
@@ -1166,13 +1166,13 @@ namespace Project_Inventory
         /// <param name="tabPos"></param>
         /// <param name="stringTab"></param>
         /// <param name="indicTab"></param>
-        public void CreateScrollableGrid(Grid grid, Grid embededGrid, int gridRowOne, int gridColumnOne, int gridRowTwo, int gridColumnTwo, SkinsName gridSkin, SkinsName skinHeight, SkinsName tabPos, string[,] stringTab, string[,] indicTab)
+        public void CreateScrollableGrid(Grid grid, Grid embededGrid, int gridRowOne, int gridColumnOne, int gridRowTwo, int gridColumnTwo, SkinLocation gridSkin, SkinSize skinHeight, SkinLocation tabPos, string[,] stringTab, string[,] indicTab)
         {
             ScrollViewer scrollViewer = new ScrollViewer();
 
             SetUpGrid(grid, gridRowOne, gridColumnOne, gridSkin, skinHeight);
 
-            SetUpNewGrid(embededGrid, gridRowTwo, gridColumnTwo, SkinsName.StretchStretch, skinHeight);
+            SetUpNewGrid(embededGrid, gridRowTwo, gridColumnTwo, SkinLocation.StretchStretch, skinHeight);
 
             ScrollGridInit(embededGrid, gridRowTwo, gridColumnTwo, scrollViewer);
 
@@ -1195,13 +1195,13 @@ namespace Project_Inventory
         /// <param name="tabPos"></param>
         /// <param name="stringTab"></param>
         /// <param name="indicTab"></param>
-        public void CreateScrollableGridModfiable(Grid grid, Grid embededGrid, int gridRowOne, int gridColumnOne, int gridRowTwo, int gridColumnTwo, SkinsName gridSkin, SkinsName skinHeight, SkinsName tabPos, string[,] stringTab, string[,] indicTab, List<Button> buttonList)
+        public void CreateScrollableGridModfiable(Grid grid, Grid embededGrid, int gridRowOne, int gridColumnOne, int gridRowTwo, int gridColumnTwo, SkinLocation gridSkin, SkinSize skinHeight, SkinLocation tabPos, string[,] stringTab, string[,] indicTab, List<Button> buttonList)
         {
             ScrollViewer scrollViewer = new ScrollViewer();
 
             SetUpGrid(grid, gridRowOne, gridColumnOne, gridSkin, skinHeight);
 
-            SetUpNewGrid(embededGrid, gridRowTwo, gridColumnTwo, SkinsName.StretchStretch, skinHeight);
+            SetUpNewGrid(embededGrid, gridRowTwo, gridColumnTwo, SkinLocation.StretchStretch, skinHeight);
 
             ScrollGridInit(embededGrid, gridRowTwo, gridColumnTwo, scrollViewer);
 
@@ -1221,8 +1221,8 @@ namespace Project_Inventory
         public void SetUpNewGrid(Grid grid,
                            int rowNb,
                            int columnNb,
-                           SkinsName skinName,
-                           SkinsName lengthName)
+                           SkinLocation skinName,
+                           SkinSize lengthName)
         {
             CreateRowsInGrid(grid, rowNb);
             CreateColumnsInGrid(grid, columnNb);
@@ -1335,17 +1335,17 @@ namespace Project_Inventory
         /// Set up scroll grid horizontal size
         /// </summary>
         /// <param name="grid"></param>
-        public void SetScrollGridWidth(Grid grid, SkinsName skinsName)
+        public void SetScrollGridWidth(Grid grid, SkinSize skinsName)
         {
             switch (skinsName)
             {
-                case SkinsName.HeightTwentyPercent:
+                case SkinSize.HeightTwentyPercent:
                     foreach (ColumnDefinition column in grid.ColumnDefinitions)
                     {
                         GridSkins.ColumnHeightTwentyPercent(column, windowHeight);
                     }
                     break;
-                case SkinsName.HeightTenPercent:
+                case SkinSize.HeightTenPercent:
                     foreach (ColumnDefinition column in grid.ColumnDefinitions)
                     {
                         GridSkins.ColumnHeightTenPercent(column, windowHeight);
@@ -1377,23 +1377,23 @@ namespace Project_Inventory
         /// Set up scroll grid vertical size
         /// </summary>
         /// <param name="grid"></param>
-        public void SetScrollGridHeight(Grid grid, SkinsName skinsName)
+        public void SetScrollGridHeight(Grid grid, SkinSize skinsName)
         {
             switch (skinsName)
             {
-                case SkinsName.HeightFifteenPercent:
+                case SkinSize.HeightFifteenPercent:
                     foreach (RowDefinition row in grid.RowDefinitions)
                     {
                         GridSkins.RowHeightFifteenPercent(row, windowHeight);
                     }
                     break;
-                case SkinsName.HeightTwentyPercent:
+                case SkinSize.HeightTwentyPercent:
                     foreach (RowDefinition row in grid.RowDefinitions)
                     {
                         GridSkins.RowHeightTwentyPercent(row, windowHeight);
                     }
                     break;
-                case SkinsName.HeightTenPercent:
+                case SkinSize.HeightTenPercent:
                     foreach (RowDefinition row in grid.RowDefinitions)
                     {
                         GridSkins.RowHeightTenPercent(row, windowHeight);

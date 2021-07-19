@@ -10,27 +10,27 @@ namespace Project_Inventory.Tools
         /// </summary>
         /// <param name="uiElement"></param>
         /// <param name="labelSkin"></param>
-        public static void LoadSkinPosition(UIElement uiElement, SkinsName labelSkin)
+        public static void LoadSkinPosition(UIElement uiElement, SkinLocation labelSkin)
         {
             switch (labelSkin)
             {
-                case SkinsName.Center:
+                case SkinLocation.CenterCenter:
                     Center(uiElement);
                     break;
 
-                case SkinsName.CenterLeft:
+                case SkinLocation.CenterLeft:
                     CenterLeft(uiElement);
                     break;
 
-                case SkinsName.CenterRight:
+                case SkinLocation.CenterRight:
                     CenterRight(uiElement);
                     break;
 
-                case SkinsName.TopCenter:
+                case SkinLocation.TopCenter:
                     TopCenter(uiElement);
                     break;
 
-                case SkinsName.BottomCenter:
+                case SkinLocation.BottomCenter:
                     BottomCenter(uiElement);
                     break;
             }
