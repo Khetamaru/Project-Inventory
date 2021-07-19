@@ -111,6 +111,25 @@ namespace Local_API_Server.Controllers
             return Ok();
         }
 
+        // DELETE: api/DataLibraries/storage/5
+        [HttpDelete("storage/{id}")]
+        public async Task<IActionResult> DeleteStorageDataLibrary(int id)
+        {
+            var dataLibrary = await _context.DataLibraries.Where(r => r.StorageId == id).ToListAsync();
+            if (dataLibrary == null)
+            {
+                return NotFound();
+            }
+
+            foreach (DataLibrary data in dataLibrary)
+            {
+                _context.DataLibraries.Remove(data);
+            }
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
+
         private bool DataLibraryExists(long id)
         {
             return _context.DataLibraries.Any(e => e.Id == id);

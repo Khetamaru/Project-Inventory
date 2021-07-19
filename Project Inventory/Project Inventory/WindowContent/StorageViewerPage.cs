@@ -180,12 +180,12 @@ namespace Project_Inventory
 
             foreach(int change in changesList)
             {
-                requestCenter.PutRequest("DataLibraries/" + dataTab[change].id, dataTab[change].ToJsonId());
+                requestCenter.PutRequest(BDDTabsName.DataLibraries.ToString() + "/" + dataTab[change].id, dataTab[change].ToJsonId());
             }
 
             if (toolBox.OptionnalAdd(capGrid, dataTab, optionnalAdd))
             {
-                requestCenter.PostRequest("DataLibraries", optionnalAdd.ToJson());
+                requestCenter.PostRequest(BDDTabsName.DataLibraries.ToString(), optionnalAdd.ToJson());
             }
         }
 
@@ -225,6 +225,10 @@ namespace Project_Inventory
             }
         }
 
+        /// <summary>
+        /// A yes/no pop up to be sure user want to delete
+        /// </summary>
+        /// <returns></returns>
         private bool ConfirmPopup()
         {
             string sMessageBoxText = "Are you sure ?";

@@ -37,6 +37,8 @@ namespace Project_Inventory.Tools
         HeightTenPercent,
         HeightEightPercent,
         HeightNintyPercent,
+        HeightFifteenPercent,
+        HeightTwentyPercent,
 
         None
     }

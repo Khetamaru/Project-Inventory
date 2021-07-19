@@ -87,37 +87,6 @@ namespace Project_Inventory
         }
 
         /// <summary>
-        /// Adapt view about number of button to show
-        /// </summary>
-        /// <param name="grid"></param>
-        /// <param name="tabLength"></param>
-        /// <param name="widthLimit"></param>
-        /// <param name="skinName"></param>
-        /// <param name="lengthName"></param>
-        public void ButtonPlacer(Grid grid, int tabLength, int widthLimit, SkinsName skinName, SkinsName lengthName)
-        {
-            int i;
-            int j = 1;
-
-            if (tabLength > widthLimit)
-            {
-                do
-                {
-                    i = widthLimit;
-                    j++;
-                    tabLength -= widthLimit;
-                }
-                while (tabLength > widthLimit);
-            }
-            else
-            {
-                i = tabLength;
-            }
-
-            toolBox.SetUpGrid(grid, j, i, skinName, lengthName);
-        }
-
-        /// <summary>
         /// Init all routed event libraries
         /// </summary>
         /// <param name="routedEventLibrary"></param>

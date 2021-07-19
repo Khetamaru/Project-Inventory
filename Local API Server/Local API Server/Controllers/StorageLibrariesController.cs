@@ -94,7 +94,7 @@ namespace Local_API_Server.Controllers
             _context.StorageLibraries.Remove(storageLibrary);
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok();
         }
 
         private bool StorageLibraryExists(int id)

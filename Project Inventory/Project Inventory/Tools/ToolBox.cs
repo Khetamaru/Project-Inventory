@@ -65,50 +65,36 @@ namespace Project_Inventory
             Button temp = new Button();
             string startupPath = Environment.CurrentDirectory;
 
+            int height = 0;
+            int width = 0;
+
             switch (imageSizesName)
             {
                 case ImageSizesName.Small:
 
-                    temp.Content = new Image
-                    {
-                        Source = new BitmapImage(new Uri(startupPath + "..\\..\\..\\..\\Images\\" + imagesName.ToString() + ".png", UriKind.Absolute)),
-                        Stretch = Stretch.Fill,
-                        Height = 32,
-                        Width = 32
-                    };
+                    height = width = 32;
                     break;
                 case ImageSizesName.Medium:
 
-                    temp.Content = new Image
-                    {
-                        Source = new BitmapImage(new Uri(startupPath + "..\\..\\..\\..\\Images\\" + imagesName.ToString() + ".png", UriKind.Absolute)),
-                        Stretch = Stretch.Fill,
-                        Height = 64,
-                        Width = 64
-                    };
+                    height = width = 64;
                     break;
                 case ImageSizesName.Large:
 
-                    temp.Content = new Image
-                    {
-                        Source = new BitmapImage(new Uri(startupPath + "..\\..\\..\\..\\Images\\" + imagesName.ToString() + ".png", UriKind.Absolute)),
-                        Stretch = Stretch.Fill,
-                        Height = 128,
-                        Width = 128
-                    };
+                    height = width = 128;
                     break;
                 case ImageSizesName.Logo:
 
-                    temp.Content = new Image
-                    {
-                        Source = new BitmapImage(new Uri(startupPath + "..\\..\\..\\..\\Images\\" + imagesName.ToString() + ".png", UriKind.Absolute)),
-                        Stretch = Stretch.Fill,
-                        Height = 256,
-                        Width = 256
-                    };
+                    height = width = 256;
                     break;
             }
 
+            temp.Content = new Image
+            {
+                Source = new BitmapImage(new Uri(startupPath + "..\\..\\..\\..\\Images\\" + imagesName.ToString() + ".png", UriKind.Absolute)),
+                Stretch = Stretch.Fill,
+                Height = height,
+                Width = width
+            };
 
             LoadButtonPosition(temp, skinPosition);
             LoadButtonSkin(temp, skinName);
@@ -795,6 +781,45 @@ namespace Project_Inventory
         /// Create UIElements in the scroll grid
         /// </summary>
         /// <param name="grid"></param>
+        /// <param name="storageTab"></param>
+        /// <param name="skinPosition"></param>
+        public void CreateTabToGrid(Grid grid, Storage[] storageTab, SkinsName skinPosition)
+        {
+            int i = storageTab.Length;
+            int j = 1;
+            int k = 0;
+            while (i >= 5)
+            {
+                i -= 5;
+                j++;
+            }
+
+            int rowNb = j;
+
+            string addElemString = string.Empty;
+
+            for (i = 0; i < rowNb; i++)
+            {
+                for (j = 0; j < 5; j++)
+                {
+                    if (storageTab.Length > j + (i * 5))
+                    {
+                        CreateHeaderToGrid(grid, storageTab[j + (i * 5)].Name, i, j, skinPosition);
+                        k = j;
+                    }
+                }
+            }
+            k++;
+
+            if (k >= 5) { k = 0; }
+
+            CreateHeaderToGrid(grid, addElemString, rowNb, k, skinPosition);
+        }
+
+        /// <summary>
+        /// Create UIElements in the scroll grid
+        /// </summary>
+        /// <param name="grid"></param>
         /// <param name="text"></param>
         /// <param name="indication"></param>
         /// <param name="row"></param>
@@ -926,6 +951,37 @@ namespace Project_Inventory
             Grid.SetColumn(textbox, column);
 
             grid.Children.Add(textbox);
+        }
+
+        /// <summary>
+        /// Adapt view about number of button to show
+        /// </summary>
+        /// <param name="grid"></param>
+        /// <param name="tabLength"></param>
+        /// <param name="widthLimit"></param>
+        /// <param name="skinName"></param>
+        /// <param name="lengthName"></param>
+        public void ButtonPlacer(Grid grid, int tabLength, int widthLimit, SkinsName skinName, SkinsName lengthName)
+        {
+            int i;
+            int j = 1;
+
+            if (tabLength > widthLimit)
+            {
+                do
+                {
+                    i = widthLimit;
+                    j++;
+                    tabLength -= widthLimit;
+                }
+                while (tabLength > widthLimit);
+            }
+            else
+            {
+                i = tabLength;
+            }
+
+            SetUpGrid(grid, j, i, skinName, lengthName);
         }
 
         // Form //
@@ -1276,6 +1332,29 @@ namespace Project_Inventory
         }
 
         /// <summary>
+        /// Set up scroll grid horizontal size
+        /// </summary>
+        /// <param name="grid"></param>
+        public void SetScrollGridWidth(Grid grid, SkinsName skinsName)
+        {
+            switch (skinsName)
+            {
+                case SkinsName.HeightTwentyPercent:
+                    foreach (ColumnDefinition column in grid.ColumnDefinitions)
+                    {
+                        GridSkins.ColumnHeightTwentyPercent(column, windowHeight);
+                    }
+                    break;
+                case SkinsName.HeightTenPercent:
+                    foreach (ColumnDefinition column in grid.ColumnDefinitions)
+                    {
+                        GridSkins.ColumnHeightTenPercent(column, windowHeight);
+                    }
+                    break;
+            }
+        }
+
+        /// <summary>
         /// Set up scroll grid vertical size
         /// </summary>
         /// <param name="grid"></param>
@@ -1295,6 +1374,35 @@ namespace Project_Inventory
         }
 
         /// <summary>
+        /// Set up scroll grid vertical size
+        /// </summary>
+        /// <param name="grid"></param>
+        public void SetScrollGridHeight(Grid grid, SkinsName skinsName)
+        {
+            switch (skinsName)
+            {
+                case SkinsName.HeightFifteenPercent:
+                    foreach (RowDefinition row in grid.RowDefinitions)
+                    {
+                        GridSkins.RowHeightFifteenPercent(row, windowHeight);
+                    }
+                    break;
+                case SkinsName.HeightTwentyPercent:
+                    foreach (RowDefinition row in grid.RowDefinitions)
+                    {
+                        GridSkins.RowHeightTwentyPercent(row, windowHeight);
+                    }
+                    break;
+                case SkinsName.HeightTenPercent:
+                    foreach (RowDefinition row in grid.RowDefinitions)
+                    {
+                        GridSkins.RowHeightTenPercent(row, windowHeight);
+                    }
+                    break;
+            }
+        }
+
+        /// <summary>
         /// get all UIElements result of modifiable tab in modify mode
         /// </summary>
         /// <param name="grid"></param>
@@ -1304,58 +1412,133 @@ namespace Project_Inventory
         public List<int> GetUIElements(Grid grid, Data[] data, string[,] indicationTab)
         {
             int rowNb = data.Length;
-            int columnNb = data[0].DataText.Length;
+            int columnNb = data[0].DataText.Length + 1;
 
-            int k = 0;
+            List<Data> gridData = ConvertGridChildrenToDataList(grid, rowNb, columnNb, data[0].StorageId, data[0].DataType);
 
-            string[] dataText;
             List<int> changesList = new List<int>();
-            bool trigger;
+            bool trigger = false;
+            int i;
 
-            for ( int i = 0; i < rowNb; i++) 
+            for (i = 0; i < rowNb; i++)
             {
-                dataText = new string[columnNb];
                 trigger = false;
 
-                for ( int j = 0 ; j < columnNb ; j++ )
+                for (int j = 0; j < columnNb - 1; j++)
                 {
-                    if (i == 0)
-                    {
-                        dataText[j] = (grid.Children[k] as TextBox).Text;
-                    }
-                    else if (indicationTab[i, j] == UIElementsName.TextBox.ToString())
-                    {
 
-                        dataText[j] = (grid.Children[k] as TextBox).Text;
-                    }
-                    else if (indicationTab[i, j] == UIElementsName.TextBoxNumber.ToString())
-                    {
-
-                        dataText[j] = (grid.Children[k] as TextBox).Text;
-                    }
-                    else if (indicationTab[i, j] == UIElementsName.DatePicker.ToString())
-                    {
-
-                        dataText[j] = (grid.Children[k] as DatePicker).Text;
-                    }
-                    else if (indicationTab[i, j] == UIElementsName.ComboBox.ToString())
-                    {
-
-                        dataText[j] = (grid.Children[k] as ComboBox).SelectedItem.ToString();
-                    }
-
-                    if (dataText[j] != data[i].DataText[j])
+                    if (gridData[i].DataText[j] != data[i].DataText[j])
                     {
                         trigger = true;
                     }
-
-                    k++;
                 }
 
                 if (trigger)
                 {
                     changesList.Add(i);
-                    data[i].DataText = dataText;
+                    data[i].DataText = gridData[i].DataText;
+                }
+            }
+
+            return changesList;
+        }
+
+        /// <summary>
+        /// Convert Grid Children To list of data
+        /// </summary>
+        /// <param name="grid"></param>
+        /// <returns></returns>
+        public List<Data> ConvertGridChildrenToDataList(Grid grid, int rowNb, int columnNb, int storageId, string[] dataType)
+        {
+            List<Data> gridData = new List<Data>();
+            int j;
+            int k;
+            int gridIndex = 0;
+
+            string[] dataText;
+
+            for (int i = 0; i < rowNb; i++)
+            {
+                dataText = new string[columnNb];
+                k = 0;
+
+                for (j = 0; j < columnNb; j++)
+                {
+                    if (j != 0)
+                    {
+                        if (i == 0)
+                        {
+                            dataText[k] = (grid.Children[gridIndex] as TextBox).Text;
+                        }
+                        else
+                        {
+                            if (dataType[k] == UIElementsName.TextBox.ToString())
+                            {
+
+                                dataText[k] = (grid.Children[gridIndex] as TextBox).Text;
+                            }
+                            else if (dataType[k] == UIElementsName.TextBoxNumber.ToString())
+                            {
+
+                                dataText[k] = (grid.Children[gridIndex] as TextBox).Text;
+                            }
+                            else if (dataType[k] == UIElementsName.DatePicker.ToString())
+                            {
+
+                                dataText[k] = (grid.Children[gridIndex] as DatePicker).Text;
+                            }
+                            else if (dataType[k] == UIElementsName.ComboBox.ToString())
+                            {
+
+                                dataText[k] = (grid.Children[gridIndex] as ComboBox).SelectedItem.ToString();
+                            }
+                        }
+
+                        k++;
+                        gridIndex++;
+                    }
+                    else
+                    {
+                        if (i != 0)
+                        {
+                            gridIndex++;
+                        }
+                    }
+
+                }
+
+                if (i == 0)
+                {
+                    gridData.Add(new Data(storageId, dataText, dataType, true));
+                }
+                else
+                {
+                    gridData.Add(new Data(storageId, dataText, dataType, false));
+                }
+            }
+
+            return gridData;
+        }
+
+        /// <summary>
+        /// get all UIElements result of modifiable tab in modify mode
+        /// </summary>
+        /// <param name="grid"></param>
+        /// <param name="storage"></param>
+        /// <returns></returns>
+        public List<int> GetUIElements(Grid grid, Storage[] storage)
+        {
+            string text;
+            List<int> changesList = new List<int>();
+
+            for (int i = 0; i < storage.Length; i++)
+            {
+                text = (grid.Children[i] as TextBox).Text;
+
+                if (text != storage[i].Name)
+                {
+                    changesList.Add(i);
+                    storage[i].Name = text;
                 }
             }
 
@@ -1371,7 +1554,7 @@ namespace Project_Inventory
         /// <returns></returns>
         public bool OptionnalAdd(Grid grid, Data[] data, Data optionnalAdd)
         {
-            int j = data.Length * data[0].DataText.Length;
+            int j = data.Length * data[0].DataText.Length + data.Length - 1;
             bool trigger = false;
 
             for (int i = 0; i < optionnalAdd.DataText.Length; i++)
@@ -1401,6 +1584,20 @@ namespace Project_Inventory
                 {
                     trigger = true;
                 }
+            }
+
+            return trigger;
+        }
+
+        public bool OptionnalAdd(Grid grid, Storage[] storage, Storage optionnalAdd)
+        {
+            bool trigger = false;
+
+            optionnalAdd.Name = (grid.Children[storage.Length] as TextBox).Text;
+
+            if (optionnalAdd.Name != string.Empty)
+            {
+                trigger = true;
             }
 
             return trigger;

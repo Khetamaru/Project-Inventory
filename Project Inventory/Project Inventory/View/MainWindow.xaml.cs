@@ -61,7 +61,9 @@ namespace Project_Inventory
 
         public void StorageSelectionMenuInit()
         {
-            storageSelectionMenu = new StorageSelectionMenu(toolBox, router, requestCenter, actualStorageId, actualDataId);
+            RoutedEventHandler reloadEvent = new RoutedEventHandler((object sender, RoutedEventArgs e) => ReloadView(sender, e));
+
+            storageSelectionMenu = new StorageSelectionMenu(toolBox, router, requestCenter, actualStorageId, actualDataId, reloadEvent);
             actualWindow = WindowsName.StorageSelectionMenu;
             storageSelectionMenu.TopGridInit(topGrid);
             storageSelectionMenu.CenterGridInit(centerGrid);
