@@ -143,6 +143,35 @@ namespace Project_Inventory
             return temp;
         }
 
+        internal void InsertUIElementInGrid(Grid grid, UIElement uIElement, int row, int column, UIElementsName uIElementsName, SkinLocation skinLocation)
+        {
+            Grid.SetRow(uIElement, row);
+            Grid.SetColumn(uIElement, column);
+
+            switch (uIElementsName)
+            {
+                case UIElementsName.ComboBox:
+                    UIElementSkin.ComboBoxSkinModify(uIElement as ComboBox);
+                    break;
+
+                case UIElementsName.DatePicker:
+                    UIElementSkin.DatePickerSkinModify(uIElement as DatePicker);
+                    break;
+
+                case UIElementsName.TextBox:
+                    UIElementSkin.TextBoxSkinModify(uIElement as TextBox);
+                    break;
+
+                case UIElementsName.TextBoxNumber:
+                    UIElementSkin.TextBoxNumberSkinModify(uIElement as TextBox);
+                    break;
+            }
+
+            StorageViewerSkin.LoadSkinPosition(uIElement, skinLocation);
+
+            grid.Children.Add(uIElement);
+        }
+
         /// <summary>
         /// Inject an event on click of the button
         /// </summary>
@@ -883,7 +912,7 @@ namespace Project_Inventory
             if (indication == UIElementsName.ComboBox.ToString())
             {
                 ComboBox uiElement = new ComboBox();
-                string[] comboBoxStrings = new string[] { "TextBox", "TextBoxNumber", "DatePicker", "ComboBox" };
+                string[] comboBoxStrings = new string[] { "Select an Item", "TextBox", "TextBoxNumber", "DatePicker", "ComboBox"};
                 UIElementSkin.ComboBoxSkinForm(uiElement, comboBoxStrings);
 
                 if (text != null)
@@ -1489,8 +1518,14 @@ namespace Project_Inventory
                             }
                             else if (dataType[k] == UIElementsName.ComboBox.ToString())
                             {
-
-                                dataText[k] = (grid.Children[gridIndex] as ComboBox).SelectedItem.ToString();
+                                if ((grid.Children[gridIndex] as ComboBox).SelectedItem != (grid.Children[gridIndex] as ComboBox).Items[0])
+                                {
+                                    dataText[k] = (grid.Children[gridIndex] as ComboBox).SelectedItem.ToString();
+                                }
+                                else
+                                {
+                                    dataText[k] = string.Empty;
+                                }
                             }
                         }
 
@@ -1576,8 +1611,14 @@ namespace Project_Inventory
                 }
                 else if (optionnalAdd.DataType[i] == UIElementsName.ComboBox.ToString())
                 {
-
-                    optionnalAdd.DataText[i] = (grid.Children[j + i] as ComboBox).SelectedItem.ToString();
+                    if ((grid.Children[j + i] as ComboBox).SelectedItem != (grid.Children[j + i] as ComboBox).Items[0])
+                    {
+                        optionnalAdd.DataText[i] = (grid.Children[j + i] as ComboBox).SelectedItem.ToString();
+                    }
+                    else
+                    {
+                        optionnalAdd.DataText[i] = string.Empty;
+                    }
                 }
 
                 if (optionnalAdd.DataText[i] != string.Empty)

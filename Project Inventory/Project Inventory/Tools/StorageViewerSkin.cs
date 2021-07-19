@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace Project_Inventory.Tools
@@ -33,6 +34,118 @@ namespace Project_Inventory.Tools
                 case SkinLocation.BottomCenter:
                     BottomCenter(uiElement);
                     break;
+
+                case SkinLocation.TopLeft:
+                    TopLeft(uiElement);
+                    break;
+
+                case SkinLocation.TopRight:
+                    TopRight(uiElement);
+                    break;
+
+                case SkinLocation.BottomLeft:
+                    BottomLeft(uiElement);
+                    break;
+
+                case SkinLocation.BottomRight:
+                    BottomRight(uiElement);
+                    break;
+            }
+        }
+
+        private static void BottomRight(UIElement uiElement)
+        {
+            if (uiElement as TextBox != null)
+            {
+                (uiElement as TextBox).HorizontalAlignment = HorizontalAlignment.Right;
+                (uiElement as TextBox).VerticalAlignment = VerticalAlignment.Bottom;
+            }
+            else if (uiElement as ComboBox != null)
+            {
+                (uiElement as ComboBox).HorizontalAlignment = HorizontalAlignment.Right;
+                (uiElement as ComboBox).VerticalAlignment = VerticalAlignment.Bottom;
+            }
+            else if (uiElement as DatePicker != null)
+            {
+                (uiElement as DatePicker).HorizontalAlignment = HorizontalAlignment.Right;
+                (uiElement as DatePicker).VerticalAlignment = VerticalAlignment.Bottom;
+            }
+            else if (uiElement as Label != null)
+            {
+                (uiElement as Label).HorizontalAlignment = HorizontalAlignment.Right;
+                (uiElement as Label).VerticalAlignment = VerticalAlignment.Bottom;
+            }
+        }
+
+        private static void BottomLeft(UIElement uiElement)
+        {
+            if (uiElement as TextBox != null)
+            {
+                (uiElement as TextBox).HorizontalAlignment = HorizontalAlignment.Left;
+                (uiElement as TextBox).VerticalAlignment = VerticalAlignment.Bottom;
+            }
+            else if (uiElement as ComboBox != null)
+            {
+                (uiElement as ComboBox).HorizontalAlignment = HorizontalAlignment.Left;
+                (uiElement as ComboBox).VerticalAlignment = VerticalAlignment.Bottom;
+            }
+            else if (uiElement as DatePicker != null)
+            {
+                (uiElement as DatePicker).HorizontalAlignment = HorizontalAlignment.Left;
+                (uiElement as DatePicker).VerticalAlignment = VerticalAlignment.Bottom;
+            }
+            else if (uiElement as Label != null)
+            {
+                (uiElement as Label).HorizontalAlignment = HorizontalAlignment.Left;
+                (uiElement as Label).VerticalAlignment = VerticalAlignment.Bottom;
+            }
+        }
+
+        private static void TopRight(UIElement uiElement)
+        {
+            if (uiElement as TextBox != null)
+            {
+                (uiElement as TextBox).HorizontalAlignment = HorizontalAlignment.Right;
+                (uiElement as TextBox).VerticalAlignment = VerticalAlignment.Top;
+            }
+            else if (uiElement as ComboBox != null)
+            {
+                (uiElement as ComboBox).HorizontalAlignment = HorizontalAlignment.Right;
+                (uiElement as ComboBox).VerticalAlignment = VerticalAlignment.Top;
+            }
+            else if (uiElement as DatePicker != null)
+            {
+                (uiElement as DatePicker).HorizontalAlignment = HorizontalAlignment.Right;
+                (uiElement as DatePicker).VerticalAlignment = VerticalAlignment.Top;
+            }
+            else if (uiElement as Label != null)
+            {
+                (uiElement as Label).HorizontalAlignment = HorizontalAlignment.Right;
+                (uiElement as Label).VerticalAlignment = VerticalAlignment.Top;
+            }
+        }
+
+        private static void TopLeft(UIElement uiElement)
+        {
+            if (uiElement as TextBox != null)
+            {
+                (uiElement as TextBox).HorizontalAlignment = HorizontalAlignment.Left;
+                (uiElement as TextBox).VerticalAlignment = VerticalAlignment.Top;
+            }
+            else if (uiElement as ComboBox != null)
+            {
+                (uiElement as ComboBox).HorizontalAlignment = HorizontalAlignment.Left;
+                (uiElement as ComboBox).VerticalAlignment = VerticalAlignment.Top;
+            }
+            else if (uiElement as DatePicker != null)
+            {
+                (uiElement as DatePicker).HorizontalAlignment = HorizontalAlignment.Left;
+                (uiElement as DatePicker).VerticalAlignment = VerticalAlignment.Top;
+            }
+            else if (uiElement as Label != null)
+            {
+                (uiElement as Label).HorizontalAlignment = HorizontalAlignment.Left;
+                (uiElement as Label).VerticalAlignment = VerticalAlignment.Top;
             }
         }
 
