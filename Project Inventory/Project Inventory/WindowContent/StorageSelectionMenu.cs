@@ -262,40 +262,11 @@ namespace Project_Inventory
         /// </summary>
         private void DeleteStorage(object sender, RoutedEventArgs e, int StorageId)
         {
-            if (ConfirmPopup())
+            if (PopUpCenter.ActionValidPopup())
             {
                 requestCenter.DeleteRequest(BDDTabsName.DataLibraries.ToString() + "/storage/" + StorageId);
                 requestCenter.DeleteRequest(BDDTabsName.StorageLibraries.ToString() + "/" + StorageId);
             }
-        }
-
-        /// <summary>
-        /// A yes/no pop up to be sure user want to delete
-        /// </summary>
-        /// <returns></returns>
-        private bool ConfirmPopup()
-        {
-            string sMessageBoxText = "Are you sure ?";
-            string sCaption = "Validation Pop Up";
-
-            MessageBoxButton btnMessageBox = MessageBoxButton.YesNoCancel;
-            MessageBoxImage icnMessageBox = MessageBoxImage.Warning;
-
-            MessageBoxResult rsltMessageBox = MessageBox.Show(sMessageBoxText, sCaption, btnMessageBox, icnMessageBox);
-
-            switch (rsltMessageBox)
-            {
-                case MessageBoxResult.Yes:
-                    return true;
-
-                case MessageBoxResult.No:
-                    break;
-
-                case MessageBoxResult.Cancel:
-                    break;
-            }
-
-            return false;
         }
     }
 }
