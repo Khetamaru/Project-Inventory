@@ -239,9 +239,10 @@ namespace Project_Inventory
                     if (bottomGridButtons.Length > j + (i * 5))
                     {
                         tempRouter = new RoutedEventLibrary();
+                        var storage = bottomGridButtons[j + (i * 5)];
                         tempRouter.optionalEventOne = new RoutedEventHandler((object sender, RoutedEventArgs e) =>
                         {
-                            DeleteData(sender, e, bottomGridButtons[j + (i * 5)].id);
+                            DeleteStorage(sender, e, storage.id);
                         });
                         tempRouter.resetPageEvent = reloadEvent;
 
@@ -259,11 +260,12 @@ namespace Project_Inventory
         /// <summary>
         /// Stored procedure for storage delete
         /// </summary>
-        private void DeleteData(object sender, RoutedEventArgs e, int dataId)
+        private void DeleteStorage(object sender, RoutedEventArgs e, int StorageId)
         {
             if (ConfirmPopup())
             {
-                requestCenter.DeleteRequest(BDDTabsName.StorageLibraries.ToString() + "/" + dataId);
+                requestCenter.DeleteRequest(BDDTabsName.DataLibraries.ToString() + "/storage/" + StorageId);
+                requestCenter.DeleteRequest(BDDTabsName.StorageLibraries.ToString() + "/" + StorageId);
             }
         }
 
