@@ -216,11 +216,11 @@ namespace Project_Inventory.Tools
                 }
                 else if (split == "isHeader")
                 {
-                    if(splitTab[i + 2] == "true")
+                    if(splitTab[i + 2] == "True")
                     {
                         isHeader = true;
                     }
-                    else if(splitTab[i + 2] == "false")
+                    else if(splitTab[i + 2] == "False")
                     {
                         isHeader = false;
                     }
