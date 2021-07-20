@@ -1201,7 +1201,7 @@ namespace Project_Inventory
 
             SetUpGrid(grid, gridRowOne, gridColumnOne, gridSkin, skinHeight);
 
-            SetUpNewGrid(embededGrid, gridRowTwo, gridColumnTwo, SkinLocation.StretchStretch, skinHeight);
+            SetUpNewGrid(embededGrid, gridRowTwo, gridColumnTwo, SkinLocation.TopStretch, SkinSize.None);
 
             ScrollGridInit(embededGrid, gridRowTwo, gridColumnTwo, scrollViewer);
 
@@ -1230,7 +1230,7 @@ namespace Project_Inventory
 
             SetUpGrid(grid, gridRowOne, gridColumnOne, gridSkin, skinHeight);
 
-            SetUpNewGrid(embededGrid, gridRowTwo, gridColumnTwo, SkinLocation.StretchStretch, skinHeight);
+            SetUpNewGrid(embededGrid, gridRowTwo, gridColumnTwo, SkinLocation.StretchStretch, SkinSize.None);
 
             ScrollGridInit(embededGrid, gridRowTwo, gridColumnTwo, scrollViewer);
 
@@ -1284,7 +1284,7 @@ namespace Project_Inventory
             SetScrollGridHeight(embededGrid);
             SetScrollGridWidth(embededGrid);
 
-            if (gridRowTwo > 6)
+            if (gridRowTwo > 5)
             {
                 if (gridColumnTwo > 9)
                 {

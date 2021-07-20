@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
+using System.Windows.Input;
 
 namespace Project_Inventory
 {
@@ -29,6 +29,7 @@ namespace Project_Inventory
 
         private Grid capGrid;
         private Data[] dataTab;
+        private Data[] dataTabSave;
         private string[,] stringTab;
         private string[,] indicTab;
 
@@ -61,6 +62,7 @@ namespace Project_Inventory
             saveEvents[0].optionalEventTwo = new RoutedEventHandler((object sender, RoutedEventArgs e) => { SaveDatas(sender, e); });
 
             researchTextBox = new TextBox();
+            researchTextBox.KeyDown += new KeyEventHandler(KeyPressed);
 
             capGrid = new Grid();
 
@@ -72,30 +74,8 @@ namespace Project_Inventory
         /// </summary>
         public void LoadBDDInfos()
         {
-            dataTab = JsonCenter.LoadStorageViewerInfos(requestCenter, actualStorageId);
-
-            int i;
-            int j;
-
-            stringTab = new string[dataTab.Length, dataTab[0].DataText.Length];
-            indicTab = new string[dataTab.Length, dataTab[0].DataText.Length];
-
-            for (i = 0; i < dataTab.Length; i++)
-            {
-                for (j = 0; j < dataTab[0].DataText.Length; j++)
-                {
-                    stringTab[i, j] = dataTab[i].DataText[j];
-                    indicTab[i, j] = dataTab[i].DataType[j];
-                }
-            }
-        }
-
-        /// <summary>
-        /// Get all needed BDD infos
-        /// </summary>
-        public void LoadBDDInfos(string researchString)
-        {
-            dataTab = JsonCenter.LoadStorageViewerInfos(requestCenter, actualStorageId, researchString);
+            dataTabSave = dataTab = JsonCenter.LoadStorageViewerInfos(requestCenter, actualStorageId);
+            
 
             int i;
             int j;
@@ -165,7 +145,7 @@ namespace Project_Inventory
                     toolBox.CreateScrollableGridModfiable(centerGrid, capGrid,
                                          1, 1,
                                          stringTab.GetLength(0) + 1, stringTab.GetLength(1) + 1,
-                                         SkinLocation.StretchStretch, SkinSize.HeightEightPercent,
+                                         SkinLocation.CenterStretch, SkinSize.HeightEightPercent,
                                          SkinLocation.CenterCenter,
                                          stringTab, indicTab,
                                          AddDeleteButtons());
@@ -270,6 +250,87 @@ namespace Project_Inventory
             }
 
             reloadEvent.Invoke(sender, e);
+        }
+
+        private void KeyPressed(Object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                ResearchTrigger(sender, e, true);
+            }
+        }
+
+        /// <summary>
+        /// Get all needed BDD infos
+        /// </summary>
+        public void ResearchThree(string researchString)
+        {
+            List<string> strResearchList = new List<string>();
+            var dataLibraryShorted = new List<Data>();
+
+            var _stringTab = researchString.Split(new string[] { " " }, StringSplitOptions.None);
+
+            foreach (string str in _stringTab)
+            {
+                if (str != "")
+                {
+                    strResearchList.Add(str);
+                }
+            }
+
+            int[] trigger = new int[dataTabSave.Length];
+            int i = 0;
+
+            foreach (Data data in dataTabSave)
+            {
+                if (!data.IsHeader)
+                {
+                    foreach (string str in strResearchList)
+                    {
+                        foreach (string dataStr in data.DataText)
+                        {
+                            if (dataStr.Contains(str))
+                            {
+                                trigger[i]++;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    trigger[i] = strResearchList.Count;
+                }
+
+                i++;
+            }
+
+            for (i = 0; i < trigger.Length; i++)
+            {
+                if (trigger[i] == strResearchList.Count)
+                {
+                    dataLibraryShorted.Add(dataTabSave[i]);
+                }
+            }
+
+            dataTab = new Data[dataLibraryShorted.Count];
+            for (i = 0; i < dataLibraryShorted.Count; i++)
+            {
+                dataTab[i] = dataLibraryShorted[i];
+            }
+
+            int j;
+
+            stringTab = new string[dataTab.Length, dataTab[0].DataText.Length];
+            indicTab = new string[dataTab.Length, dataTab[0].DataText.Length];
+
+            for (i = 0; i < dataTab.Length; i++)
+            {
+                for (j = 0; j < dataTab[0].DataText.Length; j++)
+                {
+                    stringTab[i, j] = dataTab[i].DataText[j];
+                    indicTab[i, j] = dataTab[i].DataType[j];
+                }
+            }
         }
     }
 }

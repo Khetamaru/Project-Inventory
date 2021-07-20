@@ -261,13 +261,13 @@ namespace Project_Inventory
                 case WindowsName.StorageViewerPage:
                     if (storageViewerPage.researchTextBox.Text != string.Empty)
                     {
-                        storageViewerPage.LoadBDDInfos(storageViewerPage.researchTextBox.Text);
+                        storageViewerPage.ResearchThree(storageViewerPage.researchTextBox.Text);
                     }
                     else
                     {
                         storageViewerPage.LoadBDDInfos();
+                        storageViewerPage.TopGridInit(topGrid);
                     }
-                    storageViewerPage.TopGridInit(topGrid);
                     storageViewerPage.CenterGridInit(centerGrid);
                     storageViewerPage.BottomGridInit(bottomGrid);
                     break;
