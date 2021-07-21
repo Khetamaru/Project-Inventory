@@ -1,5 +1,7 @@
 ﻿using Project_Inventory.BDD;
 using Project_Inventory.Tools;
+using Project_Inventory.Tools.FonctionalityCerters;
+using Project_Inventory.Tools.NamesLibraries;
 using System;
 using System.Collections.Generic;
 using System.Windows;
@@ -62,7 +64,7 @@ namespace Project_Inventory
             saveEvents[0].optionalEventTwo = new RoutedEventHandler((object sender, RoutedEventArgs e) => { SaveDatas(sender, e); });
 
             researchTextBox = new TextBox();
-            researchTextBox.KeyDown += new KeyEventHandler(KeyPressed);
+            KeyPressedEventCenter.KeyPressedEventInjection(new RoutedEventHandler((object sender, RoutedEventArgs e) => { ResearchTrigger(sender, e, true); }), KeyPressedName.EnterKey, researchTextBox);
 
             capGrid = new Grid();
 
@@ -250,14 +252,6 @@ namespace Project_Inventory
             }
 
             reloadEvent.Invoke(sender, e);
-        }
-
-        private void KeyPressed(Object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-            {
-                ResearchTrigger(sender, e, true);
-            }
         }
 
         /// <summary>
