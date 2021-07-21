@@ -33,6 +33,7 @@ namespace Project_Inventory
 
             //toolBox.CreateSwitchButtonsToGridByTab(topGrid, topGridButtons, SkinsName.Standart, SkinsName.CenterCenter);
             Button button = toolBox.CreateSwitchButtonImage(ImagesName.logo, new RoutedEventLibrary(), SkinName.Standart, SkinLocation.CenterCenter, ImageSizesName.Logo);
+            button.Click += GetEventHandler(WindowsName.CreditPage);
             Grid.SetRow(button, 0);
             Grid.SetColumn(button, 0);
             topGrid.Children.Add(button);

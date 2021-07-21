@@ -15,6 +15,7 @@ namespace Project_Inventory.Tools
         FormPage,
         AddStorage,
         InitStorage,
+        CreditPage,
         None
     }
 }
