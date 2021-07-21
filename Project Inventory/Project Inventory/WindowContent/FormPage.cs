@@ -46,18 +46,42 @@ namespace Project_Inventory
 
         public new void CenterGridInit(Grid centerGrid)
         {
-            toolBox.CreateScrollableForm(centerGrid, capGrid,
-                                         1, 1,
-                                         formElements.Length, 2,
-                                         SkinLocation.StretchStretch, SkinSize.HeightEightPercent,
-                                         formElements, labels, listBoxNames);
+            switch (formType)
+            {
+                default:
+
+                    toolBox.CreateScrollableForm(centerGrid, capGrid,
+                                                 1, 1,
+                                                 formElements.Length, 2,
+                                                 SkinLocation.StretchStretch, SkinSize.HeightEightPercent,
+                                                 formElements, labels, listBoxNames);
+                    break;
+
+                case WindowsName.CreditPage:
+
+                    toolBox.CreateScrollableForm(centerGrid, capGrid,
+                                                 1, 1,
+                                                 formElements.Length, 2,
+                                                 SkinLocation.BottomStretch, SkinSize.HeightNintyPercent,
+                                                 formElements, labels, listBoxNames);
+                    break;
+            }
         }
 
         public new void BottomGridInit(Grid bottomGrid)
         {
-            toolBox.SetUpGrid(bottomGrid, 1, bottomColumnNb, SkinLocation.BottomStretch, SkinSize.HeightTenPercent);
+            switch(formType)
+            {
+                default:
 
-            toolBox.CreateSwitchButtonsToGridByTab(bottomGrid, bottomGridButtons, formValidButton, SkinName.StandartLittleMargin, SkinLocation.CenterCenter);
+                    toolBox.SetUpGrid(bottomGrid, 1, bottomColumnNb, SkinLocation.BottomStretch, SkinSize.HeightTenPercent);
+
+                    toolBox.CreateSwitchButtonsToGridByTab(bottomGrid, bottomGridButtons, formValidButton, SkinName.StandartLittleMargin, SkinLocation.CenterCenter);
+                    break;
+                case WindowsName.CreditPage:
+                    toolBox.EmptyGrid(bottomGrid);
+                    break;
+            }
         }
 
         /// <summary>
@@ -318,6 +342,24 @@ namespace Project_Inventory
                     {
                         formValidation(sender, e);
                     });
+
+                    break;
+
+                case (WindowsName.CreditPage):
+
+                    topGridButtons = new string[] { "Return" };
+
+                    topSwitchEvents = new RoutedEventLibrary[1];
+                    RoutedEventLibrariesInit(topSwitchEvents);
+                    topSwitchEvents[0].changePageEvent = GetEventHandler(WindowsName.MainMenu);
+
+                    formValidButton = new RoutedEventLibrary[2];
+                    RoutedEventLibrariesInit(formValidButton);
+                    formValidButton[0].optionalEventOne = new RoutedEventHandler((object sender, RoutedEventArgs e) => InitStorageReload(sender, e));
+                    formValidButton[1].changePageEvent = GetEventHandler(WindowsName.StorageViewerPage);
+
+                    formElements = new UIElementsName[] { UIElementsName.None, UIElementsName.None, UIElementsName.None };
+                    labels = new string[] { "Enterprise : Docteur Ordianteur Laval", "Project Manager : ETAIX Vincent", "Code Author : LASSERRE Anthony" };
 
                     break;
             }
