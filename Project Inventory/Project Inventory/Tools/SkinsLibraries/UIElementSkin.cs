@@ -14,9 +14,8 @@ namespace Project_Inventory.Tools
         /// Text Box Skin used at Form Page
         /// </summary>
         /// <param name="textBox"></param>
-        public static void TextBoxSkinForm(TextBox textBox)
+        public static void TextBoxSkinForm(TextBox textBox, WpfScreen wpfScreen)
         {
-            WpfScreen wpfScreen = new WpfScreen();
             textBox.Width = wpfScreen.PrimaryScreenSizeWidth() / 4;
             textBox.Height = 40;
             textBox.HorizontalAlignment = HorizontalAlignment.Center;
@@ -27,9 +26,9 @@ namespace Project_Inventory.Tools
         /// Text Box Number Skin used at Form Page
         /// </summary>
         /// <param name="textBox"></param>
-        public static void TextBoxNumberSkinForm(TextBox textBox)
+        public static void TextBoxNumberSkinForm(TextBox textBox, WpfScreen wpfScreen)
         {
-            TextBoxSkinForm(textBox);
+            TextBoxSkinForm(textBox, wpfScreen);
 
             TextBoxNumberValidationHandler(textBox);
         }
@@ -84,9 +83,8 @@ namespace Project_Inventory.Tools
         /// Text Box Skin used at Storage Viewer Page ( Modify Mode )
         /// </summary>
         /// <param name="textBox"></param>
-        public static void TextBoxSkinModify(TextBox textBox)
+        public static void TextBoxSkinModify(TextBox textBox, WpfScreen wpfScreen)
         {
-            WpfScreen wpfScreen = new WpfScreen();
             textBox.MinWidth = wpfScreen.PrimaryScreenSizeWidth() / 100 * 5;
             textBox.HorizontalAlignment = HorizontalAlignment.Center;
             textBox.VerticalAlignment = VerticalAlignment.Center;
@@ -96,9 +94,9 @@ namespace Project_Inventory.Tools
         /// Text Box Number Skin used at Storage Viewer Page ( Modify Mode )
         /// </summary>
         /// <param name="textBox"></param>
-        public static void TextBoxNumberSkinModify(TextBox textBox)
+        public static void TextBoxNumberSkinModify(TextBox textBox, WpfScreen wpfScreen)
         {
-            TextBoxSkinModify(textBox);
+            TextBoxSkinModify(textBox, wpfScreen);
             TextBoxNumberValidationHandler(textBox);
         }
 

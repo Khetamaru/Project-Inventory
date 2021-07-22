@@ -19,9 +19,9 @@ namespace Project_Inventory
         public double windowWidth;
         public double windowHeight;
 
-        public ToolBox(double titleBarHeight)
+        public ToolBox(double titleBarHeight, Window windowRef)
         {
-            wpfScreen = new WpfScreen();
+            wpfScreen = WpfScreen.GetScreenFrom(windowRef);
 
             windowWidth = wpfScreen.PrimaryScreenSizeWidth();
             windowHeight = wpfScreen.PrimaryScreenSizeHeight() - titleBarHeight;
@@ -159,11 +159,11 @@ namespace Project_Inventory
                     break;
 
                 case UIElementsName.TextBox:
-                    UIElementSkin.TextBoxSkinModify(uIElement as TextBox);
+                    UIElementSkin.TextBoxSkinModify(uIElement as TextBox, wpfScreen);
                     break;
 
                 case UIElementsName.TextBoxNumber:
-                    UIElementSkin.TextBoxNumberSkinModify(uIElement as TextBox);
+                    UIElementSkin.TextBoxNumberSkinModify(uIElement as TextBox, wpfScreen);
                     break;
             }
 
@@ -668,7 +668,7 @@ namespace Project_Inventory
                     case (UIElementsName.TextBox):
 
                         uIElement = new TextBox();
-                        UIElementSkin.TextBoxSkinForm(uIElement as TextBox);
+                        UIElementSkin.TextBoxSkinForm(uIElement as TextBox, wpfScreen);
                         Grid.SetRow(uIElement, i);
                         Grid.SetColumn(uIElement, 1);
                         grid.Children.Add(uIElement as TextBox);
@@ -678,8 +678,8 @@ namespace Project_Inventory
                     case (UIElementsName.TextBoxNumber):
 
                         uIElement = new TextBox();
-                        UIElementSkin.TextBoxSkinForm(uIElement as TextBox);
-                        UIElementSkin.TextBoxNumberSkinForm(uIElement as TextBox);
+                        UIElementSkin.TextBoxSkinForm(uIElement as TextBox, wpfScreen);
+                        UIElementSkin.TextBoxNumberSkinForm(uIElement as TextBox, wpfScreen);
                         Grid.SetRow(uIElement, i);
                         Grid.SetColumn(uIElement, 1);
                         grid.Children.Add(uIElement as TextBox);
@@ -881,7 +881,7 @@ namespace Project_Inventory
                 TextBox uiElement = new TextBox();
                 uiElement.Text = text;
 
-                UIElementSkin.TextBoxSkinModify(uiElement);
+                UIElementSkin.TextBoxSkinModify(uiElement, wpfScreen);
                 StorageViewerSkin.LoadSkinPosition(uiElement, skinPosition);
 
                 // insert potential clickEvent
@@ -898,7 +898,7 @@ namespace Project_Inventory
                 UIElementSkin.TextBoxNumberValidationHandler(uiElement);
                 uiElement.Text = text;
 
-                UIElementSkin.TextBoxNumberSkinModify(uiElement);
+                UIElementSkin.TextBoxNumberSkinModify(uiElement, wpfScreen);
                 StorageViewerSkin.LoadSkinPosition(uiElement, skinPosition);
 
                 // insert potential clickEvent
@@ -973,7 +973,7 @@ namespace Project_Inventory
             TextBox textbox = new TextBox();
             textbox.Text = text;
 
-            UIElementSkin.TextBoxSkinModify(textbox);
+            UIElementSkin.TextBoxSkinModify(textbox, wpfScreen);
             StorageViewerSkin.LoadSkinPosition(textbox, skinPosition);
 
             Grid.SetRow(textbox, row);
