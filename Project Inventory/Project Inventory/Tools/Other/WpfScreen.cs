@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows;
+using System.Windows.Forms;
 using System.Windows.Interop;
 using Point = System.Windows.Point;
 
@@ -19,7 +20,7 @@ namespace Project_Inventory
         /// <returns></returns>
         public double PrimaryScreenSizeWidth()
         {
-            return SystemParameters.WorkArea.Width;
+            return WorkingArea.Width;
         }
 
         /// <summary>
@@ -28,12 +29,12 @@ namespace Project_Inventory
         /// <returns></returns>
         public double PrimaryScreenSizeHeight()
         {
-            return SystemParameters.WorkArea.Height;
+            return WorkingArea.Height;
         }
 
-        /*public static IEnumerable<WpfScreen> AllScreens()
+        public static IEnumerable<WpfScreen> AllScreens()
         {
-            foreach (Screen screen in System.Windows.Forms.Screen.AllScreens)
+            foreach (Screen screen in Screen.AllScreens)
             {
                 yield return new WpfScreen(screen);
             }
@@ -62,12 +63,12 @@ namespace Project_Inventory
 
         public static WpfScreen Primary
         {
-            get { return new WpfScreen(System.Windows.Forms.Screen.PrimaryScreen); }
+            get { return new WpfScreen(Screen.PrimaryScreen); }
         }
 
         private readonly Screen screen;
 
-        internal WpfScreen(System.Windows.Forms.Screen screen)
+        internal WpfScreen(Screen screen)
         {
             this.screen = screen;
         }
@@ -102,6 +103,6 @@ namespace Project_Inventory
         public string DeviceName
         {
             get { return this.screen.DeviceName; }
-        }*/
+        }
     }
 }

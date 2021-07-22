@@ -25,13 +25,13 @@ namespace Project_Inventory
         public MainWindow()
         {
             DataContext = this;
-            ResizeMode = ResizeMode.CanMinimize;
+            //ResizeMode = ResizeMode.CanMinimize;
 
             InitializeComponent();
 
             titleBarHeight = SystemParameters.WindowCaptionHeight;
 
-            toolBox = new ToolBox(titleBarHeight);
+            toolBox = new ToolBox(titleBarHeight, this);
 
             Width = toolBox.windowWidth;
             Height = toolBox.windowHeight;
@@ -42,7 +42,14 @@ namespace Project_Inventory
             actualStorageId = 42;
             actualDataId = 42;
 
+            this.SizeChanged += new SizeChangedEventHandler((object sender, SizeChangedEventArgs e) => { SizeChangeResizeEvent(sender, e); });
+
             Init();
+        }
+
+        private void SizeChangeResizeEvent(object sender, SizeChangedEventArgs e)
+        {
+            ReloadView(sender, e);
         }
 
         private void Init()

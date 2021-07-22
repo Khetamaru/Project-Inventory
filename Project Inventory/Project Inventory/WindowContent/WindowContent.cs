@@ -9,7 +9,6 @@ namespace Project_Inventory
     /// </summary>
     public class WindowContent
     {
-
         public ToolBox toolBox;
         public Router router;
         public RequestCenter requestCenter;
