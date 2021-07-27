@@ -4,9 +4,11 @@ using System.Windows.Controls;
 
 namespace Project_Inventory
 {
+    /// <summary>
+    /// Mother class of pages class
+    /// </summary>
     public class WindowContent
     {
-
         public ToolBox toolBox;
         public Router router;
         public RequestCenter requestCenter;
@@ -24,16 +26,28 @@ namespace Project_Inventory
             actualDataId = _actualDataId;
         }
 
+        /// <summary>
+        /// Dispay top part of the UI if exist
+        /// </summary>
+        /// <param name="topGrid"></param>
         public void TopGridInit(Grid topGrid)
         {
             toolBox.EmptyGrid(topGrid);
         }
 
+        /// <summary>
+        /// Dispay center part of the UI if exist
+        /// </summary>
+        /// <param name="centerGrid"></param>
         public void CenterGridInit(Grid centerGrid)
         {
             toolBox.EmptyGrid(centerGrid);
         }
 
+        /// <summary>
+        /// Dispay bottom part of the UI if exist
+        /// </summary>
+        /// <param name="bottomGrid"></param>
         public void BottomGridInit(Grid bottomGrid)
         {
             toolBox.EmptyGrid(bottomGrid);
@@ -49,11 +63,16 @@ namespace Project_Inventory
             return actualDataId;
         }
 
-        public RoutedEventHandler GetEventHandler(string routerName)
+        /// <summary>
+        /// Give stored procedure needed
+        /// </summary>
+        /// <param name="routerName"></param>
+        /// <returns></returns>
+        public RoutedEventHandler GetEventHandler(WindowsName routerName)
         {
             var i = 0;
 
-            foreach(string name in router.routersName)
+            foreach(WindowsName name in router.routersName)
             {
                 if(name == routerName)
                 {
@@ -66,27 +85,16 @@ namespace Project_Inventory
             return null;
         }
 
-        public void ButtonPlacer(Grid grid, int tabLength, int widthLimit, string skinName, string lengthName)
+        /// <summary>
+        /// Init all routed event libraries
+        /// </summary>
+        /// <param name="routedEventLibrary"></param>
+        public void RoutedEventLibrariesInit(RoutedEventLibrary[] routedEventLibrary)
         {
-            int i;
-            int j = 1;
-
-            if (tabLength > widthLimit)
+            for( int i = 0 ; i < routedEventLibrary.Length ; i++)
             {
-                do
-                {
-                    i = widthLimit;
-                    j++;
-                    tabLength -= widthLimit;
-                }
-                while (tabLength > widthLimit);
+                routedEventLibrary[i] = new RoutedEventLibrary();
             }
-            else
-            {
-                i = tabLength;
-            }
-
-            toolBox.SetUpGrid(grid, j, i, skinName, lengthName);
         }
     }
 }

@@ -27,7 +27,7 @@ namespace Local_API_Server.Controllers
 
         // GET: api/StorageLibraries/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<StorageLibrary>> GetStorageLibrary(long id)
+        public async Task<ActionResult<StorageLibrary>> GetStorageLibrary(int id)
         {
             var storageLibrary = await _context.StorageLibraries.FindAsync(id);
 
@@ -42,7 +42,7 @@ namespace Local_API_Server.Controllers
         // PUT: api/StorageLibraries/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutStorageLibrary(long id, StorageLibrary storageLibrary)
+        public async Task<IActionResult> PutStorageLibrary(int id, StorageLibrary storageLibrary)
         {
             if (id != storageLibrary.Id)
             {
@@ -83,7 +83,7 @@ namespace Local_API_Server.Controllers
 
         // DELETE: api/StorageLibraries/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteStorageLibrary(long id)
+        public async Task<IActionResult> DeleteStorageLibrary(int id)
         {
             var storageLibrary = await _context.StorageLibraries.FindAsync(id);
             if (storageLibrary == null)
@@ -94,10 +94,10 @@ namespace Local_API_Server.Controllers
             _context.StorageLibraries.Remove(storageLibrary);
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok();
         }
 
-        private bool StorageLibraryExists(long id)
+        private bool StorageLibraryExists(int id)
         {
             return _context.StorageLibraries.Any(e => e.Id == id);
         }

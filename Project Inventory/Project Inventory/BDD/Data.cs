@@ -1,60 +1,94 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Project_Inventory.BDD
+﻿namespace Project_Inventory.BDD
 {
+    /// <summary>
+    /// Use to save Storage Objects Informations
+    /// </summary>
     public class Data : BDDObject
     {
         public int StorageId { get; set; }
         public string[] DataText { get; set; }
         public string[] DataType { get; set; }
+        public bool IsHeader { get; set; }
 
-        public Data(int id, int storageId, string[] dataText, string[] dataType)
+        public Data(int id, int storageId, string[] dataText, string[] dataType, bool isHeader)
             : base(id)
         {
             StorageId = storageId;
             DataText = dataText;
             DataType = dataType;
+            IsHeader = isHeader;
         }
 
-        public Data(int storageId, string[] dataText, string[] dataType)
+        public Data(int storageId, string[] dataText, string[] dataType, bool isHeader)
             : base(42)
         {
             StorageId = storageId;
             DataText = dataText;
             DataType = dataType;
+            IsHeader = isHeader;
         }
 
+        /// <summary>
+        /// Convert Data to json without the Id
+        /// </summary>
+        /// <returns></returns>
         public string ToJson()
         {
-            return "{\"storageId\":" + StorageId + ",\"dataText\":\"" + ToStringDataText() + ",\"dataType\":\"" + ToStringDataType() + "\"}";
+            return "{\"storageId\":" + StorageId + ",\"dataText\":\"" + ToStringDataText() + "\",\"dataType\":\"" + ToStringDataType() + "\",\"isHeader\":\"" + IsHeader + "\"}";
         }
 
+
+        /// <summary>
+        /// Convert Data to json with the Id
+        /// </summary>
+        /// <returns></returns>
+        public string ToJsonId()
+        {
+            return "{\"Id\":" + id + ",\"storageId\":" + StorageId + ",\"dataText\":\"" + ToStringDataText() + "\",\"dataType\":\"" + ToStringDataType() + "\",\"isHeader\":\"" + IsHeader + "\"}";
+        }
+
+        /// <summary>
+        /// Convert Data Text to json
+        /// </summary>
+        /// <returns></returns>
         public string ToStringDataText()
         {
             string stg = "";
+            int i = 0;
 
             foreach(string text in DataText)
             {
-                stg += text + "~";
-            }
+                stg += text;
 
-            stg.Remove(stg.Length - 1, 1);
+                if (i < DataText.Length - 1)
+                {
+                    stg += "~";
+                }
+                i++;
+            }
 
             return stg;
         }
 
+        /// <summary>
+        /// Convert Data Type to json
+        /// </summary>
+        /// <returns></returns>
         public string ToStringDataType()
         {
             string stg = "";
+            int i = 0;
 
             foreach (string type in DataType)
             {
-                stg += type + "~";
-            }
+                stg += type;
 
-            stg.Remove(stg.Length - 1, 1);
+                if (i < DataType.Length - 1)
+                {
+                    stg += "~";
+                }
+                i++;
+            }
 
             return stg;
         }

@@ -1,9 +1,6 @@
-﻿using Project_Inventory.Tools;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Project_Inventory.BDD;
+using Project_Inventory.Tools;
 using System.Windows;
-using System.Windows.Controls;
 
 namespace Project_Inventory
 {
@@ -15,7 +12,7 @@ namespace Project_Inventory
         private Router router;
         private RequestCenter requestCenter;
 
-        private string actualWindow;
+        private WindowsName actualWindow;
 
         private MainMenu mainMenu;
         private StorageSelectionMenu storageSelectionMenu;
@@ -28,13 +25,16 @@ namespace Project_Inventory
         public MainWindow()
         {
             DataContext = this;
-            ResizeMode = ResizeMode.CanMinimize;
+            //ResizeMode = ResizeMode.CanMinimize;
 
             InitializeComponent();
 
             titleBarHeight = SystemParameters.WindowCaptionHeight;
 
-            toolBox = new ToolBox(this, titleBarHeight);
+            toolBox = new ToolBox(titleBarHeight, this);
+
+            Width = toolBox.windowWidth;
+            Height = toolBox.windowHeight;
 
             router = InitRouters();
             requestCenter = new RequestCenter();
@@ -42,7 +42,14 @@ namespace Project_Inventory
             actualStorageId = 42;
             actualDataId = 42;
 
+            this.SizeChanged += new SizeChangedEventHandler((object sender, SizeChangedEventArgs e) => { SizeChangeResizeEvent(sender, e); });
+
             Init();
+        }
+
+        private void SizeChangeResizeEvent(object sender, SizeChangedEventArgs e)
+        {
+            ReloadView(sender, e);
         }
 
         private void Init()
@@ -53,7 +60,7 @@ namespace Project_Inventory
         public void MainMenuInit()
         {
             mainMenu = new MainMenu(toolBox, router, requestCenter, actualStorageId, actualDataId);
-            actualWindow = "mainMenu";
+            actualWindow = WindowsName.MainMenu;
             mainMenu.TopGridInit(topGrid);
             mainMenu.CenterGridInit(centerGrid);
             mainMenu.BottomGridInit(bottomGrid);
@@ -61,17 +68,21 @@ namespace Project_Inventory
 
         public void StorageSelectionMenuInit()
         {
-            storageSelectionMenu = new StorageSelectionMenu(toolBox, router, requestCenter, actualStorageId, actualDataId);
-            actualWindow = "storageSelectionMenu";
+            RoutedEventHandler reloadEvent = new RoutedEventHandler((object sender, RoutedEventArgs e) => ReloadView(sender, e));
+
+            storageSelectionMenu = new StorageSelectionMenu(toolBox, router, requestCenter, actualStorageId, actualDataId, reloadEvent);
+            actualWindow = WindowsName.StorageSelectionMenu;
             storageSelectionMenu.TopGridInit(topGrid);
             storageSelectionMenu.CenterGridInit(centerGrid);
             storageSelectionMenu.BottomGridInit(bottomGrid);
         }
 
-        public void FormPageInit(string formType)
+        public void FormPageInit(WindowsName formType)
         {
-            formPage = new FormPage(toolBox, router, requestCenter, formType, actualStorageId, actualDataId);
-            actualWindow = "formPage";
+            RoutedEventHandler reloadEvent = new RoutedEventHandler((object sender, RoutedEventArgs e) => ReloadView(sender, e));
+
+            formPage = new FormPage(toolBox, router, requestCenter, formType, actualStorageId, actualDataId, reloadEvent);
+            actualWindow = WindowsName.FormPage;
             formPage.TopGridInit(topGrid);
             formPage.CenterGridInit(centerGrid);
             formPage.BottomGridInit(bottomGrid);
@@ -79,61 +90,80 @@ namespace Project_Inventory
 
         public void storageViewerPageInit()
         {
-            storageViewerPage = new StorageViewerPage(toolBox, router, requestCenter, actualStorageId, actualDataId);
-            actualWindow = "storageViewerPage";
-            storageViewerPage.TopGridInit(topGrid);
-            storageViewerPage.CenterGridInit(centerGrid);
-            storageViewerPage.BottomGridInit(bottomGrid);
+            Data[] data = JsonCenter.LoadStorageViewerInfos(requestCenter, actualStorageId);
+
+            if (data.Length < 1)
+            {
+                FormPageInit(WindowsName.InitStorage);
+            }
+            else
+            {
+                RoutedEventHandler reloadEvent = new RoutedEventHandler((object sender, RoutedEventArgs e) => ReloadView(sender, e));
+
+                storageViewerPage = new StorageViewerPage(toolBox, router, requestCenter, actualStorageId, actualDataId, reloadEvent);
+                actualWindow = WindowsName.StorageViewerPage;
+                storageViewerPage.TopGridInit(topGrid);
+                storageViewerPage.CenterGridInit(centerGrid);
+                storageViewerPage.BottomGridInit(bottomGrid);
+            }
         }
 
         public void IDBackups()
         {
             switch(actualWindow)
             {
-                case ("mainMenu"):
+                case (WindowsName.MainMenu):
                     actualStorageId = mainMenu.StorageIDBackups();
                     actualDataId = mainMenu.DataIDBackups();
                     break;
-                case ("storageSelectionMenu"):
+                case (WindowsName.StorageSelectionMenu):
                     actualStorageId = storageSelectionMenu.StorageIDBackups();
                     actualDataId = storageSelectionMenu.DataIDBackups();
                     break;
-                case ("formPage"):
+                case (WindowsName.FormPage):
                     actualStorageId = formPage.StorageIDBackups();
                     actualDataId = formPage.DataIDBackups();
                     break;
-                case ("storageViewerPage"):
+                case (WindowsName.StorageViewerPage):
                     actualStorageId = storageViewerPage.StorageIDBackups();
                     actualDataId = storageViewerPage.DataIDBackups();
                     break;
             }
         }
 
-        public void WindowSwitch(object sender, RoutedEventArgs e, string windowName) 
+        public void WindowSwitch(object sender, RoutedEventArgs e, WindowsName windowName) 
         {
             IDBackups();
 
             switch(windowName)
             {
-                case ("MainMenu"):
+                case WindowsName.MainMenu:
                     MainMenuInit();
                     break;
 
-                case ("StorageSelectionMenu"):
+                case WindowsName.StorageSelectionMenu:
                     StorageSelectionMenuInit();
                     break;
 
-                case ("storageViewerPage"):
+                case WindowsName.StorageViewerPage:
                     storageViewerPageInit();
                     break;
 
-                case ("Add Storage"):
+                case WindowsName.AddStorage:
+                    FormPageInit(windowName);
+                    break;
+
+                case WindowsName.InitStorage:
+                    FormPageInit(windowName);
+                    break;
+
+                case WindowsName.CreditPage:
                     FormPageInit(windowName);
                     break;
             }
         }
 
-        public RoutedEventHandler EnventHandlerGenerator(string windowName)
+        public RoutedEventHandler EnventHandlerGenerator(WindowsName windowName)
         {
             RoutedEventHandler router = new RoutedEventHandler((object sender, RoutedEventArgs e) =>
             {
@@ -143,16 +173,16 @@ namespace Project_Inventory
             return router;
         }
 
-        public RoutedEventHandler[] EnventHandlerGeneratorByTab(string[] windowName, string[] formRoutersName, string[] routersNameF)
+        public RoutedEventHandler[] EnventHandlerGeneratorByTab(WindowsName[] windowName, WindowsName[] formRoutersName, WindowsName[] routersNameF)
         {
             RoutedEventHandler[] routers = new RoutedEventHandler[windowName.Length + formRoutersName.Length - 1];
             var i = 0;
             var j = 0;
-            var string1 = string.Empty;
+            WindowsName string1;
 
-            foreach (string name in windowName)
+            foreach (WindowsName name in windowName)
             {
-                if (name != "FormPage")
+                if (name != WindowsName.FormPage)
                 {
                     routers[i] = new RoutedEventHandler((object sender, RoutedEventArgs e) =>
                     {
@@ -162,14 +192,31 @@ namespace Project_Inventory
                 }
                 else
                 {
-                    foreach(string formName in formRoutersName)
+                    foreach(WindowsName formName in formRoutersName)
                     {
                         string1 = formRoutersName[j];
 
-                        routers[i + j] = new RoutedEventHandler((object sender, RoutedEventArgs e) =>
+                        switch (j)
                         {
-                            WindowSwitch(sender, e, string1);
-                        });
+                            case 0:
+                                routers[i + j] = new RoutedEventHandler((object sender, RoutedEventArgs e) =>
+                                {
+                                    WindowSwitch(sender, e, WindowsName.AddStorage);
+                                });
+                                break;
+                            case 1:
+                                routers[i + j] = new RoutedEventHandler((object sender, RoutedEventArgs e) =>
+                                {
+                                    WindowSwitch(sender, e, WindowsName.InitStorage);
+                                });
+                                break;
+                            case 2:
+                                routers[i + j] = new RoutedEventHandler((object sender, RoutedEventArgs e) =>
+                                {
+                                    WindowSwitch(sender, e, WindowsName.CreditPage);
+                                });
+                                break;
+                        }
                         routersNameF[i + j] = formName;
 
                         j++;
@@ -184,25 +231,65 @@ namespace Project_Inventory
 
         public Router InitRouters()
         {
-            string[] routersName = new string[] 
+            WindowsName[] routersName = new WindowsName[] 
             { 
-                "MainMenu", 
-                "StorageSelectionMenu",
-                "storageViewerPage",
-                "FormPage"
+                WindowsName.MainMenu,
+                WindowsName.StorageSelectionMenu,
+                WindowsName.StorageViewerPage,
+                WindowsName.FormPage
             };
 
-            string[] formRoutersName = new string[]
+            WindowsName[] formRoutersName = new WindowsName[]
             {
-                "Add Storage"
+                WindowsName.AddStorage,
+                WindowsName.InitStorage,
+                WindowsName.CreditPage
             };
 
-            string[] routersNameF = new string[routersName.Length - 1 + formRoutersName.Length];
+            WindowsName[] routersNameF = new WindowsName[routersName.Length - 1 + formRoutersName.Length];
 
 
             RoutedEventHandler[] routersRouter = EnventHandlerGeneratorByTab(routersName, formRoutersName, routersNameF);
 
             return new Router(routersNameF, routersRouter);
+        }
+
+        public void ReloadView(object sender, RoutedEventArgs e)
+        {
+            switch (actualWindow)
+            {
+                case WindowsName.MainMenu:
+                    mainMenu.TopGridInit(topGrid);
+                    mainMenu.CenterGridInit(centerGrid);
+                    mainMenu.BottomGridInit(bottomGrid);
+                    break;
+
+                case WindowsName.StorageSelectionMenu:
+                    storageSelectionMenu.TopGridInit(topGrid);
+                    storageSelectionMenu.CenterGridInit(centerGrid);
+                    storageSelectionMenu.BottomGridInit(bottomGrid);
+                    break;
+
+                case WindowsName.FormPage:
+                    formPage.TopGridInit(topGrid);
+                    formPage.CenterGridInit(centerGrid);
+                    formPage.BottomGridInit(bottomGrid);
+                    break;
+
+                case WindowsName.StorageViewerPage:
+                    if (storageViewerPage.researchTextBox.Text != string.Empty)
+                    {
+                        storageViewerPage.ResearchThree(storageViewerPage.researchTextBox.Text);
+                    }
+                    else
+                    {
+                        storageViewerPage.LoadBDDInfos();
+                        storageViewerPage.TopGridInit(topGrid);
+                    }
+                    storageViewerPage.CenterGridInit(centerGrid);
+                    storageViewerPage.BottomGridInit(bottomGrid);
+                    break;
+            }
         }
     }
 }
