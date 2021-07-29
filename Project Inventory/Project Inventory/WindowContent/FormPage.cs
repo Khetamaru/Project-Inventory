@@ -1,5 +1,6 @@
 ﻿using Project_Inventory.BDD;
 using Project_Inventory.Tools;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -25,8 +26,8 @@ namespace Project_Inventory
 
         private RoutedEventHandler reloadEvent;
 
-        public FormPage(ToolBox toolBox, Router _router, RequestCenter requestCenter, WindowsName _formType, int _actualStorageId, int _actualDataId, RoutedEventHandler _reloadEvent)
-            : base(toolBox, _router, requestCenter, _actualStorageId, _actualDataId)
+        public FormPage(ToolBox toolBox, Router _router, RequestCenter requestCenter, WindowsName _formType, int _actualStorageId, int _actualDataId, int _actualCustomListId, RoutedEventHandler _reloadEvent)
+            : base(toolBox, _router, requestCenter, _actualStorageId, _actualDataId, _actualCustomListId)
         {
             capGrid = new Grid();
 
@@ -134,8 +135,8 @@ namespace Project_Inventory
         public void InitStorage(string[] uIElements)
         {
             UIElementsName[] uIElementsNames = new UIElementsName[formElements.Length / 2];
-            string[] columnNames = new string[formElements.Length / 2];
-            string[] dataType = new string[uIElementsNames.Length];
+            List<string> columnNames = new List<string>();
+            List<string> dataType = new List<string>();
 
             GetInitStorageUIElement(uIElementsNames, columnNames);
 
@@ -159,7 +160,7 @@ namespace Project_Inventory
         public void InitStorageReload(object sender, RoutedEventArgs e)
         {
             UIElementsName[] uIElementsNames = new UIElementsName[formElements.Length / 2];
-            string[] columnNames = new string[formElements.Length / 2];
+            List<string> columnNames = new List<string>();
 
             GetInitStorageUIElement(uIElementsNames, columnNames);
 
@@ -176,7 +177,7 @@ namespace Project_Inventory
         /// </summary>
         /// <param name="uIElementsNames"></param>
         /// <param name="columnNames"></param>
-        private void GetInitStorageUIElement(UIElementsName[] uIElementsNames, string[] columnNames)
+        private void GetInitStorageUIElement(UIElementsName[] uIElementsNames, List<string> columnNames)
         {
             int i = 0;
             int j = 0;
@@ -216,7 +217,7 @@ namespace Project_Inventory
         /// </summary>
         /// <param name="uIElementsNames"></param>
         /// <param name="columnNames"></param>
-        private void InjectInitStorageUIElement(UIElementsName[] uIElementsNames, string[] columnNames)
+        private void InjectInitStorageUIElement(UIElementsName[] uIElementsNames, List<string> columnNames)
         {
             int j = 0;
             int k = 0;

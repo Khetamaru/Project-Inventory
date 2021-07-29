@@ -13,16 +13,15 @@ namespace Project_Inventory
 
         private int widthLimit;
 
-        public MainMenu(ToolBox toolBox, Router _router, RequestCenter requestCenter, int _actualStorageId, int _actualDataId)
-            : base(toolBox, _router, requestCenter, _actualStorageId, _actualDataId)
+        public MainMenu(ToolBox toolBox, Router _router, RequestCenter requestCenter, int _actualStorageId, int _actualDataId, int _actualCustomListId)
+            : base(toolBox, _router, requestCenter, _actualStorageId, _actualDataId, _actualCustomListId)
         {
-            bottomGridButtons = new string[] { "Storage Selection", "Formulaire Type", "Storage Viewer" };
+            bottomGridButtons = new string[] { "Storage Selection", "Custom Lists" };
 
-            switchEvents = new RoutedEventLibrary[3];
+            switchEvents = new RoutedEventLibrary[2];
             RoutedEventLibrariesInit(switchEvents);
             switchEvents[0].changePageEvent = GetEventHandler(WindowsName.StorageSelectionMenu);
-            switchEvents[1].changePageEvent = GetEventHandler(WindowsName.AddStorage);
-            switchEvents[2].changePageEvent = GetEventHandler(WindowsName.StorageViewerPage);
+            switchEvents[1].changePageEvent = GetEventHandler(WindowsName.ListMenu);
 
             widthLimit = 5;
         }

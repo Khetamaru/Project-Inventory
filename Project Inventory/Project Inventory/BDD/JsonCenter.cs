@@ -1,5 +1,7 @@
 ﻿using Project_Inventory.BDD;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 
 namespace Project_Inventory.Tools
@@ -49,7 +51,19 @@ namespace Project_Inventory.Tools
         /// <returns></returns>
         public static string ObjectJsonBuilder(Storage storage)
         {
-            string json = "\"Name\":" + "\"" + storage.Name + "\"";
+            string json = storage.ToJson();
+
+            return json;
+        }
+
+        /// <summary>
+        /// Convert a Custom List to json
+        /// </summary>
+        /// <param name="storage"></param>
+        /// <returns></returns>
+        public static string ObjectJsonBuilder(CustomList customList)
+        {
+            string json = customList.ToJson();
 
             return json;
         }
@@ -61,7 +75,7 @@ namespace Project_Inventory.Tools
         /// <returns></returns>
         public static Storage[] LoadStorageSelectionInfos(RequestCenter requestCenter)
         {
-            string responseBdd = requestCenter.GetRequest("StorageLibraries");
+            string responseBdd = requestCenter.GetRequest(BDDTabsName.StorageLibraries.ToString());
 
             if (responseBdd == "[]")
             {
@@ -74,6 +88,25 @@ namespace Project_Inventory.Tools
         }
 
         /// <summary>
+        /// Get all infos for the Custom List Menu
+        /// </summary>
+        /// <param name="requestCenter"></param>
+        /// <returns></returns>
+        public static CustomList[] LoadListMenuInfos(RequestCenter requestCenter)
+        {
+            string responseBdd = requestCenter.GetRequest(BDDTabsName.CustomListLibraries.ToString());
+
+            if (responseBdd == "[]")
+            {
+                return new CustomList[0];
+            }
+            else
+            {
+                return FormatToBDDObject(responseBdd, "customList") as CustomList[];
+            }
+        }
+
+        /// <summary>
         /// Get all infos for the Storage Viewer
         /// </summary>
         /// <param name="requestCenter"></param>
@@ -81,7 +114,7 @@ namespace Project_Inventory.Tools
         /// <returns></returns>
         public static Data[] LoadStorageViewerInfos(RequestCenter requestCenter, int storageId)
         {
-            string responseBdd = requestCenter.GetRequest("DataLibraries/storage/" + storageId);
+            string responseBdd = requestCenter.GetRequest(BDDTabsName.DataLibraries.ToString() + "/storage/" + storageId);
 
             if (responseBdd == "[]")
             {
@@ -101,7 +134,7 @@ namespace Project_Inventory.Tools
         /// <returns></returns>
         public static Data[] LoadStorageViewerInfos(RequestCenter requestCenter, int storageId, string researchString)
         {
-            string responseBdd = requestCenter.GetRequest("DataLibraries/storage/" + storageId + "/" + researchString);
+            string responseBdd = requestCenter.GetRequest(BDDTabsName.DataLibraries.ToString() + "/ storage/" + storageId + "/" + researchString);
 
             if (responseBdd == "[]")
             {
@@ -162,6 +195,15 @@ namespace Project_Inventory.Tools
                         i++;
                     }
                     return storageLibrary;
+
+                case "customList":
+                    CustomList[] customListLibrary = new CustomList[splitTab.Length];
+                    foreach (string sf in splitTab)
+                    {
+                        customListLibrary[i] = FormatObject(sf, new string[] { "id", "name", "options" }, customListLibrary[i]);
+                        i++;
+                    }
+                    return customListLibrary;
             }
 
             return null;
@@ -178,9 +220,9 @@ namespace Project_Inventory.Tools
         {
             int id = 42;
             int storageId = 42;
-            string[] dataText;
+            List<string> dataText;
             string dataTextTemp = string.Empty;
-            string[] dataType;
+            List<string> dataType;
             string dataTypeTemp = string.Empty;
             bool isHeader = false;
 
@@ -229,8 +271,8 @@ namespace Project_Inventory.Tools
                 i++;
             }
 
-            dataText = dataTextTemp.Split(new string[] {"~"}, StringSplitOptions.None);
-            dataType = dataTypeTemp.Split(new string[] {"~"}, StringSplitOptions.None);
+            dataText = dataTextTemp.Split('~').ToList();
+            dataType = dataTypeTemp.Split('~').ToList();
 
             data = new Data(id, storageId, dataText, dataType, isHeader);
 
@@ -275,6 +317,54 @@ namespace Project_Inventory.Tools
             storage = new Storage(id, name);
 
             return storage;
+        }
+
+        /// <summary>
+        /// Convert a json to Custom List
+        /// </summary>
+        /// <param name="stf"></param>
+        /// <param name="separators"></param>
+        /// <param name="customList"></param>
+        /// <returns></returns>
+        private static CustomList FormatObject(string stf, string[] separators, CustomList customList)
+        {
+
+            int id = 42;
+            string name = string.Empty;
+            List<string> options = new List<string>();
+            string optionsTemp = string.Empty;
+
+            int i = 0;
+
+            string[] splitTab = stf.Split(new string[] { "\"" }, StringSplitOptions.None);
+
+            foreach (string split in splitTab)
+            {
+                if (split == "id")
+                {
+                    string temp = splitTab[i + 1];
+                    temp = temp.Remove(0, 1);
+                    temp = temp.Remove(temp.Length - 1, 1);
+
+                    id = Int32.Parse(temp);
+                }
+                else if (split == "name")
+                {
+                    name = splitTab[i + 2];
+                }
+                else if (split == "options")
+                {
+                    optionsTemp = splitTab[i + 2];
+                }
+
+                i++;
+            }
+
+            options = optionsTemp.Split('~').ToList();
+
+            customList = new CustomList(id, name, options);
+
+            return customList;
         }
     }
 }

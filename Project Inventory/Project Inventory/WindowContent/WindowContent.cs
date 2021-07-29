@@ -15,8 +15,9 @@ namespace Project_Inventory
 
         public int actualStorageId;
         public int actualDataId;
+        public int actualCustomListId;
 
-        public WindowContent(ToolBox _toolBox, Router _router, RequestCenter _requestCenter, int _actualStorageId, int _actualDataId)
+        public WindowContent(ToolBox _toolBox, Router _router, RequestCenter _requestCenter, int _actualStorageId, int _actualDataId, int _actualCustomListId)
         {
             toolBox = _toolBox;
             router = _router;
@@ -24,6 +25,7 @@ namespace Project_Inventory
 
             actualStorageId = _actualStorageId;
             actualDataId = _actualDataId;
+            actualCustomListId = _actualCustomListId;
         }
 
         /// <summary>
@@ -61,6 +63,11 @@ namespace Project_Inventory
         public int DataIDBackups()
         {
             return actualDataId;
+        }
+
+        public int CustomListIDBackups()
+        {
+            return actualCustomListId;
         }
 
         /// <summary>

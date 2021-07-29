@@ -479,6 +479,29 @@ namespace Project_Inventory
         }
 
         /// <summary>
+        /// Add switch button in the grid
+        /// </summary>
+        /// <param name="grid"></param>
+        /// <param name="customList"></param>
+        /// <param name="router"></param>
+        /// <param name="rowNb"></param>
+        /// <param name="columnNb"></param>
+        /// <param name="skinName"></param>
+        /// <param name="skinPosition"></param>
+        public void CreateSwitchButtonToGrid(Grid grid,
+                                               CustomList customList,
+                                               RoutedEventLibrary router,
+                                               int rowNb,
+                                               int columnNb,
+                                               SkinName skinName,
+                                               SkinLocation skinPosition)
+        {
+            Button button = CreateSwitchButton(customList.Name, router, skinName, skinPosition);
+
+            AddButtonToGrid(grid, button, rowNb, columnNb);
+        }
+
+        /// <summary>
         /// Generate the good number of horizontals lanes
         /// </summary>
         /// <param name="grid"></param>
@@ -601,6 +624,48 @@ namespace Project_Inventory
                     }
 
                     if (buttonsTab.Length > z)
+                    {
+                        CreateSwitchButtonToGrid(grid, buttonsTab[k], routerTab[k], i, j, buttonsSkin, skinPosition);
+                        k++;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Add multiple buttons in the grid
+        /// </summary>
+        /// <param name="grid"></param>
+        /// <param name="buttonsTab"></param>
+        /// <param name="routerTab"></param>
+        /// <param name="buttonsSkin"></param>
+        /// <param name="skinPosition"></param>
+        public void CreateSwitchButtonsToGridByTab(Grid grid, CustomList[] buttonsTab, RoutedEventLibrary[] routerTab, SkinName buttonsSkin, SkinLocation skinPosition)
+        {
+            int i;
+            int j;
+            int k = 0;
+            int z;
+
+            int rowNb = grid.RowDefinitions.Count;
+            int columnNb = grid.ColumnDefinitions.Count;
+
+            for (i = 0; i < rowNb; i++)
+            {
+                for (j = 0; j < columnNb; j++)
+                {
+                    if (i >= 1)
+                    {
+                        if (j >= 1) { z = (i * 5) + j; }
+                        else { z = i * 5; }
+                    }
+                    else
+                    {
+                        if (j >= 1) { z = j; }
+                        else { z = 1; }
+                    }
+
+                    if (buttonsTab.Length >= z)
                     {
                         CreateSwitchButtonToGrid(grid, buttonsTab[k], routerTab[k], i, j, buttonsSkin, skinPosition);
                         k++;
@@ -813,6 +878,45 @@ namespace Project_Inventory
         /// <param name="storageTab"></param>
         /// <param name="skinPosition"></param>
         public void CreateTabToGrid(Grid grid, Storage[] storageTab, SkinLocation skinPosition)
+        {
+            int i = storageTab.Length;
+            int j = 1;
+            int k = 0;
+            while (i >= 5)
+            {
+                i -= 5;
+                j++;
+            }
+
+            int rowNb = j;
+
+            string addElemString = string.Empty;
+
+            for (i = 0; i < rowNb; i++)
+            {
+                for (j = 0; j < 5; j++)
+                {
+                    if (storageTab.Length > j + (i * 5))
+                    {
+                        CreateHeaderToGrid(grid, storageTab[j + (i * 5)].Name, i, j, skinPosition);
+                        k = j;
+                    }
+                }
+            }
+            k++;
+
+            if (k >= 5) { k = 0; }
+
+            CreateHeaderToGrid(grid, addElemString, rowNb, k, skinPosition);
+        }
+
+        /// <summary>
+        /// Create UIElements in the scroll grid
+        /// </summary>
+        /// <param name="grid"></param>
+        /// <param name="storageTab"></param>
+        /// <param name="skinPosition"></param>
+        public void CreateTabToGrid(Grid grid, CustomList[] storageTab, SkinLocation skinPosition)
         {
             int i = storageTab.Length;
             int j = 1;
@@ -1441,7 +1545,7 @@ namespace Project_Inventory
         public List<int> GetUIElements(Grid grid, Data[] data, string[,] indicationTab)
         {
             int rowNb = data.Length;
-            int columnNb = data[0].DataText.Length + 1;
+            int columnNb = data[0].DataText.Count + 1;
 
             List<Data> gridData = ConvertGridChildrenToDataList(grid, rowNb, columnNb, data[0].StorageId, data[0].DataType);
 
@@ -1473,22 +1577,72 @@ namespace Project_Inventory
         }
 
         /// <summary>
+        /// get all UIElements result of modifiable tab in modify mode
+        /// </summary>
+        /// <param name="grid"></param>
+        /// <param name="storage"></param>
+        /// <returns></returns>
+        public List<int> GetUIElements(Grid grid, Storage[] storage)
+        {
+            string text;
+            List<int> changesList = new List<int>();
+
+            for (int i = 0; i < storage.Length; i++)
+            {
+                text = (grid.Children[i] as TextBox).Text;
+
+                if (text != storage[i].Name)
+                {
+                    changesList.Add(i);
+                    storage[i].Name = text;
+                }
+            }
+
+            return changesList;
+        }
+
+        /// <summary>
+        /// get all UIElements result of modifiable tab in modify mode
+        /// </summary>
+        /// <param name="grid"></param>
+        /// <param name="customList"></param>
+        /// <returns></returns>
+        public List<int> GetUIElements(Grid grid, CustomList[] customList)
+        {
+            string text;
+            List<int> changesList = new List<int>();
+
+            for (int i = 0; i < customList.Length; i++)
+            {
+                text = (grid.Children[i] as TextBox).Text;
+
+                if (text != customList[i].Name)
+                {
+                    changesList.Add(i);
+                    customList[i].Name = text;
+                }
+            }
+
+            return changesList;
+        }
+
+        /// <summary>
         /// Convert Grid Children To list of data
         /// </summary>
         /// <param name="grid"></param>
         /// <returns></returns>
-        public List<Data> ConvertGridChildrenToDataList(Grid grid, int rowNb, int columnNb, int storageId, string[] dataType)
+        public List<Data> ConvertGridChildrenToDataList(Grid grid, int rowNb, int columnNb, int storageId, List<string> dataType)
         {
             List<Data> gridData = new List<Data>();
             int j;
             int k;
             int gridIndex = 0;
 
-            string[] dataText;
+            List<string> dataText;
 
             for (int i = 0; i < rowNb; i++)
             {
-                dataText = new string[columnNb];
+                dataText = new List<string>();
                 k = 0;
 
                 for (j = 0; j < columnNb; j++)
@@ -1556,31 +1710,6 @@ namespace Project_Inventory
         }
 
         /// <summary>
-        /// get all UIElements result of modifiable tab in modify mode
-        /// </summary>
-        /// <param name="grid"></param>
-        /// <param name="storage"></param>
-        /// <returns></returns>
-        public List<int> GetUIElements(Grid grid, Storage[] storage)
-        {
-            string text;
-            List<int> changesList = new List<int>();
-
-            for (int i = 0; i < storage.Length; i++)
-            {
-                text = (grid.Children[i] as TextBox).Text;
-
-                if (text != storage[i].Name)
-                {
-                    changesList.Add(i);
-                    storage[i].Name = text;
-                }
-            }
-
-            return changesList;
-        }
-
-        /// <summary>
         /// Add a +1 line if user want to add a new data
         /// </summary>
         /// <param name="grid"></param>
@@ -1589,10 +1718,10 @@ namespace Project_Inventory
         /// <returns></returns>
         public bool OptionnalAdd(Grid grid, Data[] data, Data optionnalAdd)
         {
-            int j = data.Length * data[0].DataText.Length + data.Length - 1;
+            int j = data.Length * data[0].DataText.Count + data.Length - 1;
             bool trigger = false;
 
-            for (int i = 0; i < optionnalAdd.DataText.Length; i++)
+            for (int i = 0; i < optionnalAdd.DataText.Count; i++)
             {
                 if (optionnalAdd.DataType[i] == UIElementsName.TextBox.ToString())
                 {
@@ -1630,11 +1759,39 @@ namespace Project_Inventory
             return trigger;
         }
 
+        /// <summary>
+        /// Add a +1 line if user want to add a new storage
+        /// </summary>
+        /// <param name="grid"></param>
+        /// <param name="storage"></param>
+        /// <param name="optionnalAdd"></param>
+        /// <returns></returns>
         public bool OptionnalAdd(Grid grid, Storage[] storage, Storage optionnalAdd)
         {
             bool trigger = false;
 
             optionnalAdd.Name = (grid.Children[storage.Length] as TextBox).Text;
+
+            if (optionnalAdd.Name != string.Empty)
+            {
+                trigger = true;
+            }
+
+            return trigger;
+        }
+
+        /// <summary>
+        /// Add a +1 line if user want to add a new custom list
+        /// </summary>
+        /// <param name="grid"></param>
+        /// <param name="customList"></param>
+        /// <param name="optionnalAdd"></param>
+        /// <returns></returns>
+        public bool OptionnalAdd(Grid grid, CustomList[] customList, CustomList optionnalAdd)
+        {
+            bool trigger = false;
+
+            optionnalAdd.Name = (grid.Children[customList.Length] as TextBox).Text;
 
             if (optionnalAdd.Name != string.Empty)
             {

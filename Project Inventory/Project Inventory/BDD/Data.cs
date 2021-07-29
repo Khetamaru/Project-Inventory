@@ -1,4 +1,6 @@
-﻿namespace Project_Inventory.BDD
+﻿using System.Collections.Generic;
+
+namespace Project_Inventory.BDD
 {
     /// <summary>
     /// Use to save Storage Objects Informations
@@ -6,11 +8,11 @@
     public class Data : BDDObject
     {
         public int StorageId { get; set; }
-        public string[] DataText { get; set; }
-        public string[] DataType { get; set; }
+        public List<string> DataText { get; set; }
+        public List<string> DataType { get; set; }
         public bool IsHeader { get; set; }
 
-        public Data(int id, int storageId, string[] dataText, string[] dataType, bool isHeader)
+        public Data(int id, int storageId, List<string> dataText, List<string> dataType, bool isHeader)
             : base(id)
         {
             StorageId = storageId;
@@ -19,7 +21,7 @@
             IsHeader = isHeader;
         }
 
-        public Data(int storageId, string[] dataText, string[] dataType, bool isHeader)
+        public Data(int storageId, List<string> dataText, List<string> dataType, bool isHeader)
             : base(42)
         {
             StorageId = storageId;
@@ -60,7 +62,7 @@
             {
                 stg += text;
 
-                if (i < DataText.Length - 1)
+                if (i < DataText.Count - 1)
                 {
                     stg += "~";
                 }
@@ -83,7 +85,7 @@
             {
                 stg += type;
 
-                if (i < DataType.Length - 1)
+                if (i < DataType.Count - 1)
                 {
                     stg += "~";
                 }
