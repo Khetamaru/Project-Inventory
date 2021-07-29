@@ -40,8 +40,8 @@ namespace Project_Inventory
 
         public TextBox researchTextBox;
 
-        public StorageViewerPage(ToolBox ToolBox, Router _router, RequestCenter requestCenter, int _actualStorageId, int _actualDataId, RoutedEventHandler _reloadEvent)
-            : base(ToolBox, _router, requestCenter, _actualStorageId, _actualDataId)
+        public StorageViewerPage(ToolBox ToolBox, Router _router, RequestCenter requestCenter, int _actualStorageId, int _actualDataId, int _actualCustomListId, RoutedEventHandler _reloadEvent)
+            : base(ToolBox, _router, requestCenter, _actualStorageId, _actualDataId, _actualCustomListId)
         {
             viewerStatus = status.VIEWER;
             reloadEvent = _reloadEvent;
@@ -82,12 +82,12 @@ namespace Project_Inventory
             int i;
             int j;
 
-            stringTab = new string[dataTab.Length, dataTab[0].DataText.Length];
-            indicTab = new string[dataTab.Length, dataTab[0].DataText.Length];
+            stringTab = new string[dataTab.Length, dataTab[0].DataText.Count];
+            indicTab = new string[dataTab.Length, dataTab[0].DataText.Count];
 
             for (i = 0; i < dataTab.Length; i++)
             {
-                for (j = 0; j < dataTab[0].DataText.Length; j++)
+                for (j = 0; j < dataTab[0].DataText.Count; j++)
                 {
                     stringTab[i, j] = dataTab[i].DataText[j];
                     indicTab[i, j] = dataTab[i].DataType[j];
@@ -189,7 +189,7 @@ namespace Project_Inventory
         {
             List<int> changesList = toolBox.GetUIElements(capGrid, dataTab, indicTab);
 
-            Data optionnalAdd = new Data(42, actualStorageId, new string[dataTab[0].DataText.Length], dataTab[0].DataType, false);
+            Data optionnalAdd = new Data(42, actualStorageId, new List<string>(), dataTab[0].DataType, false);
 
             foreach(int change in changesList)
             {
@@ -314,12 +314,12 @@ namespace Project_Inventory
 
             int j;
 
-            stringTab = new string[dataTab.Length, dataTab[0].DataText.Length];
-            indicTab = new string[dataTab.Length, dataTab[0].DataText.Length];
+            stringTab = new string[dataTab.Length, dataTab[0].DataText.Count];
+            indicTab = new string[dataTab.Length, dataTab[0].DataText.Count];
 
             for (i = 0; i < dataTab.Length; i++)
             {
-                for (j = 0; j < dataTab[0].DataText.Length; j++)
+                for (j = 0; j < dataTab[0].DataText.Count; j++)
                 {
                     stringTab[i, j] = dataTab[i].DataText[j];
                     indicTab[i, j] = dataTab[i].DataType[j];

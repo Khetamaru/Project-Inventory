@@ -1,43 +1,44 @@
-﻿using Project_Inventory.BDD;
-using Project_Inventory.Tools;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using Project_Inventory.BDD;
+using Project_Inventory.Tools;
 
 namespace Project_Inventory
 {
-    /// <summary>
-    /// Page to create a storage or select one to see details of it
-    /// </summary>
-    public class StorageSelectionMenu : WindowContent
+    public class ListMenu : WindowContent
     {
-        private string[] topGridButtons;
-        private RoutedEventLibrary[] topSwitchEvents;
-        private Storage[] bottomGridButtons;
-        private RoutedEventLibrary[] bottomSwitchEvents;
-        private RoutedEventHandler reloadEvent;
+        private Grid capGrid;
 
-        private int widthLimit;
-
-        private enum status {
+        private status viewerStatus;
+        private enum status
+        {
             VIEWER,
             MODIFIER
         }
 
-        private status viewerStatus;
+        private string[] topGridButtons;
+        private RoutedEventLibrary[] topSwitchEvents;
 
-        private Grid capGrid;
+        private CustomList[] bottomGridButtons;
+        private RoutedEventLibrary[] bottomSwitchEvents;
+
+        private RoutedEventHandler reloadEvent;
+
         private string[] saveButton;
         private RoutedEventLibrary[] saveEvents;
 
-        public StorageSelectionMenu(ToolBox toolBox, Router _router, RequestCenter requestCenter, int _actualStorageId, int _actualDataId, int _actualCustomListId, RoutedEventHandler _reloadEvent)
-            : base(toolBox, _router, requestCenter, _actualStorageId, _actualDataId, _actualCustomListId)
+        private int widthLimit;
+
+        public ListMenu(ToolBox toolBox, Router _router, RequestCenter requestCenter, int _actualStorageId, int _actualDataId, int _actualCustomId, RoutedEventHandler _reloadEvent)
+               : base(toolBox, _router, requestCenter, _actualStorageId, _actualDataId, _actualCustomId)
         {
             viewerStatus = status.VIEWER;
-            reloadEvent = _reloadEvent;
 
             topGridButtons = new string[] { "Modify", "Return" };
             saveButton = new string[] { "Save" };
+
+            reloadEvent = _reloadEvent;
 
             topSwitchEvents = new RoutedEventLibrary[2];
             RoutedEventLibrariesInit(topSwitchEvents);
@@ -55,7 +56,7 @@ namespace Project_Inventory
             capGrid = new Grid();
 
             LoadBDDInfos();
-            
+
             widthLimit = 5;
         }
 
@@ -64,18 +65,20 @@ namespace Project_Inventory
         /// </summary>
         public void LoadBDDInfos()
         {
-            bottomGridButtons = JsonCenter.LoadStorageSelectionInfos(requestCenter);
+            bottomGridButtons = JsonCenter.LoadListMenuInfos(requestCenter);
             bottomSwitchEvents = JsonCenter.SetEventHandlerTab(bottomGridButtons.Length, GetEventHandler(WindowsName.StorageViewerPage));
         }
+
+
 
         public new void TopGridInit(Grid topGrid)
         {
             toolBox.SetUpGrid(topGrid, 1, 2, SkinLocation.TopStretch, SkinSize.HeightTenPercent);
 
-            toolBox.CreateSwitchButtonsToGridByTab(topGrid, 
-                                                   topGridButtons, 
-                                                   topSwitchEvents, 
-                                                   new SkinName[] { SkinName.StandartLittleMargin, SkinName.StandartLittleMargin }, 
+            toolBox.CreateSwitchButtonsToGridByTab(topGrid,
+                                                   topGridButtons,
+                                                   topSwitchEvents,
+                                                   new SkinName[] { SkinName.StandartLittleMargin, SkinName.StandartLittleMargin },
                                                    new SkinLocation[] { SkinLocation.TopLeft, SkinLocation.TopRight });
         }
 
@@ -139,29 +142,29 @@ namespace Project_Inventory
         /// Insert the stored procedure in the button
         /// </summary>
         /// <param name="storageLibrary"></param>
-        public void RoutedIdSetup(Storage[] storageLibrary)
+        public void RoutedIdSetup(CustomList[] customListLibrary)
         {
             var i = 0;
 
-            foreach(Storage storage in storageLibrary)
+            foreach (CustomList customList in customListLibrary)
             {
                 bottomSwitchEvents[i].updateIdEvent = new RoutedEventHandler((object sender, RoutedEventArgs e) =>
                 {
-                    IDSetup(sender, e, storage.id);
+                    IDSetup(sender, e, customList.id);
                 });
                 i++;
             }
         }
 
         /// <summary>
-        /// Load actuel storage id
+        /// Load actuel custom list id
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         /// <param name="id"></param>
         public void IDSetup(object sender, RoutedEventArgs e, int id)
         {
-            actualStorageId = id;
+            actualCustomListId = id;
         }
 
         /// <summary>
@@ -198,7 +201,7 @@ namespace Project_Inventory
         {
             List<int> changesList = toolBox.GetUIElements(capGrid, bottomGridButtons);
 
-            Storage optionnalAdd = new Storage(42, string.Empty);
+            CustomList optionnalAdd = new CustomList(42, string.Empty, new List<string>());
 
             foreach (int change in changesList)
             {
@@ -207,12 +210,12 @@ namespace Project_Inventory
 
             if (toolBox.OptionnalAdd(capGrid, bottomGridButtons, optionnalAdd))
             {
-                requestCenter.PostRequest(BDDTabsName.StorageLibraries.ToString(), optionnalAdd.ToJson());
+                requestCenter.PostRequest(BDDTabsName.CustomListLibraries.ToString(), optionnalAdd.ToJson());
             }
         }
 
         /// <summary>
-        /// Create buttons to add that delete selected storage
+        /// Create buttons to add that delete selected custom list
         /// </summary>
         /// <returns></returns>
         private void AddDeleteButtons()
@@ -239,10 +242,10 @@ namespace Project_Inventory
                     if (bottomGridButtons.Length > j + (i * 5))
                     {
                         tempRouter = new RoutedEventLibrary();
-                        var storage = bottomGridButtons[j + (i * 5)];
+                        var customList = bottomGridButtons[j + (i * 5)];
                         tempRouter.optionalEventOne = new RoutedEventHandler((object sender, RoutedEventArgs e) =>
                         {
-                            DeleteStorage(sender, e, storage.id);
+                            DeleteCustomList(sender, e, customList.id);
                         });
                         tempRouter.resetPageEvent = reloadEvent;
 
@@ -258,14 +261,13 @@ namespace Project_Inventory
         }
 
         /// <summary>
-        /// Stored procedure for storage delete
+        /// Stored procedure for custom list delete
         /// </summary>
-        private void DeleteStorage(object sender, RoutedEventArgs e, int StorageId)
+        private void DeleteCustomList(object sender, RoutedEventArgs e, int CustomListId)
         {
             if (PopUpCenter.ActionValidPopup())
             {
-                requestCenter.DeleteRequest(BDDTabsName.DataLibraries.ToString() + "/storage/" + StorageId);
-                requestCenter.DeleteRequest(BDDTabsName.StorageLibraries.ToString() + "/" + StorageId);
+                requestCenter.DeleteRequest(BDDTabsName.CustomListLibraries.ToString() + "/" + CustomListId);
             }
         }
     }
