@@ -24,6 +24,13 @@ namespace Project_Inventory.BDD
             Options = options;
         }
 
+        public CustomList(string name)
+            : base(42)
+        {
+            Name = name;
+            Options = new List<string>();
+        }
+
         /// <summary>
         /// Convert Data to json without the Id
         /// </summary>

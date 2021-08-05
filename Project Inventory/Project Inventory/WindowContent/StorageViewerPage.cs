@@ -187,16 +187,16 @@ namespace Project_Inventory
         /// <param name="e"></param>
         private void SaveDatas(object sender, RoutedEventArgs e)
         {
-            List<int> changesList = toolBox.GetUIElements(capGrid, dataTab, indicTab);
+            Data optionnalAdd = null;
 
-            Data optionnalAdd = new Data(42, actualStorageId, new List<string>(), dataTab[0].DataType, false);
+            List<int> changesList = toolBox.GetUIElements(toolBox.ExtractFormInfos(capGrid), dataTab, indicTab, out optionnalAdd);
 
             foreach(int change in changesList)
             {
                 requestCenter.PutRequest(BDDTabsName.DataLibraries.ToString() + "/" + dataTab[change].id, dataTab[change].ToJsonId());
             }
 
-            if (toolBox.OptionnalAdd(capGrid, dataTab, optionnalAdd))
+            if (optionnalAdd != null)
             {
                 requestCenter.PostRequest(BDDTabsName.DataLibraries.ToString(), optionnalAdd.ToJson());
             }

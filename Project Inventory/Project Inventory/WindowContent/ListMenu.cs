@@ -199,16 +199,18 @@ namespace Project_Inventory
         /// <param name="e"></param>
         private void SaveDatas(object sender, RoutedEventArgs e)
         {
-            List<int> changesList = toolBox.GetUIElements(capGrid, bottomGridButtons);
+            List<UIElement> elementList = toolBox.ExtractFormInfos(capGrid);
 
             CustomList optionnalAdd = new CustomList(42, string.Empty, new List<string>());
+
+            List<int> changesList = toolBox.GetUIElements(elementList, bottomGridButtons, out optionnalAdd);
 
             foreach (int change in changesList)
             {
                 requestCenter.PutRequest(BDDTabsName.StorageLibraries.ToString() + "/" + bottomGridButtons[change].id, bottomGridButtons[change].ToJsonId());
             }
 
-            if (toolBox.OptionnalAdd(capGrid, bottomGridButtons, optionnalAdd))
+            if (optionnalAdd != null)
             {
                 requestCenter.PostRequest(BDDTabsName.CustomListLibraries.ToString(), optionnalAdd.ToJson());
             }
