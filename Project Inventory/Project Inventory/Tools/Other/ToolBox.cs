@@ -1542,15 +1542,15 @@ namespace Project_Inventory
         /// <param name="data"></param>
         /// <param name="indicationTab"></param>
         /// <returns></returns>
-        public List<int> GetUIElements(Grid grid, Data[] data, string[,] indicationTab)
+        public List<int> GetUIElements(List<UIElement> uiElementList, Data[] data, string[,] indicationTab, out Data optionalAdd)
         {
             int rowNb = data.Length;
             int columnNb = data[0].DataText.Count + 1;
 
-            List<Data> gridData = ConvertGridChildrenToDataList(grid, rowNb, columnNb, data[0].StorageId, data[0].DataType);
+            List<Data> gridData = ConvertGridChildrenToDataList(uiElementList, rowNb, columnNb, data[0].StorageId, data[0].DataType, out optionalAdd);
 
             List<int> changesList = new List<int>();
-            bool trigger = false;
+            bool trigger;
             int i;
 
             for (i = 0; i < rowNb; i++)
@@ -1582,19 +1582,19 @@ namespace Project_Inventory
         /// <param name="grid"></param>
         /// <param name="storage"></param>
         /// <returns></returns>
-        public List<int> GetUIElements(Grid grid, Storage[] storage)
+        public List<int> GetUIElements(List<UIElement> uiElementList, Storage[] storage, out Storage optionalStorage)
         {
-            string text;
+            List<Storage> gridStorage = ConvertGridChildrenToStorageList(uiElementList, storage.Length, out optionalStorage);
+
             List<int> changesList = new List<int>();
 
             for (int i = 0; i < storage.Length; i++)
             {
-                text = (grid.Children[i] as TextBox).Text;
 
-                if (text != storage[i].Name)
+                if (gridStorage[i].Name != storage[i].Name)
                 {
                     changesList.Add(i);
-                    storage[i].Name = text;
+                    storage[i].Name = gridStorage[i].Name;
                 }
             }
 
@@ -1604,17 +1604,19 @@ namespace Project_Inventory
         /// <summary>
         /// get all UIElements result of modifiable tab in modify mode
         /// </summary>
-        /// <param name="grid"></param>
+        /// <param name="uiElementList"></param>
         /// <param name="customList"></param>
         /// <returns></returns>
-        public List<int> GetUIElements(Grid grid, CustomList[] customList)
+        public List<int> GetUIElements(List<UIElement> uiElementList, CustomList[] customList, out CustomList optionalCustomList)
         {
+            List<CustomList> gridCustomList = ConvertGridChildrenToCustomListList(uiElementList, customList.Length, out optionalCustomList);
+
             string text;
             List<int> changesList = new List<int>();
 
             for (int i = 0; i < customList.Length; i++)
             {
-                text = (grid.Children[i] as TextBox).Text;
+                text = (uiElementList[i] as TextBox).Text;
 
                 if (text != customList[i].Name)
                 {
@@ -1631,69 +1633,36 @@ namespace Project_Inventory
         /// </summary>
         /// <param name="grid"></param>
         /// <returns></returns>
-        public List<Data> ConvertGridChildrenToDataList(Grid grid, int rowNb, int columnNb, int storageId, List<string> dataType)
+        public List<Data> ConvertGridChildrenToDataList(List<UIElement> uIElements, int rowNb, int columnNb, int storageId, List<string> dataType, out Data optionalData)
         {
             List<Data> gridData = new List<Data>();
             int j;
-            int k;
             int gridIndex = 0;
 
+            optionalData = null;
+            bool trigger = false;
+
             List<string> dataText;
+            List<string> optionalDataText;
+
+            optionalDataText = new List<string>();
 
             for (int i = 0; i < rowNb; i++)
             {
                 dataText = new List<string>();
-                k = 0;
 
-                for (j = 0; j < columnNb; j++)
+                for (j = 0 ; j < (uIElements.Count / (rowNb + 1)) ; j++)
                 {
-                    if (j != 0)
+                    if (i == 0)
                     {
-                        if (i == 0)
-                        {
-                            dataText[k] = (grid.Children[gridIndex] as TextBox).Text;
-                        }
-                        else
-                        {
-                            if (dataType[k] == UIElementsName.TextBox.ToString())
-                            {
-
-                                dataText[k] = (grid.Children[gridIndex] as TextBox).Text;
-                            }
-                            else if (dataType[k] == UIElementsName.TextBoxNumber.ToString())
-                            {
-
-                                dataText[k] = (grid.Children[gridIndex] as TextBox).Text;
-                            }
-                            else if (dataType[k] == UIElementsName.DatePicker.ToString())
-                            {
-
-                                dataText[k] = (grid.Children[gridIndex] as DatePicker).Text;
-                            }
-                            else if (dataType[k] == UIElementsName.ComboBox.ToString())
-                            {
-                                if ((grid.Children[gridIndex] as ComboBox).SelectedItem != (grid.Children[gridIndex] as ComboBox).Items[0])
-                                {
-                                    dataText[k] = (grid.Children[gridIndex] as ComboBox).SelectedItem.ToString();
-                                }
-                                else
-                                {
-                                    dataText[k] = string.Empty;
-                                }
-                            }
-                        }
-
-                        k++;
-                        gridIndex++;
+                        dataText.Add((uIElements[gridIndex] as TextBox).Text);
                     }
                     else
                     {
-                        if (i != 0)
-                        {
-                            gridIndex++;
-                        }
+                        TypeCatch(dataType[j], uIElements[gridIndex], dataText);
                     }
 
+                    gridIndex++;
                 }
 
                 if (i == 0)
@@ -1706,7 +1675,112 @@ namespace Project_Inventory
                 }
             }
 
+            if (uIElements[gridIndex] != null)
+            {
+                for (j = 0; j < (uIElements.Count / (rowNb + 1)); j++)
+                {
+                    TypeCatch(dataType[j], uIElements[gridIndex], optionalDataText);
+
+                    gridIndex++;
+                }
+
+                optionalData = new Data(storageId, optionalDataText, dataType, false);
+
+                for (j = 0; j < optionalData.DataType.Count; j++)
+                {
+                    if (optionalData.DataText[j] != string.Empty)
+                    {
+                        trigger = true;
+                    }
+                }
+
+                if (!trigger)
+                {
+                    optionalData = null;
+                }
+            }
+
             return gridData;
+        }
+
+        /// <summary>
+        /// Convert Grid Children To list of storage
+        /// </summary>
+        /// <param name="grid"></param>
+        /// <returns></returns>
+        public List<Storage> ConvertGridChildrenToStorageList(List<UIElement> uIElements, int rowNb, out Storage optionalStorage)
+        {
+            List<Storage> gridStorage = new List<Storage>();
+            int gridIndex = 0;
+
+            optionalStorage = null;
+
+            string text = string.Empty;
+
+            for (int i = 0; i < rowNb; i++)
+            {
+                text = (uIElements[gridIndex] as TextBox).Text;
+
+                gridIndex++;
+
+                gridStorage.Add(new Storage(text));
+            }
+
+            text = string.Empty;
+
+            if (uIElements[gridIndex] != null)
+            {
+                text = (uIElements[gridIndex] as TextBox).Text;
+
+                optionalStorage = new Storage(text);
+
+                if (text == string.Empty)
+                {
+                    optionalStorage = null;
+                }
+            }
+
+            return gridStorage;
+        }
+
+        /// <summary>
+        /// Convert Grid Children To list of custom list
+        /// </summary>
+        /// <param name="grid"></param>
+        /// <returns></returns>
+        public List<CustomList> ConvertGridChildrenToCustomListList(List<UIElement> uIElements, int rowNb, out CustomList optionalAdd)
+        {
+            List<CustomList> gridStorage = new List<CustomList>();
+            int gridIndex = 0;
+
+            optionalAdd = null;
+
+            string text = string.Empty;
+
+            for (int i = 0; i < rowNb; i++)
+            {
+                text = (uIElements[gridIndex] as TextBox).Text;
+
+                gridIndex++;
+            }
+
+            gridStorage.Add(new CustomList(text));
+
+            text = string.Empty;
+
+            if (uIElements[gridIndex] != null)
+            {
+                text = (uIElements[gridIndex] as TextBox).Text;
+
+                optionalAdd = new CustomList(text);
+
+                if (text == string.Empty)
+                {
+                    optionalAdd = null;
+                }
+            }
+
+            return gridStorage;
         }
 
         /// <summary>
@@ -1718,35 +1792,35 @@ namespace Project_Inventory
         /// <returns></returns>
         public bool OptionnalAdd(Grid grid, Data[] data, Data optionnalAdd)
         {
-            int j = data.Length * data[0].DataText.Count + data.Length - 1;
+            int j = data.Length * data[0].DataType.Count + data.Length - 1;
             bool trigger = false;
 
-            for (int i = 0; i < optionnalAdd.DataText.Count; i++)
+            for (int i = 0; i < optionnalAdd.DataType.Count; i++)
             {
                 if (optionnalAdd.DataType[i] == UIElementsName.TextBox.ToString())
                 {
 
-                    optionnalAdd.DataText[i] = (grid.Children[j + i] as TextBox).Text;
+                    optionnalAdd.DataText.Add((grid.Children[j + i] as TextBox).Text);
                 }
                 else if (optionnalAdd.DataType[i] == UIElementsName.TextBoxNumber.ToString())
                 {
 
-                    optionnalAdd.DataText[i] = (grid.Children[j + i] as TextBox).Text;
+                    optionnalAdd.DataText.Add((grid.Children[j + i] as TextBox).Text);
                 }
                 else if (optionnalAdd.DataType[i] == UIElementsName.DatePicker.ToString())
                 {
 
-                    optionnalAdd.DataText[i] = (grid.Children[j + i] as DatePicker).Text;
+                    optionnalAdd.DataText.Add((grid.Children[j + i] as DatePicker).Text);
                 }
                 else if (optionnalAdd.DataType[i] == UIElementsName.ComboBox.ToString())
                 {
                     if ((grid.Children[j + i] as ComboBox).SelectedItem != (grid.Children[j + i] as ComboBox).Items[0])
                     {
-                        optionnalAdd.DataText[i] = (grid.Children[j + i] as ComboBox).SelectedItem.ToString();
+                        optionnalAdd.DataText.Add((grid.Children[j + i] as ComboBox).SelectedItem.ToString());
                     }
                     else
                     {
-                        optionnalAdd.DataText[i] = string.Empty;
+                        optionnalAdd.DataText.Add(string.Empty);
                     }
                 }
 
@@ -1799,6 +1873,68 @@ namespace Project_Inventory
             }
 
             return trigger;
+        }
+
+        public void TypeCatch(string dataType, UIElement uIElement, List<string> dataText)
+        {
+            if (dataType == UIElementsName.TextBox.ToString())
+            {
+
+                dataText.Add((uIElement as TextBox).Text);
+            }
+            else if (dataType == UIElementsName.TextBoxNumber.ToString())
+            {
+
+                dataText.Add((uIElement as TextBox).Text);
+            }
+            else if (dataType == UIElementsName.DatePicker.ToString())
+            {
+
+                dataText.Add((uIElement as DatePicker).Text);
+            }
+            else if (dataType == UIElementsName.ComboBox.ToString())
+            {
+                if ((uIElement as ComboBox).SelectedItem != (uIElement as ComboBox).Items[0])
+                {
+                    dataText.Add((uIElement as ComboBox).SelectedItem.ToString());
+                }
+                else
+                {
+                    dataText.Add(string.Empty);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Extract all exploitable infos
+        /// </summary>
+        /// <param name="grid"></param>
+        /// <returns></returns>
+        public List<UIElement> ExtractFormInfos(Grid grid)
+        {
+            List<UIElement> elementList = new List<UIElement>();
+
+            foreach( UIElement uIElement in grid.Children)
+            {
+                if (uIElement.GetType().FullName.Equals(new TextBox().GetType().FullName))
+                {
+                    elementList.Add(uIElement);
+                }
+                else if (uIElement.GetType().FullName.Equals(new ComboBox().GetType().FullName))
+                {
+                    elementList.Add(uIElement);
+                }
+                else if (uIElement.GetType().FullName.Equals(new DatePicker().GetType().FullName))
+                {
+                    elementList.Add(uIElement);
+                }
+                else if (uIElement.GetType().FullName.Equals(new ListBox().GetType().FullName))
+                {
+                    elementList.Add(uIElement);
+                }
+            }
+
+            return elementList;
         }
     }
 }

@@ -196,16 +196,17 @@ namespace Project_Inventory
         /// <param name="e"></param>
         private void SaveDatas(object sender, RoutedEventArgs e)
         {
-            List<int> changesList = toolBox.GetUIElements(capGrid, bottomGridButtons);
 
             Storage optionnalAdd = new Storage(42, string.Empty);
+
+            List<int> changesList = toolBox.GetUIElements(toolBox.ExtractFormInfos(capGrid), bottomGridButtons, out optionnalAdd);
 
             foreach (int change in changesList)
             {
                 requestCenter.PutRequest(BDDTabsName.StorageLibraries.ToString() + "/" + bottomGridButtons[change].id, bottomGridButtons[change].ToJsonId());
             }
 
-            if (toolBox.OptionnalAdd(capGrid, bottomGridButtons, optionnalAdd))
+            if (optionnalAdd != null)
             {
                 requestCenter.PostRequest(BDDTabsName.StorageLibraries.ToString(), optionnalAdd.ToJson());
             }
