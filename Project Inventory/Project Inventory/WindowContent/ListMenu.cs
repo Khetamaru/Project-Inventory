@@ -66,7 +66,7 @@ namespace Project_Inventory
         public void LoadBDDInfos()
         {
             bottomGridButtons = JsonCenter.LoadListMenuInfos(requestCenter);
-            bottomSwitchEvents = JsonCenter.SetEventHandlerTab(bottomGridButtons.Length, GetEventHandler(WindowsName.StorageViewerPage));
+            bottomSwitchEvents = JsonCenter.SetEventHandlerTab(bottomGridButtons.Length, GetEventHandler(WindowsName.ListViewerPage));
         }
 
 
@@ -207,7 +207,7 @@ namespace Project_Inventory
 
             foreach (int change in changesList)
             {
-                requestCenter.PutRequest(BDDTabsName.StorageLibraries.ToString() + "/" + bottomGridButtons[change].id, bottomGridButtons[change].ToJsonId());
+                requestCenter.PutRequest(BDDTabsName.CustomListLibraries.ToString() + "/" + bottomGridButtons[change].id, bottomGridButtons[change].ToJsonId());
             }
 
             if (optionnalAdd != null)

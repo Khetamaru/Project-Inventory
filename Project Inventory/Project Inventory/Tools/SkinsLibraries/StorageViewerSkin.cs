@@ -75,6 +75,11 @@ namespace Project_Inventory.Tools
                 (uiElement as Label).HorizontalAlignment = HorizontalAlignment.Right;
                 (uiElement as Label).VerticalAlignment = VerticalAlignment.Bottom;
             }
+            else if (uiElement as Button != null)
+            {
+                (uiElement as Button).HorizontalAlignment = HorizontalAlignment.Right;
+                (uiElement as Button).VerticalAlignment = VerticalAlignment.Bottom;
+            }
         }
 
         private static void BottomLeft(UIElement uiElement)
@@ -98,6 +103,11 @@ namespace Project_Inventory.Tools
             {
                 (uiElement as Label).HorizontalAlignment = HorizontalAlignment.Left;
                 (uiElement as Label).VerticalAlignment = VerticalAlignment.Bottom;
+            }
+            else if (uiElement as Button != null)
+            {
+                (uiElement as Button).HorizontalAlignment = HorizontalAlignment.Left;
+                (uiElement as Button).VerticalAlignment = VerticalAlignment.Bottom;
             }
         }
 
@@ -123,6 +133,11 @@ namespace Project_Inventory.Tools
                 (uiElement as Label).HorizontalAlignment = HorizontalAlignment.Right;
                 (uiElement as Label).VerticalAlignment = VerticalAlignment.Top;
             }
+            else if (uiElement as Button != null)
+            {
+                (uiElement as Button).HorizontalAlignment = HorizontalAlignment.Right;
+                (uiElement as Button).VerticalAlignment = VerticalAlignment.Top;
+            }
         }
 
         private static void TopLeft(UIElement uiElement)
@@ -146,6 +161,11 @@ namespace Project_Inventory.Tools
             {
                 (uiElement as Label).HorizontalAlignment = HorizontalAlignment.Left;
                 (uiElement as Label).VerticalAlignment = VerticalAlignment.Top;
+            }
+            else if (uiElement as Button != null)
+            {
+                (uiElement as Button).HorizontalAlignment = HorizontalAlignment.Left;
+                (uiElement as Button).VerticalAlignment = VerticalAlignment.Top;
             }
         }
 
@@ -171,6 +191,11 @@ namespace Project_Inventory.Tools
                 (uiElement as Label).HorizontalAlignment = HorizontalAlignment.Center;
                 (uiElement as Label).VerticalAlignment = VerticalAlignment.Center;
             }
+            else if (uiElement as Button != null)
+            {
+                (uiElement as Button).HorizontalAlignment = HorizontalAlignment.Center;
+                (uiElement as Button).VerticalAlignment = VerticalAlignment.Center;
+            }
         }
 
         private static void CenterLeft(UIElement uiElement)
@@ -194,6 +219,11 @@ namespace Project_Inventory.Tools
             {
                 (uiElement as Label).HorizontalAlignment = HorizontalAlignment.Left;
                 (uiElement as Label).VerticalAlignment = VerticalAlignment.Center;
+            }
+            else if (uiElement as Button != null)
+            {
+                (uiElement as Button).HorizontalAlignment = HorizontalAlignment.Left;
+                (uiElement as Button).VerticalAlignment = VerticalAlignment.Center;
             }
         }
 
@@ -219,6 +249,11 @@ namespace Project_Inventory.Tools
                 (uiElement as Label).HorizontalAlignment = HorizontalAlignment.Right;
                 (uiElement as Label).VerticalAlignment = VerticalAlignment.Center;
             }
+            else if (uiElement as Button != null)
+            {
+                (uiElement as Button).HorizontalAlignment = HorizontalAlignment.Right;
+                (uiElement as Button).VerticalAlignment = VerticalAlignment.Center;
+            }
         }
 
         private static void TopCenter(UIElement uiElement)
@@ -243,6 +278,11 @@ namespace Project_Inventory.Tools
                 (uiElement as Label).HorizontalAlignment = HorizontalAlignment.Center;
                 (uiElement as Label).VerticalAlignment = VerticalAlignment.Top;
             }
+            else if (uiElement as Button != null)
+            {
+                (uiElement as Button).HorizontalAlignment = HorizontalAlignment.Center;
+                (uiElement as Button).VerticalAlignment = VerticalAlignment.Top;
+            }
         }
 
         private static void BottomCenter(UIElement uiElement)
@@ -266,6 +306,11 @@ namespace Project_Inventory.Tools
             {
                 (uiElement as Label).HorizontalAlignment = HorizontalAlignment.Center;
                 (uiElement as Label).VerticalAlignment = VerticalAlignment.Bottom;
+            }
+            else if (uiElement as Button != null)
+            {
+                (uiElement as Button).HorizontalAlignment = HorizontalAlignment.Center;
+                (uiElement as Button).VerticalAlignment = VerticalAlignment.Bottom;
             }
         }
     }

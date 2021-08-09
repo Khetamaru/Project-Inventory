@@ -11,6 +11,8 @@ namespace Project_Inventory.Tools
     {
         RedCross,
         logo,
+        ArrowUp,
+        ArrowDown,
 
         None
     }

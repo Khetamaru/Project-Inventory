@@ -107,6 +107,25 @@ namespace Project_Inventory.Tools
         }
 
         /// <summary>
+        /// Get all infos for the Custom List Viewer Page
+        /// </summary>
+        /// <param name="requestCenter"></param>
+        /// <returns></returns>
+        public static CustomList[] LoadListViewerPageInfos(RequestCenter requestCenter, int customListId)
+        {
+            string responseBdd = requestCenter.GetRequest(BDDTabsName.CustomListLibraries.ToString() + "/" + customListId);
+
+            if (responseBdd == "[]")
+            {
+                return new CustomList[0];
+            }
+            else
+            {
+                return FormatToBDDObject(responseBdd, "customList") as CustomList[];
+            }
+        }
+
+        /// <summary>
         /// Get all infos for the Storage Viewer
         /// </summary>
         /// <param name="requestCenter"></param>
@@ -362,6 +381,27 @@ namespace Project_Inventory.Tools
 
             options = optionsTemp.Split('~').ToList();
 
+            var tempTrigger = new List<bool>(options.Count);
+            foreach (string option in options)
+            {
+                if (option == string.Empty)
+                {
+                    tempTrigger.Add(true);
+                }
+                else
+                {
+                    tempTrigger.Add(false);
+                }
+            }
+
+            for (i = tempTrigger.Count - 1; i >= 0; i--)
+            {
+                if (tempTrigger[i])
+                {
+                    options.Remove(options[i]);
+                }
+            } 
+            
             customList = new CustomList(id, name, options);
 
             return customList;

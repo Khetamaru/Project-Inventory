@@ -86,6 +86,10 @@ namespace Project_Inventory
 
                     height = width = 256;
                     break;
+                case ImageSizesName.OneForTwoHorizontal:
+                    height = 32;
+                    width = 64;
+                    break;
             }
 
             temp.Content = new Image
@@ -785,6 +789,32 @@ namespace Project_Inventory
         }
 
         /// <summary>
+        /// Set Up the grid for custom list's options
+        /// </summary>
+        /// <param name="embededGrid"></param>
+        /// <param name="options"></param>
+        public void SetUpCustomListGrid(Grid embededGrid, List<string> options, List<Button> deleteButtons, List<Button> upButtons, List<Button> downButtons)
+        {
+            TextBox textBoxTemp;
+            int i;
+
+            for (i = 0; i < options.Count; i++)
+            {
+                InsertUIElementInGrid(embededGrid, deleteButtons[i], i, 0, UIElementsName.None, SkinLocation.CenterCenter);
+
+                textBoxTemp = new TextBox();
+                textBoxTemp.Text = options[i];
+                InsertUIElementInGrid(embededGrid, textBoxTemp, i, 1, UIElementsName.TextBox, SkinLocation.CenterCenter);
+
+                InsertUIElementInGrid(embededGrid, upButtons[i], i, 2, UIElementsName.None, SkinLocation.TopCenter);
+                InsertUIElementInGrid(embededGrid, downButtons[i], i, 2, UIElementsName.None, SkinLocation.BottomCenter);
+            }
+
+            textBoxTemp = new TextBox();
+            InsertUIElementInGrid(embededGrid, textBoxTemp, i, 1, UIElementsName.TextBox, SkinLocation.CenterCenter);
+        }
+
+        /// <summary>
         /// Create UIElements in the scroll grid
         /// </summary>
         /// <param name="grid"></param>
@@ -1117,6 +1147,29 @@ namespace Project_Inventory
             SetUpGrid(grid, j, i, skinName, lengthName);
         }
 
+        /// <summary>
+        /// Set up Scrollable Grid for Custom List's Options
+        /// </summary>
+        /// <param name="grid"></param>
+        /// <param name="embededGrid"></param>
+        /// <param name="gridSkin"></param>
+        /// <param name="skinHeight"></param>
+        /// <param name="options"></param>
+        public void CustomListViewer(Grid grid, Grid embededGrid, List<string> options, List<Button> deleteButtons, List<Button> upButtons, List<Button> downButtons)
+        {
+            ScrollViewer scrollViewer = new ScrollViewer();
+
+            SetUpNewGrid(embededGrid, options.Count + 1, SkinLocation.TopLeft);
+
+            ScrollFormInit(embededGrid, options.Count + 1, scrollViewer);
+
+            ScrollGridInit(embededGrid);
+
+            SetUpCustomListGrid(embededGrid, options, deleteButtons, upButtons, downButtons);
+
+            EmbedScrollableGrid(grid, embededGrid, scrollViewer);
+        }
+
         // Form //
 
         /// <summary>
@@ -1139,7 +1192,7 @@ namespace Project_Inventory
 
             SetUpGrid(grid, gridRowOne, gridColumnOne, gridSkin, skinHeight);
 
-            SetUpNewGrid(embededGrid, gridRowTwo, gridColumnTwo, SkinLocation.TopLeft, SkinSize.None);
+            SetUpNewGrid(embededGrid, gridRowTwo, gridColumnTwo, SkinLocation.TopLeft);
 
             ScrollFormInit(embededGrid, gridRowTwo, scrollViewer);
 
@@ -1159,6 +1212,26 @@ namespace Project_Inventory
             SetScrollFormHeight(embededGrid);
 
             if (gridRowTwo > 5)
+            {
+                ScrollViewerVertical(scrollViewer);
+            }
+            else
+            {
+                ScrollViewerNoOne(scrollViewer);
+            }
+        }
+
+        /// <summary>
+        /// Init scroll form sizes personalisly
+        /// </summary>
+        /// <param name="embededGrid"></param>
+        /// <param name="gridRowTwo"></param>
+        /// <param name="scrollViewer"></param>
+        public void ScrollFormInit(Grid embededGrid, int gridRowTwo, int limit, ScrollViewer scrollViewer)
+        {
+            SetScrollFormHeight(embededGrid);
+
+            if (gridRowTwo > limit)
             {
                 ScrollViewerVertical(scrollViewer);
             }
@@ -1305,7 +1378,7 @@ namespace Project_Inventory
 
             SetUpGrid(grid, gridRowOne, gridColumnOne, gridSkin, skinHeight);
 
-            SetUpNewGrid(embededGrid, gridRowTwo, gridColumnTwo, SkinLocation.TopStretch, SkinSize.None);
+            SetUpNewGrid(embededGrid, gridRowTwo, gridColumnTwo, SkinLocation.TopStretch);
 
             ScrollGridInit(embededGrid, gridRowTwo, gridColumnTwo, scrollViewer);
 
@@ -1334,7 +1407,7 @@ namespace Project_Inventory
 
             SetUpGrid(grid, gridRowOne, gridColumnOne, gridSkin, skinHeight);
 
-            SetUpNewGrid(embededGrid, gridRowTwo, gridColumnTwo, SkinLocation.StretchStretch, SkinSize.None);
+            SetUpNewGrid(embededGrid, gridRowTwo, gridColumnTwo, SkinLocation.StretchStretch);
 
             ScrollGridInit(embededGrid, gridRowTwo, gridColumnTwo, scrollViewer);
 
@@ -1354,14 +1427,30 @@ namespace Project_Inventory
         public void SetUpNewGrid(Grid grid,
                            int rowNb,
                            int columnNb,
-                           SkinLocation skinName,
-                           SkinSize lengthName)
+                           SkinLocation skinName)
         {
             CreateRowsInGrid(grid, rowNb);
             CreateColumnsInGrid(grid, columnNb);
 
             LoadGridLocation(grid, skinName);
-            LoadGridLength(grid, lengthName);
+        }
+
+        /// <summary>
+        /// Set up the grid that embed the scroll bar
+        /// </summary>
+        /// <param name="grid"></param>
+        /// <param name="optionNumber"></param>
+        /// <param name="columnNb"></param>
+        /// <param name="skinName"></param>
+        /// <param name="lengthName"></param>
+        public void SetUpNewGrid(Grid grid,
+                           int optionNumber,
+                           SkinLocation skinName)
+        {
+            CreateRowsInGrid(grid, optionNumber);
+            CreateColumnsInGrid(grid, 3);
+
+            LoadGridLocation(grid, skinName);
         }
 
         /// <summary>
@@ -1413,10 +1502,23 @@ namespace Project_Inventory
         }
 
         /// <summary>
-        /// Init scroll bar verticaly and horizontaly
+        /// Init the scroll grid
         /// </summary>
+        /// <param name="embededGrid"></param>
+        /// <param name="gridRowTwo"></param>
+        /// <param name="gridColumnTwo"></param>
         /// <param name="scrollViewer"></param>
-        public void ScrollViewerBoth(ScrollViewer scrollViewer)
+        public void ScrollGridInit(Grid embededGrid)
+        {
+            SetCustomListScrollGridHeight(embededGrid);
+            SetCustomListScrollGridWidth(embededGrid);
+        }
+
+            /// <summary>
+            /// Init scroll bar verticaly and horizontaly
+            /// </summary>
+            /// <param name="scrollViewer"></param>
+            public void ScrollViewerBoth(ScrollViewer scrollViewer)
         {
             scrollViewer.VerticalScrollBarVisibility = ScrollBarVisibility.Visible;
             scrollViewer.HorizontalScrollBarVisibility = ScrollBarVisibility.Visible;
@@ -1468,6 +1570,18 @@ namespace Project_Inventory
         /// Set up scroll grid horizontal size
         /// </summary>
         /// <param name="grid"></param>
+        public void SetCustomListScrollGridWidth(Grid grid)
+        {
+            foreach (ColumnDefinition column in grid.ColumnDefinitions)
+            {
+                GridSkins.ColumnHeightTier(column, windowWidth);
+            }
+        }
+
+        /// <summary>
+        /// Set up scroll grid horizontal size
+        /// </summary>
+        /// <param name="grid"></param>
         public void SetScrollGridWidth(Grid grid, SkinSize skinsName)
         {
             switch (skinsName)
@@ -1484,6 +1598,18 @@ namespace Project_Inventory
                         GridSkins.ColumnHeightTenPercent(column, windowHeight);
                     }
                     break;
+            }
+        }
+
+        /// <summary>
+        /// Set up scroll grid vertical size
+        /// </summary>
+        /// <param name="grid"></param>
+        public void SetCustomListScrollGridHeight(Grid grid)
+        {
+            foreach (RowDefinition row in grid.RowDefinitions)
+            {
+                GridSkins.RowHeightFifteenPercent(row, windowHeight);
             }
         }
 
@@ -1590,7 +1716,6 @@ namespace Project_Inventory
 
             for (int i = 0; i < storage.Length; i++)
             {
-
                 if (gridStorage[i].Name != storage[i].Name)
                 {
                     changesList.Add(i);
@@ -1611,21 +1736,42 @@ namespace Project_Inventory
         {
             List<CustomList> gridCustomList = ConvertGridChildrenToCustomListList(uiElementList, customList.Length, out optionalCustomList);
 
-            string text;
             List<int> changesList = new List<int>();
 
             for (int i = 0; i < customList.Length; i++)
             {
-                text = (uiElementList[i] as TextBox).Text;
-
-                if (text != customList[i].Name)
+                if (gridCustomList[i].Name != customList[i].Name)
                 {
                     changesList.Add(i);
-                    customList[i].Name = text;
+                    customList[i].Name = gridCustomList[i].Name;
                 }
             }
 
             return changesList;
+        }
+
+        /// <summary>
+        /// get all UIElements result of custom list details
+        /// </summary>
+        /// <param name="uiElementList"></param>
+        /// <param name="customList"></param>
+        /// <returns></returns>
+        public bool GetUIElements(List<UIElement> uiElementList, CustomList customList, out string optionalCustomList)
+        {
+            CustomList gridCustomList = ConvertGridChildrenToCustomList(uiElementList, customList.Options.Count, out optionalCustomList);
+
+            bool trigger = false;
+
+            for (int i = 0; i < gridCustomList.Options.Count; i++)
+            {
+                if (gridCustomList.Options[i] != customList.Options[i])
+                {
+                    customList.Options[i] = gridCustomList.Options[i];
+                    trigger = true;
+                }
+            }
+
+            return trigger;
         }
 
         /// <summary>
@@ -1762,9 +1908,9 @@ namespace Project_Inventory
                 text = (uIElements[gridIndex] as TextBox).Text;
 
                 gridIndex++;
-            }
 
-            gridStorage.Add(new CustomList(text));
+                gridStorage.Add(new CustomList(text));
+            }
 
             text = string.Empty;
 
@@ -1781,6 +1927,44 @@ namespace Project_Inventory
             }
 
             return gridStorage;
+        }
+
+        /// <summary>
+        /// Convert Grid Children To custom list
+        /// </summary>
+        /// <param name="grid"></param>
+        /// <returns></returns>
+        public CustomList ConvertGridChildrenToCustomList(List<UIElement> uIElements, int rowNb, out string optionalAdd)
+        {
+            CustomList customList = new CustomList("list", new List<string>());
+            int gridIndex = 0;
+
+            optionalAdd = string.Empty;
+
+            string text;
+
+            for (int i = 0; i < rowNb; i++)
+            {
+                text = (uIElements[gridIndex] as TextBox).Text;
+
+                gridIndex++;
+
+                customList.Options.Add(text);
+            }
+
+            if (uIElements[gridIndex] != null)
+            {
+                text = (uIElements[gridIndex] as TextBox).Text;
+
+                optionalAdd = text;
+
+                if (text == string.Empty)
+                {
+                    optionalAdd = null;
+                }
+            }
+
+            return customList;
         }
 
         /// <summary>
@@ -1875,6 +2059,12 @@ namespace Project_Inventory
             return trigger;
         }
 
+        /// <summary>
+        /// catch string in every type of UIElement
+        /// </summary>
+        /// <param name="dataType"></param>
+        /// <param name="uIElement"></param>
+        /// <param name="dataText"></param>
         public void TypeCatch(string dataType, UIElement uIElement, List<string> dataText)
         {
             if (dataType == UIElementsName.TextBox.ToString())

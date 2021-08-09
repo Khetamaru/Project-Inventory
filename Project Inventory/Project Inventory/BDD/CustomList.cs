@@ -47,7 +47,7 @@ namespace Project_Inventory.BDD
         /// <returns></returns>
         public string ToJsonId()
         {
-            return "{\"Id\":" + id + ",\"Name\":" + Name + ",\"options\":\"" + ToStringOptions() + "\"}";
+            return "{\"Id\":" + id + ",\"Name\":\"" + Name + "\",\"options\":\"" + ToStringOptions() + "\"}";
         }
 
         /// <summary>
