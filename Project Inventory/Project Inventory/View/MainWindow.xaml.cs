@@ -19,6 +19,7 @@ namespace Project_Inventory
         private FormPage formPage;
         private StorageViewerPage storageViewerPage;
         private ListMenu listMenu;
+        private ListViewerPage listViewerPage;
 
         private int actualStorageId;
         private int actualDataId;
@@ -91,6 +92,17 @@ namespace Project_Inventory
             listMenu.BottomGridInit(bottomGrid);
         }
 
+        public void ListViewerPageInit()
+        {
+            RoutedEventHandler reloadEvent = new RoutedEventHandler((object sender, RoutedEventArgs e) => ReloadView(sender, e));
+
+            listViewerPage = new ListViewerPage(toolBox, router, requestCenter, actualStorageId, actualDataId, actualCustomListId, reloadEvent);
+            actualWindow = WindowsName.ListViewerPage;
+            listViewerPage.TopGridInit(topGrid);
+            listViewerPage.CenterGridInit(centerGrid);
+            listViewerPage.BottomGridInit(bottomGrid);
+        }
+
         public void FormPageInit(WindowsName formType)
         {
             RoutedEventHandler reloadEvent = new RoutedEventHandler((object sender, RoutedEventArgs e) => ReloadView(sender, e));
@@ -141,6 +153,11 @@ namespace Project_Inventory
                     actualDataId = listMenu.DataIDBackups();
                     actualCustomListId = listMenu.CustomListIDBackups();
                     break;
+                case WindowsName.ListViewerPage:
+                    actualStorageId = listViewerPage.StorageIDBackups();
+                    actualDataId = listViewerPage.DataIDBackups();
+                    actualCustomListId = listViewerPage.CustomListIDBackups();
+                    break;
                 case WindowsName.FormPage:
                     actualStorageId = formPage.StorageIDBackups();
                     actualDataId = formPage.DataIDBackups();
@@ -174,6 +191,10 @@ namespace Project_Inventory
 
                 case WindowsName.ListMenu:
                     ListMenuInit();
+                    break;
+
+                case WindowsName.ListViewerPage:
+                    ListViewerPageInit();
                     break;
 
                 case WindowsName.AddStorage:
@@ -264,6 +285,7 @@ namespace Project_Inventory
                 WindowsName.StorageSelectionMenu,
                 WindowsName.StorageViewerPage,
                 WindowsName.ListMenu,
+                WindowsName.ListViewerPage,
                 WindowsName.FormPage
             };
 
@@ -308,6 +330,13 @@ namespace Project_Inventory
                     listMenu.TopGridInit(topGrid);
                     listMenu.CenterGridInit(centerGrid);
                     listMenu.BottomGridInit(bottomGrid);
+                    break;
+
+                case WindowsName.ListViewerPage:
+                    listViewerPage.LoadBDDInfos();
+                    listViewerPage.TopGridInit(topGrid);
+                    listViewerPage.CenterGridInit(centerGrid);
+                    listViewerPage.BottomGridInit(bottomGrid);
                     break;
 
                 case WindowsName.StorageViewerPage:

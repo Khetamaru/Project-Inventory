@@ -183,6 +183,11 @@ namespace Project_Inventory
             column.Width = new GridLength(screenWidth / tenPercentMultiplier * 1.5, GridUnitType.Pixel);
         }
 
+        public static void ColumnHeightTier(ColumnDefinition column, double screenWidth)
+        {
+            column.Width = new GridLength(screenWidth / tenPercentMultiplier * 3.33, GridUnitType.Pixel);
+        }
+
         public static void ColumnHeightTenPercent(ColumnDefinition column, double screenWidth)
         {
             column.Width = new GridLength(screenWidth / tenPercentMultiplier, GridUnitType.Pixel);
