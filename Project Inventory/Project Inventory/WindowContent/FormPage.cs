@@ -26,6 +26,9 @@ namespace Project_Inventory
 
         private RoutedEventHandler reloadEvent;
 
+        private CustomList[] customList;
+        private List<StorageXCustomList> storagesXLists;
+
         public FormPage(ToolBox toolBox, Router _router, RequestCenter requestCenter, WindowsName _formType, int _actualStorageId, int _actualDataId, int _actualCustomListId, RoutedEventHandler _reloadEvent)
             : base(toolBox, _router, requestCenter, _actualStorageId, _actualDataId, _actualCustomListId)
         {
@@ -55,7 +58,8 @@ namespace Project_Inventory
                                                  1, 1,
                                                  formElements.Length, 2,
                                                  SkinLocation.StretchStretch, SkinSize.HeightEightPercent,
-                                                 formElements, labels, listBoxNames);
+                                                 formElements, labels, listBoxNames,
+                                                 customList);
                     break;
 
                 case WindowsName.CreditPage:
@@ -64,7 +68,8 @@ namespace Project_Inventory
                                                  1, 1,
                                                  formElements.Length, 2,
                                                  SkinLocation.BottomStretch, SkinSize.HeightNintyPercent,
-                                                 formElements, labels, listBoxNames);
+                                                 formElements, labels, listBoxNames,
+                                                 customList);
                     break;
             }
         }
@@ -107,13 +112,13 @@ namespace Project_Inventory
 
                     case WindowsName.InitStorage:
 
-                        InitStorage(uiElements);
+                        InitStorage();
                         break;
                 }
             }
             else
             {
-                // POP UP REFUS
+                PopUpCenter.MessagePopup("Some Fields are empty or wrongly filled.");
             }
         }
 
@@ -132,24 +137,44 @@ namespace Project_Inventory
         /// Create the originale data line that define all the storage structure
         /// </summary>
         /// <param name="uIElements"></param>
-        public void InitStorage(string[] uIElements)
+        public void InitStorage()
         {
             UIElementsName[] uIElementsNames = new UIElementsName[formElements.Length / 2];
             List<string> columnNames = new List<string>();
             List<string> dataType = new List<string>();
+            List<CustomList> customLists;
 
-            GetInitStorageUIElement(uIElementsNames, columnNames);
+            int j = 0;
 
-            for ( int i = 0 ; i < uIElementsNames.Length ; i++ )
+            GetInitStorageUIElement(uIElementsNames, columnNames, customList, out customLists);
+
+            for (int i = 0 ; i < uIElementsNames.Length ; i++)
             {
-                dataType[i] = uIElementsNames[i].ToString();
+                if (uIElementsNames[i] == UIElementsName.None)
+                {
+                    dataType.Add(customLists[j].id.ToString());
+                    j++;
+                }
+                else
+                {
+                    dataType.Add(uIElementsNames[i].ToString());
+                }
             }
 
             Data data = new Data(actualStorageId, columnNames, dataType, true);
 
             string json = data.ToJson();
 
-            requestCenter.PostRequest("DataLibraries", json);
+            requestCenter.PostRequest(BDDTabsName.DataLibraries.ToString(), json);
+
+            StorageXCustomList temp;
+
+            foreach (CustomList customList in customLists)
+            {
+                temp = new StorageXCustomList(actualStorageId, customList.id);
+
+                requestCenter.PostRequest(BDDTabsName.StorageLibrariesXCustomListLibraries.ToString(), temp.ToJson());
+            }
         }
 
         /// <summary>
@@ -159,7 +184,7 @@ namespace Project_Inventory
         /// <param name="e"></param>
         public void InitStorageReload(object sender, RoutedEventArgs e)
         {
-            UIElementsName[] uIElementsNames = new UIElementsName[formElements.Length / 2];
+            string[] uIElementsNames = new string[formElements.Length / 2];
             List<string> columnNames = new List<string>();
 
             GetInitStorageUIElement(uIElementsNames, columnNames);
@@ -171,18 +196,58 @@ namespace Project_Inventory
 
             InjectInitStorageUIElement(uIElementsNames, columnNames);
         }
+        
+        /// <summary>
+         /// Give all elements filled in the form
+         /// </summary>
+         /// <param name="uIElementsNames"></param>
+         /// <param name="columnNames"></param>
+        private void GetInitStorageUIElement(string[] uIElementsNames, List<string> columnNames)
+        {
+            int i = 0;
+            int k = 0;
+            string temp;
+
+            foreach (UIElement uIElement in capGrid.Children)
+            {
+                if (i % 2 != 0)
+                {
+                    if ((i + 1) % 4 == 0)
+                    {
+                        columnNames.Add((uIElement as TextBox).Text);
+                    }
+                    else
+                    {
+                        if ((uIElement as ComboBox).SelectedItem != null)
+                        {
+                            temp = (uIElement as ComboBox).SelectedItem.ToString();
+                        }
+                        else
+                        {
+                            temp = UIElementsName.TextBox.ToString();
+                        }
+                        uIElementsNames[k] = temp;
+
+                        k++;
+                    }
+                }
+
+                i++;
+            }
+        }
 
         /// <summary>
         /// Give all elements filled in the form
         /// </summary>
         /// <param name="uIElementsNames"></param>
         /// <param name="columnNames"></param>
-        private void GetInitStorageUIElement(UIElementsName[] uIElementsNames, List<string> columnNames)
+        private void GetInitStorageUIElement(UIElementsName[] uIElementsNames, List<string> columnNames, CustomList[] customList, out List<CustomList> customLists)
         {
             int i = 0;
             int j = 0;
             int k = 0;
-            string temp = string.Empty;
+            customLists = new List<CustomList>();
+            string temp;
 
             foreach(UIElement uIElement in capGrid.Children)
             {
@@ -190,8 +255,7 @@ namespace Project_Inventory
                 {
                     if ((i+1)%4 == 0)
                     {
-                        columnNames[j] = (uIElement as TextBox).Text;
-                        j++;
+                        columnNames.Add((uIElement as TextBox).Text);
                     }
                     else
                     {
@@ -204,6 +268,18 @@ namespace Project_Inventory
                             temp = UIElementsName.TextBox.ToString();
                         }
                         uIElementsNames[k] = GetUIElementName(temp);
+
+                        if (uIElementsNames[k] == UIElementsName.None)
+                        {
+                            for (j = 0; j < customList.Length; j++)
+                            {
+                                if (customList[j].Name == temp)
+                                {
+                                    customLists.Add(customList[j]);
+                                }
+                            }
+                        }
+
                         k++;
                     }
                 }
@@ -217,7 +293,7 @@ namespace Project_Inventory
         /// </summary>
         /// <param name="uIElementsNames"></param>
         /// <param name="columnNames"></param>
-        private void InjectInitStorageUIElement(UIElementsName[] uIElementsNames, List<string> columnNames)
+        private void InjectInitStorageUIElement(string[] uIElementsNames, List<string> columnNames)
         {
             int j = 0;
             int k = 0;
@@ -234,7 +310,7 @@ namespace Project_Inventory
                     }
                     else
                     {
-                        (capGrid.Children[i] as ComboBox).SelectedItem = uIElementsNames[k].ToString();
+                        (capGrid.Children[i] as ComboBox).SelectedItem = uIElementsNames[k];
                         k++;
                     }
                 }
@@ -254,7 +330,7 @@ namespace Project_Inventory
                 case "ComboBox":
                     return UIElementsName.ComboBox;
             }
-            return UIElementsName.TextBox;
+            return UIElementsName.None;
         }
 
         /// <summary>
@@ -321,6 +397,8 @@ namespace Project_Inventory
                 case (WindowsName.InitStorage):
 
                     listBoxNames = ComboBoxNames.UIElementsType;
+
+                    customList = JsonCenter.LoadInitStorageInfos(requestCenter);
 
                     topGridButtons = new string[] { "Return" };
 

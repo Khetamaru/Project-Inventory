@@ -11,6 +11,10 @@ namespace Project_Inventory.Tools
     {
         DataLibraries,
         StorageLibraries,
-        CustomListLibraries
+        CustomListLibraries,
+        LogLibraries,
+        UserLibraries,
+        StorageLibrariesXCustomListLibraries,
+        ListOptionLibraries
     }
 }

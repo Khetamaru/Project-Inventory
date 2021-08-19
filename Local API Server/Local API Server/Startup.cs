@@ -29,6 +29,14 @@ namespace Local_API_Server
                 opt.UseSqlServer(dataStringConnection));
             services.AddDbContext<CustomListLibraryContext>(opt =>
                 opt.UseSqlServer(dataStringConnection));
+            services.AddDbContext<ListOptionLibraryContext>(opt =>
+                opt.UseSqlServer(dataStringConnection));
+            services.AddDbContext<LogLibraryContext>(opt =>
+                opt.UseSqlServer(dataStringConnection));
+            services.AddDbContext<StorageLibraryXCustomListLibraryContext>(opt =>
+                opt.UseSqlServer(dataStringConnection));
+            services.AddDbContext<UserLibraryContext>(opt =>
+                opt.UseSqlServer(dataStringConnection));
 
             services.AddControllers();
 

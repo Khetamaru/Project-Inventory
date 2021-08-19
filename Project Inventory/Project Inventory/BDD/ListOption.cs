@@ -5,19 +5,25 @@ namespace Project_Inventory.BDD
     /// <summary>
     /// Use to save Storage Objects Informations
     /// </summary>
-    public class CustomList : BDDObject
+    public class ListOption : BDDObject
     {
+        public int CustomListId { get; set; }
+        public int Index { get; set; }
         public string Name { get; set; }
 
-        public CustomList(int id, string name)
+        public ListOption(int id, int customListId, int index, string name)
             : base(id)
         {
+            CustomListId = customListId;
+            Index = index;
             Name = name;
         }
 
-        public CustomList(string name)
+        public ListOption(int customListId, int index, string name)
             : base(42)
         {
+            CustomListId = customListId;
+            Index = index;
             Name = name;
         }
 
@@ -27,7 +33,7 @@ namespace Project_Inventory.BDD
         /// <returns></returns>
         public string ToJson()
         {
-            return "{\"Name\":\"" + Name + "\"}";
+            return "{\"CustomListId\":" + CustomListId + ",\"Index\":" + Index + ",\"Name\":\"" + Name + "\"}";
         }
 
 
@@ -37,7 +43,7 @@ namespace Project_Inventory.BDD
         /// <returns></returns>
         public string ToJsonId()
         {
-            return "{\"Id\":" + id + ",\"Name\":\"" + Name + "\"}";
+            return "{\"Id\":" + id + ",\"CustomListId\":" + CustomListId + ",\"Index\":" + Index + ",\"Name\":\"" + Name + "\"}";
         }
     }
 }

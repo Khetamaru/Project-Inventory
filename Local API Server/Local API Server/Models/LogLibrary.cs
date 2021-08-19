@@ -5,9 +5,10 @@ using System.Threading.Tasks;
 
 namespace Local_API_Server.Models
 {
-    public class CustomListLibrary
+    public class LogLibrary
     {
         public int Id { get; set; }
-        public string Name { get; set; }
+        public int UserId { get; set; }
+        public string Message { get; set; }
     }
 }

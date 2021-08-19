@@ -32,6 +32,8 @@ namespace Project_Inventory
         private Grid capGrid;
         private Data[] dataTab;
         private Data[] dataTabSave;
+        private List<List<ListOption>> listOptionsTab;
+        private List<int> customListIds;
         private string[,] stringTab;
         private string[,] indicTab;
 
@@ -76,9 +78,8 @@ namespace Project_Inventory
         /// </summary>
         public void LoadBDDInfos()
         {
-            dataTabSave = dataTab = JsonCenter.LoadStorageViewerInfos(requestCenter, actualStorageId);
+            dataTabSave = dataTab = JsonCenter.LoadStorageViewerInfos(requestCenter, actualStorageId, out listOptionsTab, out customListIds);
             
-
             int i;
             int j;
 
@@ -119,7 +120,8 @@ namespace Project_Inventory
                                          stringTab.GetLength(0), stringTab.GetLength(1),
                                          SkinLocation.BottomStretch, SkinSize.HeightNintyPercent,
                                          SkinLocation.CenterCenter,
-                                         stringTab, indicTab);
+                                         stringTab, indicTab,
+                                         listOptionsTab, customListIds);
                     break;
 
                 case status.MODIFIER:
@@ -150,7 +152,8 @@ namespace Project_Inventory
                                          SkinLocation.CenterStretch, SkinSize.HeightEightPercent,
                                          SkinLocation.CenterCenter,
                                          stringTab, indicTab,
-                                         AddDeleteButtons());
+                                         AddDeleteButtons(),
+                                         listOptionsTab, customListIds);
                     break;
             }
         }
@@ -189,7 +192,7 @@ namespace Project_Inventory
         {
             Data optionnalAdd = null;
 
-            List<int> changesList = toolBox.GetUIElements(toolBox.ExtractFormInfos(capGrid), dataTab, indicTab, out optionnalAdd);
+            List<int> changesList = toolBox.GetUIElements(toolBox.ExtractFormInfos(capGrid), dataTab, indicTab, out optionnalAdd, listOptionsTab);
 
             foreach(int change in changesList)
             {

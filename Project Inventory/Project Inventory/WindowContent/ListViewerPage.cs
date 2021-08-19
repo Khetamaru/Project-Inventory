@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using Project_Inventory.BDD;
@@ -10,7 +11,7 @@ namespace Project_Inventory
     {
         private Grid capGrid;
 
-        private CustomList actualCustomList;
+        private List<ListOption> listOptions;
 
         private string[] topGridButtons;
         private RoutedEventLibrary[] topSwitchEvents;
@@ -46,9 +47,12 @@ namespace Project_Inventory
         /// </summary>
         public void LoadBDDInfos()
         {
-            CustomList[] temp = JsonCenter.LoadListViewerPageInfos(requestCenter, actualCustomListId);
+            listOptions = JsonCenter.LoadListViewerPageInfos(requestCenter, actualCustomListId);
 
-            actualCustomList = temp[0];
+            if(listOptions.Count > 0)
+            {
+                listOptions = listOptions.OrderBy(option => option.Index).ToList();
+            }
         }
 
         public new void TopGridInit(Grid topGrid)
@@ -68,7 +72,7 @@ namespace Project_Inventory
             capGrid = new Grid();
             toolBox.SetUpGrid(centerGrid, 1, 1, SkinLocation.StretchStretch, SkinSize.HeightEightPercent);
 
-            toolBox.CustomListViewer(centerGrid, capGrid, actualCustomList.Options, AddDeleteButtons(), AddUpArrowsButtons(), AddDownArrowsButtons());
+            toolBox.CustomListViewer(centerGrid, capGrid, listOptions, AddDeleteButtons(), AddUpArrowsButtons(), AddDownArrowsButtons());
         }
 
         public new void BottomGridInit(Grid bottomGrid)
@@ -90,18 +94,27 @@ namespace Project_Inventory
         /// <param name="e"></param>
         private void SaveDatas(object sender, RoutedEventArgs e)
         {
-            string optionnalAdd;
-            bool trigger = toolBox.GetUIElements(toolBox.ExtractFormInfos(capGrid), actualCustomList, out optionnalAdd);
-
-            if (optionnalAdd != string.Empty)
+            if (PopUpCenter.ActionValidPopup())
             {
-                actualCustomList.Options.Add(optionnalAdd);
+                string optionnalAdd;
+                bool trigger = toolBox.GetUIElements(toolBox.ExtractFormInfos(capGrid), listOptions, out optionnalAdd);
 
-                requestCenter.PutRequest(BDDTabsName.CustomListLibraries.ToString() + "/" + actualCustomList.id, actualCustomList.ToJsonId());
-            }
-            else if (trigger)
-            {
-                requestCenter.PutRequest(BDDTabsName.CustomListLibraries.ToString() + "/" + actualCustomList.id, actualCustomList.ToJsonId());
+                if (optionnalAdd != string.Empty)
+                {
+                    requestCenter.PostRequest(BDDTabsName.ListOptionLibraries.ToString(), (new ListOption(actualCustomListId, listOptions.Count, optionnalAdd)).ToJson());
+
+                    foreach (ListOption option in listOptions)
+                    {
+                        requestCenter.PutRequest(BDDTabsName.ListOptionLibraries.ToString() + "/" + option.id, option.ToJsonId());
+                    }
+                }
+                else if (trigger)
+                {
+                    foreach (ListOption option in listOptions)
+                    {
+                        requestCenter.PutRequest(BDDTabsName.ListOptionLibraries.ToString() + "/" + option.id, option.ToJsonId());
+                    }
+                }
             }
         }
 
@@ -116,7 +129,7 @@ namespace Project_Inventory
             RoutedEventLibrary tempRouter;
             int i = 0;
 
-            foreach (string option in actualCustomList.Options)
+            foreach (ListOption option in listOptions)
             {
                 var index = i;
                 tempRouter = new RoutedEventLibrary();
@@ -140,11 +153,16 @@ namespace Project_Inventory
         /// </summary>
         private void DeleteCustomList(object sender, RoutedEventArgs e, int index)
         {
-            if (PopUpCenter.ActionValidPopup())
+            if (listOptions.Count > 1)
             {
-                actualCustomList.Options.Remove(actualCustomList.Options[index]);
-
-                requestCenter.PutRequest(BDDTabsName.CustomListLibraries.ToString() + "/" + actualCustomList.id, actualCustomList.ToJsonId());
+                if (PopUpCenter.ActionValidPopup())
+                {
+                    requestCenter.DeleteRequest(BDDTabsName.ListOptionLibraries.ToString() + "/" + listOptions[index].id);
+                }
+            }
+            else
+            {
+                PopUpCenter.MessagePopup("A Custom List can't be empty. You can't delete the last List Option.");
             }
         }
 
@@ -158,7 +176,7 @@ namespace Project_Inventory
             RoutedEventLibrary tempRouter;
             int i = 0;
 
-            foreach (string option in actualCustomList.Options)
+            foreach (ListOption option in listOptions)
             {
                 var index = i;
                 tempRouter = new RoutedEventLibrary();
@@ -188,9 +206,10 @@ namespace Project_Inventory
 
         private void MoveUp(object sender, RoutedEventArgs e, int index)
         {
-            (actualCustomList.Options[index - 1], actualCustomList.Options[index]) = (actualCustomList.Options[index], actualCustomList.Options[index - 1]);
+            (listOptions[index - 1].Index, listOptions[index].Index) = (listOptions[index].Index, listOptions[index - 1].Index);
 
-            requestCenter.PutRequest(BDDTabsName.CustomListLibraries.ToString() + "/" + actualCustomList.id, actualCustomList.ToJsonId());
+            requestCenter.PutRequest(BDDTabsName.ListOptionLibraries.ToString() + "/" + listOptions[index - 1].id, listOptions[index - 1].ToJsonId());
+            requestCenter.PutRequest(BDDTabsName.ListOptionLibraries.ToString() + "/" + listOptions[index].id,     listOptions[index].ToJsonId());
         }
 
         /// <summary>
@@ -203,7 +222,7 @@ namespace Project_Inventory
             RoutedEventLibrary tempRouter;
             int i = 0;
 
-            foreach (string option in actualCustomList.Options)
+            foreach (ListOption option in listOptions)
             {
                 var index = i;
                 tempRouter = new RoutedEventLibrary();
@@ -213,7 +232,7 @@ namespace Project_Inventory
                 });
                 tempRouter.resetPageEvent = reloadEvent;
 
-                if (i != actualCustomList.Options.Count -1)
+                if (i != listOptions.Count -1)
                 {
                     tempButton = toolBox.CreateSwitchButtonImage(ImagesName.ArrowDown, tempRouter, SkinName.Standart, SkinLocation.CenterCenter, ImageSizesName.OneForTwoHorizontal);
                 }
@@ -233,9 +252,10 @@ namespace Project_Inventory
 
         private void MoveDown(object sender, RoutedEventArgs e, int index)
         {
-            (actualCustomList.Options[index + 1], actualCustomList.Options[index]) = (actualCustomList.Options[index], actualCustomList.Options[index + 1]);
+            (listOptions[index + 1].Index, listOptions[index].Index) = (listOptions[index].Index, listOptions[index + 1].Index);
 
-            requestCenter.PutRequest(BDDTabsName.CustomListLibraries.ToString() + "/" + actualCustomList.id, actualCustomList.ToJsonId());
+            requestCenter.PutRequest(BDDTabsName.ListOptionLibraries.ToString() + "/" + listOptions[index + 1].id, listOptions[index + 1].ToJsonId());
+            requestCenter.PutRequest(BDDTabsName.ListOptionLibraries.ToString() + "/" + listOptions[index].id, listOptions[index].ToJsonId());
         }
     }
 }

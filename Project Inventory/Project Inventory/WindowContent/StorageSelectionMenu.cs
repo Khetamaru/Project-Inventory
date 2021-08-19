@@ -265,6 +265,7 @@ namespace Project_Inventory
         {
             if (PopUpCenter.ActionValidPopup())
             {
+                requestCenter.DeleteRequest(BDDTabsName.StorageLibrariesXCustomListLibraries.ToString() + "/storage/" + StorageId);
                 requestCenter.DeleteRequest(BDDTabsName.DataLibraries.ToString() + "/storage/" + StorageId);
                 requestCenter.DeleteRequest(BDDTabsName.StorageLibraries.ToString() + "/" + StorageId);
             }

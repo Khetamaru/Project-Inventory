@@ -11,6 +11,7 @@ namespace Project_Inventory.BDD
         public List<string> DataText { get; set; }
         public List<string> DataType { get; set; }
         public bool IsHeader { get; set; }
+        public string CodeBar { get; set; }
 
         public Data(int id, int storageId, List<string> dataText, List<string> dataType, bool isHeader)
             : base(id)
@@ -28,6 +29,26 @@ namespace Project_Inventory.BDD
             DataText = dataText;
             DataType = dataType;
             IsHeader = isHeader;
+        }
+
+        public Data(int id, int storageId, List<string> dataText, List<string> dataType, bool isHeader, string codeBar)
+            : base(id)
+        {
+            StorageId = storageId;
+            DataText = dataText;
+            DataType = dataType;
+            IsHeader = isHeader;
+            CodeBar = codeBar;
+        }
+
+        public Data(int storageId, List<string> dataText, List<string> dataType, bool isHeader, string codeBar)
+            : base(42)
+        {
+            StorageId = storageId;
+            DataText = dataText;
+            DataType = dataType;
+            IsHeader = isHeader;
+            CodeBar = codeBar;
         }
 
         /// <summary>
