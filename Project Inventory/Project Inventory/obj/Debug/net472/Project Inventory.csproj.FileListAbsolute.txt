@@ -12,7 +12,6 @@ C:\ANTHONY\PERSO\Projet Inventaire\Project-Inventory\Project Inventory\Project I
 C:\ANTHONY\PERSO\Projet Inventaire\Project-Inventory\Project Inventory\Project Inventory\obj\Debug\net472\Project Inventory.pdb
 C:\ANTHONY\PERSO\Projet Inventaire\Project-Inventory\Project Inventory\Project Inventory\obj\Debug\net472\View\MainWindow.baml
 C:\ANTHONY\PERSO\Projet Inventaire\Project-Inventory\Project Inventory\Project Inventory\obj\Debug\net472\View\MainWindow.g.cs
-F:\PROJECTS\Project-Inventory\Project Inventory\Project Inventory\obj\Debug\net472\Project Inventory.csprojAssemblyReference.cache
 F:\PROJECTS\Project-Inventory\Project Inventory\Project Inventory\obj\Debug\net472\View\MainWindow.baml
 F:\PROJECTS\Project-Inventory\Project Inventory\Project Inventory\obj\Debug\net472\View\MainWindow.g.cs
 F:\PROJECTS\Project-Inventory\Project Inventory\Project Inventory\obj\Debug\net472\App.g.cs
@@ -26,3 +25,5 @@ F:\PROJECTS\Project-Inventory\Project Inventory\Project Inventory\obj\Debug\net4
 F:\PROJECTS\Project-Inventory\Project Inventory\Project Inventory\bin\Debug\net472\Project Inventory.exe.config
 F:\PROJECTS\Project-Inventory\Project Inventory\Project Inventory\bin\Debug\net472\Project Inventory.exe
 F:\PROJECTS\Project-Inventory\Project Inventory\Project Inventory\bin\Debug\net472\Project Inventory.pdb
+F:\PROJECTS\Project-Inventory\Project Inventory\Project Inventory\obj\Debug\net472\Project Inventory.csproj.AssemblyReference.cache
+F:\PROJECTS\Project-Inventory\Project Inventory\Project Inventory\obj\Debug\net472\Project Inventory.GeneratedMSBuildEditorConfig.editorconfig

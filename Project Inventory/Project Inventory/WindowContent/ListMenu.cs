@@ -69,8 +69,6 @@ namespace Project_Inventory
             bottomSwitchEvents = JsonCenter.SetEventHandlerTab(bottomGridButtons.Length, GetEventHandler(WindowsName.ListViewerPage));
         }
 
-
-
         public new void TopGridInit(Grid topGrid)
         {
             toolBox.SetUpGrid(topGrid, 1, 2, SkinLocation.TopStretch, SkinSize.HeightTenPercent);
@@ -201,7 +199,7 @@ namespace Project_Inventory
         {
             List<UIElement> elementList = toolBox.ExtractFormInfos(capGrid);
 
-            CustomList optionnalAdd = new CustomList(42, string.Empty, new List<string>());
+            CustomList optionnalAdd = new CustomList(42, string.Empty);
 
             List<int> changesList = toolBox.GetUIElements(elementList, bottomGridButtons, out optionnalAdd);
 
@@ -267,9 +265,20 @@ namespace Project_Inventory
         /// </summary>
         private void DeleteCustomList(object sender, RoutedEventArgs e, int CustomListId)
         {
+            List<StorageXCustomList> storageXCustomLists;
+
             if (PopUpCenter.ActionValidPopup())
             {
-                requestCenter.DeleteRequest(BDDTabsName.CustomListLibraries.ToString() + "/" + CustomListId);
+                storageXCustomLists = JsonCenter.LoadStorageXCustomLists(requestCenter, CustomListId);
+
+                if (storageXCustomLists.Count > 0)
+                {
+                    PopUpCenter.MessagePopup("This Custom List is used in a Storage. You can't delete it.");
+                }
+                else
+                {
+                    requestCenter.DeleteRequest(BDDTabsName.CustomListLibraries.ToString() + "/" + CustomListId);
+                }
             }
         }
     }
