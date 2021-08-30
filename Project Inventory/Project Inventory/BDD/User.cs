@@ -9,12 +9,14 @@ namespace Project_Inventory.BDD
     {
         public string Name { get; set; }
         public int AccessibilityLevel { get; set; }
+        public bool IsActive { get; set; }
 
-        public User(int id, string message, int accessibilityLevel)
+        public User(int id, string message, int accessibilityLevel, bool isActive)
             : base(id)
         {
             Name = message;
             AccessibilityLevel = accessibilityLevel;
+            IsActive = isActive;
         }
 
         /// <summary>
@@ -23,9 +25,8 @@ namespace Project_Inventory.BDD
         /// <returns></returns>
         public string ToJson()
         {
-            return "{\"message\":\"" + Name + ",\"accessibilityLevel\":\"" + AccessibilityLevel + "\"}";
+            return "{\"message\":\"" + Name + ",\"accessibilityLevel\":\"" + AccessibilityLevel + ",\"isActive\":\"" + IsActive + "\"}";
         }
-
 
         /// <summary>
         /// Convert User to json with the Id
@@ -33,7 +34,7 @@ namespace Project_Inventory.BDD
         /// <returns></returns>
         public string ToJsonId()
         {
-            return "{\"Id\":" + id + ",\"message\":\"" + Name + ",\"accessibilityLevel\":\"" + AccessibilityLevel + "\"}";
+            return "{\"Id\":" + id + ",\"message\":\"" + Name + ",\"accessibilityLevel\":\"" + AccessibilityLevel + ",\"isActive\":\"" + IsActive + "\"}";
         }
     }
 }

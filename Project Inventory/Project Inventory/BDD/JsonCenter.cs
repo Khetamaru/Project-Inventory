@@ -70,6 +70,55 @@ namespace Project_Inventory.Tools
             return json;
         }
 
+        public static Storage GetStorage(RequestCenter requestCenter, int id)
+        {
+            string responseBdd = requestCenter.GetRequest(BDDTabsName.StorageLibraries.ToString() + "/" + id);
+
+            return (FormatToBDDObject(responseBdd, ObjectName.Storage) as Storage[])[0];
+        }
+
+        public static Data GetData(RequestCenter requestCenter, int id)
+        {
+            string responseBdd = requestCenter.GetRequest(BDDTabsName.DataLibraries.ToString() + "/" + id);
+
+            return (FormatToBDDObject(responseBdd, ObjectName.Data) as Data[])[0];
+        }
+
+        public static User GetUser(RequestCenter requestCenter, int id)
+        {
+            string responseBdd = requestCenter.GetRequest(BDDTabsName.UserLibraries.ToString() + "/" + id);
+
+            return (FormatToBDDObject(responseBdd, ObjectName.User) as User[])[0];
+        }
+
+        public static Log GetLog(RequestCenter requestCenter, int id)
+        {
+            string responseBdd = requestCenter.GetRequest(BDDTabsName.LogLibraries.ToString() + "/" + id);
+
+            return (FormatToBDDObject(responseBdd, ObjectName.Log) as Log[])[0];
+        }
+
+        public static StorageXCustomList GetStorageXCustomList(RequestCenter requestCenter, int id)
+        {
+            string responseBdd = requestCenter.GetRequest(BDDTabsName.StorageLibrariesXCustomListLibraries.ToString() + "/" + id);
+
+            return (FormatToBDDObject(responseBdd, ObjectName.StorageXCustomList) as StorageXCustomList[])[0];
+        }
+
+        public static CustomList GetCustomList(RequestCenter requestCenter, int id)
+        {
+            string responseBdd = requestCenter.GetRequest(BDDTabsName.CustomListLibraries.ToString() + "/" + id);
+
+            return (FormatToBDDObject(responseBdd, ObjectName.CustomList) as CustomList[])[0];
+        }
+
+        public static ListOption GetListOption(RequestCenter requestCenter, int id)
+        {
+            string responseBdd = requestCenter.GetRequest(BDDTabsName.ListOptionLibraries.ToString() + "/" + id);
+
+            return (FormatToBDDObject(responseBdd, ObjectName.ListOption) as ListOption[])[0];
+        }
+
         /// <summary>
         /// Get all infos for the Storage Selection Menu
         /// </summary>
@@ -86,6 +135,55 @@ namespace Project_Inventory.Tools
             else
             {
                 return FormatToBDDObject(responseBdd, ObjectName.Storage) as Storage[];
+            }
+        }
+
+        /// <summary>
+        /// Get all infos for the Main Menu
+        /// </summary>
+        /// <param name="requestCenter"></param>
+        /// <returns></returns>
+        public static List<User> LoadMainMenuInfos(RequestCenter requestCenter)
+        {
+            string responseBdd = requestCenter.GetRequest(BDDTabsName.UserLibraries.ToString());
+
+            if (responseBdd == empty)
+            {
+                return new List<User>();
+            }
+            else
+            {
+                return (FormatToBDDObject(responseBdd, ObjectName.User) as User[]).ToList();
+            }
+        }
+
+        /// <summary>
+        /// Get all infos for the Logs Menu
+        /// </summary>
+        /// <param name="requestCenter"></param>
+        /// <returns></returns>
+        public static List<Log> LoadLogsMenuInfos(RequestCenter requestCenter, out List<User> users)
+        {
+            string responseBdd = requestCenter.GetRequest(BDDTabsName.UserLibraries.ToString());
+
+            if (responseBdd == empty)
+            {
+                users = new List<User>();
+            }
+            else
+            {
+                users = (FormatToBDDObject(responseBdd, ObjectName.User) as User[]).ToList();
+            }
+
+            responseBdd = requestCenter.GetRequest(BDDTabsName.LogLibraries.ToString());
+
+            if (responseBdd == empty)
+            {
+                return new List<Log>();
+            }
+            else
+            {
+                return (FormatToBDDObject(responseBdd, ObjectName.Log) as Log[]).ToList();
             }
         }
 
@@ -315,9 +413,16 @@ namespace Project_Inventory.Tools
         {
             string responseBdd = requestCenter.GetRequest(BDDTabsName.StorageLibrariesXCustomListLibraries.ToString() + "/customList/" + id);
 
-            StorageXCustomList[] storageXCustomLists = FormatToBDDObject(responseBdd, ObjectName.StorageXCustomList) as StorageXCustomList[];
+            if (responseBdd == empty)
+            {
+                return new List<StorageXCustomList>();
+            }
+            else
+            {
+                StorageXCustomList[] storageXCustomLists = FormatToBDDObject(responseBdd, ObjectName.StorageXCustomList) as StorageXCustomList[];
 
-            return storageXCustomLists.ToList();
+                return storageXCustomLists.ToList();
+            }
         }
 
         /// <summary>
@@ -396,6 +501,23 @@ namespace Project_Inventory.Tools
                         i++;
                     }
                     return storageXCustomListsLibrary;
+
+                case ObjectName.Log:
+                    Log[] logLibrary = new Log[splitTab.Length];
+                    foreach (string sf in splitTab)
+                    {
+                        logLibrary[i] = FormatObject(sf, new string[] { "id", "userId", "message", "date" }, logLibrary[i]);
+                        i++;
+                    }
+                    return logLibrary;
+
+                case ObjectName.User:
+                    User[] userLibrary = new User[splitTab.Length];
+                    foreach (string sf in splitTab)
+                    {
+                        userLibrary[i] = FormatObject(sf, new string[] { "id", "name", "accessibilityLevel", "isActive" }, userLibrary[i]);
+                    }
+                    return userLibrary;
             }
 
             return null;
@@ -668,6 +790,124 @@ namespace Project_Inventory.Tools
             storagesXCustomLists = new StorageXCustomList(id, storageId, customListId);
 
             return storagesXCustomLists;
+        }
+
+        /// <summary>
+        /// Convert a json to Log
+        /// </summary>
+        /// <param name="stf"></param>
+        /// <param name="separators"></param>
+        /// <param name="log"></param>
+        /// <returns></returns>
+        private static Log FormatObject(string stf, string[] separators, Log log)
+        {
+
+            int id = 42;
+            int userId = 42;
+            string message = string.Empty;
+            DateTime date = new DateTime();
+
+            string temp = string.Empty;
+
+            int i = 0;
+
+            string[] splitTab = stf.Split(new string[] { "\"" }, StringSplitOptions.None);
+
+            foreach (string split in splitTab)
+            {
+                switch (split)
+                {
+                    case "id":
+                        temp = splitTab[i + 1];
+                        temp = temp.Remove(0, 1);
+                        temp = temp.Remove(temp.Length - 1, 1);
+                        id = Int32.Parse(temp);
+                        break;
+
+                    case "userId":
+                        temp = splitTab[i + 1];
+                        temp = temp.Remove(0, 1);
+                        temp = temp.Remove(temp.Length - 1, 1);
+                        userId = Int32.Parse(temp);
+                        break;
+
+                    case "message":
+                        message = splitTab[i + 2];
+                        break;
+
+                    case "date":
+                        date = Convert.ToDateTime(splitTab[i + 2]);
+                        break;
+                }
+                i++;
+            }
+
+            log = new Log(id, userId, message, date);
+
+            return log;
+        }
+
+        /// <summary>
+        /// Convert a json to User
+        /// </summary>
+        /// <param name="stf"></param>
+        /// <param name="separators"></param>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        private static User FormatObject(string stf, string[] separators, User user)
+        {
+            int id = 42;
+            string name = string.Empty;
+            int accessibilityLevel = 42;
+            bool isActive = false;
+
+            string temp;
+
+            int i = 0;
+
+            string[] splitTab = stf.Split(new string[] { "\"" }, StringSplitOptions.None);
+
+            foreach (string split in splitTab)
+            {
+                switch (split)
+                {
+                    case "id":
+                        temp = splitTab[i + 1];
+                        temp = temp.Remove(0, 1);
+                        temp = temp.Remove(temp.Length - 1, 1);
+
+                        id = Int32.Parse(temp);
+                        break;
+
+                    case "name":
+                        name = splitTab[i + 2];
+                        break;
+
+                    case "accessibilityLevel":
+                        temp = splitTab[i + 1];
+                        temp = temp.Remove(0, 1);
+                        temp = temp.Remove(temp.Length - 1, 1);
+
+                        accessibilityLevel = Int32.Parse(temp);
+                        break;
+
+                    case "isActive":
+                        if (splitTab[i + 2] == "True")
+                        {
+                            isActive = true;
+                        }
+                        else if (splitTab[i + 2] == "False")
+                        {
+                            isActive = false;
+                        }
+                        break;
+                }
+                i++;
+            }
+
+            user = new User(id, name, accessibilityLevel, isActive);
+
+            return user;
         }
     }
 }

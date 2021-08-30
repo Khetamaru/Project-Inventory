@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Project_Inventory.BDD
 {
@@ -7,14 +8,40 @@ namespace Project_Inventory.BDD
     /// </summary>
     public class Log : BDDObject
     {
-        public int StorageId { get; set; }
+        public int UserId { get; set; }
         public string Message { get; set; }
+        public DateTime Date { get; set; }
 
-        public Log(int id, int storageId, string message)
+        public Log(int id, int userId, string message)
             : base(id)
         {
-            StorageId = storageId;
+            UserId = userId;
             Message = message;
+            Date = DateTime.Now;
+        }
+
+        public Log(int id, int userId, string message, DateTime date)
+            : base(id)
+        {
+            UserId = userId;
+            Message = message;
+            Date = date;
+        }
+
+        public Log(int userId, string message)
+            : base(42)
+        {
+            UserId = userId;
+            Message = message;
+            Date = DateTime.Now;
+        }
+
+        public Log(int userId, string message, DateTime date)
+            : base(42)
+        {
+            UserId = userId;
+            Message = message;
+            Date = date;
         }
 
         /// <summary>
@@ -23,7 +50,7 @@ namespace Project_Inventory.BDD
         /// <returns></returns>
         public string ToJson()
         {
-            return "{\"storageId\":" + StorageId + ",\"message\":\"" + Message + "\"}";
+            return "{\"userId\":" + UserId + ",\"message\":\"" + Message + "\",\"date\":\"" + Date.ToString() + "\"}";
         }
 
 
@@ -33,7 +60,7 @@ namespace Project_Inventory.BDD
         /// <returns></returns>
         public string ToJsonId()
         {
-            return "{\"Id\":" + id + ",\"storageId\":" + StorageId + ",\"message\":\"" + Message + "\"}";
+            return "{\"Id\":" + id + ",\"userId\":" + UserId + ",\"message\":\"" + Message + "\",\"date\":\"" + Date.ToString() + "\"}";
         }
     }
 }

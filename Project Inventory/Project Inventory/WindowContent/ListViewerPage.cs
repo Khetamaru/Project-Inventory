@@ -21,8 +21,8 @@ namespace Project_Inventory
         private string[] saveButton;
         private RoutedEventLibrary[] saveEvents;
 
-        public ListViewerPage(ToolBox toolBox, Router _router, RequestCenter requestCenter, int _actualStorageId, int _actualDataId, int _actualCustomId, RoutedEventHandler _reloadEvent)
-            : base(toolBox, _router, requestCenter, _actualStorageId, _actualDataId, _actualCustomId)
+        public ListViewerPage(ToolBox toolBox, Router _router, RequestCenter requestCenter, int _actualUserId, int _actualStorageId, int _actualDataId, int _actualCustomId, RoutedEventHandler _reloadEvent)
+            : base(toolBox, _router, requestCenter, _actualUserId, _actualStorageId, _actualDataId, _actualCustomId)
         {
             topGridButtons = new string[] { "Return" };
             saveButton = new string[] { "Save" };
@@ -101,6 +101,7 @@ namespace Project_Inventory
 
                 if (optionnalAdd != string.Empty)
                 {
+                    requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "(" + JsonCenter.GetCustomList(requestCenter, actualCustomListId).Name + ") Custom List has been extended and changed.").ToJson());
                     requestCenter.PostRequest(BDDTabsName.ListOptionLibraries.ToString(), (new ListOption(actualCustomListId, listOptions.Count, optionnalAdd)).ToJson());
 
                     foreach (ListOption option in listOptions)
@@ -110,6 +111,7 @@ namespace Project_Inventory
                 }
                 else if (trigger)
                 {
+                    requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "(" + JsonCenter.GetCustomList(requestCenter, actualCustomListId).Name + ") List Option has been changed.").ToJson());
                     foreach (ListOption option in listOptions)
                     {
                         requestCenter.PutRequest(BDDTabsName.ListOptionLibraries.ToString() + "/" + option.id, option.ToJsonId());
@@ -157,6 +159,7 @@ namespace Project_Inventory
             {
                 if (PopUpCenter.ActionValidPopup())
                 {
+                    requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "(" + JsonCenter.GetCustomList(requestCenter, actualCustomListId).Name + ") Custom List has been delete.").ToJson());
                     requestCenter.DeleteRequest(BDDTabsName.ListOptionLibraries.ToString() + "/" + listOptions[index].id);
                 }
             }
@@ -208,6 +211,7 @@ namespace Project_Inventory
         {
             (listOptions[index - 1].Index, listOptions[index].Index) = (listOptions[index].Index, listOptions[index - 1].Index);
 
+            requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "(" + JsonCenter.GetListOption(requestCenter, listOptions[index].id).Name + ") List Option and (" + JsonCenter.GetListOption(requestCenter, listOptions[index - 1].id).Name + ") List Option from (" + JsonCenter.GetCustomList(requestCenter, actualCustomListId).Name + ") has been swaped.").ToJson());
             requestCenter.PutRequest(BDDTabsName.ListOptionLibraries.ToString() + "/" + listOptions[index - 1].id, listOptions[index - 1].ToJsonId());
             requestCenter.PutRequest(BDDTabsName.ListOptionLibraries.ToString() + "/" + listOptions[index].id,     listOptions[index].ToJsonId());
         }
@@ -254,6 +258,7 @@ namespace Project_Inventory
         {
             (listOptions[index + 1].Index, listOptions[index].Index) = (listOptions[index].Index, listOptions[index + 1].Index);
 
+            requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "(" + JsonCenter.GetListOption(requestCenter, listOptions[index].id).Name + ") List Option and (" + JsonCenter.GetListOption(requestCenter, listOptions[index + 1].id).Name + ") List Option from (" + JsonCenter.GetCustomList(requestCenter, actualCustomListId).Name + ") has been swaped.").ToJson());
             requestCenter.PutRequest(BDDTabsName.ListOptionLibraries.ToString() + "/" + listOptions[index + 1].id, listOptions[index + 1].ToJsonId());
             requestCenter.PutRequest(BDDTabsName.ListOptionLibraries.ToString() + "/" + listOptions[index].id, listOptions[index].ToJsonId());
         }

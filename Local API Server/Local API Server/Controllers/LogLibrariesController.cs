@@ -22,7 +22,7 @@ namespace Local_API_Server.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<LogLibrary>>> GetLogLibraries()
         {
-            return await _context.LogLibraries.ToListAsync();
+            return await _context.LogLibraries.OrderByDescending(r => r.Id).ToListAsync();
         }
 
         // GET: api/LogLibraries/5
@@ -67,7 +67,7 @@ namespace Local_API_Server.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok();
         }
 
         // POST: api/LogLibraries
@@ -118,7 +118,7 @@ namespace Local_API_Server.Controllers
                 await _context.SaveChangesAsync();
             }
 
-            return NoContent();
+            return Ok();
         }
     }
 }

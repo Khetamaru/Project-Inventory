@@ -30,8 +30,8 @@ namespace Project_Inventory
         private string[] saveButton;
         private RoutedEventLibrary[] saveEvents;
 
-        public StorageSelectionMenu(ToolBox toolBox, Router _router, RequestCenter requestCenter, int _actualStorageId, int _actualDataId, int _actualCustomListId, RoutedEventHandler _reloadEvent)
-            : base(toolBox, _router, requestCenter, _actualStorageId, _actualDataId, _actualCustomListId)
+        public StorageSelectionMenu(ToolBox toolBox, Router _router, RequestCenter requestCenter, int _actualUserId, int _actualStorageId, int _actualDataId, int _actualCustomListId, RoutedEventHandler _reloadEvent)
+            : base(toolBox, _router, requestCenter, _actualUserId, _actualStorageId, _actualDataId, _actualCustomListId)
         {
             viewerStatus = status.VIEWER;
             reloadEvent = _reloadEvent;
@@ -203,11 +203,13 @@ namespace Project_Inventory
 
             foreach (int change in changesList)
             {
+                requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "Storage's name(s) has been changed.").ToJson());
                 requestCenter.PutRequest(BDDTabsName.StorageLibraries.ToString() + "/" + bottomGridButtons[change].id, bottomGridButtons[change].ToJsonId());
             }
 
             if (optionnalAdd != null)
             {
+                requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "A new Storage has been created.").ToJson());
                 requestCenter.PostRequest(BDDTabsName.StorageLibraries.ToString(), optionnalAdd.ToJson());
             }
         }
@@ -265,6 +267,7 @@ namespace Project_Inventory
         {
             if (PopUpCenter.ActionValidPopup())
             {
+                requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "(" + JsonCenter.GetStorage(requestCenter, StorageId).Name + ") Storage has been delete.").ToJson());
                 requestCenter.DeleteRequest(BDDTabsName.StorageLibrariesXCustomListLibraries.ToString() + "/storage/" + StorageId);
                 requestCenter.DeleteRequest(BDDTabsName.DataLibraries.ToString() + "/storage/" + StorageId);
                 requestCenter.DeleteRequest(BDDTabsName.StorageLibraries.ToString() + "/" + StorageId);

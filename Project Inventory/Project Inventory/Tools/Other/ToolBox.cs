@@ -169,6 +169,12 @@ namespace Project_Inventory
                 case UIElementsName.TextBoxNumber:
                     UIElementSkin.TextBoxNumberSkinModify(uIElement as TextBox, wpfScreen);
                     break;
+
+                case UIElementsName.Button:
+
+                    LoadButtonPosition(uIElement as Button, skinLocation);
+                    LoadButtonSkin(uIElement as Button, SkinName.StandartLittleMargin);
+                    break;
             }
 
             StorageViewerSkin.LoadSkinPosition(uIElement, skinLocation);
@@ -701,7 +707,10 @@ namespace Project_Inventory
                 {
                     if (buttonsTab.Length >= (i + 1) * (j + 1))
                     {
-                        CreateSwitchButtonToGrid(grid, buttonsTab[k], routerTab[k], i, j, buttonsSkin[k], skinPosition[k]);
+                        if (buttonsTab[k] != string.Empty)
+                        {
+                            CreateSwitchButtonToGrid(grid, buttonsTab[k], routerTab[k], i, j, buttonsSkin[k], skinPosition[k]);
+                        }
                         k++;
                     }
                 }
@@ -864,6 +873,42 @@ namespace Project_Inventory
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Create UIElements in the scroll grid
+        /// </summary>
+        /// <param name="grid"></param>
+        /// <param name="stringTab"></param>
+        /// <param name="skinPosition"></param>
+        public void CreateTabToGrid(Grid grid, List<Log> logs, List<User> users, SkinLocation skinPosition)
+        {
+            int i = 0;
+
+            foreach (Log log in logs)
+            {
+                CreateTabCellToGrid(grid, "(" + GetUser(log.UserId, users).Name + ") : " + log.Message + " /// " + log.Date.ToString(), i, 0, skinPosition);
+
+                i++;
+            }
+        }
+
+        /// <summary>
+        /// Get the good user in a list of users
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="users"></param>
+        /// <returns></returns>
+        public User GetUser(int userId, List<User> users)
+        {
+            foreach(User user in users)
+            {
+                if(user.id == userId)
+                {
+                    return user;
+                }
+            }
+            return null;
         }
 
         /// <summary>
@@ -1520,6 +1565,35 @@ namespace Project_Inventory
         }
 
         /// <summary>
+        /// Generate a scrollable grid
+        /// </summary>
+        /// <param name="grid"></param>
+        /// <param name="embededGrid"></param>
+        /// <param name="gridRowOne"></param>
+        /// <param name="gridColumnOne"></param>
+        /// <param name="gridRowTwo"></param>
+        /// <param name="gridColumnTwo"></param>
+        /// <param name="gridSkin"></param>
+        /// <param name="skinHeight"></param>
+        /// <param name="tabPos"></param>
+        /// <param name="stringTab"></param>
+        /// <param name="indicTab"></param>
+        public void CreateScrollGrid(Grid grid, Grid embededGrid, int gridRowOne, int gridColumnOne, int gridRowTwo, int gridColumnTwo, SkinLocation gridSkin, SkinSize skinHeight, SkinLocation tabPos, List<Log> logs, int rowLimit, List<User> users)
+        {
+            ScrollViewer scrollViewer = new ScrollViewer();
+
+            SetUpGrid(grid, gridRowOne, gridColumnOne, gridSkin, skinHeight);
+
+            SetUpNewGrid(embededGrid, gridRowTwo, gridColumnTwo, SkinLocation.TopStretch);
+
+            ScrollGridInit(embededGrid, gridRowTwo, gridColumnTwo, scrollViewer, rowLimit);
+
+            CreateTabToGrid(embededGrid, logs, users, tabPos);
+
+            EmbedScrollableGrid(grid, embededGrid, scrollViewer);
+        }
+
+        /// <summary>
         /// Generate a scrollable grid to modify datas
         /// </summary>
         /// <param name="grid"></param>
@@ -1640,17 +1714,38 @@ namespace Project_Inventory
         /// <param name="gridRowTwo"></param>
         /// <param name="gridColumnTwo"></param>
         /// <param name="scrollViewer"></param>
+        public void ScrollGridInit(Grid embededGrid, int gridRowTwo, int gridColumnTwo, ScrollViewer scrollViewer, int rowLimit)
+        {
+            SetScrollGridHeight(embededGrid);
+
+            if (gridRowTwo > rowLimit)
+            {
+                ScrollViewerVertical(scrollViewer);
+            }
+            else
+            {
+                ScrollViewerNoOne(scrollViewer);
+            }
+        }
+
+        /// <summary>
+        /// Init the scroll grid
+        /// </summary>
+        /// <param name="embededGrid"></param>
+        /// <param name="gridRowTwo"></param>
+        /// <param name="gridColumnTwo"></param>
+        /// <param name="scrollViewer"></param>
         public void ScrollGridInit(Grid embededGrid)
         {
             SetCustomListScrollGridHeight(embededGrid);
             SetCustomListScrollGridWidth(embededGrid);
         }
 
-            /// <summary>
-            /// Init scroll bar verticaly and horizontaly
-            /// </summary>
-            /// <param name="scrollViewer"></param>
-            public void ScrollViewerBoth(ScrollViewer scrollViewer)
+        /// <summary>
+        /// Init scroll bar verticaly and horizontaly
+        /// </summary>
+        /// <param name="scrollViewer"></param>
+        public void ScrollViewerBoth(ScrollViewer scrollViewer)
         {
             scrollViewer.VerticalScrollBarVisibility = ScrollBarVisibility.Visible;
             scrollViewer.HorizontalScrollBarVisibility = ScrollBarVisibility.Visible;

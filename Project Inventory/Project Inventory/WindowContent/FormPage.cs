@@ -27,10 +27,9 @@ namespace Project_Inventory
         private RoutedEventHandler reloadEvent;
 
         private CustomList[] customList;
-        private List<StorageXCustomList> storagesXLists;
 
-        public FormPage(ToolBox toolBox, Router _router, RequestCenter requestCenter, WindowsName _formType, int _actualStorageId, int _actualDataId, int _actualCustomListId, RoutedEventHandler _reloadEvent)
-            : base(toolBox, _router, requestCenter, _actualStorageId, _actualDataId, _actualCustomListId)
+        public FormPage(ToolBox toolBox, Router _router, RequestCenter requestCenter, WindowsName _formType, int _actualUserId, int _actualStorageId, int _actualDataId, int _actualCustomListId, RoutedEventHandler _reloadEvent)
+            : base(toolBox, _router, requestCenter, _actualUserId, _actualStorageId, _actualDataId, _actualCustomListId)
         {
             capGrid = new Grid();
 
@@ -105,11 +104,6 @@ namespace Project_Inventory
             {
                 switch(formType)
                 {
-                    case WindowsName.AddStorage:
-
-                        AddStorage(new Storage(uiElements[0]));
-                        break;
-
                     case WindowsName.InitStorage:
 
                         InitStorage();
@@ -120,17 +114,6 @@ namespace Project_Inventory
             {
                 PopUpCenter.MessagePopup("Some Fields are empty or wrongly filled.");
             }
-        }
-
-        /// <summary>
-        /// Creation of a storage at form validation
-        /// </summary>
-        /// <param name="storage"></param>
-        public void AddStorage(Storage storage)
-        {
-            string json = storage.ToJson();
-
-            requestCenter.PostRequest("StorageLibraries", json);
         }
 
         /// <summary>
@@ -165,6 +148,7 @@ namespace Project_Inventory
 
             string json = data.ToJson();
 
+            requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "(" + JsonCenter.GetStorage(requestCenter, actualStorageId).Name + ") Storage has been initialised.").ToJson());
             requestCenter.PostRequest(BDDTabsName.DataLibraries.ToString(), json);
 
             StorageXCustomList temp;
@@ -367,33 +351,6 @@ namespace Project_Inventory
         {
             switch(formType)
             {
-                case (WindowsName.AddStorage):
-
-                    listBoxNames = ComboBoxNames.None;
-
-                    topGridButtons = new string[] { "Return" };
-
-                    topSwitchEvents = new RoutedEventLibrary[1];
-                    RoutedEventLibrariesInit(topSwitchEvents);
-                    topSwitchEvents[0].changePageEvent = GetEventHandler(WindowsName.MainMenu);
-
-                    bottomGridButtons = new string[] { "Valid" };
-                    bottomColumnNb = 1;
-
-                    formValidButton = new RoutedEventLibrary[1];
-                    RoutedEventLibrariesInit(formValidButton);
-                    formValidButton[0].changePageEvent = GetEventHandler(WindowsName.StorageSelectionMenu);
-
-                    formElements = new UIElementsName[] { UIElementsName.TextBox };
-                    labels = new string[] { "Storage's Name" };
-
-                    formValidButton[0].optionalEventOne = new RoutedEventHandler((object sender, RoutedEventArgs e) =>
-                    {
-                        formValidation(sender, e);
-                    });
-
-                    break;
-
                 case (WindowsName.InitStorage):
 
                     listBoxNames = ComboBoxNames.UIElementsType;

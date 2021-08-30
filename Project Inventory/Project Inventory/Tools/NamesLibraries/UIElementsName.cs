@@ -13,6 +13,7 @@ namespace Project_Inventory.Tools
         TextBoxNumber,
         DatePicker,
         ComboBox,
+        Button,
 
         None
     }

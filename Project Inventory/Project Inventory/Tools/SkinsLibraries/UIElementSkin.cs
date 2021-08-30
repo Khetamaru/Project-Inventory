@@ -155,6 +155,18 @@ namespace Project_Inventory.Tools
             label.VerticalAlignment = VerticalAlignment.Center;
         }
 
+        /// <summary>
+        /// Button Skin
+        /// </summary>
+        /// <param name="textBox"></param>
+        public static void ButtonSkin(Button button, WpfScreen wpfScreen)
+        {
+            button.Width = wpfScreen.PrimaryScreenSizeWidth() / 4;
+            button.Height = 40;
+            button.HorizontalAlignment = HorizontalAlignment.Center;
+            button.VerticalAlignment = VerticalAlignment.Center;
+        }
+
         // Other //
 
         /// <summary>

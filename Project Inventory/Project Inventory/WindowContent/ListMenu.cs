@@ -30,8 +30,8 @@ namespace Project_Inventory
 
         private int widthLimit;
 
-        public ListMenu(ToolBox toolBox, Router _router, RequestCenter requestCenter, int _actualStorageId, int _actualDataId, int _actualCustomId, RoutedEventHandler _reloadEvent)
-               : base(toolBox, _router, requestCenter, _actualStorageId, _actualDataId, _actualCustomId)
+        public ListMenu(ToolBox toolBox, Router _router, RequestCenter requestCenter, int _actualUserId, int _actualStorageId, int _actualDataId, int _actualCustomId, RoutedEventHandler _reloadEvent)
+               : base(toolBox, _router, requestCenter, _actualUserId, _actualStorageId, _actualDataId, _actualCustomId)
         {
             viewerStatus = status.VIEWER;
 
@@ -205,11 +205,14 @@ namespace Project_Inventory
 
             foreach (int change in changesList)
             {
+
+                requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "Some Custom List's names has been changed.").ToJson());
                 requestCenter.PutRequest(BDDTabsName.CustomListLibraries.ToString() + "/" + bottomGridButtons[change].id, bottomGridButtons[change].ToJsonId());
             }
 
             if (optionnalAdd != null)
             {
+                requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "A new Custom List has been created.").ToJson());
                 requestCenter.PostRequest(BDDTabsName.CustomListLibraries.ToString(), optionnalAdd.ToJson());
             }
         }
@@ -277,6 +280,7 @@ namespace Project_Inventory
                 }
                 else
                 {
+                    requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "(" + JsonCenter.GetCustomList(requestCenter, CustomListId).Name + ") Custom List has been delete.").ToJson());
                     requestCenter.DeleteRequest(BDDTabsName.CustomListLibraries.ToString() + "/" + CustomListId);
                 }
             }
