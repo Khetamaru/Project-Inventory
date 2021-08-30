@@ -67,7 +67,7 @@ namespace Local_API_Server.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok();
         }
 
         // POST: api/UserLibraries

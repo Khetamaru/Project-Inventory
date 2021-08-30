@@ -6,7 +6,7 @@ using Project_Inventory.Tools;
 
 namespace Project_Inventory
 {
-    public class ListMenu : WindowContent
+    public class UserMenu : WindowContent
     {
         private Grid capGrid;
 
@@ -20,8 +20,7 @@ namespace Project_Inventory
         private string[] topGridButtons;
         private RoutedEventLibrary[] topSwitchEvents;
 
-        private CustomList[] bottomGridButtons;
-        private RoutedEventLibrary[] bottomSwitchEvents;
+        private List<User> bottomGridButtons;
 
         private RoutedEventHandler reloadEvent;
 
@@ -30,7 +29,7 @@ namespace Project_Inventory
 
         private int widthLimit;
 
-        public ListMenu(ToolBox toolBox, Router _router, RequestCenter requestCenter, int _actualUserId, int _actualStorageId, int _actualDataId, int _actualCustomId, RoutedEventHandler _reloadEvent)
+        public UserMenu(ToolBox toolBox, Router _router, RequestCenter requestCenter, int _actualUserId, int _actualStorageId, int _actualDataId, int _actualCustomId, RoutedEventHandler _reloadEvent)
                : base(toolBox, _router, requestCenter, _actualUserId, _actualStorageId, _actualDataId, _actualCustomId)
         {
             viewerStatus = status.VIEWER;
@@ -65,14 +64,13 @@ namespace Project_Inventory
         /// </summary>
         public void LoadBDDInfos()
         {
-            bottomGridButtons = JsonCenter.LoadListMenuInfos(requestCenter);
-            bottomSwitchEvents = JsonCenter.SetEventHandlerTab(bottomGridButtons.Length, GetEventHandler(WindowsName.ListViewerPage));
+            bottomGridButtons = JsonCenter.LoadUserMenuInfos(requestCenter);
         }
 
         public new void TopGridInit(Grid topGrid)
         {
             toolBox.SetUpGrid(topGrid, 1, 2, SkinLocation.TopStretch, SkinSize.HeightTenPercent);
-
+            
             toolBox.CreateSwitchButtonsToGridByTab(topGrid,
                                                    topGridButtons,
                                                    topSwitchEvents,
@@ -91,10 +89,9 @@ namespace Project_Inventory
                     toolBox.SetUpGrid(bottomGrid, 1, 1, SkinLocation.BottomStretch, SkinSize.HeightNintyPercent);
                     capGrid = new Grid();
 
-                    toolBox.ButtonPlacer(capGrid, bottomGridButtons.Length, widthLimit, SkinLocation.BottomStretch, SkinSize.HeightNintyPercent);
-                    RoutedIdSetup(bottomGridButtons);
+                    toolBox.ButtonPlacer(capGrid, bottomGridButtons.Count, widthLimit, SkinLocation.BottomStretch, SkinSize.HeightNintyPercent);
 
-                    toolBox.CreateSwitchButtonsToGridByTab(capGrid, bottomGridButtons, bottomSwitchEvents, SkinName.Standart, SkinLocation.CenterCenter);
+                    toolBox.CreateLabelToGridByTab(capGrid, bottomGridButtons, SkinLocation.CenterCenter);
                     bottomGrid.Children.Add(capGrid);
                     break;
 
@@ -124,8 +121,7 @@ namespace Project_Inventory
                     toolBox.SetUpGrid(centerGrid, 1, 1, SkinLocation.StretchStretch, SkinSize.HeightEightPercent);
                     capGrid = new Grid();
 
-                    toolBox.ButtonPlacer(capGrid, bottomGridButtons.Length + 1, widthLimit, SkinLocation.BottomStretch, SkinSize.HeightEightPercent);
-                    RoutedIdSetup(bottomGridButtons);
+                    toolBox.ButtonPlacer(capGrid, bottomGridButtons.Count + 1, widthLimit, SkinLocation.BottomStretch, SkinSize.HeightEightPercent);
 
                     toolBox.CreateTabToGrid(capGrid, bottomGridButtons, SkinLocation.CenterCenter);
                     centerGrid.Children.Add(capGrid);
@@ -134,35 +130,6 @@ namespace Project_Inventory
 
                     break;
             }
-        }
-
-        /// <summary>
-        /// Insert the stored procedure in the button
-        /// </summary>
-        /// <param name="storageLibrary"></param>
-        public void RoutedIdSetup(CustomList[] customListLibrary)
-        {
-            var i = 0;
-
-            foreach (CustomList customList in customListLibrary)
-            {
-                bottomSwitchEvents[i].updateIdEvent = new RoutedEventHandler((object sender, RoutedEventArgs e) =>
-                {
-                    IDSetup(sender, e, customList.id);
-                });
-                i++;
-            }
-        }
-
-        /// <summary>
-        /// Load actuel custom list id
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        /// <param name="id"></param>
-        public void IDSetup(object sender, RoutedEventArgs e, int id)
-        {
-            actualCustomListId = id;
         }
 
         /// <summary>
@@ -199,21 +166,21 @@ namespace Project_Inventory
         {
             List<UIElement> elementList = toolBox.ExtractFormInfos(capGrid);
 
-            CustomList optionnalAdd = new CustomList(string.Empty);
+            User optionnalAdd = new User(string.Empty, 0, true);
 
             List<int> changesList = toolBox.GetUIElements(elementList, bottomGridButtons, out optionnalAdd);
 
             foreach (int change in changesList)
             {
 
-                requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "Some Custom List's names has been changed.").ToJson());
-                requestCenter.PutRequest(BDDTabsName.CustomListLibraries.ToString() + "/" + bottomGridButtons[change].id, bottomGridButtons[change].ToJsonId());
+                requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "Some User's names has been changed.").ToJson());
+                requestCenter.PutRequest(BDDTabsName.UserLibraries.ToString() + "/" + bottomGridButtons[change].id, bottomGridButtons[change].ToJsonId());
             }
 
             if (optionnalAdd != null)
             {
-                requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "A new Custom List has been created.").ToJson());
-                requestCenter.PostRequest(BDDTabsName.CustomListLibraries.ToString(), optionnalAdd.ToJson());
+                requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "A new User has been created.").ToJson());
+                requestCenter.PostRequest(BDDTabsName.UserLibraries.ToString(), optionnalAdd.ToJson());
             }
         }
 
@@ -227,7 +194,7 @@ namespace Project_Inventory
             Button tempButton;
             RoutedEventLibrary tempRouter;
 
-            int i = bottomGridButtons.Length;
+            int i = bottomGridButtons.Count;
             int j = 1;
 
             while (i >= 5)
@@ -242,13 +209,13 @@ namespace Project_Inventory
             {
                 for (j = 0; j < 5; j++)
                 {
-                    if (bottomGridButtons.Length > j + (i * 5))
+                    if (bottomGridButtons.Count > j + (i * 5))
                     {
                         tempRouter = new RoutedEventLibrary();
-                        var customList = bottomGridButtons[j + (i * 5)];
+                        var user = bottomGridButtons[j + (i * 5)];
                         tempRouter.optionalEventOne = new RoutedEventHandler((object sender, RoutedEventArgs e) =>
                         {
-                            DeleteCustomList(sender, e, customList.id);
+                            DeleteUser(sender, e, user.id);
                         });
                         tempRouter.resetPageEvent = reloadEvent;
 
@@ -266,23 +233,12 @@ namespace Project_Inventory
         /// <summary>
         /// Stored procedure for custom list delete
         /// </summary>
-        private void DeleteCustomList(object sender, RoutedEventArgs e, int CustomListId)
+        private void DeleteUser(object sender, RoutedEventArgs e, int UserId)
         {
-            List<StorageXCustomList> storageXCustomLists;
-
             if (PopUpCenter.ActionValidPopup())
             {
-                storageXCustomLists = JsonCenter.LoadStorageXCustomLists(requestCenter, CustomListId);
-
-                if (storageXCustomLists.Count > 0)
-                {
-                    PopUpCenter.MessagePopup("This Custom List is used in a Storage. You can't delete it.");
-                }
-                else
-                {
-                    requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "(" + JsonCenter.GetCustomList(requestCenter, CustomListId).Name + ") Custom List has been delete.").ToJson());
-                    requestCenter.DeleteRequest(BDDTabsName.CustomListLibraries.ToString() + "/" + CustomListId);
-                }
+                requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "(" + JsonCenter.GetUser(requestCenter, UserId).Name + ") User has been delete.").ToJson());
+                requestCenter.DeleteRequest(BDDTabsName.UserLibraries.ToString() + "/" + UserId);
             }
         }
     }

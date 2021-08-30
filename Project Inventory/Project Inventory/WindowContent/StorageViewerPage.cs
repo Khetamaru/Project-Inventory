@@ -42,8 +42,8 @@ namespace Project_Inventory
 
         public TextBox researchTextBox;
 
-        public StorageViewerPage(ToolBox ToolBox, Router _router, RequestCenter requestCenter, int _actualStorageId, int _actualDataId, int _actualCustomListId, RoutedEventHandler _reloadEvent)
-            : base(ToolBox, _router, requestCenter, _actualStorageId, _actualDataId, _actualCustomListId)
+        public StorageViewerPage(ToolBox ToolBox, Router _router, RequestCenter requestCenter, int _actualUserId, int _actualStorageId, int _actualDataId, int _actualCustomListId, RoutedEventHandler _reloadEvent)
+            : base(ToolBox, _router, requestCenter, _actualUserId, _actualStorageId, _actualDataId, _actualCustomListId)
         {
             viewerStatus = status.VIEWER;
             reloadEvent = _reloadEvent;
@@ -196,11 +196,13 @@ namespace Project_Inventory
 
             foreach(int change in changesList)
             {
+                requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "(" + JsonCenter.GetStorage(requestCenter, actualStorageId).Name + ") Storage's Data has changed.").ToJson());
                 requestCenter.PutRequest(BDDTabsName.DataLibraries.ToString() + "/" + dataTab[change].id, dataTab[change].ToJsonId());
             }
 
             if (optionnalAdd != null)
             {
+                requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "(" + JsonCenter.GetStorage(requestCenter, actualStorageId).Name + ") Storage gained a new Data.").ToJson());
                 requestCenter.PostRequest(BDDTabsName.DataLibraries.ToString(), optionnalAdd.ToJson());
             }
         }
@@ -237,6 +239,7 @@ namespace Project_Inventory
         {
             if (PopUpCenter.ActionValidPopup())
             {
+                requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "A (" + JsonCenter.GetStorage(requestCenter, actualStorageId).Name + ") Storage's Data has been delete.").ToJson());
                 requestCenter.DeleteRequest("DataLibraries/" + dataId);
             }
         }

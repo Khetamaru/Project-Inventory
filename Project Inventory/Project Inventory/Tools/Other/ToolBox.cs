@@ -169,6 +169,17 @@ namespace Project_Inventory
                 case UIElementsName.TextBoxNumber:
                     UIElementSkin.TextBoxNumberSkinModify(uIElement as TextBox, wpfScreen);
                     break;
+
+                case UIElementsName.Button:
+
+                    LoadButtonPosition(uIElement as Button, skinLocation);
+                    LoadButtonSkin(uIElement as Button, SkinName.StandartLittleMargin);
+                    break;
+
+                case UIElementsName.Label:
+
+                    UIElementSkin.LabelSkinForm(uIElement as Label, (uIElement as Label).Content as string);
+                    break;
             }
 
             StorageViewerSkin.LoadSkinPosition(uIElement, skinLocation);
@@ -460,52 +471,6 @@ namespace Project_Inventory
         }
 
         /// <summary>
-        /// Add switch button in the grid
-        /// </summary>
-        /// <param name="grid"></param>
-        /// <param name="storage"></param>
-        /// <param name="router"></param>
-        /// <param name="rowNb"></param>
-        /// <param name="columnNb"></param>
-        /// <param name="skinName"></param>
-        /// <param name="skinPosition"></param>
-        public void CreateSwitchButtonToGrid(Grid grid,
-                                               Storage storage,
-                                               RoutedEventLibrary router,
-                                               int rowNb,
-                                               int columnNb,
-                                               SkinName skinName,
-                                               SkinLocation skinPosition)
-        {
-            Button button = CreateSwitchButton(storage.Name, router, skinName, skinPosition);
-
-            AddButtonToGrid(grid, button, rowNb, columnNb);
-        }
-
-        /// <summary>
-        /// Add switch button in the grid
-        /// </summary>
-        /// <param name="grid"></param>
-        /// <param name="customList"></param>
-        /// <param name="router"></param>
-        /// <param name="rowNb"></param>
-        /// <param name="columnNb"></param>
-        /// <param name="skinName"></param>
-        /// <param name="skinPosition"></param>
-        public void CreateSwitchButtonToGrid(Grid grid,
-                                               CustomList customList,
-                                               RoutedEventLibrary router,
-                                               int rowNb,
-                                               int columnNb,
-                                               SkinName skinName,
-                                               SkinLocation skinPosition)
-        {
-            Button button = CreateSwitchButton(customList.Name, router, skinName, skinPosition);
-
-            AddButtonToGrid(grid, button, rowNb, columnNb);
-        }
-
-        /// <summary>
         /// Generate the good number of horizontals lanes
         /// </summary>
         /// <param name="grid"></param>
@@ -629,7 +594,7 @@ namespace Project_Inventory
 
                     if (buttonsTab.Length > z)
                     {
-                        CreateSwitchButtonToGrid(grid, buttonsTab[k], routerTab[k], i, j, buttonsSkin, skinPosition);
+                        CreateSwitchButtonToGrid(grid, buttonsTab[k].Name, routerTab[k], i, j, buttonsSkin, skinPosition);
                         k++;
                     }
                 }
@@ -671,7 +636,52 @@ namespace Project_Inventory
 
                     if (buttonsTab.Length >= z)
                     {
-                        CreateSwitchButtonToGrid(grid, buttonsTab[k], routerTab[k], i, j, buttonsSkin, skinPosition);
+                        CreateSwitchButtonToGrid(grid, buttonsTab[k].Name, routerTab[k], i, j, buttonsSkin, skinPosition);
+                        k++;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Add multiple buttons in the grid
+        /// </summary>
+        /// <param name="grid"></param>
+        /// <param name="buttonsTab"></param>
+        /// <param name="routerTab"></param>
+        /// <param name="buttonsSkin"></param>
+        /// <param name="skinPosition"></param>
+        public void CreateLabelToGridByTab(Grid grid, List<User> buttonsTab, SkinLocation skinPosition)
+        {
+            int i;
+            int j;
+            int k = 0;
+            int z;
+            Label label;
+
+            int rowNb = grid.RowDefinitions.Count;
+            int columnNb = grid.ColumnDefinitions.Count;
+
+            for (i = 0; i < rowNb; i++)
+            {
+                for (j = 0; j < columnNb; j++)
+                {
+                    if (i >= 1)
+                    {
+                        if (j >= 1) { z = (i * 5) + j; }
+                        else { z = i * 5; }
+                    }
+                    else
+                    {
+                        if (j >= 1) { z = j; }
+                        else { z = 1; }
+                    }
+
+                    if (buttonsTab.Count > z)
+                    {
+                        label = new Label();
+                        label.Content = buttonsTab[k].Name;
+                        InsertUIElementInGrid(grid, label, i, j, UIElementsName.Label, skinPosition);
                         k++;
                     }
                 }
@@ -701,7 +711,10 @@ namespace Project_Inventory
                 {
                     if (buttonsTab.Length >= (i + 1) * (j + 1))
                     {
-                        CreateSwitchButtonToGrid(grid, buttonsTab[k], routerTab[k], i, j, buttonsSkin[k], skinPosition[k]);
+                        if (buttonsTab[k] != string.Empty)
+                        {
+                            CreateSwitchButtonToGrid(grid, buttonsTab[k], routerTab[k], i, j, buttonsSkin[k], skinPosition[k]);
+                        }
                         k++;
                     }
                 }
@@ -871,6 +884,42 @@ namespace Project_Inventory
         /// </summary>
         /// <param name="grid"></param>
         /// <param name="stringTab"></param>
+        /// <param name="skinPosition"></param>
+        public void CreateTabToGrid(Grid grid, List<Log> logs, List<User> users, SkinLocation skinPosition)
+        {
+            int i = 0;
+
+            foreach (Log log in logs)
+            {
+                CreateTabCellToGrid(grid, "(" + GetUser(log.UserId, users).Name + ") : " + log.Message + " /// " + log.Date.ToString(), i, 0, skinPosition);
+
+                i++;
+            }
+        }
+
+        /// <summary>
+        /// Get the good user in a list of users
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="users"></param>
+        /// <returns></returns>
+        public User GetUser(int userId, List<User> users)
+        {
+            foreach(User user in users)
+            {
+                if(user.id == userId)
+                {
+                    return user;
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Create UIElements in the scroll grid
+        /// </summary>
+        /// <param name="grid"></param>
+        /// <param name="stringTab"></param>
         /// <param name="indicTab"></param>
         /// <param name="skinPosition"></param>
         public void CreateTabToGrid(Grid grid, string[,] stringTab, string[,] indicTab, SkinLocation skinPosition, List<Button> buttonList, List<List<ListOption>> listOptions, List<int> customListIds)
@@ -1023,6 +1072,45 @@ namespace Project_Inventory
                 for (j = 0; j < 5; j++)
                 {
                     if (storageTab.Length > j + (i * 5))
+                    {
+                        CreateHeaderToGrid(grid, storageTab[j + (i * 5)].Name, i, j, skinPosition);
+                        k = j;
+                    }
+                }
+            }
+            k++;
+
+            if (k >= 5) { k = 0; }
+
+            CreateHeaderToGrid(grid, addElemString, rowNb, k, skinPosition);
+        }
+
+        /// <summary>
+        /// Create UIElements in the scroll grid
+        /// </summary>
+        /// <param name="grid"></param>
+        /// <param name="storageTab"></param>
+        /// <param name="skinPosition"></param>
+        public void CreateTabToGrid(Grid grid, List<User> storageTab, SkinLocation skinPosition)
+        {
+            int i = storageTab.Count;
+            int j = 1;
+            int k = 0;
+            while (i >= 5)
+            {
+                i -= 5;
+                j++;
+            }
+
+            int rowNb = j;
+
+            string addElemString = string.Empty;
+
+            for (i = 0; i < rowNb; i++)
+            {
+                for (j = 0; j < 5; j++)
+                {
+                    if (storageTab.Count > j + (i * 5))
                     {
                         CreateHeaderToGrid(grid, storageTab[j + (i * 5)].Name, i, j, skinPosition);
                         k = j;
@@ -1520,6 +1608,35 @@ namespace Project_Inventory
         }
 
         /// <summary>
+        /// Generate a scrollable grid
+        /// </summary>
+        /// <param name="grid"></param>
+        /// <param name="embededGrid"></param>
+        /// <param name="gridRowOne"></param>
+        /// <param name="gridColumnOne"></param>
+        /// <param name="gridRowTwo"></param>
+        /// <param name="gridColumnTwo"></param>
+        /// <param name="gridSkin"></param>
+        /// <param name="skinHeight"></param>
+        /// <param name="tabPos"></param>
+        /// <param name="stringTab"></param>
+        /// <param name="indicTab"></param>
+        public void CreateScrollGrid(Grid grid, Grid embededGrid, int gridRowOne, int gridColumnOne, int gridRowTwo, int gridColumnTwo, SkinLocation gridSkin, SkinSize skinHeight, SkinLocation tabPos, List<Log> logs, int rowLimit, List<User> users)
+        {
+            ScrollViewer scrollViewer = new ScrollViewer();
+
+            SetUpGrid(grid, gridRowOne, gridColumnOne, gridSkin, skinHeight);
+
+            SetUpNewGrid(embededGrid, gridRowTwo, gridColumnTwo, SkinLocation.TopStretch);
+
+            ScrollGridInit(embededGrid, gridRowTwo, gridColumnTwo, scrollViewer, rowLimit);
+
+            CreateTabToGrid(embededGrid, logs, users, tabPos);
+
+            EmbedScrollableGrid(grid, embededGrid, scrollViewer);
+        }
+
+        /// <summary>
         /// Generate a scrollable grid to modify datas
         /// </summary>
         /// <param name="grid"></param>
@@ -1640,17 +1757,38 @@ namespace Project_Inventory
         /// <param name="gridRowTwo"></param>
         /// <param name="gridColumnTwo"></param>
         /// <param name="scrollViewer"></param>
+        public void ScrollGridInit(Grid embededGrid, int gridRowTwo, int gridColumnTwo, ScrollViewer scrollViewer, int rowLimit)
+        {
+            SetScrollGridHeight(embededGrid);
+
+            if (gridRowTwo > rowLimit)
+            {
+                ScrollViewerVertical(scrollViewer);
+            }
+            else
+            {
+                ScrollViewerNoOne(scrollViewer);
+            }
+        }
+
+        /// <summary>
+        /// Init the scroll grid
+        /// </summary>
+        /// <param name="embededGrid"></param>
+        /// <param name="gridRowTwo"></param>
+        /// <param name="gridColumnTwo"></param>
+        /// <param name="scrollViewer"></param>
         public void ScrollGridInit(Grid embededGrid)
         {
             SetCustomListScrollGridHeight(embededGrid);
             SetCustomListScrollGridWidth(embededGrid);
         }
 
-            /// <summary>
-            /// Init scroll bar verticaly and horizontaly
-            /// </summary>
-            /// <param name="scrollViewer"></param>
-            public void ScrollViewerBoth(ScrollViewer scrollViewer)
+        /// <summary>
+        /// Init scroll bar verticaly and horizontaly
+        /// </summary>
+        /// <param name="scrollViewer"></param>
+        public void ScrollViewerBoth(ScrollViewer scrollViewer)
         {
             scrollViewer.VerticalScrollBarVisibility = ScrollBarVisibility.Visible;
             scrollViewer.HorizontalScrollBarVisibility = ScrollBarVisibility.Visible;
@@ -1953,6 +2091,30 @@ namespace Project_Inventory
         }
 
         /// <summary>
+        /// get all UIElements result of modifiable tab in modify mode
+        /// </summary>
+        /// <param name="uiElementList"></param>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public List<int> GetUIElements(List<UIElement> uiElementList, List<User> user, out User optionalUser)
+        {
+            List<User> gridUser = ConvertGridChildrenToUserList(uiElementList, user.Count, out optionalUser);
+
+            List<int> changesList = new List<int>();
+
+            for (int i = 0; i < user.Count; i++)
+            {
+                if (gridUser[i].Name != user[i].Name)
+                {
+                    changesList.Add(i);
+                    user[i].Name = gridUser[i].Name;
+                }
+            }
+
+            return changesList;
+        }
+
+        /// <summary>
         /// get all UIElements result of custom list details
         /// </summary>
         /// <param name="uiElementList"></param>
@@ -2121,6 +2283,46 @@ namespace Project_Inventory
                 text = (uIElements[gridIndex] as TextBox).Text;
 
                 optionalAdd = new CustomList(text);
+
+                if (text == string.Empty)
+                {
+                    optionalAdd = null;
+                }
+            }
+
+            return gridStorage;
+        }
+
+        /// <summary>
+        /// Convert Grid Children To list of custom list
+        /// </summary>
+        /// <param name="grid"></param>
+        /// <returns></returns>
+        public List<User> ConvertGridChildrenToUserList(List<UIElement> uIElements, int rowNb, out User optionalAdd)
+        {
+            List<User> gridStorage = new List<User>();
+            int gridIndex = 0;
+
+            optionalAdd = null;
+
+            string text = string.Empty;
+
+            for (int i = 0; i < rowNb; i++)
+            {
+                text = (uIElements[gridIndex] as TextBox).Text;
+
+                gridIndex++;
+
+                gridStorage.Add(new User(text, 0, true));
+            }
+
+            text = string.Empty;
+
+            if (uIElements[gridIndex] != null)
+            {
+                text = (uIElements[gridIndex] as TextBox).Text;
+
+                optionalAdd = new User(text, 0, true);
 
                 if (text == string.Empty)
                 {
