@@ -559,6 +559,7 @@ namespace Project_Inventory.Tools
             List<string> dataType;
             string dataTypeTemp = string.Empty;
             bool isHeader = false;
+            string codeBar = string.Empty;
 
             string temp;
 
@@ -604,6 +605,10 @@ namespace Project_Inventory.Tools
                             isHeader = false;
                         }
                         break;
+
+                    case "codeBar":
+                        codeBar = splitTab[i + 2];
+                        break;
                 }
                 i++;
             }
@@ -611,7 +616,7 @@ namespace Project_Inventory.Tools
             dataText = dataTextTemp.Split('~').ToList();
             dataType = dataTypeTemp.Split('~').ToList();
 
-            data = new Data(id, storageId, dataText, dataType, isHeader);
+            data = new Data(id, storageId, dataText, dataType, isHeader, codeBar);
 
             return data;
         }
