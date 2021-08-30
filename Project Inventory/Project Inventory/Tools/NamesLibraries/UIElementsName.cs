@@ -14,6 +14,7 @@ namespace Project_Inventory.Tools
         DatePicker,
         ComboBox,
         Button,
+        Label,
 
         None
     }

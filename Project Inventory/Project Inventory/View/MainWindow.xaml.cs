@@ -21,6 +21,7 @@ namespace Project_Inventory
         private ListMenu listMenu;
         private ListViewerPage listViewerPage;
         private LogsMenu logsMenu;
+        private UserMenu userMenu;
 
         private int actualUserId;
         private int actualStorageId;
@@ -97,6 +98,17 @@ namespace Project_Inventory
             listMenu.BottomGridInit(bottomGrid);
         }
 
+        public void UserMenuInit()
+        {
+            RoutedEventHandler reloadEvent = new RoutedEventHandler((object sender, RoutedEventArgs e) => ReloadView(sender, e));
+
+            userMenu = new UserMenu(toolBox, router, requestCenter, actualUserId, actualStorageId, actualDataId, actualCustomListId, reloadEvent);
+            actualWindow = WindowsName.UserMenu;
+            userMenu.TopGridInit(topGrid);
+            userMenu.CenterGridInit(centerGrid);
+            userMenu.BottomGridInit(bottomGrid);
+        }
+
         public void ListViewerPageInit()
         {
             RoutedEventHandler reloadEvent = new RoutedEventHandler((object sender, RoutedEventArgs e) => ReloadView(sender, e));
@@ -166,6 +178,10 @@ namespace Project_Inventory
                     listMenu.IDBachUps(out actualUserId, out actualStorageId, out actualDataId, out actualCustomListId);
                     break;
 
+                case WindowsName.UserMenu:
+                    userMenu.IDBachUps(out actualUserId, out actualStorageId, out actualDataId, out actualCustomListId);
+                    break;
+
                 case WindowsName.ListViewerPage:
                     listViewerPage.IDBachUps(out actualUserId, out actualStorageId, out actualDataId, out actualCustomListId);
                     break;
@@ -204,6 +220,10 @@ namespace Project_Inventory
 
                 case WindowsName.ListMenu:
                     ListMenuInit();
+                    break;
+
+                case WindowsName.UserMenu:
+                    UserMenuInit();
                     break;
 
                 case WindowsName.LogsMenu:
@@ -304,6 +324,7 @@ namespace Project_Inventory
                 WindowsName.ListMenu,
                 WindowsName.ListViewerPage,
                 WindowsName.LogsMenu,
+                WindowsName.UserMenu,
                 WindowsName.FormPage
             };
 
@@ -350,6 +371,12 @@ namespace Project_Inventory
                     listMenu.TopGridInit(topGrid);
                     listMenu.CenterGridInit(centerGrid);
                     listMenu.BottomGridInit(bottomGrid);
+                    break;
+
+                case WindowsName.UserMenu:
+                    userMenu.TopGridInit(topGrid);
+                    userMenu.CenterGridInit(centerGrid);
+                    userMenu.BottomGridInit(bottomGrid);
                     break;
 
                 case WindowsName.ListViewerPage:

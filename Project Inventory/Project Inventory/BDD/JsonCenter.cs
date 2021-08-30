@@ -278,6 +278,25 @@ namespace Project_Inventory.Tools
         }
 
         /// <summary>
+        /// Get all infos for the User Menu
+        /// </summary>
+        /// <param name="requestCenter"></param>
+        /// <returns></returns>
+        public static List<User> LoadUserMenuInfos(RequestCenter requestCenter)
+        {
+            string responseBdd = requestCenter.GetRequest(BDDTabsName.UserLibraries.ToString());
+
+            if (responseBdd == empty)
+            {
+                return new List<User>();
+            }
+            else
+            {
+                return (FormatToBDDObject(responseBdd, ObjectName.User) as User[]).ToList();
+            }
+        }
+
+        /// <summary>
         /// Get all infos of Custom Lists and "Data Cross Custom List" link
         /// </summary>
         /// <param name="requestCenter"></param>
@@ -516,6 +535,7 @@ namespace Project_Inventory.Tools
                     foreach (string sf in splitTab)
                     {
                         userLibrary[i] = FormatObject(sf, new string[] { "id", "name", "accessibilityLevel", "isActive" }, userLibrary[i]);
+                        i++;
                     }
                     return userLibrary;
             }

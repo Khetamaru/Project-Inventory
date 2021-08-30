@@ -15,6 +15,8 @@ namespace Project_Inventory.Tools
         ListMenu,
         ListViewerPage,
         LogsMenu,
+        UserMenu,
+
         FormPage,
         AddStorage,
         InitStorage,
