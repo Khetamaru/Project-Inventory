@@ -848,11 +848,10 @@ namespace Project_Inventory
         /// <param name="grid"></param>
         /// <param name="stringTab"></param>
         /// <param name="skinPosition"></param>
-        public void CreateTabToGrid(Grid grid, string[,] stringTab, SkinLocation skinPosition, string[,] indicTab, List<List<ListOption>> listOptions, List<int> customListIds)
+        public void CreateTabToGrid(Grid grid, Data[] stringTab, SkinLocation skinPosition, string[] indicTab, List<List<ListOption>> listOptions, List<int> customListIds)
         {
             int i;
             int j;
-            int k = 0;
 
             int intResult;
 
@@ -863,17 +862,27 @@ namespace Project_Inventory
             {
                 for (j = 0; j < columnNb; j++)
                 {
-                    if (stringTab.Length >= (i + 1) * (j + 1))
+                    if (stringTab[i].DataText.Count > j)
                     {
-                        if (Int32.TryParse(stringTab[i, j], out intResult) && IsCustomList(indicTab[i, j]) && i != 0)
+                        if (Int32.TryParse(stringTab[i].DataText[j], out intResult) && IsCustomList(indicTab[j]) && i != 0)
                         {
-                            CreateTabCellToGrid(grid, intResult, i, j, skinPosition, GetListOptionInList(listOptions, Int32.Parse(indicTab[i, j]), customListIds));
+                            CreateTabCellToGrid(grid, intResult, i, j, skinPosition, GetListOptionInList(listOptions, Int32.Parse(indicTab[j]), customListIds));
                         }
                         else
                         {
-                            CreateTabCellToGrid(grid, stringTab[i, j], i, j, skinPosition);
+                            CreateTabCellToGrid(grid, stringTab[i].DataText[j], i, j, skinPosition);
                         }
-                        k++;
+                    }
+                    else
+                    {
+                        if(i == 0)
+                        {
+                            CreateTabCellToGrid(grid, "Code Bar", i, j, skinPosition);
+                        }
+                        else
+                        {
+                            CreateTabCellToGrid(grid, stringTab[i].CodeBar, i, j, skinPosition);
+                        }
                     }
                 }
             }
@@ -922,7 +931,7 @@ namespace Project_Inventory
         /// <param name="stringTab"></param>
         /// <param name="indicTab"></param>
         /// <param name="skinPosition"></param>
-        public void CreateTabToGrid(Grid grid, string[,] stringTab, string[,] indicTab, SkinLocation skinPosition, List<Button> buttonList, List<List<ListOption>> listOptions, List<int> customListIds)
+        public void CreateTabToGrid(Grid grid, Data[] stringTab, string[] indicTab, SkinLocation skinPosition, List<Button> buttonList, List<List<ListOption>> listOptions, List<int> customListIds)
         {
             int i;
             int j;
@@ -948,8 +957,12 @@ namespace Project_Inventory
                     {
                         if (stringTab.Length >= (i + 1) * (j + 1))
                         {
-                            CreateHeaderToGrid(grid, stringTab[i, j], i, j + 1, skinPosition);
+                            CreateHeaderToGrid(grid, stringTab[i].DataText[j], i, j + 1, skinPosition);
                             k++;
+                        }
+                        else
+                        {
+                            CreateHeaderToGrid(grid, "Code Bar", i, j + 1, skinPosition);
                         }
                     }
                 }
@@ -961,17 +974,21 @@ namespace Project_Inventory
 
                     for (j = 0; j < columnNb; j++)
                     {
-                        if (stringTab.Length >= (i + 1) * (j + 1))
+                        if (stringTab[i].DataText.Count > j)
                         {
-                            if (Int32.TryParse(indicTab[i, j], out intResult))
+                            if (Int32.TryParse(indicTab[j], out intResult))
                             {
-                                CreateTabCellToGrid(grid, stringTab[i, j], i, j + 1, skinPosition, GetListOptionInList(listOptions, Int32.Parse(indicTab[i, j]), customListIds));
+                                CreateTabCellToGrid(grid, stringTab[i].DataText[j], i, j + 1, skinPosition, GetListOptionInList(listOptions, Int32.Parse(indicTab[j]), customListIds));
                             }
                             else
                             {
-                                CreateTabCellToGrid(grid, stringTab[i, j], indicTab[i, j], i, j + 1, skinPosition);
+                                CreateTabCellToGrid(grid, stringTab[i].DataText[j], indicTab[j], i, j + 1, skinPosition);
                             }
                             k++;
+                        }
+                        else
+                        {
+                            CreateTabCellToGrid(grid, stringTab[i].CodeBar, UIElementsName.TextBox.ToString(), i, j + 1, skinPosition);
                         }
                     }
                 }
@@ -979,13 +996,20 @@ namespace Project_Inventory
 
             for (int l = 0; l < addElemString.Length; l++)
             {
-                if (Int32.TryParse(indicTab[0, l], out intResult))
+                if (indicTab.Length > l)
                 {
-                    CreateTabCellToGrid(grid, addElemString[l], rowNb + 1, l + 1, skinPosition, GetListOptionInList(listOptions, Int32.Parse(indicTab[0, l]), customListIds));
+                    if (Int32.TryParse(indicTab[l], out intResult))
+                    {
+                        CreateTabCellToGrid(grid, addElemString[l], rowNb + 1, l + 1, skinPosition, GetListOptionInList(listOptions, Int32.Parse(indicTab[l]), customListIds));
+                    }
+                    else
+                    {
+                        CreateTabCellToGrid(grid, addElemString[l], indicTab[l], rowNb + 1, l + 1, skinPosition);
+                    }
                 }
                 else
                 {
-                    CreateTabCellToGrid(grid, addElemString[l], indicTab[0, l], rowNb + 1, l + 1, skinPosition);
+                    CreateTabCellToGrid(grid, addElemString[l], UIElementsName.TextBox.ToString(), rowNb + 1, l + 1, skinPosition);
                 }
             }
         }
@@ -1592,7 +1616,7 @@ namespace Project_Inventory
         /// <param name="tabPos"></param>
         /// <param name="stringTab"></param>
         /// <param name="indicTab"></param>
-        public void CreateScrollableGrid(Grid grid, Grid embededGrid, int gridRowOne, int gridColumnOne, int gridRowTwo, int gridColumnTwo, SkinLocation gridSkin, SkinSize skinHeight, SkinLocation tabPos, string[,] stringTab, string[,] indicTab, List<List<ListOption>> listOptions, List<int> customListIds)
+        public void CreateScrollableGrid(Grid grid, Grid embededGrid, int gridRowOne, int gridColumnOne, int gridRowTwo, int gridColumnTwo, SkinLocation gridSkin, SkinSize skinHeight, SkinLocation tabPos, Data[] stringTab, string[] indicTab, List<List<ListOption>> listOptions, List<int> customListIds)
         {
             ScrollViewer scrollViewer = new ScrollViewer();
 
@@ -1650,7 +1674,7 @@ namespace Project_Inventory
         /// <param name="tabPos"></param>
         /// <param name="stringTab"></param>
         /// <param name="indicTab"></param>
-        public void CreateScrollableGridModfiable(Grid grid, Grid embededGrid, int gridRowOne, int gridColumnOne, int gridRowTwo, int gridColumnTwo, SkinLocation gridSkin, SkinSize skinHeight, SkinLocation tabPos, string[,] stringTab, string[,] indicTab, List<Button> buttonList, List<List<ListOption>> listOptions, List<int> customListIds)
+        public void CreateScrollableGridModfiable(Grid grid, Grid embededGrid, int gridRowOne, int gridColumnOne, int gridRowTwo, int gridColumnTwo, SkinLocation gridSkin, SkinSize skinHeight, SkinLocation tabPos, Data[] stringTab, string[] indicTab, List<Button> buttonList, List<List<ListOption>> listOptions, List<int> customListIds)
         {
             ScrollViewer scrollViewer = new ScrollViewer();
 
@@ -1938,7 +1962,7 @@ namespace Project_Inventory
         /// <param name="data"></param>
         /// <param name="indicationTab"></param>
         /// <returns></returns>
-        public List<int> GetUIElements(List<UIElement> uiElementList, Data[] data, string[,] indicationTab, out Data optionalAdd, List<List<ListOption>> listOptions)
+        public List<int> GetUIElements(List<UIElement> uiElementList, Data[] data, out Data optionalAdd, List<List<ListOption>> listOptions)
         {
             int rowNb = data.Length;
             int columnNb = data[0].DataText.Count + 1;
@@ -1976,10 +2000,16 @@ namespace Project_Inventory
                     }
                 }
 
+                if (gridData[i].CodeBar != data[i].CodeBar && i != 0)
+                {
+                    trigger = true;
+                }
+
                 if (trigger)
                 {
                     changesList.Add(i);
                     data[i].DataText = gridData[i].DataText;
+                    data[i].CodeBar = gridData[i].CodeBar;
                 }
             }
 
@@ -2154,6 +2184,7 @@ namespace Project_Inventory
 
             List<string> dataText;
             List<string> optionalDataText;
+            string codeBar = string.Empty;
 
             optionalDataText = new List<string>();
 
@@ -2163,13 +2194,23 @@ namespace Project_Inventory
 
                 for (j = 0 ; j < (uIElements.Count / (rowNb + 1)) ; j++)
                 {
-                    if (i == 0)
+                    if (j < (uIElements.Count / (rowNb + 1)) - 1)
                     {
-                        dataText.Add((uIElements[gridIndex] as TextBox).Text);
+                        if (i == 0)
+                        {
+                            dataText.Add((uIElements[gridIndex] as TextBox).Text);
+                        }
+                        else
+                        {
+                            TypeCatch(dataType[j], uIElements[gridIndex], dataText, listOptions);
+                        }
                     }
                     else
                     {
-                        TypeCatch(dataType[j], uIElements[gridIndex], dataText, listOptions);
+                        if (i != 0)
+                        {
+                            codeBar = (uIElements[gridIndex] as TextBox).Text;
+                        }
                     }
 
                     gridIndex++;
@@ -2181,7 +2222,7 @@ namespace Project_Inventory
                 }
                 else
                 {
-                    gridData.Add(new Data(storageId, dataText, dataType, false));
+                    gridData.Add(new Data(storageId, dataText, dataType, false, codeBar));
                 }
             }
 
@@ -2189,12 +2230,19 @@ namespace Project_Inventory
             {
                 for (j = 0; j < (uIElements.Count / (rowNb + 1)); j++)
                 {
-                    TypeCatch(dataType[j], uIElements[gridIndex], optionalDataText);
+                    if(j < (uIElements.Count / (rowNb + 1)) - 1)
+                    {
+                        TypeCatch(dataType[j], uIElements[gridIndex], optionalDataText);
+                    }
+                    else
+                    {
+                        codeBar = (uIElements[gridIndex] as TextBox).Text;
+                    }
 
                     gridIndex++;
                 }
 
-                optionalData = new Data(storageId, optionalDataText, dataType, false);
+                optionalData = new Data(storageId, optionalDataText, dataType, false, codeBar);
 
                 for (j = 0; j < optionalData.DataType.Count; j++)
                 {

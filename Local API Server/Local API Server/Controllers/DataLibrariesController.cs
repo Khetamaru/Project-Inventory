@@ -54,6 +54,20 @@ namespace Local_API_Server.Controllers
         }
 
         // GET: api/DataLibraries/storage/5
+        [HttpGet("codeBar/{codeBar}")]
+        public async Task<ActionResult<IEnumerable<DataLibrary>>> GetDataLibraryByStorage(string codeBar)
+        {
+            var dataLibrary = await _context.DataLibraries.Where(r => r.CodeBar == codeBar).ToListAsync();
+
+            if (dataLibrary == null)
+            {
+                return NotFound();
+            }
+
+            return dataLibrary;
+        }
+
+        // GET: api/DataLibraries/storage/5
         [HttpGet("storage/{storageId}/{researchString}")]
         public async Task<ActionResult<IEnumerable<DataLibrary>>> GetDataLibraryByStorage(int storageId, string researchString)
         {

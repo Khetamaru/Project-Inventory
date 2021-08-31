@@ -34,8 +34,7 @@ namespace Project_Inventory
         private Data[] dataTabSave;
         private List<List<ListOption>> listOptionsTab;
         private List<int> customListIds;
-        private string[,] stringTab;
-        private string[,] indicTab;
+        private string[] indicTab;
 
         private string[] saveButton;
         private RoutedEventLibrary[] saveEvents;
@@ -79,20 +78,14 @@ namespace Project_Inventory
         public void LoadBDDInfos()
         {
             dataTabSave = dataTab = JsonCenter.LoadStorageViewerInfos(requestCenter, actualStorageId, out listOptionsTab, out customListIds);
-            
-            int i;
+
             int j;
 
-            stringTab = new string[dataTab.Length, dataTab[0].DataText.Count];
-            indicTab = new string[dataTab.Length, dataTab[0].DataText.Count];
+            indicTab = new string[dataTab[0].DataText.Count];
 
-            for (i = 0; i < dataTab.Length; i++)
+            for (j = 0; j < dataTab[0].DataText.Count; j++)
             {
-                for (j = 0; j < dataTab[0].DataText.Count; j++)
-                {
-                    stringTab[i, j] = dataTab[i].DataText[j];
-                    indicTab[i, j] = dataTab[i].DataType[j];
-                }
+                indicTab[j] = dataTab[0].DataType[j];
             }
         }
 
@@ -117,10 +110,10 @@ namespace Project_Inventory
 
                     toolBox.CreateScrollableGrid(bottomGrid, capGrid,
                                          1, 1,
-                                         stringTab.GetLength(0), stringTab.GetLength(1),
+                                         dataTab.Length, dataTab[0].DataText.Count + 1,
                                          SkinLocation.BottomStretch, SkinSize.HeightNintyPercent,
                                          SkinLocation.CenterCenter,
-                                         stringTab, indicTab,
+                                         dataTab, indicTab,
                                          listOptionsTab, customListIds);
                     break;
 
@@ -148,10 +141,10 @@ namespace Project_Inventory
 
                     toolBox.CreateScrollableGridModfiable(centerGrid, capGrid,
                                          1, 1,
-                                         stringTab.GetLength(0) + 1, stringTab.GetLength(1) + 1,
+                                         dataTab.Length + 1, dataTab[0].DataText.Count + 2,
                                          SkinLocation.CenterStretch, SkinSize.HeightEightPercent,
                                          SkinLocation.CenterCenter,
-                                         stringTab, indicTab,
+                                         dataTab, indicTab,
                                          AddDeleteButtons(),
                                          listOptionsTab, customListIds);
                     break;
@@ -192,7 +185,7 @@ namespace Project_Inventory
         {
             Data optionnalAdd = null;
 
-            List<int> changesList = toolBox.GetUIElements(toolBox.ExtractFormInfos(capGrid), dataTab, indicTab, out optionnalAdd, listOptionsTab);
+            List<int> changesList = toolBox.GetUIElements(toolBox.ExtractFormInfos(capGrid), dataTab, out optionnalAdd, listOptionsTab);
 
             foreach(int change in changesList)
             {
@@ -294,6 +287,10 @@ namespace Project_Inventory
                                 trigger[i]++;
                             }
                         }
+                        if (data.CodeBar.Contains(str))
+                        {
+                            trigger[i]++;
+                        }
                     }
                 }
                 else
@@ -318,18 +315,11 @@ namespace Project_Inventory
                 dataTab[i] = dataLibraryShorted[i];
             }
 
-            int j;
+            indicTab = new string[dataTab[0].DataText.Count];
 
-            stringTab = new string[dataTab.Length, dataTab[0].DataText.Count];
-            indicTab = new string[dataTab.Length, dataTab[0].DataText.Count];
-
-            for (i = 0; i < dataTab.Length; i++)
+            for (i = 0; i < dataTab[0].DataText.Count; i++)
             {
-                for (j = 0; j < dataTab[0].DataText.Count; j++)
-                {
-                    stringTab[i, j] = dataTab[i].DataText[j];
-                    indicTab[i, j] = dataTab[i].DataType[j];
-                }
+                indicTab[i] = dataTab[0].DataType[i];
             }
         }
     }
