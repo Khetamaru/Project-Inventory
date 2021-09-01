@@ -277,3 +277,13 @@ F:\PROJECTS\Project-Inventory\Local API Server\Local API Server\bin\Debug\net5.0
 F:\PROJECTS\Project-Inventory\Local API Server\Local API Server\bin\Debug\net5.0\System.Web.WebPages.dll
 F:\PROJECTS\Project-Inventory\Local API Server\Local API Server\bin\Debug\net5.0\Microsoft.Web.Infrastructure.dll
 F:\PROJECTS\Project-Inventory\Local API Server\Local API Server\obj\Debug\net5.0\Local API Server.csproj.AssemblyReference.cache
+F:\PROJECTS\Project-Inventory\Local API Server\Local API Server\bin\Debug\net5.0\BouncyCastle.Crypto.dll
+F:\PROJECTS\Project-Inventory\Local API Server\Local API Server\bin\Debug\net5.0\Google.Protobuf.dll
+F:\PROJECTS\Project-Inventory\Local API Server\Local API Server\bin\Debug\net5.0\K4os.Compression.LZ4.dll
+F:\PROJECTS\Project-Inventory\Local API Server\Local API Server\bin\Debug\net5.0\K4os.Compression.LZ4.Streams.dll
+F:\PROJECTS\Project-Inventory\Local API Server\Local API Server\bin\Debug\net5.0\K4os.Hash.xxHash.dll
+F:\PROJECTS\Project-Inventory\Local API Server\Local API Server\bin\Debug\net5.0\MySql.Data.dll
+F:\PROJECTS\Project-Inventory\Local API Server\Local API Server\bin\Debug\net5.0\Ubiety.Dns.Core.dll
+F:\PROJECTS\Project-Inventory\Local API Server\Local API Server\bin\Debug\net5.0\Zstandard.Net.dll
+F:\PROJECTS\Project-Inventory\Local API Server\Local API Server\bin\Debug\net5.0\MySqlConnector.dll
+F:\PROJECTS\Project-Inventory\Local API Server\Local API Server\bin\Debug\net5.0\Pomelo.EntityFrameworkCore.MySql.dll
