@@ -1,6 +1,7 @@
 ﻿using Project_Inventory.BDD;
 using Project_Inventory.Tools;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace Project_Inventory
 {
@@ -57,6 +58,20 @@ namespace Project_Inventory
 
         private void SizeChangeResizeEvent(object sender, SizeChangedEventArgs e)
         {
+            switch(this.WindowState == WindowState.Maximized)
+            {
+                case true:
+                    WpfScreen wpfScreen = WpfScreen.GetScreenFrom(this);
+
+                    toolBox.windowWidth = wpfScreen.PrimaryScreenSizeWidth();
+                    toolBox.windowHeight = wpfScreen.PrimaryScreenSizeHeight();
+                    break;
+
+                case false:
+                    toolBox.windowWidth = Width;
+                    toolBox.windowHeight = Height;
+                    break;
+            }
             ReloadView(sender, e);
         }
 
@@ -362,9 +377,11 @@ namespace Project_Inventory
                     break;
 
                 case WindowsName.FormPage:
+                    formPage.GetUIElements();
                     formPage.TopGridInit(topGrid);
                     formPage.CenterGridInit(centerGrid);
                     formPage.BottomGridInit(bottomGrid);
+                    formPage.DataInjection();
                     break;
 
                 case WindowsName.ListMenu:

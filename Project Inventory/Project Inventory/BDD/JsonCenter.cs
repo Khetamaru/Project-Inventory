@@ -885,6 +885,7 @@ namespace Project_Inventory.Tools
             string name = string.Empty;
             int accessibilityLevel = 42;
             bool isActive = false;
+            string isActiveTemp = string.Empty;
 
             string temp;
 
@@ -917,13 +918,25 @@ namespace Project_Inventory.Tools
                         break;
 
                     case "isActive":
-                        if (splitTab[i + 2] == "True")
+
+                        isActiveTemp = splitTab[i + 1];
+                        isActiveTemp = isActiveTemp.Remove(0, 1);
+                        isActiveTemp = isActiveTemp.Remove(isActiveTemp.Length - 1, 1);
+
+                        if (isActiveTemp[isActiveTemp.Length - 1] == '}') { isActiveTemp = isActiveTemp.Remove(isActiveTemp.Length - 1, 1); }
+
+                        switch (isActiveTemp)
                         {
-                            isActive = true;
-                        }
-                        else if (splitTab[i + 2] == "False")
-                        {
-                            isActive = false;
+                            case "true":
+                                isActive = true;
+                                break;
+
+                            case "false":
+                                isActive = false;
+                                break;
+
+                            default:
+                                throw new Exception();
                         }
                         break;
                 }

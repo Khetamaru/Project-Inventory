@@ -18,10 +18,12 @@ namespace Project_Inventory
 
         public double windowWidth;
         public double windowHeight;
+        public double titleBarHeight;
 
         public ToolBox(double titleBarHeight, Window windowRef)
         {
             wpfScreen = WpfScreen.GetScreenFrom(windowRef);
+            this.titleBarHeight = titleBarHeight;
 
             windowWidth = wpfScreen.PrimaryScreenSizeWidth();
             windowHeight = wpfScreen.PrimaryScreenSizeHeight() - titleBarHeight;
@@ -383,31 +385,31 @@ namespace Project_Inventory
             switch (lengthName)
             {
                 case SkinSize.WidthOneTier:
-                    GridSkins.WidthOneTier(grid, windowWidth);
+                    GridSkins.WidthOneTier(grid, windowWidth - titleBarHeight);
                     break;
 
                 case SkinSize.WidthTwoTier:
-                    GridSkins.WidthTwoTier(grid, windowWidth);
+                    GridSkins.WidthTwoTier(grid, windowWidth - titleBarHeight);
                     break;
 
                 case SkinSize.HeightOneTier:
-                    GridSkins.HeightOneTier(grid, windowHeight);
+                    GridSkins.HeightOneTier(grid, windowHeight - titleBarHeight);
                     break;
 
                 case SkinSize.HeightTwoTier:
-                    GridSkins.HeightTwoTier(grid, windowHeight);
+                    GridSkins.HeightTwoTier(grid, windowHeight - titleBarHeight);
                     break;
 
                 case SkinSize.HeightTenPercent:
-                    GridSkins.HeightTenPercent(grid, windowHeight);
+                    GridSkins.HeightTenPercent(grid, windowHeight - titleBarHeight);
                     break;
 
                 case SkinSize.HeightEightPercent:
-                    GridSkins.HeightEightPercent(grid, windowHeight);
+                    GridSkins.HeightEightPercent(grid, windowHeight - titleBarHeight);
                     break;
 
                 case SkinSize.HeightNintyPercent:
-                    GridSkins.HeightNintyPercent(grid, windowHeight);
+                    GridSkins.HeightNintyPercent(grid, windowHeight - titleBarHeight);
                     break;
             }
         }
@@ -588,8 +590,7 @@ namespace Project_Inventory
                     }
                     else
                     {
-                        if (j >= 1) { z = j; }
-                        else { z = 1; }
+                        z = j;
                     }
 
                     if (buttonsTab.Length > z)
@@ -673,8 +674,7 @@ namespace Project_Inventory
                     }
                     else
                     {
-                        if (j >= 1) { z = j; }
-                        else { z = 1; }
+                        z = j;
                     }
 
                     if (buttonsTab.Count > z)
@@ -734,8 +734,15 @@ namespace Project_Inventory
             UIElement uIElement;
             int i = 0;
 
-            grid.ColumnDefinitions[0].Width = new GridLength(windowWidth * 0.2, GridUnitType.Pixel);
-            grid.ColumnDefinitions[1].Width = new GridLength(windowWidth * 0.8, GridUnitType.Pixel);
+            if (grid.ColumnDefinitions.Count >= 2)
+            {
+                grid.ColumnDefinitions[0].Width = new GridLength(windowWidth * 0.2, GridUnitType.Pixel);
+                grid.ColumnDefinitions[1].Width = new GridLength(windowWidth * 0.8, GridUnitType.Pixel);
+            }
+            else
+            {
+                grid.ColumnDefinitions[0].Width = new GridLength(windowWidth, GridUnitType.Pixel);
+            }
 
             foreach (UIElementsName name in formElements)
             {
@@ -955,7 +962,7 @@ namespace Project_Inventory
                 {
                     for (j = 0; j < columnNb; j++)
                     {
-                        if (stringTab.Length >= (i + 1) * (j + 1))
+                        if (stringTab[i].DataText.Count >= (i + 1) * (j + 1))
                         {
                             CreateHeaderToGrid(grid, stringTab[i].DataText[j], i, j + 1, skinPosition);
                             k++;
@@ -1455,7 +1462,7 @@ namespace Project_Inventory
         {
             SetScrollFormHeight(embededGrid);
 
-            if (gridRowTwo > 5)
+            if (gridRowTwo > windowHeight / (wpfScreen.PrimaryScreenSizeHeight() / 5))
             {
                 ScrollViewerVertical(scrollViewer);
             }
@@ -1493,7 +1500,15 @@ namespace Project_Inventory
         {
             foreach (RowDefinition row in grid.RowDefinitions)
             {
-                GridSkins.RowHeightFifteenPercent(row, windowHeight);
+                GridSkins.RowHeightFifteenPercent(row, wpfScreen.PrimaryScreenSizeHeight());
+            }
+        }
+
+        public void SetScrollFormWidth(Grid grid)
+        {
+            foreach (ColumnDefinition column in grid.ColumnDefinitions)
+            {
+                GridSkins.ColumnHeightTier(column, wpfScreen.PrimaryScreenSizeWidth());
             }
         }
 
@@ -1750,9 +1765,9 @@ namespace Project_Inventory
             SetScrollGridHeight(embededGrid);
             SetScrollGridWidth(embededGrid);
 
-            if (gridRowTwo > 5)
+            if (gridRowTwo > windowHeight / (wpfScreen.PrimaryScreenSizeHeight() / 7))
             {
-                if (gridColumnTwo > 9)
+                if (gridColumnTwo > windowWidth / (wpfScreen.PrimaryScreenSizeWidth() / 9))
                 {
                     ScrollViewerBoth(scrollViewer);
                 }
@@ -1763,7 +1778,7 @@ namespace Project_Inventory
             }
             else
             {
-                if (gridColumnTwo > 9)
+                if (gridColumnTwo > windowWidth / (wpfScreen.PrimaryScreenSizeWidth() / 9))
                 {
                     ScrollViewerHorizontal(scrollViewer);
                 }
@@ -1856,7 +1871,7 @@ namespace Project_Inventory
         {
             foreach (ColumnDefinition column in grid.ColumnDefinitions)
             {
-                GridSkins.ColumnHeightTenPercent(column, windowWidth);
+                GridSkins.ColumnHeightTenPercent(column, wpfScreen.PrimaryScreenSizeWidth());
             }
         }
 
@@ -1868,7 +1883,7 @@ namespace Project_Inventory
         {
             foreach (ColumnDefinition column in grid.ColumnDefinitions)
             {
-                GridSkins.ColumnHeightTier(column, windowWidth);
+                GridSkins.ColumnHeightTier(column, wpfScreen.PrimaryScreenSizeWidth());
             }
         }
 
@@ -1883,13 +1898,13 @@ namespace Project_Inventory
                 case SkinSize.HeightTwentyPercent:
                     foreach (ColumnDefinition column in grid.ColumnDefinitions)
                     {
-                        GridSkins.ColumnHeightTwentyPercent(column, windowHeight);
+                        GridSkins.ColumnHeightTwentyPercent(column, wpfScreen.PrimaryScreenSizeWidth());
                     }
                     break;
                 case SkinSize.HeightTenPercent:
                     foreach (ColumnDefinition column in grid.ColumnDefinitions)
                     {
-                        GridSkins.ColumnHeightTenPercent(column, windowHeight);
+                        GridSkins.ColumnHeightTenPercent(column, wpfScreen.PrimaryScreenSizeWidth());
                     }
                     break;
             }
@@ -1903,7 +1918,7 @@ namespace Project_Inventory
         {
             foreach (RowDefinition row in grid.RowDefinitions)
             {
-                GridSkins.RowHeightFifteenPercent(row, windowHeight);
+                GridSkins.RowHeightFifteenPercent(row, wpfScreen.PrimaryScreenSizeHeight());
             }
         }
 
@@ -1917,11 +1932,11 @@ namespace Project_Inventory
             {
                 if (row.Equals(grid.RowDefinitions[0]))
                 {
-                    GridSkins.RowHeightTenPercent(row, windowHeight);
+                    GridSkins.RowHeightTenPercent(row, wpfScreen.PrimaryScreenSizeHeight());
                 }
                 else
                 {
-                    GridSkins.RowHeightFifteenPercent(row, windowHeight);
+                    GridSkins.RowHeightFifteenPercent(row, wpfScreen.PrimaryScreenSizeHeight());
                 }
             }
         }
@@ -1937,19 +1952,19 @@ namespace Project_Inventory
                 case SkinSize.HeightFifteenPercent:
                     foreach (RowDefinition row in grid.RowDefinitions)
                     {
-                        GridSkins.RowHeightFifteenPercent(row, windowHeight);
+                        GridSkins.RowHeightFifteenPercent(row, wpfScreen.PrimaryScreenSizeHeight());
                     }
                     break;
                 case SkinSize.HeightTwentyPercent:
                     foreach (RowDefinition row in grid.RowDefinitions)
                     {
-                        GridSkins.RowHeightTwentyPercent(row, windowHeight);
+                        GridSkins.RowHeightTwentyPercent(row, wpfScreen.PrimaryScreenSizeHeight());
                     }
                     break;
                 case SkinSize.HeightTenPercent:
                     foreach (RowDefinition row in grid.RowDefinitions)
                     {
-                        GridSkins.RowHeightTenPercent(row, windowHeight);
+                        GridSkins.RowHeightTenPercent(row, wpfScreen.PrimaryScreenSizeHeight());
                     }
                     break;
             }

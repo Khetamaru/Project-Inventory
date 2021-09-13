@@ -110,7 +110,7 @@ namespace Project_Inventory
 
                     toolBox.CreateScrollableGrid(bottomGrid, capGrid,
                                          1, 1,
-                                         dataTab.Length, dataTab[0].DataText.Count + 1,
+                                         dataTab.Length, dataTabSave[0].DataText.Count + 1,
                                          SkinLocation.BottomStretch, SkinSize.HeightNintyPercent,
                                          SkinLocation.CenterCenter,
                                          dataTab, indicTab,
@@ -131,7 +131,7 @@ namespace Project_Inventory
             {
                 case status.VIEWER:
 
-                    centerGrid = null;
+                    toolBox.EmptyGrid(centerGrid);
 
                     break;
 
@@ -315,11 +315,11 @@ namespace Project_Inventory
                 dataTab[i] = dataLibraryShorted[i];
             }
 
-            indicTab = new string[dataTab[0].DataText.Count];
+            indicTab = new string[dataTabSave[0].DataText.Count];
 
-            for (i = 0; i < dataTab[0].DataText.Count; i++)
+            for (i = 0; i < dataTabSave[0].DataText.Count; i++)
             {
-                indicTab[i] = dataTab[0].DataType[i];
+                indicTab[i] = dataTabSave[0].DataType[i];
             }
         }
     }

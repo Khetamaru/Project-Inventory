@@ -57,9 +57,8 @@ namespace Project_Inventory.BDD
         /// <returns></returns>
         public string ToJson()
         {
-            return "{\"storageId\":" + StorageId + ",\"dataText\":\"" + ToStringDataText() + "\",\"dataType\":\"" + ToStringDataType() + "\",\"isHeader\":\"" + IsHeader + "\",\"codeBar\":\"" + CodeBar + "\"}";
+            return "{\"storageId\":" + StorageId + ",\"dataText\":\"" + ToStringDataText() + "\",\"dataType\":\"" + ToStringDataType() + "\",\"isHeader\":" + IsHeader.ToString().ToLower() + ",\"codeBar\":\"" + CodeBar + "\"}";
         }
-
 
         /// <summary>
         /// Convert Data to json with the Id
@@ -67,7 +66,7 @@ namespace Project_Inventory.BDD
         /// <returns></returns>
         public string ToJsonId()
         {
-            return "{\"Id\":" + id + ",\"storageId\":" + StorageId + ",\"dataText\":\"" + ToStringDataText() + "\",\"dataType\":\"" + ToStringDataType() + "\",\"isHeader\":\"" + IsHeader + "\",\"codeBar\":\"" + CodeBar + "\"}";
+            return "{\"Id\":" + id + ",\"storageId\":" + StorageId + ",\"dataText\":\"" + ToStringDataText() + "\",\"dataType\":\"" + ToStringDataType() + "\",\"isHeader\":" + IsHeader.ToString().ToLower() + ",\"codeBar\":\"" + CodeBar + "\"}";
         }
 
         /// <summary>

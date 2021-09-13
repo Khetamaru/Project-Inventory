@@ -67,7 +67,7 @@ namespace Local_API_Server.Controllers
             return dataLibrary;
         }
 
-        // GET: api/DataLibraries/storage/5
+        /*// GET: api/DataLibraries/storage/5
         [HttpGet("storage/{storageId}/{researchString}")]
         public async Task<ActionResult<IEnumerable<DataLibrary>>> GetDataLibraryByStorage(int storageId, string researchString)
         {
@@ -110,7 +110,7 @@ namespace Local_API_Server.Controllers
             }
 
             return dataLibraryShorted;
-        }
+        }*/
 
         // PUT: api/DataLibraries/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754

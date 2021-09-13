@@ -14,7 +14,7 @@ namespace Project_Inventory
         private string[] topGridButtons;
         private RoutedEventLibrary[] topSwitchEvents;
 
-        private Grid capGrid;
+        public Grid capGrid;
         private UIElementsName[] formElements;
         private string[] labels;
         private WindowsName formType;
@@ -24,6 +24,9 @@ namespace Project_Inventory
         private string[] bottomGridButtons;
         private RoutedEventLibrary[] formValidButton;
 
+        string[] uIElementsNames;
+        List<string> columnNames;
+
         private RoutedEventHandler reloadEvent;
 
         private CustomList[] customList;
@@ -31,13 +34,14 @@ namespace Project_Inventory
         public FormPage(ToolBox toolBox, Router _router, RequestCenter requestCenter, WindowsName _formType, int _actualUserId, int _actualStorageId, int _actualDataId, int _actualCustomListId, RoutedEventHandler _reloadEvent)
             : base(toolBox, _router, requestCenter, _actualUserId, _actualStorageId, _actualDataId, _actualCustomListId)
         {
-            capGrid = new Grid();
-
             formType = _formType;
 
             reloadEvent = _reloadEvent;
 
             formConfiguration();
+
+            uIElementsNames = new string[formElements.Length / 2];
+            columnNames = new List<string>();
         }
 
         public new void TopGridInit(Grid topGrid)
@@ -49,6 +53,8 @@ namespace Project_Inventory
 
         public new void CenterGridInit(Grid centerGrid)
         {
+            capGrid = new Grid();
+
             switch (formType)
             {
                 default:
@@ -65,7 +71,7 @@ namespace Project_Inventory
 
                     toolBox.CreateScrollableForm(centerGrid, capGrid,
                                                  1, 1,
-                                                 formElements.Length, 2,
+                                                 formElements.Length, 1,
                                                  SkinLocation.BottomStretch, SkinSize.HeightNintyPercent,
                                                  formElements, labels, listBoxNames,
                                                  customList);
@@ -168,25 +174,34 @@ namespace Project_Inventory
         /// <param name="e"></param>
         public void InitStorageReload(object sender, RoutedEventArgs e)
         {
-            string[] uIElementsNames = new string[formElements.Length / 2];
-            List<string> columnNames = new List<string>();
-
-            GetInitStorageUIElement(uIElementsNames, columnNames);
-
             ExtendLengthInitStorage();
 
-            capGrid = new Grid();
             reloadEvent.Invoke(sender, e);
+        }
 
-            InjectInitStorageUIElement(uIElementsNames, columnNames);
+        /// <summary>
+        /// Give all elements filled in the form
+        /// </summary>
+        public void GetUIElements()
+        {
+            switch(formType)
+            {
+                case WindowsName.InitStorage :
+
+                    GetInitStorageUIElement();
+                    break;
+
+                default:
+                    break;
+            }
         }
         
         /// <summary>
-         /// Give all elements filled in the form
-         /// </summary>
-         /// <param name="uIElementsNames"></param>
-         /// <param name="columnNames"></param>
-        private void GetInitStorageUIElement(string[] uIElementsNames, List<string> columnNames)
+        /// Give all elements filled in the form
+        /// </summary>
+        /// <param name="uIElementsNames"></param>
+        /// <param name="columnNames"></param>
+        public void GetInitStorageUIElement()
         {
             int i = 0;
             int k = 0;
@@ -275,15 +290,30 @@ namespace Project_Inventory
         /// <summary>
         /// Inject infos in fields already filled
         /// </summary>
-        /// <param name="uIElementsNames"></param>
-        /// <param name="columnNames"></param>
-        private void InjectInitStorageUIElement(string[] uIElementsNames, List<string> columnNames)
+        public void DataInjection()
+        {
+            switch(formType)
+            {
+                case WindowsName.InitStorage :
+
+                    InjectInitStorageUIElement();
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Inject infos in fields already filled
+        /// </summary>
+        private void InjectInitStorageUIElement()
         {
             int j = 0;
             int k = 0;
             string temp = string.Empty;
 
-            for (int i = 0 ; i < (capGrid.Children.Count - 4) ; i++)
+            for (int i = 0 ; i < (columnNames.Count * 4) ; i++)
             {
                 if (i % 2 != 0)
                 {
@@ -299,6 +329,9 @@ namespace Project_Inventory
                     }
                 }
             }
+
+            uIElementsNames = new string[formElements.Length / 2];
+            columnNames = new List<string>();
         }
 
         private UIElementsName GetUIElementName(string name)
@@ -351,7 +384,7 @@ namespace Project_Inventory
         {
             switch(formType)
             {
-                case (WindowsName.InitStorage):
+                case WindowsName.InitStorage:
 
                     listBoxNames = ComboBoxNames.UIElementsType;
 
@@ -381,18 +414,13 @@ namespace Project_Inventory
 
                     break;
 
-                case (WindowsName.CreditPage):
+                case WindowsName.CreditPage:
 
                     topGridButtons = new string[] { "Return" };
 
                     topSwitchEvents = new RoutedEventLibrary[1];
                     RoutedEventLibrariesInit(topSwitchEvents);
                     topSwitchEvents[0].changePageEvent = GetEventHandler(WindowsName.MainMenu);
-
-                    formValidButton = new RoutedEventLibrary[2];
-                    RoutedEventLibrariesInit(formValidButton);
-                    formValidButton[0].optionalEventOne = new RoutedEventHandler((object sender, RoutedEventArgs e) => InitStorageReload(sender, e));
-                    formValidButton[1].changePageEvent = GetEventHandler(WindowsName.StorageViewerPage);
 
                     formElements = new UIElementsName[] { UIElementsName.None, UIElementsName.None, UIElementsName.None };
                     labels = new string[] { "Enterprise : Docteur Ordianteur Laval", "Project Manager : ETAIX Vincent", "Code Author : LASSERRE Anthony" };
