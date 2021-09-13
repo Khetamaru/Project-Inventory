@@ -54,8 +54,6 @@ namespace Project_Inventory
 
             capGrid = new Grid();
 
-            LoadBDDInfos();
-
             widthLimit = 5;
         }
 

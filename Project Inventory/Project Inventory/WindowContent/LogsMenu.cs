@@ -195,7 +195,7 @@ namespace Project_Inventory
             if (PopUpCenter.ActionValidPopup("You will delete all logs, are you sure ?"))
             {
                 requestCenter.DeleteRequest(BDDTabsName.LogLibraries.ToString());
-                reloadEvent.Invoke(sender, e);
+                GetEventHandler(WindowsName.LogsMenu).Invoke(sender, e);
             }
         }
     }

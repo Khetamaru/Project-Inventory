@@ -9,9 +9,6 @@ namespace Project_Inventory
     /// </summary>
     public static class GridSkins
     {
-        static double tierMultiplier = 3.07;
-        static double tenPercentMultiplier = 10;
-
         public static void SetUp(Grid grid)
         {
             grid.ShowGridLines = true;
@@ -139,72 +136,73 @@ namespace Project_Inventory
 
         // Grid Length //
 
-        public static void WidthOneTier(Grid grid, double screenWidth)
+        public static void ColumnHeightTenPercent(ColumnDefinition column, double screenWidth)
         {
-            grid.Width = screenWidth / tierMultiplier;
-        }
-        public static void WidthTwoTier(Grid grid, double screenWidth)
-        {
-            grid.Width = screenWidth / tierMultiplier * 2;
-        }
-
-        public static void HeightOneTier(Grid grid, double screenHeight)
-        {
-            grid.Height = screenHeight / tierMultiplier;
-        }
-
-        public static void HeightTwoTier(Grid grid, double screenHeight)
-        {
-            grid.Height = screenHeight / tierMultiplier * 2;
-        }
-
-        public static void HeightTenPercent(Grid grid, double screenHeight)
-        {
-            grid.Height = screenHeight / tenPercentMultiplier;
-        }
-
-        public static void HeightEightPercent(Grid grid, double screenHeight)
-        {
-            grid.Height = screenHeight / tenPercentMultiplier * 8;
-        }
-
-        public static void HeightNintyPercent(Grid grid, double screenHeight)
-        {
-            grid.Height = screenHeight / tenPercentMultiplier * 9;
-        }
-
-        public static void ColumnHeightTwentyPercent(ColumnDefinition column, double screenWidth)
-        {
-            column.Width = new GridLength(screenWidth / tenPercentMultiplier * 2, GridUnitType.Pixel);
+            column.Width = new GridLength(screenWidth * 0.10, GridUnitType.Pixel);
         }
 
         public static void ColumnHeightFifteenPercent(ColumnDefinition column, double screenWidth)
         {
-            column.Width = new GridLength(screenWidth / tenPercentMultiplier * 1.5, GridUnitType.Pixel);
+            column.Width = new GridLength(screenWidth * 0.15, GridUnitType.Pixel);
+        }
+
+        public static void ColumnHeightTwentyPercent(ColumnDefinition column, double screenWidth)
+        {
+            column.Width = new GridLength(screenWidth * 0.20, GridUnitType.Pixel);
+        }
+
+        public static void WidthOneTier(Grid grid, double screenWidth)
+        {
+            grid.Width = screenWidth * 0.34;
+        }
+        public static void WidthTwoTier(Grid grid, double screenWidth)
+        {
+            grid.Width = screenWidth * 0.66;
         }
 
         public static void ColumnHeightTier(ColumnDefinition column, double screenWidth)
         {
-            column.Width = new GridLength(screenWidth / tenPercentMultiplier * 3.33, GridUnitType.Pixel);
+            column.Width = new GridLength(screenWidth * 0.34, GridUnitType.Pixel);
         }
 
-        public static void ColumnHeightTenPercent(ColumnDefinition column, double screenWidth)
+        public static void HeightTenPercent(Grid grid, double screenHeight)
         {
-            column.Width = new GridLength(screenWidth / tenPercentMultiplier, GridUnitType.Pixel);
+            grid.Height = screenHeight * 0.10;
         }
 
         public static void RowHeightTenPercent(RowDefinition row, double screenHeight)
         {
-            row.Height = new GridLength(screenHeight / tenPercentMultiplier * 0.5, GridUnitType.Pixel);
+            row.Height = new GridLength(screenHeight * 0.10, GridUnitType.Pixel);
+        }
+
+        public static void RowHeightFifteenPercent(RowDefinition row, double screenHeight)
+        {
+            row.Height = new GridLength(screenHeight * 0.15, GridUnitType.Pixel);
         }
 
         public static void RowHeightTwentyPercent(RowDefinition row, double screenHeight)
         {
-            row.Height = new GridLength(screenHeight / tenPercentMultiplier * 2, GridUnitType.Pixel);
+            row.Height = new GridLength(screenHeight * 0.20, GridUnitType.Pixel);
         }
-        public static void RowHeightFifteenPercent(RowDefinition row, double screenHeight)
+
+        public static void HeightOneTier(Grid grid, double screenHeight)
         {
-            row.Height = new GridLength(screenHeight / tenPercentMultiplier * 1.5, GridUnitType.Pixel);
+            grid.Height = screenHeight * 0.34;
+        }
+
+        public static void HeightTwoTier(Grid grid, double screenHeight)
+        {
+            grid.Height = screenHeight * 0.66;
+        }
+
+        public static void HeightEightPercent(Grid grid, double screenHeight)
+        {
+            grid.Height = screenHeight * 0.80;
+        }
+
+        public static void HeightNintyPercent(Grid grid, double screenHeight)
+        {
+            grid.Height = screenHeight * 0.90;
         }
     }
 }

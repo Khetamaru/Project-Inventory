@@ -61,11 +61,6 @@ namespace Project_Inventory
             return wpfScreen;
         }
 
-        public static WpfScreen Primary
-        {
-            get { return new WpfScreen(Screen.PrimaryScreen); }
-        }
-
         private readonly Screen screen;
 
         internal WpfScreen(Screen screen)
