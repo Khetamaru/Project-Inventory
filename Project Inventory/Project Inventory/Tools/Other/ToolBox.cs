@@ -2247,7 +2247,7 @@ namespace Project_Inventory
                 {
                     if(j < (uIElements.Count / (rowNb + 1)) - 1)
                     {
-                        TypeCatch(dataType[j], uIElements[gridIndex], optionalDataText);
+                        TypeCatchOptional(dataType[j], uIElements[gridIndex], optionalDataText, listOptions);
                     }
                     else
                     {
@@ -2595,11 +2595,10 @@ namespace Project_Inventory
         /// <param name="dataType"></param>
         /// <param name="uIElement"></param>
         /// <param name="dataText"></param>
-        public void TypeCatch(string dataType, UIElement uIElement, List<string> dataText)
+        public void TypeCatchOptional(string dataType, UIElement uIElement, List<string> dataText, List<List<ListOption>> listOptions)
         {
             if (dataType == UIElementsName.TextBox.ToString())
             {
-
                 dataText.Add((uIElement as TextBox).Text);
             }
             else if (dataType == UIElementsName.TextBoxNumber.ToString())
@@ -2627,8 +2626,24 @@ namespace Project_Inventory
             {
                 if ((uIElement as ComboBox).SelectedItem != (uIElement as ComboBox).Items[0])
                 {
+                    List<ListOption> list = new List<ListOption>();
 
-                    dataText.Add((uIElement as ComboBox).SelectedItem.ToString());
+                    foreach (List<ListOption> options in listOptions)
+                    {
+                        if (options[0].CustomListId == Int32.Parse(dataType))
+                        {
+                            list = options;
+                        }
+                    }
+
+                    foreach (ListOption option in list)
+                    {
+                        if ((uIElement as ComboBox).SelectedItem.ToString() == option.Name)
+                        {
+
+                            dataText.Add(option.id.ToString());
+                        }
+                    }
                 }
                 else
                 {

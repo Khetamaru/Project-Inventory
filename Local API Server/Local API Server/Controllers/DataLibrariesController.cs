@@ -67,51 +67,6 @@ namespace Local_API_Server.Controllers
             return dataLibrary;
         }
 
-        /*// GET: api/DataLibraries/storage/5
-        [HttpGet("storage/{storageId}/{researchString}")]
-        public async Task<ActionResult<IEnumerable<DataLibrary>>> GetDataLibraryByStorage(int storageId, string researchString)
-        {
-            var dataLibrary = await _context.DataLibraries.Where(r => r.StorageId == storageId).ToListAsync();
-
-            if (dataLibrary == null)
-            {
-                return NotFound();
-            }
-
-            var stringTab = researchString.Split(" ");
-            bool[] trigger = new bool[dataLibrary.Count()];
-            var dataLibraryShorted = new List<DataLibrary>();
-            int i = 0;
-
-            foreach (DataLibrary data in dataLibrary)
-            {
-                if (data.IsHeader != "True")
-                {
-                    trigger[i] = false;
-
-                    foreach (string str in stringTab)
-                    {
-                        if (!data.DataText.Contains(str))
-                        {
-                            trigger[i] = true;
-                        }
-                    }
-                }
-
-                i++;
-            }
-
-            for (i = 0; i < trigger.Length; i++)
-            {
-                if (!trigger[i])
-                {
-                    dataLibraryShorted.Add(dataLibrary[i]);
-                }
-            }
-
-            return dataLibraryShorted;
-        }*/
-
         // PUT: api/DataLibraries/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]

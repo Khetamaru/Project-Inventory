@@ -559,6 +559,7 @@ namespace Project_Inventory.Tools
             List<string> dataType;
             string dataTypeTemp = string.Empty;
             bool isHeader = false;
+            string isHeaderStr = string.Empty;
             string codeBar = string.Empty;
 
             string temp;
@@ -596,11 +597,14 @@ namespace Project_Inventory.Tools
                         break;
 
                     case "isHeader":
-                        if (splitTab[i + 2] == "True")
+                        isHeaderStr = splitTab[i + 1];
+                        isHeaderStr = isHeaderStr.Remove(0, 1);
+                        isHeaderStr = isHeaderStr.Remove(isHeaderStr.Length - 1, 1);
+                        if (isHeaderStr == "true")
                         {
                             isHeader = true;
                         }
-                        else if (splitTab[i + 2] == "False")
+                        else if (isHeaderStr == "false")
                         {
                             isHeader = false;
                         }

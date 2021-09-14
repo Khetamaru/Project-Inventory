@@ -30,7 +30,7 @@ namespace Project_Inventory.BDD
         /// <returns></returns>
         public string ToJson()
         {
-            return "{\"storageId\":" + StorageId + ",\"customListId\":\"" + CustomListId + "\"}";
+            return "{\"storageId\":" + StorageId + ",\"customListId\":" + CustomListId + "}";
         }
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace Project_Inventory.BDD
         /// <returns></returns>
         public string ToJsonId()
         {
-            return "{\"Id\":" + id + ",\"storageId\":" + StorageId + ",\"customListId\":\"" + CustomListId + "\"}";
+            return "{\"Id\":" + id + ",\"storageId\":" + StorageId + ",\"customListId\":" + CustomListId + "}";
         }
     }
 }
