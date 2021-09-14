@@ -13,17 +13,21 @@ namespace Project_Inventory
         public Router router;
         public RequestCenter requestCenter;
 
+        public int actualUserId;
         public int actualStorageId;
         public int actualDataId;
+        public int actualCustomListId;
 
-        public WindowContent(ToolBox _toolBox, Router _router, RequestCenter _requestCenter, int _actualStorageId, int _actualDataId)
+        public WindowContent(ToolBox _toolBox, Router _router, RequestCenter _requestCenter, int _actualUserId, int _actualStorageId, int _actualDataId, int _actualCustomListId)
         {
             toolBox = _toolBox;
             router = _router;
             requestCenter = _requestCenter;
 
+            actualUserId = _actualUserId;
             actualStorageId = _actualStorageId;
             actualDataId = _actualDataId;
+            actualCustomListId = _actualCustomListId;
         }
 
         /// <summary>
@@ -53,14 +57,32 @@ namespace Project_Inventory
             toolBox.EmptyGrid(bottomGrid);
         }
 
-        public int StorageIDBackups()
+        public void IDBachUps(out int _actualUserId, out int _actualStorageId, out int _actualDataId, out int _actualCustomListId)
+        {
+            _actualUserId = UserIDBackups();
+            _actualStorageId = StorageIDBackups();
+            _actualDataId = DataIDBackups();
+            _actualCustomListId = CustomListIDBackups();
+        }
+
+        private int UserIDBackups()
+        {
+            return actualUserId;
+        }
+
+        private int StorageIDBackups()
         {
             return actualStorageId;
         }
 
-        public int DataIDBackups()
+        private int DataIDBackups()
         {
             return actualDataId;
+        }
+
+        private int CustomListIDBackups()
+        {
+            return actualCustomListId;
         }
 
         /// <summary>

@@ -12,10 +12,16 @@ namespace Project_Inventory.Tools
         MainMenu, 
         StorageSelectionMenu,
         StorageViewerPage,
+        ListMenu,
+        ListViewerPage,
+        LogsMenu,
+        UserMenu,
+
         FormPage,
         AddStorage,
         InitStorage,
         CreditPage,
+
         None
     }
 }

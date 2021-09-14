@@ -54,48 +54,17 @@ namespace Local_API_Server.Controllers
         }
 
         // GET: api/DataLibraries/storage/5
-        [HttpGet("storage/{storageId}/{researchString}")]
-        public async Task<ActionResult<IEnumerable<DataLibrary>>> GetDataLibraryByStorage(int storageId, string researchString)
+        [HttpGet("codeBar/{codeBar}")]
+        public async Task<ActionResult<IEnumerable<DataLibrary>>> GetDataLibraryByStorage(string codeBar)
         {
-            var dataLibrary = await _context.DataLibraries.Where(r => r.StorageId == storageId).ToListAsync();
+            var dataLibrary = await _context.DataLibraries.Where(r => r.CodeBar == codeBar).ToListAsync();
 
             if (dataLibrary == null)
             {
                 return NotFound();
             }
 
-            var stringTab = researchString.Split(" ");
-            bool[] trigger = new bool[dataLibrary.Count()];
-            var dataLibraryShorted = new List<DataLibrary>();
-            int i = 0;
-
-            foreach (DataLibrary data in dataLibrary)
-            {
-                if (data.IsHeader != "True")
-                {
-                    trigger[i] = false;
-
-                    foreach (string str in stringTab)
-                    {
-                        if (!data.DataText.Contains(str))
-                        {
-                            trigger[i] = true;
-                        }
-                    }
-                }
-
-                i++;
-            }
-
-            for (i = 0; i < trigger.Length; i++)
-            {
-                if (!trigger[i])
-                {
-                    dataLibraryShorted.Add(dataLibrary[i]);
-                }
-            }
-
-            return dataLibraryShorted;
+            return dataLibrary;
         }
 
         // PUT: api/DataLibraries/5

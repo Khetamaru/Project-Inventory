@@ -10,6 +10,11 @@ namespace Project_Inventory.Tools
     public enum BDDTabsName
     {
         DataLibraries,
-        StorageLibraries
+        StorageLibraries,
+        CustomListLibraries,
+        LogLibraries,
+        UserLibraries,
+        StorageLibrariesXCustomListLibraries,
+        ListOptionLibraries
     }
 }

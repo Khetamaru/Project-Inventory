@@ -1,6 +1,7 @@
 ﻿using Project_Inventory.BDD;
 using Project_Inventory.Tools;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace Project_Inventory
 {
@@ -18,9 +19,15 @@ namespace Project_Inventory
         private StorageSelectionMenu storageSelectionMenu;
         private FormPage formPage;
         private StorageViewerPage storageViewerPage;
+        private ListMenu listMenu;
+        private ListViewerPage listViewerPage;
+        private LogsMenu logsMenu;
+        private UserMenu userMenu;
 
+        private int actualUserId;
         private int actualStorageId;
         private int actualDataId;
+        private int actualCustomListId;
 
         public MainWindow()
         {
@@ -39,8 +46,10 @@ namespace Project_Inventory
             router = InitRouters();
             requestCenter = new RequestCenter();
 
-            actualStorageId = 42;
-            actualDataId = 42;
+            actualUserId = -1;
+            actualStorageId = -1;
+            actualDataId = -1;
+            actualCustomListId = -1;
 
             this.SizeChanged += new SizeChangedEventHandler((object sender, SizeChangedEventArgs e) => { SizeChangeResizeEvent(sender, e); });
 
@@ -49,6 +58,20 @@ namespace Project_Inventory
 
         private void SizeChangeResizeEvent(object sender, SizeChangedEventArgs e)
         {
+            switch(this.WindowState == WindowState.Maximized)
+            {
+                case true:
+                    WpfScreen wpfScreen = WpfScreen.GetScreenFrom(this);
+
+                    toolBox.windowWidth = wpfScreen.PrimaryScreenSizeWidth();
+                    toolBox.windowHeight = wpfScreen.PrimaryScreenSizeHeight();
+                    break;
+
+                case false:
+                    toolBox.windowWidth = Width;
+                    toolBox.windowHeight = Height;
+                    break;
+            }
             ReloadView(sender, e);
         }
 
@@ -59,7 +82,9 @@ namespace Project_Inventory
 
         public void MainMenuInit()
         {
-            mainMenu = new MainMenu(toolBox, router, requestCenter, actualStorageId, actualDataId);
+            RoutedEventHandler reloadEvent = new RoutedEventHandler((object sender, RoutedEventArgs e) => ReloadView(sender, e));
+
+            mainMenu = new MainMenu(toolBox, router, requestCenter, actualUserId, actualStorageId, actualCustomListId, actualDataId, reloadEvent);
             actualWindow = WindowsName.MainMenu;
             mainMenu.TopGridInit(topGrid);
             mainMenu.CenterGridInit(centerGrid);
@@ -70,18 +95,62 @@ namespace Project_Inventory
         {
             RoutedEventHandler reloadEvent = new RoutedEventHandler((object sender, RoutedEventArgs e) => ReloadView(sender, e));
 
-            storageSelectionMenu = new StorageSelectionMenu(toolBox, router, requestCenter, actualStorageId, actualDataId, reloadEvent);
+            storageSelectionMenu = new StorageSelectionMenu(toolBox, router, requestCenter, actualUserId, actualStorageId, actualDataId, actualCustomListId, reloadEvent);
             actualWindow = WindowsName.StorageSelectionMenu;
             storageSelectionMenu.TopGridInit(topGrid);
             storageSelectionMenu.CenterGridInit(centerGrid);
             storageSelectionMenu.BottomGridInit(bottomGrid);
         }
 
+        public void ListMenuInit()
+        {
+            RoutedEventHandler reloadEvent = new RoutedEventHandler((object sender, RoutedEventArgs e) => ReloadView(sender, e));
+
+            listMenu = new ListMenu(toolBox, router, requestCenter, actualUserId, actualStorageId, actualDataId, actualCustomListId, reloadEvent);
+            actualWindow = WindowsName.ListMenu;
+            listMenu.TopGridInit(topGrid);
+            listMenu.CenterGridInit(centerGrid);
+            listMenu.BottomGridInit(bottomGrid);
+        }
+
+        public void UserMenuInit()
+        {
+            RoutedEventHandler reloadEvent = new RoutedEventHandler((object sender, RoutedEventArgs e) => ReloadView(sender, e));
+
+            userMenu = new UserMenu(toolBox, router, requestCenter, actualUserId, actualStorageId, actualDataId, actualCustomListId, reloadEvent);
+            actualWindow = WindowsName.UserMenu;
+            userMenu.TopGridInit(topGrid);
+            userMenu.CenterGridInit(centerGrid);
+            userMenu.BottomGridInit(bottomGrid);
+        }
+
+        public void ListViewerPageInit()
+        {
+            RoutedEventHandler reloadEvent = new RoutedEventHandler((object sender, RoutedEventArgs e) => ReloadView(sender, e));
+
+            listViewerPage = new ListViewerPage(toolBox, router, requestCenter, actualUserId, actualStorageId, actualDataId, actualCustomListId, reloadEvent);
+            actualWindow = WindowsName.ListViewerPage;
+            listViewerPage.TopGridInit(topGrid);
+            listViewerPage.CenterGridInit(centerGrid);
+            listViewerPage.BottomGridInit(bottomGrid);
+        }
+
+        public void LogsMenuInit()
+        {
+            RoutedEventHandler reloadEvent = new RoutedEventHandler((object sender, RoutedEventArgs e) => ReloadView(sender, e));
+
+            logsMenu = new LogsMenu(toolBox, router, requestCenter, actualUserId, actualStorageId, actualDataId, actualCustomListId, reloadEvent);
+            actualWindow = WindowsName.LogsMenu;
+            logsMenu.TopGridInit(topGrid);
+            logsMenu.CenterGridInit(centerGrid);
+            logsMenu.BottomGridInit(bottomGrid);
+        }
+
         public void FormPageInit(WindowsName formType)
         {
             RoutedEventHandler reloadEvent = new RoutedEventHandler((object sender, RoutedEventArgs e) => ReloadView(sender, e));
 
-            formPage = new FormPage(toolBox, router, requestCenter, formType, actualStorageId, actualDataId, reloadEvent);
+            formPage = new FormPage(toolBox, router, requestCenter, formType, actualUserId, actualStorageId, actualDataId, actualCustomListId, reloadEvent);
             actualWindow = WindowsName.FormPage;
             formPage.TopGridInit(topGrid);
             formPage.CenterGridInit(centerGrid);
@@ -100,7 +169,7 @@ namespace Project_Inventory
             {
                 RoutedEventHandler reloadEvent = new RoutedEventHandler((object sender, RoutedEventArgs e) => ReloadView(sender, e));
 
-                storageViewerPage = new StorageViewerPage(toolBox, router, requestCenter, actualStorageId, actualDataId, reloadEvent);
+                storageViewerPage = new StorageViewerPage(toolBox, router, requestCenter, actualUserId, actualStorageId, actualDataId, actualCustomListId, reloadEvent);
                 actualWindow = WindowsName.StorageViewerPage;
                 storageViewerPage.TopGridInit(topGrid);
                 storageViewerPage.CenterGridInit(centerGrid);
@@ -112,21 +181,36 @@ namespace Project_Inventory
         {
             switch(actualWindow)
             {
-                case (WindowsName.MainMenu):
-                    actualStorageId = mainMenu.StorageIDBackups();
-                    actualDataId = mainMenu.DataIDBackups();
+                case WindowsName.MainMenu:
+                    mainMenu.IDBachUps(out actualUserId, out actualStorageId, out actualDataId, out actualCustomListId);
                     break;
-                case (WindowsName.StorageSelectionMenu):
-                    actualStorageId = storageSelectionMenu.StorageIDBackups();
-                    actualDataId = storageSelectionMenu.DataIDBackups();
+
+                case WindowsName.StorageSelectionMenu:
+                    storageSelectionMenu.IDBachUps(out actualUserId, out actualStorageId, out actualDataId, out actualCustomListId);
                     break;
-                case (WindowsName.FormPage):
-                    actualStorageId = formPage.StorageIDBackups();
-                    actualDataId = formPage.DataIDBackups();
+
+                case WindowsName.ListMenu:
+                    listMenu.IDBachUps(out actualUserId, out actualStorageId, out actualDataId, out actualCustomListId);
                     break;
-                case (WindowsName.StorageViewerPage):
-                    actualStorageId = storageViewerPage.StorageIDBackups();
-                    actualDataId = storageViewerPage.DataIDBackups();
+
+                case WindowsName.UserMenu:
+                    userMenu.IDBachUps(out actualUserId, out actualStorageId, out actualDataId, out actualCustomListId);
+                    break;
+
+                case WindowsName.ListViewerPage:
+                    listViewerPage.IDBachUps(out actualUserId, out actualStorageId, out actualDataId, out actualCustomListId);
+                    break;
+
+                case WindowsName.LogsMenu:
+                    logsMenu.IDBachUps(out actualUserId, out actualStorageId, out actualDataId, out actualCustomListId);
+                    break;
+
+                case WindowsName.FormPage:
+                    formPage.IDBachUps(out actualUserId, out actualStorageId, out actualDataId, out actualCustomListId);
+                    break;
+
+                case WindowsName.StorageViewerPage:
+                    storageViewerPage.IDBachUps(out actualUserId, out actualStorageId, out actualDataId, out actualCustomListId);
                     break;
             }
         }
@@ -147,6 +231,22 @@ namespace Project_Inventory
 
                 case WindowsName.StorageViewerPage:
                     storageViewerPageInit();
+                    break;
+
+                case WindowsName.ListMenu:
+                    ListMenuInit();
+                    break;
+
+                case WindowsName.UserMenu:
+                    UserMenuInit();
+                    break;
+
+                case WindowsName.LogsMenu:
+                    LogsMenuInit();
+                    break;
+
+                case WindowsName.ListViewerPage:
+                    ListViewerPageInit();
                     break;
 
                 case WindowsName.AddStorage:
@@ -236,6 +336,10 @@ namespace Project_Inventory
                 WindowsName.MainMenu,
                 WindowsName.StorageSelectionMenu,
                 WindowsName.StorageViewerPage,
+                WindowsName.ListMenu,
+                WindowsName.ListViewerPage,
+                WindowsName.LogsMenu,
+                WindowsName.UserMenu,
                 WindowsName.FormPage
             };
 
@@ -259,6 +363,8 @@ namespace Project_Inventory
             switch (actualWindow)
             {
                 case WindowsName.MainMenu:
+                    mainMenu.IsUserConnected();
+                    mainMenu.LoadBDDInfos();
                     mainMenu.TopGridInit(topGrid);
                     mainMenu.CenterGridInit(centerGrid);
                     mainMenu.BottomGridInit(bottomGrid);
@@ -271,9 +377,44 @@ namespace Project_Inventory
                     break;
 
                 case WindowsName.FormPage:
+                    formPage.GetUIElements();
                     formPage.TopGridInit(topGrid);
                     formPage.CenterGridInit(centerGrid);
                     formPage.BottomGridInit(bottomGrid);
+                    formPage.DataInjection();
+                    break;
+
+                case WindowsName.ListMenu:
+                    listMenu.TopGridInit(topGrid);
+                    listMenu.CenterGridInit(centerGrid);
+                    listMenu.BottomGridInit(bottomGrid);
+                    break;
+
+                case WindowsName.UserMenu:
+                    userMenu.TopGridInit(topGrid);
+                    userMenu.CenterGridInit(centerGrid);
+                    userMenu.BottomGridInit(bottomGrid);
+                    break;
+
+                case WindowsName.ListViewerPage:
+                    listViewerPage.LoadBDDInfos();
+                    listViewerPage.TopGridInit(topGrid);
+                    listViewerPage.CenterGridInit(centerGrid);
+                    listViewerPage.BottomGridInit(bottomGrid);
+                    break;
+
+                case WindowsName.LogsMenu:
+                    if (logsMenu.researchTextBox.Text != string.Empty || logsMenu.preResearchDate.SelectedDate != null || logsMenu.postResearchDate.SelectedDate != null)
+                    {
+                        logsMenu.ResearchThree();
+                    }
+                    else
+                    {
+                        logsMenu.LoadBDDInfos();
+                        logsMenu.TopGridInit(topGrid);
+                    }
+                    logsMenu.CenterGridInit(centerGrid);
+                    logsMenu.BottomGridInit(bottomGrid);
                     break;
 
                 case WindowsName.StorageViewerPage:

@@ -11,6 +11,7 @@ namespace Local_API_Server.Models
         public int StorageId { get; set; }
         public string DataText { get; set; }
         public string DataType { get; set; }
-        public string IsHeader { get; set; }
+        public bool IsHeader { get; set; }
+        public string CodeBar { get; set; }
     }
 }

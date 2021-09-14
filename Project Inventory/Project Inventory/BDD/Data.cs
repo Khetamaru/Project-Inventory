@@ -1,4 +1,6 @@
-﻿namespace Project_Inventory.BDD
+﻿using System.Collections.Generic;
+
+namespace Project_Inventory.BDD
 {
     /// <summary>
     /// Use to save Storage Objects Informations
@@ -6,11 +8,12 @@
     public class Data : BDDObject
     {
         public int StorageId { get; set; }
-        public string[] DataText { get; set; }
-        public string[] DataType { get; set; }
+        public List<string> DataText { get; set; }
+        public List<string> DataType { get; set; }
         public bool IsHeader { get; set; }
+        public string CodeBar { get; set; }
 
-        public Data(int id, int storageId, string[] dataText, string[] dataType, bool isHeader)
+        public Data(int id, int storageId, List<string> dataText, List<string> dataType, bool isHeader)
             : base(id)
         {
             StorageId = storageId;
@@ -19,7 +22,7 @@
             IsHeader = isHeader;
         }
 
-        public Data(int storageId, string[] dataText, string[] dataType, bool isHeader)
+        public Data(int storageId, List<string> dataText, List<string> dataType, bool isHeader)
             : base(42)
         {
             StorageId = storageId;
@@ -28,15 +31,34 @@
             IsHeader = isHeader;
         }
 
+        public Data(int id, int storageId, List<string> dataText, List<string> dataType, bool isHeader, string codeBar)
+            : base(id)
+        {
+            StorageId = storageId;
+            DataText = dataText;
+            DataType = dataType;
+            IsHeader = isHeader;
+            CodeBar = codeBar;
+        }
+
+        public Data(int storageId, List<string> dataText, List<string> dataType, bool isHeader, string codeBar)
+            : base(42)
+        {
+            StorageId = storageId;
+            DataText = dataText;
+            DataType = dataType;
+            IsHeader = isHeader;
+            CodeBar = codeBar;
+        }
+
         /// <summary>
         /// Convert Data to json without the Id
         /// </summary>
         /// <returns></returns>
         public string ToJson()
         {
-            return "{\"storageId\":" + StorageId + ",\"dataText\":\"" + ToStringDataText() + "\",\"dataType\":\"" + ToStringDataType() + "\",\"isHeader\":\"" + IsHeader + "\"}";
+            return "{\"storageId\":" + StorageId + ",\"dataText\":\"" + ToStringDataText() + "\",\"dataType\":\"" + ToStringDataType() + "\",\"isHeader\":" + IsHeader.ToString().ToLower() + ",\"codeBar\":\"" + CodeBar + "\"}";
         }
-
 
         /// <summary>
         /// Convert Data to json with the Id
@@ -44,7 +66,7 @@
         /// <returns></returns>
         public string ToJsonId()
         {
-            return "{\"Id\":" + id + ",\"storageId\":" + StorageId + ",\"dataText\":\"" + ToStringDataText() + "\",\"dataType\":\"" + ToStringDataType() + "\",\"isHeader\":\"" + IsHeader + "\"}";
+            return "{\"Id\":" + id + ",\"storageId\":" + StorageId + ",\"dataText\":\"" + ToStringDataText() + "\",\"dataType\":\"" + ToStringDataType() + "\",\"isHeader\":" + IsHeader.ToString().ToLower() + ",\"codeBar\":\"" + CodeBar + "\"}";
         }
 
         /// <summary>
@@ -60,7 +82,7 @@
             {
                 stg += text;
 
-                if (i < DataText.Length - 1)
+                if (i < DataText.Count - 1)
                 {
                     stg += "~";
                 }
@@ -83,7 +105,7 @@
             {
                 stg += type;
 
-                if (i < DataType.Length - 1)
+                if (i < DataType.Count - 1)
                 {
                     stg += "~";
                 }

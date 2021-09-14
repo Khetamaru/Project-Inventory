@@ -1,4 +1,6 @@
-﻿namespace Project_Inventory.BDD
+﻿using System.Collections.Generic;
+
+namespace Project_Inventory.BDD
 {
     /// <summary>
     /// Object use to regroup Datas by Storages

@@ -11,6 +11,8 @@ namespace Project_Inventory.Tools
         Large,
         Logo,
 
+        OneForTwoHorizontal,
+
         None
     }
 }

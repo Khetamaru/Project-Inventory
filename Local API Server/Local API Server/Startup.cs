@@ -1,17 +1,26 @@
 using Local_API_Server.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
+using Microsoft.EntityFrameworkCore;
 
 namespace Local_API_Server
 {
     public class Startup
     {
-        public string dataStringConnection = "Server=localhost\\SQLEXPRESS;Database=master;Trusted_Connection=True";
+
+        public string serverName = "localhost";
+        public string userId = "root";
+        public string password = "root";
+        public bool persistsecurityinfo = true;
+        public string databaseName = "project_inventory";
+        public string dataStringConnection;
+
+        public string databaseVersion = "V2";
 
         public Startup(IConfiguration configuration)
         {
@@ -23,16 +32,32 @@ namespace Local_API_Server
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            dataStringConnection = "server=" + serverName + ";" +
+                                    "Uid=" + userId + ";" +
+                                    "password=" + password + ";" +
+                                    "persistsecurityinfo=" + persistsecurityinfo + ";" +
+                                    "database=" + databaseName;
+
             services.AddDbContext<StorageLibraryContext>(opt =>
-                opt.UseSqlServer(dataStringConnection));
+                opt.UseMySql(dataStringConnection, ServerVersion.AutoDetect(dataStringConnection)));
+            services.AddDbContext<CustomListLibraryContext>(opt =>
+                opt.UseMySql(dataStringConnection, ServerVersion.AutoDetect(dataStringConnection)));
             services.AddDbContext<DataLibraryContext>(opt =>
-                opt.UseSqlServer(dataStringConnection));
+                opt.UseMySql(dataStringConnection, ServerVersion.AutoDetect(dataStringConnection)));
+            services.AddDbContext<ListOptionLibraryContext>(opt =>
+                opt.UseMySql(dataStringConnection, ServerVersion.AutoDetect(dataStringConnection)));
+            services.AddDbContext<LogLibraryContext>(opt =>
+                opt.UseMySql(dataStringConnection, ServerVersion.AutoDetect(dataStringConnection)));
+            services.AddDbContext<StorageLibraryXCustomListLibraryContext>(opt =>
+                opt.UseMySql(dataStringConnection, ServerVersion.AutoDetect(dataStringConnection)));
+            services.AddDbContext<UserLibraryContext>(opt =>
+                opt.UseMySql(dataStringConnection, ServerVersion.AutoDetect(dataStringConnection)));
 
             services.AddControllers();
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Local_API_Server", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = databaseName, Version = databaseVersion });
             });
         }
 
@@ -43,7 +68,7 @@ namespace Local_API_Server
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Local_API_Server v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", databaseName));
             }
 
             app.UseHttpsRedirection();

@@ -1,7 +1,9 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Project_Inventory.BDD;
 
 namespace Project_Inventory.Tools
 {
@@ -50,7 +52,6 @@ namespace Project_Inventory.Tools
         /// <param name="optionTab"></param>
         public static void ComboBoxSkinForm(ComboBox comboBox, string[] optionTab)
         {
-
             foreach (string option in optionTab)
             {
                 comboBox.Items.Add(option);
@@ -59,6 +60,29 @@ namespace Project_Inventory.Tools
             if (comboBox.SelectedItem == null) 
             { 
                 comboBox.SelectedItem = comboBox.Items[0]; 
+            }
+
+            comboBox.HorizontalAlignment = HorizontalAlignment.Center;
+            comboBox.VerticalAlignment = VerticalAlignment.Center;
+        }
+
+        /// <summary>
+        /// Combo Box Skin used at Form Page
+        /// </summary>
+        /// <param name="comboBox"></param>
+        /// <param name="optionTab"></param>
+        public static void ComboBoxSkinForm(ComboBox comboBox, List<ListOption> optionTab)
+        {
+            comboBox.Items.Add("Select an Item");
+
+            foreach (ListOption option in optionTab)
+            {
+                comboBox.Items.Add(option.Name);
+            }
+
+            if (comboBox.SelectedItem == null && comboBox.Items.Count > 0)
+            {
+                comboBox.SelectedItem = comboBox.Items[0];
             }
 
             comboBox.HorizontalAlignment = HorizontalAlignment.Center;
@@ -116,7 +140,7 @@ namespace Project_Inventory.Tools
         /// <param name="comboBox"></param>
         public static void ComboBoxSkinModify(ComboBox comboBox)
         {
-            if (comboBox.SelectedItem == null) { comboBox.SelectedItem = comboBox.Items[0]; }
+            if (comboBox.SelectedItem == null && comboBox.Items.Count < 0) { comboBox.SelectedItem = comboBox.Items[0]; }
             comboBox.HorizontalAlignment = HorizontalAlignment.Center;
             comboBox.VerticalAlignment = VerticalAlignment.Center;
         }
@@ -129,6 +153,18 @@ namespace Project_Inventory.Tools
         {
             label.HorizontalAlignment = HorizontalAlignment.Center;
             label.VerticalAlignment = VerticalAlignment.Center;
+        }
+
+        /// <summary>
+        /// Button Skin
+        /// </summary>
+        /// <param name="textBox"></param>
+        public static void ButtonSkin(Button button, WpfScreen wpfScreen)
+        {
+            button.Width = wpfScreen.PrimaryScreenSizeWidth() / 4;
+            button.Height = 40;
+            button.HorizontalAlignment = HorizontalAlignment.Center;
+            button.VerticalAlignment = VerticalAlignment.Center;
         }
 
         // Other //

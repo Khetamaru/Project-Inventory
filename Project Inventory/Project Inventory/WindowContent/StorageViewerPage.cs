@@ -32,16 +32,17 @@ namespace Project_Inventory
         private Grid capGrid;
         private Data[] dataTab;
         private Data[] dataTabSave;
-        private string[,] stringTab;
-        private string[,] indicTab;
+        private List<List<ListOption>> listOptionsTab;
+        private List<int> customListIds;
+        private string[] indicTab;
 
         private string[] saveButton;
         private RoutedEventLibrary[] saveEvents;
 
         public TextBox researchTextBox;
 
-        public StorageViewerPage(ToolBox ToolBox, Router _router, RequestCenter requestCenter, int _actualStorageId, int _actualDataId, RoutedEventHandler _reloadEvent)
-            : base(ToolBox, _router, requestCenter, _actualStorageId, _actualDataId)
+        public StorageViewerPage(ToolBox ToolBox, Router _router, RequestCenter requestCenter, int _actualUserId, int _actualStorageId, int _actualDataId, int _actualCustomListId, RoutedEventHandler _reloadEvent)
+            : base(ToolBox, _router, requestCenter, _actualUserId, _actualStorageId, _actualDataId, _actualCustomListId)
         {
             viewerStatus = status.VIEWER;
             reloadEvent = _reloadEvent;
@@ -76,22 +77,15 @@ namespace Project_Inventory
         /// </summary>
         public void LoadBDDInfos()
         {
-            dataTabSave = dataTab = JsonCenter.LoadStorageViewerInfos(requestCenter, actualStorageId);
-            
+            dataTabSave = dataTab = JsonCenter.LoadStorageViewerInfos(requestCenter, actualStorageId, out listOptionsTab, out customListIds);
 
-            int i;
             int j;
 
-            stringTab = new string[dataTab.Length, dataTab[0].DataText.Length];
-            indicTab = new string[dataTab.Length, dataTab[0].DataText.Length];
+            indicTab = new string[dataTab[0].DataText.Count];
 
-            for (i = 0; i < dataTab.Length; i++)
+            for (j = 0; j < dataTab[0].DataText.Count; j++)
             {
-                for (j = 0; j < dataTab[0].DataText.Length; j++)
-                {
-                    stringTab[i, j] = dataTab[i].DataText[j];
-                    indicTab[i, j] = dataTab[i].DataType[j];
-                }
+                indicTab[j] = dataTab[0].DataType[j];
             }
         }
 
@@ -116,10 +110,11 @@ namespace Project_Inventory
 
                     toolBox.CreateScrollableGrid(bottomGrid, capGrid,
                                          1, 1,
-                                         stringTab.GetLength(0), stringTab.GetLength(1),
+                                         dataTab.Length, dataTabSave[0].DataText.Count + 1,
                                          SkinLocation.BottomStretch, SkinSize.HeightNintyPercent,
                                          SkinLocation.CenterCenter,
-                                         stringTab, indicTab);
+                                         dataTab, indicTab,
+                                         listOptionsTab, customListIds);
                     break;
 
                 case status.MODIFIER:
@@ -136,7 +131,7 @@ namespace Project_Inventory
             {
                 case status.VIEWER:
 
-                    centerGrid = null;
+                    toolBox.EmptyGrid(centerGrid);
 
                     break;
 
@@ -146,11 +141,12 @@ namespace Project_Inventory
 
                     toolBox.CreateScrollableGridModfiable(centerGrid, capGrid,
                                          1, 1,
-                                         stringTab.GetLength(0) + 1, stringTab.GetLength(1) + 1,
+                                         dataTab.Length + 1, dataTab[0].DataText.Count + 2,
                                          SkinLocation.CenterStretch, SkinSize.HeightEightPercent,
                                          SkinLocation.CenterCenter,
-                                         stringTab, indicTab,
-                                         AddDeleteButtons());
+                                         dataTab, indicTab,
+                                         AddDeleteButtons(),
+                                         listOptionsTab, customListIds);
                     break;
             }
         }
@@ -187,17 +183,19 @@ namespace Project_Inventory
         /// <param name="e"></param>
         private void SaveDatas(object sender, RoutedEventArgs e)
         {
-            List<int> changesList = toolBox.GetUIElements(capGrid, dataTab, indicTab);
+            Data optionnalAdd = null;
 
-            Data optionnalAdd = new Data(42, actualStorageId, new string[dataTab[0].DataText.Length], dataTab[0].DataType, false);
+            List<int> changesList = toolBox.GetUIElements(toolBox.ExtractFormInfos(capGrid), dataTab, out optionnalAdd, listOptionsTab);
 
             foreach(int change in changesList)
             {
+                requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "(" + JsonCenter.GetStorage(requestCenter, actualStorageId).Name + ") Storage's Data has changed.").ToJson());
                 requestCenter.PutRequest(BDDTabsName.DataLibraries.ToString() + "/" + dataTab[change].id, dataTab[change].ToJsonId());
             }
 
-            if (toolBox.OptionnalAdd(capGrid, dataTab, optionnalAdd))
+            if (optionnalAdd != null)
             {
+                requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "(" + JsonCenter.GetStorage(requestCenter, actualStorageId).Name + ") Storage gained a new Data.").ToJson());
                 requestCenter.PostRequest(BDDTabsName.DataLibraries.ToString(), optionnalAdd.ToJson());
             }
         }
@@ -234,6 +232,7 @@ namespace Project_Inventory
         {
             if (PopUpCenter.ActionValidPopup())
             {
+                requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "A (" + JsonCenter.GetStorage(requestCenter, actualStorageId).Name + ") Storage's Data has been delete.").ToJson());
                 requestCenter.DeleteRequest("DataLibraries/" + dataId);
             }
         }
@@ -288,6 +287,10 @@ namespace Project_Inventory
                                 trigger[i]++;
                             }
                         }
+                        if (data.CodeBar.Contains(str))
+                        {
+                            trigger[i]++;
+                        }
                     }
                 }
                 else
@@ -312,18 +315,11 @@ namespace Project_Inventory
                 dataTab[i] = dataLibraryShorted[i];
             }
 
-            int j;
+            indicTab = new string[dataTabSave[0].DataText.Count];
 
-            stringTab = new string[dataTab.Length, dataTab[0].DataText.Length];
-            indicTab = new string[dataTab.Length, dataTab[0].DataText.Length];
-
-            for (i = 0; i < dataTab.Length; i++)
+            for (i = 0; i < dataTabSave[0].DataText.Count; i++)
             {
-                for (j = 0; j < dataTab[0].DataText.Length; j++)
-                {
-                    stringTab[i, j] = dataTab[i].DataText[j];
-                    indicTab[i, j] = dataTab[i].DataType[j];
-                }
+                indicTab[i] = dataTabSave[0].DataType[i];
             }
         }
     }
