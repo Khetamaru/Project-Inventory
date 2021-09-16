@@ -67,6 +67,20 @@ namespace Local_API_Server.Controllers
             return dataLibrary;
         }
 
+        // GET: api/DataLibraries/header/5
+        [HttpGet("header/{header}")]
+        public async Task<ActionResult<IEnumerable<DataLibrary>>> GetDataLibraryByHeader(int header)
+        {
+            var dataLibrary = await _context.DataLibraries.Where(r => r.IsHeader == true && r.StorageId == header).ToListAsync();
+
+            if (dataLibrary == null)
+            {
+                return NotFound();
+            }
+
+            return dataLibrary;
+        }
+
         // PUT: api/DataLibraries/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]

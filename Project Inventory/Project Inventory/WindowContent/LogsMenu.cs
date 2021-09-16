@@ -84,6 +84,7 @@ namespace Project_Inventory
             toolBox.InsertUIElementInGrid(topGrid, preResearchDate, 0, 1, UIElementsName.DatePicker, SkinLocation.CenterCenter);
             toolBox.InsertUIElementInGrid(topGrid, postResearchDate, 0, 2, UIElementsName.DatePicker, SkinLocation.CenterCenter);
             toolBox.InsertUIElementInGrid(topGrid, buttonLogDelete, 0, 3, UIElementsName.Button, SkinLocation.TopLeft);
+            researchTextBox.Focus();
         }
 
         public new void BottomGridInit(Grid bottomGrid)

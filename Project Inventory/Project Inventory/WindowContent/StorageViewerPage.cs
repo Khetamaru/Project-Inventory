@@ -98,31 +98,7 @@ namespace Project_Inventory
                                                    new SkinLocation[] { SkinLocation.TopLeft, SkinLocation.TopRight, SkinLocation.TopRight });
 
             toolBox.InsertUIElementInGrid(topGrid, researchTextBox, 0, 1, UIElementsName.TextBox, SkinLocation.CenterCenter);
-        }
-
-        public new void BottomGridInit(Grid bottomGrid)
-        {
-            switch (viewerStatus)
-            {
-                case status.VIEWER:
-
-                    capGrid = new Grid();
-
-                    toolBox.CreateScrollableGrid(bottomGrid, capGrid,
-                                         1, 1,
-                                         dataTab.Length, dataTabSave[0].DataText.Count + 1,
-                                         SkinLocation.BottomStretch, SkinSize.HeightNintyPercent,
-                                         SkinLocation.CenterCenter,
-                                         dataTab, indicTab,
-                                         listOptionsTab, customListIds);
-                    break;
-
-                case status.MODIFIER:
-                    toolBox.SetUpGrid(bottomGrid, 1, 1, SkinLocation.BottomStretch, SkinSize.HeightTenPercent);
-
-                    toolBox.CreateSwitchButtonsToGridByTab(bottomGrid, saveButton, saveEvents, SkinName.StandartLittleMargin, SkinLocation.BottomCenter);
-                    break;
-            }
+            researchTextBox.Focus();
         }
 
         public new void CenterGridInit(Grid centerGrid)
@@ -147,6 +123,31 @@ namespace Project_Inventory
                                          dataTab, indicTab,
                                          AddDeleteButtons(),
                                          listOptionsTab, customListIds);
+                    break;
+            }
+        }
+
+        public new void BottomGridInit(Grid bottomGrid)
+        {
+            switch (viewerStatus)
+            {
+                case status.VIEWER:
+
+                    capGrid = new Grid();
+
+                    toolBox.CreateScrollableGrid(bottomGrid, capGrid,
+                                         1, 1,
+                                         dataTab.Length, dataTabSave[0].DataText.Count + 1,
+                                         SkinLocation.BottomStretch, SkinSize.HeightNintyPercent,
+                                         SkinLocation.CenterCenter,
+                                         dataTab, indicTab,
+                                         listOptionsTab, customListIds);
+                    break;
+
+                case status.MODIFIER:
+                    toolBox.SetUpGrid(bottomGrid, 1, 1, SkinLocation.BottomStretch, SkinSize.HeightTenPercent);
+
+                    toolBox.CreateSwitchButtonsToGridByTab(bottomGrid, saveButton, saveEvents, SkinName.StandartLittleMargin, SkinLocation.BottomCenter);
                     break;
             }
         }
