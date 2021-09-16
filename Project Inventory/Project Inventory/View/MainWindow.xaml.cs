@@ -1,7 +1,6 @@
 ﻿using Project_Inventory.BDD;
 using Project_Inventory.Tools;
 using System.Windows;
-using System.Windows.Controls;
 
 namespace Project_Inventory
 {
@@ -23,6 +22,8 @@ namespace Project_Inventory
         private ListViewerPage listViewerPage;
         private LogsMenu logsMenu;
         private UserMenu userMenu;
+        private GlobalStorageResearch globalStorageResearch;
+        private DataDetailsPage dataDetailsPage;
 
         private int actualUserId;
         private int actualStorageId;
@@ -135,6 +136,28 @@ namespace Project_Inventory
             listViewerPage.BottomGridInit(bottomGrid);
         }
 
+        public void GlobalStorageResearchInit()
+        {
+            RoutedEventHandler reloadEvent = new RoutedEventHandler((object sender, RoutedEventArgs e) => ReloadView(sender, e));
+
+            globalStorageResearch = new GlobalStorageResearch(toolBox, router, requestCenter, actualUserId, actualStorageId, actualDataId, actualCustomListId, reloadEvent, storageSelectionMenu.researchTextBox.Text);
+            actualWindow = WindowsName.GlobalStorageResearch;
+            globalStorageResearch.TopGridInit(topGrid);
+            globalStorageResearch.CenterGridInit(centerGrid);
+            globalStorageResearch.BottomGridInit(bottomGrid);
+        }
+
+        public void DataDetailsPageInit()
+        {
+            RoutedEventHandler reloadEvent = new RoutedEventHandler((object sender, RoutedEventArgs e) => ReloadView(sender, e));
+
+            dataDetailsPage = new DataDetailsPage(toolBox, router, requestCenter, actualUserId, actualStorageId, actualDataId, actualCustomListId, reloadEvent);
+            actualWindow = WindowsName.DataDetailPage;
+            dataDetailsPage.TopGridInit(topGrid);
+            dataDetailsPage.CenterGridInit(centerGrid);
+            dataDetailsPage.BottomGridInit(bottomGrid);
+        }
+
         public void LogsMenuInit()
         {
             RoutedEventHandler reloadEvent = new RoutedEventHandler((object sender, RoutedEventArgs e) => ReloadView(sender, e));
@@ -201,6 +224,14 @@ namespace Project_Inventory
                     listViewerPage.IDBachUps(out actualUserId, out actualStorageId, out actualDataId, out actualCustomListId);
                     break;
 
+                case WindowsName.GlobalStorageResearch:
+                    globalStorageResearch.IDBachUps(out actualUserId, out actualStorageId, out actualDataId, out actualCustomListId);
+                    break;
+
+                case WindowsName.DataDetailPage:
+                    dataDetailsPage.IDBachUps(out actualUserId, out actualStorageId, out actualDataId, out actualCustomListId);
+                    break;
+
                 case WindowsName.LogsMenu:
                     logsMenu.IDBachUps(out actualUserId, out actualStorageId, out actualDataId, out actualCustomListId);
                     break;
@@ -247,6 +278,14 @@ namespace Project_Inventory
 
                 case WindowsName.ListViewerPage:
                     ListViewerPageInit();
+                    break;
+
+                case WindowsName.GlobalStorageResearch:
+                    GlobalStorageResearchInit();
+                    break;
+
+                case WindowsName.DataDetailPage:
+                    DataDetailsPageInit();
                     break;
 
                 case WindowsName.AddStorage:
@@ -338,6 +377,8 @@ namespace Project_Inventory
                 WindowsName.StorageViewerPage,
                 WindowsName.ListMenu,
                 WindowsName.ListViewerPage,
+                WindowsName.GlobalStorageResearch,
+                WindowsName.DataDetailPage,
                 WindowsName.LogsMenu,
                 WindowsName.UserMenu,
                 WindowsName.FormPage
@@ -401,6 +442,21 @@ namespace Project_Inventory
                     listViewerPage.TopGridInit(topGrid);
                     listViewerPage.CenterGridInit(centerGrid);
                     listViewerPage.BottomGridInit(bottomGrid);
+                    break;
+
+                case WindowsName.GlobalStorageResearch:
+                    globalStorageResearch.researchKeyString = globalStorageResearch.researchTextBox.Text;
+                    globalStorageResearch.LoadBDDInfos();
+                    globalStorageResearch.TopGridInit(topGrid);
+                    globalStorageResearch.CenterGridInit(centerGrid);
+                    globalStorageResearch.BottomGridInit(bottomGrid);
+                    break;
+
+                case WindowsName.DataDetailPage:
+                    dataDetailsPage.LoadBDDInfos();
+                    dataDetailsPage.TopGridInit(topGrid);
+                    dataDetailsPage.CenterGridInit(centerGrid);
+                    dataDetailsPage.BottomGridInit(bottomGrid);
                     break;
 
                 case WindowsName.LogsMenu:

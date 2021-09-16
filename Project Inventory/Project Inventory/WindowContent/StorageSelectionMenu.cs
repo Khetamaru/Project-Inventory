@@ -1,8 +1,10 @@
 ﻿using Project_Inventory.BDD;
-using Project_Inventory.Tools;
+using Project_Inventory.Tools.FonctionalityCerters;
+using Project_Inventory.Tools.NamesLibraries;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using Project_Inventory.Tools;
 
 namespace Project_Inventory
 {
@@ -30,27 +32,33 @@ namespace Project_Inventory
         private string[] saveButton;
         private RoutedEventLibrary[] saveEvents;
 
+        public TextBox researchTextBox;
+
         public StorageSelectionMenu(ToolBox toolBox, Router _router, RequestCenter requestCenter, int _actualUserId, int _actualStorageId, int _actualDataId, int _actualCustomListId, RoutedEventHandler _reloadEvent)
             : base(toolBox, _router, requestCenter, _actualUserId, _actualStorageId, _actualDataId, _actualCustomListId)
         {
             viewerStatus = status.VIEWER;
             reloadEvent = _reloadEvent;
 
-            topGridButtons = new string[] { "Modify", "Return" };
+            topGridButtons = new string[] { "Modify", "Research", "Return" };
             saveButton = new string[] { "Save" };
 
-            topSwitchEvents = new RoutedEventLibrary[2];
+            topSwitchEvents = new RoutedEventLibrary[3];
             RoutedEventLibrariesInit(topSwitchEvents);
 
             topSwitchEvents[0].resetPageEvent = reloadEvent;
             topSwitchEvents[0].optionalEventOne = new RoutedEventHandler((object sender, RoutedEventArgs e) => { SwitchStatus(sender, e); });
-            topSwitchEvents[1].changePageEvent = GetEventHandler(WindowsName.MainMenu);
+            topSwitchEvents[1].changePageEvent = new RoutedEventHandler((object sender, RoutedEventArgs e) => { GlobalResearch(sender, e); });
+            topSwitchEvents[2].changePageEvent = GetEventHandler(WindowsName.MainMenu);
 
             saveEvents = new RoutedEventLibrary[1];
             RoutedEventLibrariesInit(saveEvents);
             saveEvents[0].resetPageEvent = reloadEvent;
             saveEvents[0].optionalEventOne = new RoutedEventHandler((object sender, RoutedEventArgs e) => { SwitchStatus(sender, e); });
             saveEvents[0].optionalEventTwo = new RoutedEventHandler((object sender, RoutedEventArgs e) => { SaveDatas(sender, e); });
+
+            researchTextBox = new TextBox();
+            KeyPressedEventCenter.KeyPressedEventInjection(new RoutedEventHandler((object sender, RoutedEventArgs e) => { GlobalResearch(sender, e); }), KeyPressedName.EnterKey, researchTextBox);
 
             capGrid = new Grid();
 
@@ -70,13 +78,16 @@ namespace Project_Inventory
 
         public new void TopGridInit(Grid topGrid)
         {
-            toolBox.SetUpGrid(topGrid, 1, 2, SkinLocation.TopStretch, SkinSize.HeightTenPercent);
+            toolBox.SetUpGrid(topGrid, 1, 3, SkinLocation.TopStretch, SkinSize.HeightTenPercent);
 
             toolBox.CreateSwitchButtonsToGridByTab(topGrid, 
                                                    topGridButtons, 
                                                    topSwitchEvents, 
-                                                   new SkinName[] { SkinName.StandartLittleMargin, SkinName.StandartLittleMargin }, 
-                                                   new SkinLocation[] { SkinLocation.TopLeft, SkinLocation.TopRight });
+                                                   new SkinName[] { SkinName.StandartLittleMargin, SkinName.StandartLittleMargin, SkinName.StandartLittleMargin }, 
+                                                   new SkinLocation[] { SkinLocation.TopLeft, SkinLocation.TopCenter, SkinLocation.TopRight });
+
+            toolBox.InsertUIElementInGrid(topGrid, researchTextBox, 0, 1, UIElementsName.TextBox, SkinLocation.CenterCenter);
+            researchTextBox.Focus();
         }
 
         public new void BottomGridInit(Grid bottomGrid)
@@ -162,6 +173,23 @@ namespace Project_Inventory
         public void IDSetup(object sender, RoutedEventArgs e, int id)
         {
             actualStorageId = id;
+        }
+
+        /// <summary>
+        /// Launch Data research on all Storages
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void GlobalResearch(object sender, RoutedEventArgs e)
+        {
+            if (researchTextBox.Text.Replace(" ", string.Empty) != string.Empty)
+            {
+                GetEventHandler(WindowsName.GlobalStorageResearch).Invoke(sender, e);
+            }
+            else
+            {
+                //Pop Up
+            }
         }
 
         /// <summary>

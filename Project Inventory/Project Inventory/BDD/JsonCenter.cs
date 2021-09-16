@@ -139,6 +139,36 @@ namespace Project_Inventory.Tools
         }
 
         /// <summary>
+        /// Get all infos for the Global Storage Research Page
+        /// </summary>
+        /// <param name="requestCenter"></param>
+        /// <returns></returns>
+        public static List<Data> LoadGlobalStorageResearchInfos(RequestCenter requestCenter, out List<Storage> storages)
+        {
+            string responseBdd = requestCenter.GetRequest(BDDTabsName.StorageLibraries.ToString());
+
+            if (responseBdd == empty)
+            {
+                storages = new List<Storage>();
+            }
+            else
+            {
+                storages = (FormatToBDDObject(responseBdd, ObjectName.Storage) as Storage[]).ToList();
+            }
+
+            responseBdd = requestCenter.GetRequest(BDDTabsName.DataLibraries.ToString());
+
+            if (responseBdd == empty)
+            {
+                return new List<Data>();
+            }
+            else
+            {
+                return (FormatToBDDObject(responseBdd, ObjectName.Data) as Data[]).ToList();
+            }
+        }
+
+        /// <summary>
         /// Get all infos for the Main Menu
         /// </summary>
         /// <param name="requestCenter"></param>
@@ -382,6 +412,61 @@ namespace Project_Inventory.Tools
             {
                 return FormatToBDDObject(responseBdd, ObjectName.Data) as Data[];
             }
+        }
+
+        /// <summary>
+        /// Get all infos for the Data details page
+        /// </summary>
+        /// <param name="requestCenter"></param>
+        /// <param name="dataId"></param>
+        /// <returns></returns>
+        public static Data LoadDataDetailsPageInfos(RequestCenter requestCenter, int dataId, out List<List<ListOption>> listOptionsTab, out List<int> customListIds, out Data header)
+        {
+            listOptionsTab = new List<List<ListOption>>();
+            customListIds = new List<int>();
+            List<CustomList> customLists;
+            string responseBdd;
+
+            responseBdd = requestCenter.GetRequest(BDDTabsName.CustomListLibraries.ToString());
+
+            if (responseBdd == empty)
+            {
+                customLists = new List<CustomList>();
+            }
+            else
+            {
+                customLists = (FormatToBDDObject(responseBdd, ObjectName.CustomList) as CustomList[]).ToList();
+            }
+
+            foreach (CustomList customList in customLists)
+            {
+                responseBdd = requestCenter.GetRequest(BDDTabsName.ListOptionLibraries.ToString() + "/customList/" + customList.id);
+
+                if (responseBdd == empty)
+                {
+                    listOptionsTab.Add(new List<ListOption>());
+                }
+                else
+                {
+                    listOptionsTab.Add((FormatToBDDObject(responseBdd, ObjectName.ListOption) as ListOption[]).ToList().OrderBy(obj => obj.Index).ToList());
+                }
+                customListIds.Add(customList.id);
+            }
+
+            Data data = GetData(requestCenter, dataId);
+
+            responseBdd = requestCenter.GetRequest(BDDTabsName.DataLibraries.ToString() + "/header/" + data.StorageId);
+
+            if (responseBdd == empty)
+            {
+                throw new Exception();
+            }
+            else
+            {
+                header = (FormatToBDDObject(responseBdd, ObjectName.Data) as Data[])[0];
+            }
+
+            return data;
         }
 
         /// <summary>
