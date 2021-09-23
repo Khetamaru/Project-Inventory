@@ -18,6 +18,8 @@ namespace Project_Inventory.Tools
         UserMenu,
         GlobalStorageResearch,
         DataDetailPage,
+        StorageTransfertSelection,
+        DataTransfert,
 
         FormPage,
         AddStorage,

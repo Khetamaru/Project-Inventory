@@ -105,14 +105,6 @@ namespace Project_Inventory.Tools
             return strResponseValue;
         }
 
-        public string GetRequest(string requestString, string json)
-        {
-            endPoint = requestString;
-            httpMethod = HttpVerb.GET;
-
-            return MakeRequest(json);
-        }
-
         public string GetRequest(string requestString)
         {
             endPoint = requestString;
@@ -129,34 +121,10 @@ namespace Project_Inventory.Tools
             return MakeRequest(json);
         }
 
-        public string PostRequest(string requestString)
-        {
-            endPoint = requestString;
-            httpMethod = HttpVerb.POST;
-
-            return MakeRequest();
-        }
-
         public string PutRequest(string requestString, string json)
         {
             endPoint = requestString;
             httpMethod = HttpVerb.PUT;
-
-            return MakeRequest(json);
-        }
-
-        public string PutRequest(string requestString)
-        {
-            endPoint = requestString;
-            httpMethod = HttpVerb.PUT;
-
-            return MakeRequest();
-        }
-
-        public string DeleteRequest(string requestString, string json)
-        {
-            endPoint = requestString;
-            httpMethod = HttpVerb.DELETE;
 
             return MakeRequest(json);
         }

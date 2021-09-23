@@ -155,6 +155,12 @@ namespace Project_Inventory
         {
             grid.Width = screenWidth * 0.34;
         }
+
+        public static void WidthFiftyPercent(Grid grid, double screenWidth)
+        {
+            grid.Width = screenWidth * 0.5;
+        }
+
         public static void WidthTwoTier(Grid grid, double screenWidth)
         {
             grid.Width = screenWidth * 0.66;

@@ -7,10 +7,15 @@
     <UseWPF>true</UseWPF>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <StartupObject>Project_Inventory.App</StartupObject>
+    <ApplicationIcon>logo.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
     <Folder Include="Images\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="WPFCustomMessageBox" Version="1.0.7" />
   </ItemGroup>
 
   <ItemGroup>

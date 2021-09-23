@@ -167,7 +167,7 @@ namespace Local_API_Server.Controllers
         [HttpDelete]
         public async Task<IActionResult> DeleteDataLibrary()
         {
-            IEnumerable<DataLibrary> DataLibrary = await _context.DataLibraries.ToListAsync();
+            IEnumerable<DataLibrary> DataLibrary = await _context.DataLibraries.Where(r => r.IsHeader == false).ToListAsync();
             if (DataLibrary == null)
             {
                 return NotFound();

@@ -124,6 +124,7 @@ namespace Project_Inventory
                     {
                         IDSetup(sender, e, comboBox);
                     });
+                    button.IsDefault = true;
 
                     toolBox.InsertUIElementInGrid(bottomGrid, button, 1, 0, UIElementsName.Button, SkinLocation.CenterCenter);
 

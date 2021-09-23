@@ -67,7 +67,7 @@ namespace Project_Inventory.Tools
             MessageBoxImage icnMessageBox = MessageBoxImage.Information;
             string sCaption = "Information Pop Up";
 
-            MessageBoxResult rsltMessageBox = MessageBox.Show(msg, sCaption, btnMessageBox, icnMessageBox);
+            MessageBox.Show(msg, sCaption, btnMessageBox, icnMessageBox);
         }
     }
 }
