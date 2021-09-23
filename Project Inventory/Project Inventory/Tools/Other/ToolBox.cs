@@ -1052,8 +1052,6 @@ namespace Project_Inventory
             int rowNb = grid.RowDefinitions.Count - 1;
             int columnNb = grid.ColumnDefinitions.Count - 1;
 
-            int intResult;
-
             string[] addElemString = new string[columnNb];
 
             for (i = 0; i < addElemString.Length; i++)
@@ -1301,6 +1299,7 @@ namespace Project_Inventory
             if (indication == UIElementsName.TextBox.ToString())
             {
                 TextBox uiElement = new TextBox();
+                UIElementSkin.TextBoxValidationHandler(uiElement);
                 uiElement.Text = text;
 
                 UIElementSkin.TextBoxSkinModify(uiElement, wpfScreen);
@@ -1322,8 +1321,6 @@ namespace Project_Inventory
 
                 UIElementSkin.TextBoxNumberSkinModify(uiElement, wpfScreen);
                 StorageViewerSkin.LoadSkinPosition(uiElement, skinPosition);
-
-                // insert potential clickEvent
 
                 Grid.SetRow(uiElement, row);
                 Grid.SetColumn(uiElement, column);

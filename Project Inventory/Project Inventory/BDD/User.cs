@@ -33,7 +33,7 @@ namespace Project_Inventory.BDD
         /// <returns></returns>
         public string ToJson()
         {
-            return "{\"name\":\"" + Name + "\",\"accessibilityLevel\":" + AccessibilityLevel + ",\"isActive\":" + IsActive.ToString().ToLower() + "}";
+            return "{\"" + UserEnum.name + "\":\"" + Name + "\",\"" + UserEnum.accessibilityLevel + "\":" + AccessibilityLevel + ",\"" + UserEnum.isActive + "\":" + IsActive.ToString().ToLower() + "}";
         }
 
         /// <summary>
@@ -42,7 +42,15 @@ namespace Project_Inventory.BDD
         /// <returns></returns>
         public string ToJsonId()
         {
-            return "{\"Id\":" + id + ",\"name\":\"" + Name + "\",\"accessibilityLevel\":" + AccessibilityLevel + ",\"isActive\":" + IsActive.ToString().ToLower() + "}";
+            return "{\"" + UserEnum.id + "\":" + id + ",\"" + UserEnum.name + "\":\"" + Name + "\",\"" + UserEnum.accessibilityLevel + "\":" + AccessibilityLevel + ",\"" + UserEnum.isActive + "\":" + IsActive.ToString().ToLower() + "}";
         }
+    }
+
+    public enum UserEnum
+    {
+        id,
+        name,
+        accessibilityLevel,
+        isActive
     }
 }

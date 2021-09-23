@@ -20,6 +20,7 @@ namespace Project_Inventory.Tools
         {
             textBox.Width = wpfScreen.PrimaryScreenSizeWidth() / 4;
             textBox.Height = 40;
+            TextBoxValidationHandler(textBox);
             textBox.HorizontalAlignment = HorizontalAlignment.Center;
             textBox.VerticalAlignment = VerticalAlignment.Center;
         }
@@ -110,6 +111,7 @@ namespace Project_Inventory.Tools
         public static void TextBoxSkinModify(TextBox textBox, WpfScreen wpfScreen)
         {
             textBox.MinWidth = wpfScreen.PrimaryScreenSizeWidth() / 100 * 5;
+            TextBoxValidationHandler(textBox);
             textBox.HorizontalAlignment = HorizontalAlignment.Center;
             textBox.VerticalAlignment = VerticalAlignment.Center;
         }
@@ -182,6 +184,18 @@ namespace Project_Inventory.Tools
         }
 
         /// <summary>
+        /// Integration of testing fonction used by Text Box.
+        /// </summary>
+        /// <param name="textBox"></param>
+        public static void TextBoxValidationHandler(TextBox textBox)
+        {
+            textBox.PreviewTextInput += new TextCompositionEventHandler((object sender, TextCompositionEventArgs e) =>
+            {
+                ValidationTextBox(sender, e);
+            });
+        }
+
+        /// <summary>
         /// Lock use of non-number input for Text Box Number
         /// </summary>
         /// <param name="sender"></param>
@@ -189,6 +203,17 @@ namespace Project_Inventory.Tools
         private static void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
             Regex regex = new Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text);
+        }
+
+        /// <summary>
+        /// Lock use of non-number input for Text Box
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private static void ValidationTextBox(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("[^a-zA-Z0-9]+");
             e.Handled = regex.IsMatch(e.Text);
         }
     }
