@@ -27,7 +27,7 @@ namespace Project_Inventory.BDD
         /// <returns></returns>
         public string ToJson()
         {
-            return "{\"name\":\"" + Name + "\"}";
+            return "{\"" + StorageEnum.name + "\":\"" + Name + "\"}";
         }
 
         /// <summary>
@@ -36,7 +36,13 @@ namespace Project_Inventory.BDD
         /// <returns></returns>
         public string ToJsonId()
         {
-            return "{\"Id\":" + id + ",\"name\":\"" + Name + "\"}";
+            return "{\"" + StorageEnum.id + "\":" + id + ",\"" + StorageEnum.name + "\":\"" + Name + "\"}";
         }
+    }
+
+    public enum StorageEnum
+    {
+        id,
+        name
     }
 }

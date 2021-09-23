@@ -33,7 +33,7 @@ namespace Project_Inventory.BDD
         /// <returns></returns>
         public string ToJson()
         {
-            return "{\"CustomListId\":" + CustomListId + ",\"Index\":" + Index + ",\"Name\":\"" + Name + "\"}";
+            return "{\"" + ListOptionEnum.customListId + "\":" + CustomListId + ",\"" + ListOptionEnum.index + "\":" + Index + ",\"" + ListOptionEnum.name + "\":\"" + Name + "\"}";
         }
 
 
@@ -43,7 +43,15 @@ namespace Project_Inventory.BDD
         /// <returns></returns>
         public string ToJsonId()
         {
-            return "{\"Id\":" + id + ",\"CustomListId\":" + CustomListId + ",\"Index\":" + Index + ",\"Name\":\"" + Name + "\"}";
+            return "{\"" + ListOptionEnum.id + "\":" + id + ",\"" + ListOptionEnum.customListId + "\":" + CustomListId + ",\"" + ListOptionEnum.index + "\":" + Index + ",\"" + ListOptionEnum.name + "\":\"" + Name + "\"}";
         }
+    }
+
+    public enum ListOptionEnum
+    {
+        id,
+        customListId,
+        index,
+        name
     }
 }

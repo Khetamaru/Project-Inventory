@@ -336,17 +336,23 @@ namespace Project_Inventory
 
         private UIElementsName GetUIElementName(string name)
         {
-            switch (name)
+            if (name == UIElementsName.TextBox.ToString())
             {
-                case "TextBox":
-                    return UIElementsName.TextBox;
-                case "TextBoxNumber":
-                    return UIElementsName.TextBoxNumber;
-                case "DatePicker":
-                    return UIElementsName.DatePicker;
-                case "ComboBox":
-                    return UIElementsName.ComboBox;
+                return UIElementsName.TextBox;
+            } 
+            else if (name == UIElementsName.TextBoxNumber.ToString())
+            {
+                return UIElementsName.TextBoxNumber;
             }
+            else if(name == UIElementsName.DatePicker.ToString())
+            {
+                return UIElementsName.DatePicker;
+            }
+            else if(name == UIElementsName.ComboBox.ToString())
+            {
+                return UIElementsName.ComboBox;
+            }
+
             return UIElementsName.None;
         }
 

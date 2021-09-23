@@ -27,7 +27,7 @@ namespace Project_Inventory.BDD
         /// <returns></returns>
         public string ToJson()
         {
-            return "{\"Name\":\"" + Name + "\"}";
+            return "{\"" + CustomListEnum.name + "\":\"" + Name + "\"}";
         }
 
 
@@ -37,7 +37,13 @@ namespace Project_Inventory.BDD
         /// <returns></returns>
         public string ToJsonId()
         {
-            return "{\"Id\":" + id + ",\"Name\":\"" + Name + "\"}";
+            return "{\"" + CustomListEnum.id + "\":" + id + ",\"" + CustomListEnum.name + "\":\"" + Name + "\"}";
         }
+    }
+
+    public enum CustomListEnum
+    {
+        id,
+        name
     }
 }

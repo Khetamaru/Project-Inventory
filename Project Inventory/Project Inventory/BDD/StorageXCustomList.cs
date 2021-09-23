@@ -30,7 +30,7 @@ namespace Project_Inventory.BDD
         /// <returns></returns>
         public string ToJson()
         {
-            return "{\"storageId\":" + StorageId + ",\"customListId\":" + CustomListId + "}";
+            return "{\"" + StorageXCustomListEnum.storageId + "\":" + StorageId + ",\"" + StorageXCustomListEnum.customListId + "\":" + CustomListId + "}";
         }
 
         /// <summary>
@@ -39,7 +39,14 @@ namespace Project_Inventory.BDD
         /// <returns></returns>
         public string ToJsonId()
         {
-            return "{\"Id\":" + id + ",\"storageId\":" + StorageId + ",\"customListId\":" + CustomListId + "}";
+            return "{\"" + StorageXCustomListEnum.id + "\":" + id + ",\"" + StorageXCustomListEnum.storageId + "\":" + StorageId + ",\"" + StorageXCustomListEnum.customListId + "\":" + CustomListId + "}";
         }
+    }
+
+    public enum StorageXCustomListEnum
+    {
+        id,
+        storageId,
+        customListId
     }
 }

@@ -15,6 +15,7 @@ namespace Project_Inventory.Tools
         Log,
         User,
         StorageXCustomList,
-        ListOption
+        ListOption,
+        Header
     }
 }

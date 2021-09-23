@@ -234,7 +234,7 @@ namespace Project_Inventory
             if (PopUpCenter.ActionValidPopup())
             {
                 requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "A (" + JsonCenter.GetStorage(requestCenter, actualStorageId).Name + ") Storage's Data has been delete.").ToJson());
-                requestCenter.DeleteRequest("DataLibraries/" + dataId);
+                requestCenter.DeleteRequest(BDDTabsName.DataLibraries.ToString() + "/" + dataId);
             }
         }
 
