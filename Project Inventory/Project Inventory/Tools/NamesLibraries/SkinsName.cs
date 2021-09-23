@@ -42,6 +42,7 @@ namespace Project_Inventory.Tools
     {
         WidthOneTier,
         WidthTwoTier,
+        WidthFiftyPercent,
         HeightOneTier,
         HeightTwoTier,
         HeightTenPercent,

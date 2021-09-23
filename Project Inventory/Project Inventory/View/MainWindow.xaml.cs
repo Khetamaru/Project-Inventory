@@ -24,6 +24,8 @@ namespace Project_Inventory
         private UserMenu userMenu;
         private GlobalStorageResearch globalStorageResearch;
         private DataDetailsPage dataDetailsPage;
+        private StorageTransfertSelection storageTransfertSelection;
+        private DataTransfert dataTransfert;
 
         private int actualUserId;
         private int actualStorageId;
@@ -33,7 +35,6 @@ namespace Project_Inventory
         public MainWindow()
         {
             DataContext = this;
-            //ResizeMode = ResizeMode.CanMinimize;
 
             InitializeComponent();
 
@@ -101,6 +102,28 @@ namespace Project_Inventory
             storageSelectionMenu.TopGridInit(topGrid);
             storageSelectionMenu.CenterGridInit(centerGrid);
             storageSelectionMenu.BottomGridInit(bottomGrid);
+        }
+
+        public void DataTransfertInit()
+        {
+            RoutedEventHandler reloadEvent = new RoutedEventHandler((object sender, RoutedEventArgs e) => ReloadView(sender, e));
+
+            dataTransfert = new DataTransfert(toolBox, router, requestCenter, actualUserId, actualStorageId, actualDataId, actualCustomListId, reloadEvent);
+            actualWindow = WindowsName.DataTransfert;
+            dataTransfert.TopGridInit(topGrid);
+            dataTransfert.CenterGridInit(centerGrid);
+            dataTransfert.BottomGridInit(bottomGrid);
+        }
+
+        public void StorageTransfertSelectionInit()
+        {
+            RoutedEventHandler reloadEvent = new RoutedEventHandler((object sender, RoutedEventArgs e) => ReloadView(sender, e));
+
+            storageTransfertSelection = new StorageTransfertSelection(toolBox, router, requestCenter, actualUserId, actualStorageId, actualDataId, actualCustomListId, reloadEvent);
+            actualWindow = WindowsName.StorageTransfertSelection;
+            storageTransfertSelection.TopGridInit(topGrid);
+            storageTransfertSelection.CenterGridInit(centerGrid);
+            storageTransfertSelection.BottomGridInit(bottomGrid);
         }
 
         public void ListMenuInit()
@@ -212,6 +235,14 @@ namespace Project_Inventory
                     storageSelectionMenu.IDBachUps(out actualUserId, out actualStorageId, out actualDataId, out actualCustomListId);
                     break;
 
+                case WindowsName.StorageTransfertSelection:
+                    storageTransfertSelection.IDBachUps(out actualUserId, out actualStorageId, out actualDataId, out actualCustomListId);
+                    break;
+
+                case WindowsName.DataTransfert:
+                    dataTransfert.IDBachUps(out actualUserId, out actualStorageId, out actualDataId, out actualCustomListId);
+                    break;
+
                 case WindowsName.ListMenu:
                     listMenu.IDBachUps(out actualUserId, out actualStorageId, out actualDataId, out actualCustomListId);
                     break;
@@ -258,6 +289,14 @@ namespace Project_Inventory
 
                 case WindowsName.StorageSelectionMenu:
                     StorageSelectionMenuInit();
+                    break;
+
+                case WindowsName.StorageTransfertSelection:
+                    StorageTransfertSelectionInit();
+                    break;
+
+                case WindowsName.DataTransfert:
+                    DataTransfertInit();
                     break;
 
                 case WindowsName.StorageViewerPage:
@@ -374,6 +413,8 @@ namespace Project_Inventory
             { 
                 WindowsName.MainMenu,
                 WindowsName.StorageSelectionMenu,
+                WindowsName.StorageTransfertSelection,
+                WindowsName.DataTransfert,
                 WindowsName.StorageViewerPage,
                 WindowsName.ListMenu,
                 WindowsName.ListViewerPage,
@@ -415,6 +456,18 @@ namespace Project_Inventory
                     storageSelectionMenu.TopGridInit(topGrid);
                     storageSelectionMenu.CenterGridInit(centerGrid);
                     storageSelectionMenu.BottomGridInit(bottomGrid);
+                    break;
+
+                case WindowsName.StorageTransfertSelection:
+                    storageTransfertSelection.TopGridInit(topGrid);
+                    storageTransfertSelection.CenterGridInit(centerGrid);
+                    storageTransfertSelection.BottomGridInit(bottomGrid);
+                    break;
+
+                case WindowsName.DataTransfert:
+                    dataTransfert.TopGridInit(topGrid);
+                    dataTransfert.CenterGridInit(centerGrid);
+                    dataTransfert.BottomGridInit(bottomGrid);
                     break;
 
                 case WindowsName.FormPage:

@@ -119,6 +119,22 @@ namespace Project_Inventory.Tools
             return (FormatToBDDObject(responseBdd, ObjectName.ListOption) as ListOption[])[0];
         }
 
+        public static bool IsStorageInitialised(RequestCenter requestCenter, int id)
+        {
+            string responseBdd = requestCenter.GetRequest(BDDTabsName.DataLibraries.ToString() + "/storage/" + id);
+
+            if (responseBdd != empty) return true;
+            else return false;
+        }
+
+        public static bool IsCustomListEmpty(RequestCenter requestCenter, int id)
+        {
+            string responseBdd = requestCenter.GetRequest(BDDTabsName.ListOptionLibraries.ToString() + "/customList/" + id);
+
+            if (responseBdd != empty) return true;
+            else return false;
+        }
+
         /// <summary>
         /// Get all infos for the Storage Selection Menu
         /// </summary>
@@ -135,6 +151,36 @@ namespace Project_Inventory.Tools
             else
             {
                 return FormatToBDDObject(responseBdd, ObjectName.Storage) as Storage[];
+            }
+        }
+
+        /// <summary>
+        /// Get all infos for the Storage Transfert Selection Menu
+        /// </summary>
+        /// <param name="requestCenter"></param>
+        /// <returns></returns>
+        public static List<Storage> LoadStorageTransfertSelectionInfos(RequestCenter requestCenter)
+        {
+            string responseBdd = requestCenter.GetRequest(BDDTabsName.StorageLibraries.ToString());
+
+            if (responseBdd == empty)
+            {
+                return new List<Storage>();
+            }
+            else
+            {
+                List<Storage> storageList = (FormatToBDDObject(responseBdd, ObjectName.Storage) as Storage[]).ToList();
+                List<Storage> returnList = new List<Storage>();
+
+                foreach(Storage storage in storageList)
+                {
+                    if (IsStorageInitialised(requestCenter, storage.id))
+                    {
+                        returnList.Add(storage);
+                    }
+                }
+
+                return returnList;
             }
         }
 
@@ -465,6 +511,80 @@ namespace Project_Inventory.Tools
             {
                 header = (FormatToBDDObject(responseBdd, ObjectName.Data) as Data[])[0];
             }
+
+            return data;
+        }
+
+        /// <summary>
+        /// Get all infos for the Data transfert page
+        /// </summary>
+        /// <param name="requestCenter"></param>
+        /// <param name="dataId"></param>
+        /// <returns></returns>
+        public static Data LoadDataTransfertPageInfos(RequestCenter requestCenter, int dataId, int storageId, out Data newData, out List<List<ListOption>> listOptionsTab, out List<int> customListIds, out Data header, out Data newHeader)
+        {
+            listOptionsTab = new List<List<ListOption>>();
+            customListIds = new List<int>();
+            List<CustomList> customLists;
+            string responseBdd;
+
+            responseBdd = requestCenter.GetRequest(BDDTabsName.CustomListLibraries.ToString());
+
+            if (responseBdd == empty)
+            {
+                customLists = new List<CustomList>();
+            }
+            else
+            {
+                customLists = (FormatToBDDObject(responseBdd, ObjectName.CustomList) as CustomList[]).ToList();
+            }
+
+            foreach (CustomList customList in customLists)
+            {
+                responseBdd = requestCenter.GetRequest(BDDTabsName.ListOptionLibraries.ToString() + "/customList/" + customList.id);
+
+                if (responseBdd == empty)
+                {
+                    listOptionsTab.Add(new List<ListOption>());
+                }
+                else
+                {
+                    listOptionsTab.Add((FormatToBDDObject(responseBdd, ObjectName.ListOption) as ListOption[]).ToList().OrderBy(obj => obj.Index).ToList());
+                }
+                customListIds.Add(customList.id);
+            }
+
+            Data data = GetData(requestCenter, dataId);
+
+            responseBdd = requestCenter.GetRequest(BDDTabsName.DataLibraries.ToString() + "/header/" + storageId);
+
+            if (responseBdd == empty)
+            {
+                throw new Exception();
+            }
+            else
+            {
+                newHeader = (FormatToBDDObject(responseBdd, ObjectName.Data) as Data[])[0];
+            }
+
+            responseBdd = requestCenter.GetRequest(BDDTabsName.DataLibraries.ToString() + "/header/" + data.StorageId);
+
+            if (responseBdd == empty)
+            {
+                throw new Exception();
+            }
+            else
+            {
+                header = (FormatToBDDObject(responseBdd, ObjectName.Data) as Data[])[0];
+            }
+
+            List<string> dataText = new List<string>();
+            foreach(string str in newHeader.DataText)
+            {
+                dataText.Add("");
+            }
+
+            newData = new Data(storageId, dataText, newHeader.DataType, false);
 
             return data;
         }

@@ -26,15 +26,17 @@ namespace Project_Inventory
         public DataDetailsPage(ToolBox toolBox, Router _router, RequestCenter requestCenter, int _actualUserId, int _actualStorageId, int _actualDataId, int _actualCustomId, RoutedEventHandler _reloadEvent)
             : base(toolBox, _router, requestCenter, _actualUserId, _actualStorageId, _actualDataId, _actualCustomId)
         {
-            topGridButtons = new string[] { "Return" };
+            topGridButtons = new string[] { "Transfert", "Return" };
             saveButton = new string[] { "Save" };
 
             reloadEvent = _reloadEvent;
 
-            topSwitchEvents = new RoutedEventLibrary[1];
+            topSwitchEvents = new RoutedEventLibrary[2];
             RoutedEventLibrariesInit(topSwitchEvents);
 
-            topSwitchEvents[0].changePageEvent = GetEventHandler(WindowsName.GlobalStorageResearch);
+            topSwitchEvents[0].changePageEvent = GetEventHandler(WindowsName.StorageTransfertSelection);
+            topSwitchEvents[0].updateIdEvent = new RoutedEventHandler((object sender, RoutedEventArgs e) => { UpdateDataId(sender, e); });
+            topSwitchEvents[1].changePageEvent = GetEventHandler(WindowsName.GlobalStorageResearch);
 
             saveEvents = new RoutedEventLibrary[1];
             RoutedEventLibrariesInit(saveEvents);
@@ -53,14 +55,13 @@ namespace Project_Inventory
 
         public new void TopGridInit(Grid topGrid)
         {
-            toolBox.SetUpGrid(topGrid, 1, 1, SkinLocation.TopStretch, SkinSize.HeightTenPercent);
+            toolBox.SetUpGrid(topGrid, 1, 2, SkinLocation.TopStretch, SkinSize.HeightTenPercent);
 
-            toolBox.CreateSwitchButtonToGrid(topGrid,
-                                             topGridButtons[0],
-                                             topSwitchEvents[0],
-                                             1, 1,
-                                             SkinName.StandartLittleMargin,
-                                             SkinLocation.TopRight);
+            toolBox.CreateSwitchButtonsToGridByTab(topGrid,
+                                                   topGridButtons,
+                                                   topSwitchEvents,
+                                                   new SkinName[] { SkinName.StandartLittleMargin, SkinName.StandartLittleMargin },
+                                                   new SkinLocation[] { SkinLocation.TopLeft, SkinLocation.TopRight });
         }
 
         public new void CenterGridInit(Grid centerGrid)
@@ -97,6 +98,11 @@ namespace Project_Inventory
 
                 reloadEvent.Invoke(sender, e);
             }
+        }
+
+        private void UpdateDataId(object sender, RoutedEventArgs e)
+        {
+            actualDataId = data.id;
         }
     }
 }
