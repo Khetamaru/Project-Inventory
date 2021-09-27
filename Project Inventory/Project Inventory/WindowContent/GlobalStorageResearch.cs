@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Media;
 using Project_Inventory.BDD;
 using Project_Inventory.Tools;
 using Project_Inventory.Tools.FonctionalityCerters;
@@ -23,6 +21,8 @@ namespace Project_Inventory
         private List<Data> datas;
         private List<Button> buttons;
         private List<Storage> storages;
+
+        public bool emptyInfoPopUp;
 
         private RoutedEventHandler reloadEvent;
 
@@ -54,6 +54,15 @@ namespace Project_Inventory
         public void LoadBDDInfos()
         {
             datas = JsonCenter.LoadGlobalStorageResearchInfos(requestCenter, out storages);
+
+            if (datas == new List<Data>())
+            {
+                emptyInfoPopUp = true;
+            }
+            else
+            {
+                emptyInfoPopUp = false;
+            }
 
             DataSourting();
         }
@@ -116,6 +125,11 @@ namespace Project_Inventory
                 }
             }
 
+            if (buttons.Count < 1)
+            {
+                EmptyResearchResult();
+            }
+
             datas = temp;
         }
 
@@ -130,6 +144,16 @@ namespace Project_Inventory
             actualDataId = id;
 
             GetEventHandler(WindowsName.DataDetailPage).Invoke(sender, e);
+        }
+
+        public void EmptyInfoPopUp()
+        {
+            PopUpCenter.MessagePopup("There is no data found with this parameters.");
+        }
+
+        public void EmptyResearchResult()
+        {
+            PopUpCenter.MessagePopup("No Storage has been found.");
         }
     }
 }

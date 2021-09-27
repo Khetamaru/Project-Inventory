@@ -25,6 +25,8 @@ namespace Project_Inventory
 
         private RoutedEventHandler reloadEvent;
 
+        public bool emptyInfoPopUp;
+
         private string[] saveButton;
         private RoutedEventLibrary[] saveEvents;
 
@@ -66,6 +68,16 @@ namespace Project_Inventory
         public void LoadBDDInfos()
         {
             bottomGridButtons = JsonCenter.LoadListMenuInfos(requestCenter);
+
+            if (bottomGridButtons == new CustomList[0])
+            {
+                emptyInfoPopUp = true;
+            }
+            else
+            {
+                emptyInfoPopUp = false;
+            }
+
             bottomSwitchEvents = JsonCenter.SetEventHandlerTab(bottomGridButtons.Length, GetEventHandler(WindowsName.ListViewerPage));
         }
 
@@ -197,23 +209,26 @@ namespace Project_Inventory
         /// <param name="e"></param>
         private void SaveDatas(object sender, RoutedEventArgs e)
         {
-            List<UIElement> elementList = toolBox.ExtractFormInfos(capGrid);
-
-            CustomList optionnalAdd = new CustomList(string.Empty);
-
-            List<int> changesList = toolBox.GetUIElements(elementList, bottomGridButtons, out optionnalAdd);
-
-            foreach (int change in changesList)
+            if (PopUpCenter.ActionValidPopup())
             {
+                List<UIElement> elementList = toolBox.ExtractFormInfos(capGrid);
 
-                requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "Some Custom List's names has been changed.").ToJson());
-                requestCenter.PutRequest(BDDTabsName.CustomListLibraries.ToString() + "/" + bottomGridButtons[change].id, bottomGridButtons[change].ToJsonId());
-            }
+                CustomList optionnalAdd = new CustomList(string.Empty);
 
-            if (optionnalAdd != null)
-            {
-                requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "A new Custom List has been created.").ToJson());
-                requestCenter.PostRequest(BDDTabsName.CustomListLibraries.ToString(), optionnalAdd.ToJson());
+                List<int> changesList = toolBox.GetUIElements(elementList, bottomGridButtons, out optionnalAdd);
+
+                foreach (int change in changesList)
+                {
+
+                    requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "Some Custom List's names has been changed.").ToJson());
+                    requestCenter.PutRequest(BDDTabsName.CustomListLibraries.ToString() + "/" + bottomGridButtons[change].id, bottomGridButtons[change].ToJsonId());
+                }
+
+                if (optionnalAdd != null)
+                {
+                    requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "A new Custom List has been created.").ToJson());
+                    requestCenter.PostRequest(BDDTabsName.CustomListLibraries.ToString(), optionnalAdd.ToJson());
+                }
             }
         }
 
@@ -268,11 +283,9 @@ namespace Project_Inventory
         /// </summary>
         private void DeleteCustomList(object sender, RoutedEventArgs e, int CustomListId)
         {
-            List<StorageXCustomList> storageXCustomLists;
-
             if (PopUpCenter.ActionValidPopup())
             {
-                storageXCustomLists = JsonCenter.LoadStorageXCustomLists(requestCenter, CustomListId);
+                List<StorageXCustomList> storageXCustomLists = JsonCenter.LoadStorageXCustomLists(requestCenter, CustomListId);
 
                 if (storageXCustomLists.Count > 0)
                 {
@@ -284,6 +297,11 @@ namespace Project_Inventory
                     requestCenter.DeleteRequest(BDDTabsName.CustomListLibraries.ToString() + "/" + CustomListId);
                 }
             }
+        }
+
+        public void EmptyInfoPopUp()
+        {
+            PopUpCenter.MessagePopup("There is no Custom List in the Data Base.");
         }
     }
 }

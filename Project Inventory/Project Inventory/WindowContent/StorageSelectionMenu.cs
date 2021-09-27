@@ -19,6 +19,8 @@ namespace Project_Inventory
         private RoutedEventLibrary[] bottomSwitchEvents;
         private RoutedEventHandler reloadEvent;
 
+        public bool emptyInfoPopUp;
+
         private int widthLimit;
 
         private enum status {
@@ -188,7 +190,7 @@ namespace Project_Inventory
             }
             else
             {
-                //Pop Up
+                PopUpCenter.MessagePopup("You have to type something in the search bar.");
             }
         }
 
@@ -224,21 +226,23 @@ namespace Project_Inventory
         /// <param name="e"></param>
         private void SaveDatas(object sender, RoutedEventArgs e)
         {
-
-            Storage optionnalAdd = new Storage(42, string.Empty);
-
-            List<int> changesList = toolBox.GetUIElements(toolBox.ExtractFormInfos(capGrid), bottomGridButtons, out optionnalAdd);
-
-            foreach (int change in changesList)
+            if (PopUpCenter.ActionValidPopup())
             {
-                requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "Storage's name(s) has been changed.").ToJson());
-                requestCenter.PutRequest(BDDTabsName.StorageLibraries.ToString() + "/" + bottomGridButtons[change].id, bottomGridButtons[change].ToJsonId());
-            }
+                Storage optionnalAdd = new Storage(42, string.Empty);
 
-            if (optionnalAdd != null)
-            {
-                requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "A new Storage has been created.").ToJson());
-                requestCenter.PostRequest(BDDTabsName.StorageLibraries.ToString(), optionnalAdd.ToJson());
+                List<int> changesList = toolBox.GetUIElements(toolBox.ExtractFormInfos(capGrid), bottomGridButtons, out optionnalAdd);
+
+                foreach (int change in changesList)
+                {
+                    requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "Storage's name(s) has been changed.").ToJson());
+                    requestCenter.PutRequest(BDDTabsName.StorageLibraries.ToString() + "/" + bottomGridButtons[change].id, bottomGridButtons[change].ToJsonId());
+                }
+
+                if (optionnalAdd != null)
+                {
+                    requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "A new Storage has been created.").ToJson());
+                    requestCenter.PostRequest(BDDTabsName.StorageLibraries.ToString(), optionnalAdd.ToJson());
+                }
             }
         }
 
@@ -300,6 +304,11 @@ namespace Project_Inventory
                 requestCenter.DeleteRequest(BDDTabsName.DataLibraries.ToString() + "/storage/" + StorageId);
                 requestCenter.DeleteRequest(BDDTabsName.StorageLibraries.ToString() + "/" + StorageId);
             }
+        }
+
+        public void EmptyInfoPopUp()
+        {
+            PopUpCenter.MessagePopup("There is no existing Storage.");
         }
     }
 }

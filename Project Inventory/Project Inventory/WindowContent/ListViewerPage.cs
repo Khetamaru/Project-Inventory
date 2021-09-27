@@ -18,6 +18,8 @@ namespace Project_Inventory
 
         private RoutedEventHandler reloadEvent;
 
+        public bool emptyInfoPopUp;
+
         private string[] saveButton;
         private RoutedEventLibrary[] saveEvents;
 
@@ -52,6 +54,11 @@ namespace Project_Inventory
             if(listOptions.Count > 0)
             {
                 listOptions = listOptions.OrderBy(option => option.Index).ToList();
+                emptyInfoPopUp = false;
+            }
+            else
+            {
+                emptyInfoPopUp = true;
             }
         }
 
@@ -261,6 +268,11 @@ namespace Project_Inventory
             requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "(" + JsonCenter.GetListOption(requestCenter, listOptions[index].id).Name + ") List Option and (" + JsonCenter.GetListOption(requestCenter, listOptions[index + 1].id).Name + ") List Option from (" + JsonCenter.GetCustomList(requestCenter, actualCustomListId).Name + ") has been swaped.").ToJson());
             requestCenter.PutRequest(BDDTabsName.ListOptionLibraries.ToString() + "/" + listOptions[index + 1].id, listOptions[index + 1].ToJsonId());
             requestCenter.PutRequest(BDDTabsName.ListOptionLibraries.ToString() + "/" + listOptions[index].id, listOptions[index].ToJsonId());
+        }
+
+        public void EmptyInfoPopUp()
+        {
+            PopUpCenter.MessagePopup("There is no Option in this List.");
         }
     }
 }
