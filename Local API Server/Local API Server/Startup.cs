@@ -52,6 +52,8 @@ namespace Local_API_Server
                 opt.UseMySql(dataStringConnection, ServerVersion.AutoDetect(dataStringConnection)));
             services.AddDbContext<UserLibraryContext>(opt =>
                 opt.UseMySql(dataStringConnection, ServerVersion.AutoDetect(dataStringConnection)));
+            services.AddDbContext<BugLibraryContext>(opt =>
+                opt.UseMySql(dataStringConnection, ServerVersion.AutoDetect(dataStringConnection)));
 
             services.AddControllers();
 

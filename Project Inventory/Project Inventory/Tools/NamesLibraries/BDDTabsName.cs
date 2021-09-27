@@ -15,6 +15,7 @@ namespace Project_Inventory.Tools
         LogLibraries,
         UserLibraries,
         StorageLibrariesXCustomListLibraries,
-        ListOptionLibraries
+        ListOptionLibraries,
+        BugLibraries
     }
 }

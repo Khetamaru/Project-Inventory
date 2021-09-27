@@ -932,7 +932,6 @@ namespace Project_Inventory
         public void SetUpDataTransfertGrid(Grid embededGrid, Data data, List<List<ListOption>> listOptions, List<int> customListIds, Data header)
         {
             int i;
-            int intResult;
             SkinLocation skinLocation = SkinLocation.CenterCenter;
 
             for (i = 0; i < data.DataText.Count; i++)
