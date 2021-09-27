@@ -189,6 +189,11 @@ namespace Project_Inventory
                     }
                 );
             }
+
+            if (logsGrid.Count < 1)
+            {
+                EmptyResearchResult();
+            }
         }
 
         public void DeleteLogs(object sender, RoutedEventArgs e)
@@ -198,6 +203,11 @@ namespace Project_Inventory
                 requestCenter.DeleteRequest(BDDTabsName.LogLibraries.ToString());
                 GetEventHandler(WindowsName.LogsMenu).Invoke(sender, e);
             }
+        }
+
+        public void EmptyResearchResult()
+        {
+            PopUpCenter.MessagePopup("No Log has been found.");
         }
     }
 }

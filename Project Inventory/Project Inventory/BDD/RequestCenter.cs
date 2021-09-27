@@ -57,15 +57,22 @@ namespace Project_Inventory.Tools
             Stream requestStream = request.GetRequestStream();
 
             // now send it
-            requestStream.Write(postBytes, 0, postBytes.Length);
-            requestStream.Close();
-
-            // grab te response and print it out to the console along with the status code
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-            string result;
-            using (StreamReader rdr = new StreamReader(response.GetResponseStream()))
+            try
             {
-                result = rdr.ReadToEnd();
+                requestStream.Write(postBytes, 0, postBytes.Length);
+                requestStream.Close();
+
+                // grab te response and print it out to the console along with the status code
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                string result;
+                using (StreamReader rdr = new StreamReader(response.GetResponseStream()))
+                {
+                    result = rdr.ReadToEnd();
+                }
+            }
+            catch
+            {
+                PopUpCenter.MessagePopup("An error as occured when we tried to communicate with the server.");
             }
 
             return strResponseValue;
@@ -83,23 +90,30 @@ namespace Project_Inventory.Tools
 
             request.Method = httpMethod.ToString();
 
-            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+            try
             {
-                if (response.StatusCode != HttpStatusCode.OK)
+                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
                 {
-                    throw new ApplicationException("error code: " + response.StatusCode.ToString());
-                }
-
-                using (Stream responseStream = response.GetResponseStream())
-                {
-                    if (responseStream != null)
+                    if (response.StatusCode != HttpStatusCode.OK)
                     {
-                        using (StreamReader reader = new StreamReader(responseStream))
+                        PopUpCenter.MessagePopup(response.StatusCode.ToString());
+                    }
+
+                    using (Stream responseStream = response.GetResponseStream())
+                    {
+                        if (responseStream != null)
                         {
-                            strResponseValue = reader.ReadToEnd();
+                            using (StreamReader reader = new StreamReader(responseStream))
+                            {
+                                strResponseValue = reader.ReadToEnd();
+                            }
                         }
                     }
                 }
+            }
+            catch
+            {
+                PopUpCenter.MessagePopup("An error as occured when we tried to communicate with the server.");
             }
 
             return strResponseValue;

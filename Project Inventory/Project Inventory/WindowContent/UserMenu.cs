@@ -17,6 +17,8 @@ namespace Project_Inventory
             MODIFIER
         }
 
+        public bool emptyInfoPopUp;
+
         private string[] topGridButtons;
         private RoutedEventLibrary[] topSwitchEvents;
 
@@ -63,6 +65,15 @@ namespace Project_Inventory
         public void LoadBDDInfos()
         {
             bottomGridButtons = JsonCenter.LoadUserMenuInfos(requestCenter);
+
+            if (bottomGridButtons == new List<User>())
+            {
+                emptyInfoPopUp = true;
+            }
+            else
+            {
+                emptyInfoPopUp = false;
+            }
         }
 
         public new void TopGridInit(Grid topGrid)
@@ -162,23 +173,26 @@ namespace Project_Inventory
         /// <param name="e"></param>
         private void SaveDatas(object sender, RoutedEventArgs e)
         {
-            List<UIElement> elementList = toolBox.ExtractFormInfos(capGrid);
-
-            User optionnalAdd = new User(string.Empty, 0, true);
-
-            List<int> changesList = toolBox.GetUIElements(elementList, bottomGridButtons, out optionnalAdd);
-
-            foreach (int change in changesList)
+            if (PopUpCenter.ActionValidPopup())
             {
+                List<UIElement> elementList = toolBox.ExtractFormInfos(capGrid);
 
-                requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "Some User's names has been changed.").ToJson());
-                requestCenter.PutRequest(BDDTabsName.UserLibraries.ToString() + "/" + bottomGridButtons[change].id, bottomGridButtons[change].ToJsonId());
-            }
+                User optionnalAdd = new User(string.Empty, 0, true);
 
-            if (optionnalAdd != null)
-            {
-                requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "A new User has been created.").ToJson());
-                requestCenter.PostRequest(BDDTabsName.UserLibraries.ToString(), optionnalAdd.ToJson());
+                List<int> changesList = toolBox.GetUIElements(elementList, bottomGridButtons, out optionnalAdd);
+
+                foreach (int change in changesList)
+                {
+
+                    requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "Some User's names has been changed.").ToJson());
+                    requestCenter.PutRequest(BDDTabsName.UserLibraries.ToString() + "/" + bottomGridButtons[change].id, bottomGridButtons[change].ToJsonId());
+                }
+
+                if (optionnalAdd != null)
+                {
+                    requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "A new User has been created.").ToJson());
+                    requestCenter.PostRequest(BDDTabsName.UserLibraries.ToString(), optionnalAdd.ToJson());
+                }
             }
         }
 
@@ -238,6 +252,11 @@ namespace Project_Inventory
                 requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "(" + JsonCenter.GetUser(requestCenter, UserId).Name + ") User has been delete.").ToJson());
                 requestCenter.DeleteRequest(BDDTabsName.UserLibraries.ToString() + "/" + UserId);
             }
+        }
+
+        public void EmptyInfoPopUp()
+        {
+            PopUpCenter.MessagePopup("There is no existing User in the DataBase.");
         }
     }
 }

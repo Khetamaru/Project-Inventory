@@ -1,5 +1,6 @@
 ﻿using Project_Inventory.BDD;
 using Project_Inventory.Tools;
+using System.ComponentModel;
 using System.Windows;
 
 namespace Project_Inventory
@@ -54,6 +55,7 @@ namespace Project_Inventory
             actualCustomListId = -1;
 
             this.SizeChanged += new SizeChangedEventHandler((object sender, SizeChangedEventArgs e) => { SizeChangeResizeEvent(sender, e); });
+            this.Closing += new CancelEventHandler((object sender, CancelEventArgs e) => { ClosePopUp(sender, e); });
 
             Init();
         }
@@ -102,6 +104,7 @@ namespace Project_Inventory
             storageSelectionMenu.TopGridInit(topGrid);
             storageSelectionMenu.CenterGridInit(centerGrid);
             storageSelectionMenu.BottomGridInit(bottomGrid);
+            if (storageSelectionMenu.emptyInfoPopUp) { storageSelectionMenu.EmptyInfoPopUp(); }
         }
 
         public void DataTransfertInit()
@@ -135,6 +138,7 @@ namespace Project_Inventory
             listMenu.TopGridInit(topGrid);
             listMenu.CenterGridInit(centerGrid);
             listMenu.BottomGridInit(bottomGrid);
+            if (listMenu.emptyInfoPopUp) { listMenu.EmptyInfoPopUp(); }
         }
 
         public void UserMenuInit()
@@ -146,6 +150,7 @@ namespace Project_Inventory
             userMenu.TopGridInit(topGrid);
             userMenu.CenterGridInit(centerGrid);
             userMenu.BottomGridInit(bottomGrid);
+            if (userMenu.emptyInfoPopUp) { userMenu.EmptyInfoPopUp(); }
         }
 
         public void ListViewerPageInit()
@@ -157,6 +162,7 @@ namespace Project_Inventory
             listViewerPage.TopGridInit(topGrid);
             listViewerPage.CenterGridInit(centerGrid);
             listViewerPage.BottomGridInit(bottomGrid);
+            if (listViewerPage.emptyInfoPopUp) { listViewerPage.EmptyInfoPopUp(); }
         }
 
         public void GlobalStorageResearchInit()
@@ -168,6 +174,7 @@ namespace Project_Inventory
             globalStorageResearch.TopGridInit(topGrid);
             globalStorageResearch.CenterGridInit(centerGrid);
             globalStorageResearch.BottomGridInit(bottomGrid);
+            if (globalStorageResearch.emptyInfoPopUp) { globalStorageResearch.EmptyInfoPopUp(); }
         }
 
         public void DataDetailsPageInit()
@@ -220,6 +227,7 @@ namespace Project_Inventory
                 storageViewerPage.TopGridInit(topGrid);
                 storageViewerPage.CenterGridInit(centerGrid);
                 storageViewerPage.BottomGridInit(bottomGrid);
+                if (storageViewerPage.emptyInfoPopUp) { storageViewerPage.EmptyInfoPopUp(); }
             }
         }
 
@@ -456,6 +464,7 @@ namespace Project_Inventory
                     storageSelectionMenu.TopGridInit(topGrid);
                     storageSelectionMenu.CenterGridInit(centerGrid);
                     storageSelectionMenu.BottomGridInit(bottomGrid);
+                    if (storageSelectionMenu.emptyInfoPopUp) { storageSelectionMenu.EmptyInfoPopUp(); }
                     break;
 
                 case WindowsName.StorageTransfertSelection:
@@ -482,12 +491,14 @@ namespace Project_Inventory
                     listMenu.TopGridInit(topGrid);
                     listMenu.CenterGridInit(centerGrid);
                     listMenu.BottomGridInit(bottomGrid);
+                    if (listMenu.emptyInfoPopUp) { listMenu.EmptyInfoPopUp(); }
                     break;
 
                 case WindowsName.UserMenu:
                     userMenu.TopGridInit(topGrid);
                     userMenu.CenterGridInit(centerGrid);
                     userMenu.BottomGridInit(bottomGrid);
+                    if (userMenu.emptyInfoPopUp) { userMenu.EmptyInfoPopUp(); }
                     break;
 
                 case WindowsName.ListViewerPage:
@@ -495,6 +506,7 @@ namespace Project_Inventory
                     listViewerPage.TopGridInit(topGrid);
                     listViewerPage.CenterGridInit(centerGrid);
                     listViewerPage.BottomGridInit(bottomGrid);
+                    if (listViewerPage.emptyInfoPopUp) { listViewerPage.EmptyInfoPopUp(); }
                     break;
 
                 case WindowsName.GlobalStorageResearch:
@@ -503,6 +515,7 @@ namespace Project_Inventory
                     globalStorageResearch.TopGridInit(topGrid);
                     globalStorageResearch.CenterGridInit(centerGrid);
                     globalStorageResearch.BottomGridInit(bottomGrid);
+                    if (globalStorageResearch.emptyInfoPopUp) { globalStorageResearch.EmptyInfoPopUp(); }
                     break;
 
                 case WindowsName.DataDetailPage:
@@ -538,7 +551,20 @@ namespace Project_Inventory
                     }
                     storageViewerPage.CenterGridInit(centerGrid);
                     storageViewerPage.BottomGridInit(bottomGrid);
+                    if (storageViewerPage.emptyInfoPopUp) { storageViewerPage.EmptyInfoPopUp(); }
                     break;
+            }
+        }
+
+        private void ClosePopUp(object sender, CancelEventArgs e)
+        {
+            if(!PopUpCenter.ActionValidPopup())
+            {
+                e.Cancel = true;
+            }
+            else
+            {
+                e.Cancel = false;
             }
         }
     }
