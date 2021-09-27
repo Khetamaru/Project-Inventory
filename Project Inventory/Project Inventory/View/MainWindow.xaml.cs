@@ -346,6 +346,10 @@ namespace Project_Inventory
                 case WindowsName.CreditPage:
                     FormPageInit(windowName);
                     break;
+
+                case WindowsName.BugReportPage:
+                    FormPageInit(windowName);
+                    break;
             }
         }
 
@@ -402,6 +406,12 @@ namespace Project_Inventory
                                     WindowSwitch(sender, e, WindowsName.CreditPage);
                                 });
                                 break;
+                            case 3:
+                                routers[i + j] = new RoutedEventHandler((object sender, RoutedEventArgs e) =>
+                                {
+                                    WindowSwitch(sender, e, WindowsName.BugReportPage);
+                                });
+                                break;
                         }
                         routersNameF[i + j] = formName;
 
@@ -437,7 +447,8 @@ namespace Project_Inventory
             {
                 WindowsName.AddStorage,
                 WindowsName.InitStorage,
-                WindowsName.CreditPage
+                WindowsName.CreditPage,
+                WindowsName.BugReportPage
             };
 
             WindowsName[] routersNameF = new WindowsName[routersName.Length - 1 + formRoutersName.Length];

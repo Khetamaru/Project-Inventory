@@ -25,6 +25,7 @@ namespace Project_Inventory.Tools
         AddStorage,
         InitStorage,
         CreditPage,
+        BugReportPage,
 
         None
     }
