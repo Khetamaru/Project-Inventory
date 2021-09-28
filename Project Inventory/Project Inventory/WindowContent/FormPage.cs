@@ -1,5 +1,6 @@
 ﻿using Project_Inventory.BDD;
 using Project_Inventory.Tools;
+using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
@@ -114,12 +115,27 @@ namespace Project_Inventory
 
                         InitStorage();
                         break;
+
+                    case WindowsName.BugReportPage:
+
+                        BugReporting(uiElements[0]);
+                        break;
                 }
             }
             else
             {
                 PopUpCenter.MessagePopup("Some Fields are empty or wrongly filled.");
             }
+        }
+
+        private void BugReporting(string bugDescription)
+        {
+            Bug bug = new Bug(actualUserId, bugDescription);
+
+            requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "A Bug has been reported.").ToJson());
+            requestCenter.PostRequest(BDDTabsName.BugLibraries.ToString(), bug.ToJson());
+
+            PopUpCenter.MessagePopup("The Bug has been reported.");
         }
 
         /// <summary>
@@ -336,17 +352,23 @@ namespace Project_Inventory
 
         private UIElementsName GetUIElementName(string name)
         {
-            switch (name)
+            if (name == UIElementsName.TextBox.ToString())
             {
-                case "TextBox":
-                    return UIElementsName.TextBox;
-                case "TextBoxNumber":
-                    return UIElementsName.TextBoxNumber;
-                case "DatePicker":
-                    return UIElementsName.DatePicker;
-                case "ComboBox":
-                    return UIElementsName.ComboBox;
+                return UIElementsName.TextBox;
+            } 
+            else if (name == UIElementsName.TextBoxNumber.ToString())
+            {
+                return UIElementsName.TextBoxNumber;
             }
+            else if(name == UIElementsName.DatePicker.ToString())
+            {
+                return UIElementsName.DatePicker;
+            }
+            else if(name == UIElementsName.ComboBox.ToString())
+            {
+                return UIElementsName.ComboBox;
+            }
+
             return UIElementsName.None;
         }
 
@@ -424,6 +446,30 @@ namespace Project_Inventory
 
                     formElements = new UIElementsName[] { UIElementsName.None, UIElementsName.None, UIElementsName.None };
                     labels = new string[] { "Enterprise : Docteur Ordianteur Laval", "Project Manager : ETAIX Vincent", "Code Author : LASSERRE Anthony" };
+
+                    break;
+
+                case WindowsName.BugReportPage:
+
+                    topGridButtons = new string[] { "Return" };
+
+                    topSwitchEvents = new RoutedEventLibrary[1];
+                    RoutedEventLibrariesInit(topSwitchEvents);
+                    topSwitchEvents[0].changePageEvent = GetEventHandler(WindowsName.MainMenu);
+
+                    bottomGridButtons = new string[] { "Report Bug" };
+                    bottomColumnNb = 1;
+
+                    formValidButton = new RoutedEventLibrary[1];
+                    RoutedEventLibrariesInit(formValidButton);
+                    formValidButton[0].changePageEvent = GetEventHandler(WindowsName.MainMenu);
+                    formValidButton[0].optionalEventOne = new RoutedEventHandler((object sender, RoutedEventArgs e) =>
+                    {
+                        formValidation(sender, e);
+                    });
+
+                    formElements = new UIElementsName[] { UIElementsName.TextBox };
+                    labels = new string[] { "Description" };
 
                     break;
             }

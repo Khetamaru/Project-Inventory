@@ -1,12 +1,66 @@
 {
   "version": 3,
   "targets": {
-    ".NETFramework,Version=v4.7.2": {},
-    ".NETFramework,Version=v4.7.2/win7-x86": {}
+    ".NETFramework,Version=v4.7.2": {
+      "WPFCustomMessageBox/1.0.7": {
+        "type": "package",
+        "frameworkAssemblies": [
+          "PresentationCore",
+          "PresentationFramework",
+          "System",
+          "System.Core",
+          "System.Drawing",
+          "System.Xml",
+          "WindowsBase"
+        ],
+        "compile": {
+          "lib/WPFCustomMessageBox.dll": {}
+        },
+        "runtime": {
+          "lib/WPFCustomMessageBox.dll": {}
+        }
+      }
+    },
+    ".NETFramework,Version=v4.7.2/win7-x86": {
+      "WPFCustomMessageBox/1.0.7": {
+        "type": "package",
+        "frameworkAssemblies": [
+          "PresentationCore",
+          "PresentationFramework",
+          "System",
+          "System.Core",
+          "System.Drawing",
+          "System.Xml",
+          "WindowsBase"
+        ],
+        "compile": {
+          "lib/WPFCustomMessageBox.dll": {}
+        },
+        "runtime": {
+          "lib/WPFCustomMessageBox.dll": {}
+        }
+      }
+    }
   },
-  "libraries": {},
+  "libraries": {
+    "WPFCustomMessageBox/1.0.7": {
+      "sha512": "H4q2aESgv74yQR47a+mbctY2YhpSVF4WhHdQNDzQ76j5q6RBbVfVDRMc/OR+amslzuVxI/p6YmkhmA/racAbhg==",
+      "type": "package",
+      "path": "wpfcustommessagebox/1.0.7",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/WPFCustomMessageBox.XML",
+        "lib/WPFCustomMessageBox.dll",
+        "wpfcustommessagebox.1.0.7.nupkg.sha512",
+        "wpfcustommessagebox.nuspec"
+      ]
+    }
+  },
   "projectFileDependencyGroups": {
-    ".NETFramework,Version=v4.7.2": []
+    ".NETFramework,Version=v4.7.2": [
+      "WPFCustomMessageBox >= 1.0.7"
+    ]
   },
   "packageFolders": {
     "C:\\Users\\Anthony\\.nuget\\packages\\": {}
@@ -47,7 +101,13 @@
     "frameworks": {
       "net472": {
         "targetAlias": "net472",
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.400\\RuntimeIdentifierGraph.json"
+        "dependencies": {
+          "WPFCustomMessageBox": {
+            "target": "Package",
+            "version": "[1.0.7, )"
+          }
+        },
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.401\\RuntimeIdentifierGraph.json"
       }
     },
     "runtimes": {

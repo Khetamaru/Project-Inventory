@@ -36,6 +36,8 @@ namespace Project_Inventory
         private List<int> customListIds;
         private string[] indicTab;
 
+        public bool emptyInfoPopUp;
+
         private string[] saveButton;
         private RoutedEventLibrary[] saveEvents;
 
@@ -79,6 +81,15 @@ namespace Project_Inventory
         {
             dataTabSave = dataTab = JsonCenter.LoadStorageViewerInfos(requestCenter, actualStorageId, out listOptionsTab, out customListIds);
 
+            if (dataTabSave == new Data[0])
+            {
+                emptyInfoPopUp = true;
+            }
+            else
+            {
+                emptyInfoPopUp = false;
+            }
+
             int j;
 
             indicTab = new string[dataTab[0].DataText.Count];
@@ -98,31 +109,7 @@ namespace Project_Inventory
                                                    new SkinLocation[] { SkinLocation.TopLeft, SkinLocation.TopRight, SkinLocation.TopRight });
 
             toolBox.InsertUIElementInGrid(topGrid, researchTextBox, 0, 1, UIElementsName.TextBox, SkinLocation.CenterCenter);
-        }
-
-        public new void BottomGridInit(Grid bottomGrid)
-        {
-            switch (viewerStatus)
-            {
-                case status.VIEWER:
-
-                    capGrid = new Grid();
-
-                    toolBox.CreateScrollableGrid(bottomGrid, capGrid,
-                                         1, 1,
-                                         dataTab.Length, dataTabSave[0].DataText.Count + 1,
-                                         SkinLocation.BottomStretch, SkinSize.HeightNintyPercent,
-                                         SkinLocation.CenterCenter,
-                                         dataTab, indicTab,
-                                         listOptionsTab, customListIds);
-                    break;
-
-                case status.MODIFIER:
-                    toolBox.SetUpGrid(bottomGrid, 1, 1, SkinLocation.BottomStretch, SkinSize.HeightTenPercent);
-
-                    toolBox.CreateSwitchButtonsToGridByTab(bottomGrid, saveButton, saveEvents, SkinName.StandartLittleMargin, SkinLocation.BottomCenter);
-                    break;
-            }
+            researchTextBox.Focus();
         }
 
         public new void CenterGridInit(Grid centerGrid)
@@ -147,6 +134,31 @@ namespace Project_Inventory
                                          dataTab, indicTab,
                                          AddDeleteButtons(),
                                          listOptionsTab, customListIds);
+                    break;
+            }
+        }
+
+        public new void BottomGridInit(Grid bottomGrid)
+        {
+            switch (viewerStatus)
+            {
+                case status.VIEWER:
+
+                    capGrid = new Grid();
+
+                    toolBox.CreateScrollableGrid(bottomGrid, capGrid,
+                                         1, 1,
+                                         dataTab.Length, dataTabSave[0].DataText.Count + 1,
+                                         SkinLocation.BottomStretch, SkinSize.HeightNintyPercent,
+                                         SkinLocation.CenterCenter,
+                                         dataTab, indicTab,
+                                         listOptionsTab, customListIds);
+                    break;
+
+                case status.MODIFIER:
+                    toolBox.SetUpGrid(bottomGrid, 1, 1, SkinLocation.BottomStretch, SkinSize.HeightTenPercent);
+
+                    toolBox.CreateSwitchButtonsToGridByTab(bottomGrid, saveButton, saveEvents, SkinName.StandartLittleMargin, SkinLocation.BottomCenter);
                     break;
             }
         }
@@ -183,20 +195,23 @@ namespace Project_Inventory
         /// <param name="e"></param>
         private void SaveDatas(object sender, RoutedEventArgs e)
         {
-            Data optionnalAdd = null;
-
-            List<int> changesList = toolBox.GetUIElements(toolBox.ExtractFormInfos(capGrid), dataTab, out optionnalAdd, listOptionsTab);
-
-            foreach(int change in changesList)
+            if (PopUpCenter.ActionValidPopup())
             {
-                requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "(" + JsonCenter.GetStorage(requestCenter, actualStorageId).Name + ") Storage's Data has changed.").ToJson());
-                requestCenter.PutRequest(BDDTabsName.DataLibraries.ToString() + "/" + dataTab[change].id, dataTab[change].ToJsonId());
-            }
+                Data optionnalAdd = null;
 
-            if (optionnalAdd != null)
-            {
-                requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "(" + JsonCenter.GetStorage(requestCenter, actualStorageId).Name + ") Storage gained a new Data.").ToJson());
-                requestCenter.PostRequest(BDDTabsName.DataLibraries.ToString(), optionnalAdd.ToJson());
+                List<int> changesList = toolBox.GetUIElements(toolBox.ExtractFormInfos(capGrid), dataTab, out optionnalAdd, listOptionsTab);
+
+                foreach (int change in changesList)
+                {
+                    requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "(" + JsonCenter.GetStorage(requestCenter, actualStorageId).Name + ") Storage's Data has changed.").ToJson());
+                    requestCenter.PutRequest(BDDTabsName.DataLibraries.ToString() + "/" + dataTab[change].id, dataTab[change].ToJsonId());
+                }
+
+                if (optionnalAdd != null)
+                {
+                    requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "(" + JsonCenter.GetStorage(requestCenter, actualStorageId).Name + ") Storage gained a new Data.").ToJson());
+                    requestCenter.PostRequest(BDDTabsName.DataLibraries.ToString(), optionnalAdd.ToJson());
+                }
             }
         }
 
@@ -233,7 +248,7 @@ namespace Project_Inventory
             if (PopUpCenter.ActionValidPopup())
             {
                 requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "A (" + JsonCenter.GetStorage(requestCenter, actualStorageId).Name + ") Storage's Data has been delete.").ToJson());
-                requestCenter.DeleteRequest("DataLibraries/" + dataId);
+                requestCenter.DeleteRequest(BDDTabsName.DataLibraries.ToString() + "/" + dataId);
             }
         }
 
@@ -321,6 +336,21 @@ namespace Project_Inventory
             {
                 indicTab[i] = dataTabSave[0].DataType[i];
             }
+
+            if (dataLibraryShorted.Count <= 1)
+            {
+                EmptyResearchResult();
+            }
+        }
+
+        public void EmptyInfoPopUp()
+        {
+            PopUpCenter.MessagePopup("This Storage is Empty.");
+        }
+
+        public void EmptyResearchResult()
+        {
+            PopUpCenter.MessagePopup("No Data has been found.");
         }
     }
 }

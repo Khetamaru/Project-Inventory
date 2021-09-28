@@ -1,7 +1,7 @@
 ﻿using Project_Inventory.BDD;
 using Project_Inventory.Tools;
+using System.ComponentModel;
 using System.Windows;
-using System.Windows.Controls;
 
 namespace Project_Inventory
 {
@@ -23,6 +23,10 @@ namespace Project_Inventory
         private ListViewerPage listViewerPage;
         private LogsMenu logsMenu;
         private UserMenu userMenu;
+        private GlobalStorageResearch globalStorageResearch;
+        private DataDetailsPage dataDetailsPage;
+        private StorageTransfertSelection storageTransfertSelection;
+        private DataTransfert dataTransfert;
 
         private int actualUserId;
         private int actualStorageId;
@@ -32,7 +36,6 @@ namespace Project_Inventory
         public MainWindow()
         {
             DataContext = this;
-            //ResizeMode = ResizeMode.CanMinimize;
 
             InitializeComponent();
 
@@ -52,6 +55,7 @@ namespace Project_Inventory
             actualCustomListId = -1;
 
             this.SizeChanged += new SizeChangedEventHandler((object sender, SizeChangedEventArgs e) => { SizeChangeResizeEvent(sender, e); });
+            this.Closing += new CancelEventHandler((object sender, CancelEventArgs e) => { ClosePopUp(sender, e); });
 
             Init();
         }
@@ -100,6 +104,29 @@ namespace Project_Inventory
             storageSelectionMenu.TopGridInit(topGrid);
             storageSelectionMenu.CenterGridInit(centerGrid);
             storageSelectionMenu.BottomGridInit(bottomGrid);
+            if (storageSelectionMenu.emptyInfoPopUp) { storageSelectionMenu.EmptyInfoPopUp(); }
+        }
+
+        public void DataTransfertInit()
+        {
+            RoutedEventHandler reloadEvent = new RoutedEventHandler((object sender, RoutedEventArgs e) => ReloadView(sender, e));
+
+            dataTransfert = new DataTransfert(toolBox, router, requestCenter, actualUserId, actualStorageId, actualDataId, actualCustomListId, reloadEvent);
+            actualWindow = WindowsName.DataTransfert;
+            dataTransfert.TopGridInit(topGrid);
+            dataTransfert.CenterGridInit(centerGrid);
+            dataTransfert.BottomGridInit(bottomGrid);
+        }
+
+        public void StorageTransfertSelectionInit()
+        {
+            RoutedEventHandler reloadEvent = new RoutedEventHandler((object sender, RoutedEventArgs e) => ReloadView(sender, e));
+
+            storageTransfertSelection = new StorageTransfertSelection(toolBox, router, requestCenter, actualUserId, actualStorageId, actualDataId, actualCustomListId, reloadEvent);
+            actualWindow = WindowsName.StorageTransfertSelection;
+            storageTransfertSelection.TopGridInit(topGrid);
+            storageTransfertSelection.CenterGridInit(centerGrid);
+            storageTransfertSelection.BottomGridInit(bottomGrid);
         }
 
         public void ListMenuInit()
@@ -111,6 +138,7 @@ namespace Project_Inventory
             listMenu.TopGridInit(topGrid);
             listMenu.CenterGridInit(centerGrid);
             listMenu.BottomGridInit(bottomGrid);
+            if (listMenu.emptyInfoPopUp) { listMenu.EmptyInfoPopUp(); }
         }
 
         public void UserMenuInit()
@@ -122,6 +150,7 @@ namespace Project_Inventory
             userMenu.TopGridInit(topGrid);
             userMenu.CenterGridInit(centerGrid);
             userMenu.BottomGridInit(bottomGrid);
+            if (userMenu.emptyInfoPopUp) { userMenu.EmptyInfoPopUp(); }
         }
 
         public void ListViewerPageInit()
@@ -133,6 +162,30 @@ namespace Project_Inventory
             listViewerPage.TopGridInit(topGrid);
             listViewerPage.CenterGridInit(centerGrid);
             listViewerPage.BottomGridInit(bottomGrid);
+            if (listViewerPage.emptyInfoPopUp) { listViewerPage.EmptyInfoPopUp(); }
+        }
+
+        public void GlobalStorageResearchInit()
+        {
+            RoutedEventHandler reloadEvent = new RoutedEventHandler((object sender, RoutedEventArgs e) => ReloadView(sender, e));
+
+            globalStorageResearch = new GlobalStorageResearch(toolBox, router, requestCenter, actualUserId, actualStorageId, actualDataId, actualCustomListId, reloadEvent, storageSelectionMenu.researchTextBox.Text);
+            actualWindow = WindowsName.GlobalStorageResearch;
+            globalStorageResearch.TopGridInit(topGrid);
+            globalStorageResearch.CenterGridInit(centerGrid);
+            globalStorageResearch.BottomGridInit(bottomGrid);
+            if (globalStorageResearch.emptyInfoPopUp) { globalStorageResearch.EmptyInfoPopUp(); }
+        }
+
+        public void DataDetailsPageInit()
+        {
+            RoutedEventHandler reloadEvent = new RoutedEventHandler((object sender, RoutedEventArgs e) => ReloadView(sender, e));
+
+            dataDetailsPage = new DataDetailsPage(toolBox, router, requestCenter, actualUserId, actualStorageId, actualDataId, actualCustomListId, reloadEvent);
+            actualWindow = WindowsName.DataDetailPage;
+            dataDetailsPage.TopGridInit(topGrid);
+            dataDetailsPage.CenterGridInit(centerGrid);
+            dataDetailsPage.BottomGridInit(bottomGrid);
         }
 
         public void LogsMenuInit()
@@ -174,6 +227,7 @@ namespace Project_Inventory
                 storageViewerPage.TopGridInit(topGrid);
                 storageViewerPage.CenterGridInit(centerGrid);
                 storageViewerPage.BottomGridInit(bottomGrid);
+                if (storageViewerPage.emptyInfoPopUp) { storageViewerPage.EmptyInfoPopUp(); }
             }
         }
 
@@ -189,6 +243,14 @@ namespace Project_Inventory
                     storageSelectionMenu.IDBachUps(out actualUserId, out actualStorageId, out actualDataId, out actualCustomListId);
                     break;
 
+                case WindowsName.StorageTransfertSelection:
+                    storageTransfertSelection.IDBachUps(out actualUserId, out actualStorageId, out actualDataId, out actualCustomListId);
+                    break;
+
+                case WindowsName.DataTransfert:
+                    dataTransfert.IDBachUps(out actualUserId, out actualStorageId, out actualDataId, out actualCustomListId);
+                    break;
+
                 case WindowsName.ListMenu:
                     listMenu.IDBachUps(out actualUserId, out actualStorageId, out actualDataId, out actualCustomListId);
                     break;
@@ -199,6 +261,14 @@ namespace Project_Inventory
 
                 case WindowsName.ListViewerPage:
                     listViewerPage.IDBachUps(out actualUserId, out actualStorageId, out actualDataId, out actualCustomListId);
+                    break;
+
+                case WindowsName.GlobalStorageResearch:
+                    globalStorageResearch.IDBachUps(out actualUserId, out actualStorageId, out actualDataId, out actualCustomListId);
+                    break;
+
+                case WindowsName.DataDetailPage:
+                    dataDetailsPage.IDBachUps(out actualUserId, out actualStorageId, out actualDataId, out actualCustomListId);
                     break;
 
                 case WindowsName.LogsMenu:
@@ -229,6 +299,14 @@ namespace Project_Inventory
                     StorageSelectionMenuInit();
                     break;
 
+                case WindowsName.StorageTransfertSelection:
+                    StorageTransfertSelectionInit();
+                    break;
+
+                case WindowsName.DataTransfert:
+                    DataTransfertInit();
+                    break;
+
                 case WindowsName.StorageViewerPage:
                     storageViewerPageInit();
                     break;
@@ -249,6 +327,14 @@ namespace Project_Inventory
                     ListViewerPageInit();
                     break;
 
+                case WindowsName.GlobalStorageResearch:
+                    GlobalStorageResearchInit();
+                    break;
+
+                case WindowsName.DataDetailPage:
+                    DataDetailsPageInit();
+                    break;
+
                 case WindowsName.AddStorage:
                     FormPageInit(windowName);
                     break;
@@ -258,6 +344,10 @@ namespace Project_Inventory
                     break;
 
                 case WindowsName.CreditPage:
+                    FormPageInit(windowName);
+                    break;
+
+                case WindowsName.BugReportPage:
                     FormPageInit(windowName);
                     break;
             }
@@ -316,6 +406,12 @@ namespace Project_Inventory
                                     WindowSwitch(sender, e, WindowsName.CreditPage);
                                 });
                                 break;
+                            case 3:
+                                routers[i + j] = new RoutedEventHandler((object sender, RoutedEventArgs e) =>
+                                {
+                                    WindowSwitch(sender, e, WindowsName.BugReportPage);
+                                });
+                                break;
                         }
                         routersNameF[i + j] = formName;
 
@@ -335,9 +431,13 @@ namespace Project_Inventory
             { 
                 WindowsName.MainMenu,
                 WindowsName.StorageSelectionMenu,
+                WindowsName.StorageTransfertSelection,
+                WindowsName.DataTransfert,
                 WindowsName.StorageViewerPage,
                 WindowsName.ListMenu,
                 WindowsName.ListViewerPage,
+                WindowsName.GlobalStorageResearch,
+                WindowsName.DataDetailPage,
                 WindowsName.LogsMenu,
                 WindowsName.UserMenu,
                 WindowsName.FormPage
@@ -347,7 +447,8 @@ namespace Project_Inventory
             {
                 WindowsName.AddStorage,
                 WindowsName.InitStorage,
-                WindowsName.CreditPage
+                WindowsName.CreditPage,
+                WindowsName.BugReportPage
             };
 
             WindowsName[] routersNameF = new WindowsName[routersName.Length - 1 + formRoutersName.Length];
@@ -374,6 +475,19 @@ namespace Project_Inventory
                     storageSelectionMenu.TopGridInit(topGrid);
                     storageSelectionMenu.CenterGridInit(centerGrid);
                     storageSelectionMenu.BottomGridInit(bottomGrid);
+                    if (storageSelectionMenu.emptyInfoPopUp) { storageSelectionMenu.EmptyInfoPopUp(); }
+                    break;
+
+                case WindowsName.StorageTransfertSelection:
+                    storageTransfertSelection.TopGridInit(topGrid);
+                    storageTransfertSelection.CenterGridInit(centerGrid);
+                    storageTransfertSelection.BottomGridInit(bottomGrid);
+                    break;
+
+                case WindowsName.DataTransfert:
+                    dataTransfert.TopGridInit(topGrid);
+                    dataTransfert.CenterGridInit(centerGrid);
+                    dataTransfert.BottomGridInit(bottomGrid);
                     break;
 
                 case WindowsName.FormPage:
@@ -388,12 +502,14 @@ namespace Project_Inventory
                     listMenu.TopGridInit(topGrid);
                     listMenu.CenterGridInit(centerGrid);
                     listMenu.BottomGridInit(bottomGrid);
+                    if (listMenu.emptyInfoPopUp) { listMenu.EmptyInfoPopUp(); }
                     break;
 
                 case WindowsName.UserMenu:
                     userMenu.TopGridInit(topGrid);
                     userMenu.CenterGridInit(centerGrid);
                     userMenu.BottomGridInit(bottomGrid);
+                    if (userMenu.emptyInfoPopUp) { userMenu.EmptyInfoPopUp(); }
                     break;
 
                 case WindowsName.ListViewerPage:
@@ -401,6 +517,23 @@ namespace Project_Inventory
                     listViewerPage.TopGridInit(topGrid);
                     listViewerPage.CenterGridInit(centerGrid);
                     listViewerPage.BottomGridInit(bottomGrid);
+                    if (listViewerPage.emptyInfoPopUp) { listViewerPage.EmptyInfoPopUp(); }
+                    break;
+
+                case WindowsName.GlobalStorageResearch:
+                    globalStorageResearch.researchKeyString = globalStorageResearch.researchTextBox.Text;
+                    globalStorageResearch.LoadBDDInfos();
+                    globalStorageResearch.TopGridInit(topGrid);
+                    globalStorageResearch.CenterGridInit(centerGrid);
+                    globalStorageResearch.BottomGridInit(bottomGrid);
+                    if (globalStorageResearch.emptyInfoPopUp) { globalStorageResearch.EmptyInfoPopUp(); }
+                    break;
+
+                case WindowsName.DataDetailPage:
+                    dataDetailsPage.LoadBDDInfos();
+                    dataDetailsPage.TopGridInit(topGrid);
+                    dataDetailsPage.CenterGridInit(centerGrid);
+                    dataDetailsPage.BottomGridInit(bottomGrid);
                     break;
 
                 case WindowsName.LogsMenu:
@@ -429,7 +562,20 @@ namespace Project_Inventory
                     }
                     storageViewerPage.CenterGridInit(centerGrid);
                     storageViewerPage.BottomGridInit(bottomGrid);
+                    if (storageViewerPage.emptyInfoPopUp) { storageViewerPage.EmptyInfoPopUp(); }
                     break;
+            }
+        }
+
+        private void ClosePopUp(object sender, CancelEventArgs e)
+        {
+            if(!PopUpCenter.ActionValidPopup())
+            {
+                e.Cancel = true;
+            }
+            else
+            {
+                e.Cancel = false;
             }
         }
     }

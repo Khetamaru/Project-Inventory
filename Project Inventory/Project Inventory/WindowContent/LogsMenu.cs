@@ -84,6 +84,7 @@ namespace Project_Inventory
             toolBox.InsertUIElementInGrid(topGrid, preResearchDate, 0, 1, UIElementsName.DatePicker, SkinLocation.CenterCenter);
             toolBox.InsertUIElementInGrid(topGrid, postResearchDate, 0, 2, UIElementsName.DatePicker, SkinLocation.CenterCenter);
             toolBox.InsertUIElementInGrid(topGrid, buttonLogDelete, 0, 3, UIElementsName.Button, SkinLocation.TopLeft);
+            researchTextBox.Focus();
         }
 
         public new void BottomGridInit(Grid bottomGrid)
@@ -188,6 +189,11 @@ namespace Project_Inventory
                     }
                 );
             }
+
+            if (logsGrid.Count < 1)
+            {
+                EmptyResearchResult();
+            }
         }
 
         public void DeleteLogs(object sender, RoutedEventArgs e)
@@ -197,6 +203,11 @@ namespace Project_Inventory
                 requestCenter.DeleteRequest(BDDTabsName.LogLibraries.ToString());
                 GetEventHandler(WindowsName.LogsMenu).Invoke(sender, e);
             }
+        }
+
+        public void EmptyResearchResult()
+        {
+            PopUpCenter.MessagePopup("No Log has been found.");
         }
     }
 }

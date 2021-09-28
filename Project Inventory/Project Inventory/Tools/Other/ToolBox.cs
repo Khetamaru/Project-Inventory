@@ -149,6 +149,15 @@ namespace Project_Inventory
             return temp;
         }
 
+        /// <summary>
+        /// Insert a UIElement in a created grid
+        /// </summary>
+        /// <param name="grid"></param>
+        /// <param name="uIElement"></param>
+        /// <param name="row"></param>
+        /// <param name="column"></param>
+        /// <param name="uIElementsName"></param>
+        /// <param name="skinLocation"></param>
         internal void InsertUIElementInGrid(Grid grid, UIElement uIElement, int row, int column, UIElementsName uIElementsName, SkinLocation skinLocation)
         {
             Grid.SetRow(uIElement, row);
@@ -386,6 +395,10 @@ namespace Project_Inventory
             {
                 case SkinSize.WidthOneTier:
                     GridSkins.WidthOneTier(grid, windowWidth - titleBarHeight);
+                    break;
+
+                case SkinSize.WidthFiftyPercent:
+                    GridSkins.WidthFiftyPercent(grid, windowWidth - titleBarHeight);
                     break;
 
                 case SkinSize.WidthTwoTier:
@@ -850,6 +863,96 @@ namespace Project_Inventory
         }
 
         /// <summary>
+        /// Set Up the grid for global storage research
+        /// </summary>
+        /// <param name="embededGrid"></param>
+        /// <param name="datas"></param>
+        public void SetUpGlobalResearchGrid(Grid embededGrid, List<Data> datas, List<Button> button, List<Storage> storages)
+        {
+            int i;
+            Label labelStorage;
+            Label labelCodeBar;
+
+            for (i = 0; i < datas.Count; i++)
+            {
+                labelStorage = new Label();
+
+                foreach(Storage storage in storages)
+                {
+                    if(datas[i].StorageId == storage.id)
+                    {
+                        labelStorage.Content = storage.Name;
+                    }
+                }
+
+                InsertUIElementInGrid(embededGrid, labelStorage, i, 0, UIElementsName.Label, SkinLocation.CenterCenter);
+
+                labelCodeBar = new Label();
+                labelCodeBar.Content = datas[i].CodeBar;
+                InsertUIElementInGrid(embededGrid, labelCodeBar, i, 1, UIElementsName.Label, SkinLocation.CenterCenter);
+
+                InsertUIElementInGrid(embededGrid, button[i], i, 2, UIElementsName.Button, SkinLocation.CenterCenter);
+            }
+        }
+
+        /// <summary>
+        /// Set Up the grid for Data details
+        /// </summary>
+        /// <param name="embededGrid"></param>
+        /// <param name="datas"></param>
+        public void SetUpDataDetailsGrid(Grid embededGrid, Data data, List<List<ListOption>> listOptions, List<int> customListIds, Data header)
+        {
+            int i;
+            int intResult;
+            SkinLocation skinLocation = SkinLocation.CenterCenter;
+
+            for (i = 0; i < data.DataText.Count; i++)
+            {
+                CreateTabCellToGrid(embededGrid, header.DataText[i], i, 0, skinLocation);
+
+                if (IsCustomList(data.DataType[i]))
+                {
+                    CreateTabCellToGrid(embededGrid, data.DataText[i], i, 1, skinLocation, GetListOptionInList(listOptions, Int32.Parse(data.DataType[i]), customListIds));
+                }
+                else
+                {
+                    CreateTabCellToGrid(embededGrid, data.DataText[i], data.DataType[i], i, 1, skinLocation);
+                }
+            }
+
+            CreateTabCellToGrid(embededGrid, "Code Bar", i, 0, skinLocation);
+            CreateTabCellToGrid(embededGrid, data.CodeBar, UIElementsName.TextBox.ToString(), i, 1, skinLocation);
+        }
+
+        /// <summary>
+        /// Set Up the grid for Data transfert
+        /// </summary>
+        /// <param name="embededGrid"></param>
+        /// <param name="datas"></param>
+        public void SetUpDataTransfertGrid(Grid embededGrid, Data data, List<List<ListOption>> listOptions, List<int> customListIds, Data header)
+        {
+            int i;
+            SkinLocation skinLocation = SkinLocation.CenterCenter;
+
+            for (i = 0; i < data.DataText.Count; i++)
+            {
+                CreateTabCellToGrid(embededGrid, header.DataText[i], i, 0, skinLocation);
+
+                if (IsCustomList(data.DataType[i]))
+                {
+                    CreateTabCellToGrid(embededGrid, data.DataText[i], i, 1, skinLocation, GetListOptionInList(listOptions, Int32.Parse(data.DataType[i]), customListIds));
+                }
+                else
+                {
+                    CreateTabCellToGrid(embededGrid, data.DataText[i], data.DataType[i], i, 1, skinLocation);
+                }
+            }
+
+            CreateTabCellToGrid(embededGrid, "Code Bar", i, 0, skinLocation);
+            CreateTabCellToGrid(embededGrid, data.CodeBar, UIElementsName.TextBox.ToString(), i, 1, skinLocation);
+        }
+
+        /// <summary>
         /// Create UIElements in the scroll grid
         /// </summary>
         /// <param name="grid"></param>
@@ -871,8 +974,9 @@ namespace Project_Inventory
                 {
                     if (stringTab[i].DataText.Count > j)
                     {
-                        if (Int32.TryParse(stringTab[i].DataText[j], out intResult) && IsCustomList(indicTab[j]) && i != 0)
+                        if (IsCustomList(indicTab[j]) && i != 0)
                         {
+                            Int32.TryParse(stringTab[i].DataText[j], out intResult);
                             CreateTabCellToGrid(grid, intResult, i, j, skinPosition, GetListOptionInList(listOptions, Int32.Parse(indicTab[j]), customListIds));
                         }
                         else
@@ -947,8 +1051,6 @@ namespace Project_Inventory
             int rowNb = grid.RowDefinitions.Count - 1;
             int columnNb = grid.ColumnDefinitions.Count - 1;
 
-            int intResult;
-
             string[] addElemString = new string[columnNb];
 
             for (i = 0; i < addElemString.Length; i++)
@@ -983,7 +1085,7 @@ namespace Project_Inventory
                     {
                         if (stringTab[i].DataText.Count > j)
                         {
-                            if (Int32.TryParse(indicTab[j], out intResult))
+                            if (IsCustomList(stringTab[i].DataType[j]))
                             {
                                 CreateTabCellToGrid(grid, stringTab[i].DataText[j], i, j + 1, skinPosition, GetListOptionInList(listOptions, Int32.Parse(indicTab[j]), customListIds));
                             }
@@ -1005,7 +1107,7 @@ namespace Project_Inventory
             {
                 if (indicTab.Length > l)
                 {
-                    if (Int32.TryParse(indicTab[l], out intResult))
+                    if (IsCustomList(stringTab[0].DataType[l]))
                     {
                         CreateTabCellToGrid(grid, addElemString[l], rowNb + 1, l + 1, skinPosition, GetListOptionInList(listOptions, Int32.Parse(indicTab[l]), customListIds));
                     }
@@ -1021,6 +1123,13 @@ namespace Project_Inventory
             }
         }
 
+        /// <summary>
+        /// Find the good list option in a list
+        /// </summary>
+        /// <param name="listOptions"></param>
+        /// <param name="id"></param>
+        /// <param name="customListIds"></param>
+        /// <returns></returns>
         private List<ListOption> GetListOptionInList(List<List<ListOption>> listOptions, int id, List<int> customListIds)
         {
             int i = 0;
@@ -1189,6 +1298,7 @@ namespace Project_Inventory
             if (indication == UIElementsName.TextBox.ToString())
             {
                 TextBox uiElement = new TextBox();
+                UIElementSkin.TextBoxValidationHandler(uiElement);
                 uiElement.Text = text;
 
                 UIElementSkin.TextBoxSkinModify(uiElement, wpfScreen);
@@ -1210,8 +1320,6 @@ namespace Project_Inventory
 
                 UIElementSkin.TextBoxNumberSkinModify(uiElement, wpfScreen);
                 StorageViewerSkin.LoadSkinPosition(uiElement, skinPosition);
-
-                // insert potential clickEvent
 
                 Grid.SetRow(uiElement, row);
                 Grid.SetColumn(uiElement, column);
@@ -1419,6 +1527,84 @@ namespace Project_Inventory
             SetUpCustomListGrid(embededGrid, options, deleteButtons, upButtons, downButtons);
 
             EmbedScrollableGrid(grid, embededGrid, scrollViewer);
+        }
+
+        /// <summary>
+        /// Set up Scrollable Grid for global Storage research page
+        /// </summary>
+        /// <param name="grid"></param>
+        /// <param name="embededGrid"></param>
+        /// <param name="datas"></param>
+        public void GlobalStorageResearchGrid(Grid grid, Grid embededGrid, List<Data> datas, List<Button> button, List<Storage> storages)
+        {
+            ScrollViewer scrollViewer = new ScrollViewer();
+
+            SetUpNewGrid(embededGrid, datas.Count, 3, SkinLocation.TopLeft);
+
+            ScrollFormInit(embededGrid, datas.Count, scrollViewer);
+
+            ScrollGridInit(embededGrid);
+
+            SetUpGlobalResearchGrid(embededGrid, datas, button, storages);
+
+            EmbedScrollableGrid(grid, embededGrid, scrollViewer);
+        }
+
+        /// <summary>
+        /// Set up Scrollable Grid for Data details page
+        /// </summary>
+        /// <param name="grid"></param>
+        /// <param name="embededGrid"></param>
+        /// <param name="datas"></param>
+        public void GlobalDataDetailsGrid(Grid grid, Grid embededGrid, Data data, List<List<ListOption>> listOptions, List<int> customListIds, Data header)
+        {
+            ScrollViewer scrollViewer = new ScrollViewer();
+
+            SetUpNewGrid(embededGrid, data.DataText.Count + 1, 2, SkinLocation.TopLeft);
+
+            ScrollFormInit(embededGrid, data.DataText.Count + 1, scrollViewer);
+
+            ScrollGridInit(embededGrid);
+
+            SetUpDataDetailsGrid(embededGrid, data, listOptions, customListIds, header);
+
+            EmbedScrollableGrid(grid, embededGrid, scrollViewer);
+        }
+
+        /// <summary>
+        /// Set up Scrollable Grid for Data transfert page
+        /// </summary>
+        /// <param name="grid"></param>
+        /// <param name="embededGrid"></param>
+        /// <param name="datas"></param>
+        public void DataTransfertGrid(Grid grid, out Grid gridLeft, out Grid gridRight, Data data, Data newData, Data header, Data newHeader, List<List<ListOption>> listOptions, List<int> customListIds)
+        {
+            ScrollViewer scrollViewerLeft = new ScrollViewer();
+            ScrollViewer scrollViewerRight = new ScrollViewer();
+
+            gridLeft = new Grid();
+            gridRight = new Grid();
+
+            SetUpNewGrid(gridLeft,  data.DataText.Count + 1,    2, SkinLocation.TopLeft);
+            SetUpNewGrid(gridRight, newData.DataText.Count + 1, 2, SkinLocation.TopRight);
+
+            LoadGridLength(gridLeft,  SkinSize.WidthFiftyPercent);
+            LoadGridLength(gridRight, SkinSize.WidthFiftyPercent);
+
+            ScrollFormInit(gridLeft,  data.DataText.Count + 1,    scrollViewerLeft);
+            ScrollFormInit(gridRight, newData.DataText.Count + 1, scrollViewerRight);
+
+            scrollViewerLeft.Width = windowWidth / 2;
+            scrollViewerRight.Width = windowWidth / 2;
+
+            scrollViewerLeft.HorizontalAlignment = HorizontalAlignment.Left;
+            scrollViewerRight.HorizontalAlignment = HorizontalAlignment.Right;
+
+            SetUpDataTransfertGrid(gridLeft,  data,    listOptions, customListIds, header);
+            SetUpDataTransfertGrid(gridRight, newData, listOptions, customListIds, newHeader);
+
+            EmbedScrollableGrid(grid, gridLeft,  scrollViewerLeft);
+            EmbedScrollableGrid(grid, gridRight, scrollViewerRight);
         }
 
         // Form //
@@ -1999,9 +2185,9 @@ namespace Project_Inventory
 
                     if (gridData[i].DataText[j] != data[i].DataText[j])
                     {
-                        if (Int32.TryParse(data[i].DataText[j], out intResult) && IsCustomList(data[i].DataType[j]))
+                        if (IsCustomList(data[i].DataType[j]))
                         {
-                            gridData[i].DataText[j] = IsDataAListOption(intResult, gridData[i].DataText[j], data[0].DataType[j], listOptions).ToString();
+                            gridData[i].DataText[j] = IsDataAListOption(gridData[i].DataText[j], data[0].DataType[j], listOptions).ToString();
 
                             if (gridData[i].DataText[j] != data[i].DataText[j])
                             {
@@ -2029,6 +2215,28 @@ namespace Project_Inventory
             }
 
             return changesList;
+        }
+
+        /// <summary>
+        /// get all UIElements result
+        /// </summary>
+        /// <param name="grid"></param>
+        /// <param name="data"></param>
+        /// <param name="indicationTab"></param>
+        /// <returns></returns>
+        public bool GetUIElements(List<UIElement> uiElementList, Data data, out Data output, List<List<ListOption>> listOptions)
+        {
+            int rowNb = data.DataText.Count;
+
+            output = ConvertGridChildrenToDataList(uiElementList, rowNb, data.StorageId, data.DataType, listOptions);
+            output.id = data.id;
+
+            if (output.DataText != data.DataText || output.CodeBar != data.CodeBar)
+            {
+                return true;
+            }
+
+            return false;
         }
 
         public bool IsCustomList(string dataType)
@@ -2063,7 +2271,7 @@ namespace Project_Inventory
         /// <param name="dataCustomList"></param>
         /// <param name="listOptions"></param>
         /// <returns></returns>
-        public int IsDataAListOption(int dataListOptionId, string dataTextListOption, string dataCustomList, List<List<ListOption>> listOptions)
+        public int IsDataAListOption(string dataTextListOption, string dataCustomList, List<List<ListOption>> listOptions)
         {
             int dataCustomListId = Int32.Parse(dataCustomList);
             List<ListOption> list = new List<ListOption>();
@@ -2078,7 +2286,7 @@ namespace Project_Inventory
 
             foreach(ListOption option in list)
             {
-                if (option.Name == dataTextListOption)
+                if (option.id.ToString() == dataTextListOption)
                 {
                     return option.id;
                 }
@@ -2274,6 +2482,35 @@ namespace Project_Inventory
             }
 
             return gridData;
+        }
+
+        /// <summary>
+        /// Convert Grid children to Data
+        /// </summary>
+        /// <param name="grid"></param>
+        /// <returns></returns>
+        public Data ConvertGridChildrenToDataList(List<UIElement> uIElements, int rowNb, int storageId, List<string> dataType, List<List<ListOption>> listOptions)
+        {
+            int j;
+
+            List<string> dataText;
+            string codeBar = string.Empty;
+
+            dataText = new List<string>();
+
+            for (j = 0; j < uIElements.Count; j++)
+            {
+                if (j < uIElements.Count - 1)
+                {
+                    TypeCatch(dataType[j], uIElements[j], dataText, listOptions);
+                }
+                else
+                {
+                    codeBar = (uIElements[j] as TextBox).Text;
+                }
+            }
+
+            return new Data(storageId, dataText, dataType, false, codeBar);
         }
 
         /// <summary>

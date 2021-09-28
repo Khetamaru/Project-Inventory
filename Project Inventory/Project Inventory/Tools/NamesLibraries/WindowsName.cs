@@ -16,11 +16,16 @@ namespace Project_Inventory.Tools
         ListViewerPage,
         LogsMenu,
         UserMenu,
+        GlobalStorageResearch,
+        DataDetailPage,
+        StorageTransfertSelection,
+        DataTransfert,
 
         FormPage,
         AddStorage,
         InitStorage,
         CreditPage,
+        BugReportPage,
 
         None
     }

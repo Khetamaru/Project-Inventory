@@ -50,7 +50,7 @@ namespace Project_Inventory.BDD
         /// <returns></returns>
         public string ToJson()
         {
-            return "{\"userId\":" + UserId + ",\"message\":\"" + Message + "\",\"date\":\"" + Date.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss") + "\"}";
+            return "{\"" + LogEnum.userId + "\":" + UserId + ",\"" + LogEnum.message + "\":\"" + Message + "\",\"" + LogEnum.date + "\":\"" + Date.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss") + "\"}";
         }
 
 
@@ -60,7 +60,15 @@ namespace Project_Inventory.BDD
         /// <returns></returns>
         public string ToJsonId()
         {
-            return "{\"Id\":" + id + ",\"userId\":" + UserId + ",\"message\":\"" + Message + "\",\"date\":\"" + Date.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss") + "\"}";
+            return "{\"" + LogEnum.id + "\":" + id + ",\"" + LogEnum.userId + "\":" + UserId + ",\"" + LogEnum.message + "\":\"" + Message + "\",\"" + LogEnum.date + "\":\"" + Date.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss") + "\"}";
         }
+    }
+
+    public enum LogEnum
+    {
+        id,
+        userId,
+        message,
+        date
     }
 }

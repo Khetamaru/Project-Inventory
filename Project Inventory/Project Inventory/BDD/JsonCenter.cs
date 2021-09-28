@@ -119,6 +119,22 @@ namespace Project_Inventory.Tools
             return (FormatToBDDObject(responseBdd, ObjectName.ListOption) as ListOption[])[0];
         }
 
+        public static bool IsStorageInitialised(RequestCenter requestCenter, int id)
+        {
+            string responseBdd = requestCenter.GetRequest(BDDTabsName.DataLibraries.ToString() + "/" + ObjectName.Storage.ToString() + "/" + id);
+
+            if (responseBdd != empty) return true;
+            else return false;
+        }
+
+        public static bool IsCustomListEmpty(RequestCenter requestCenter, int id)
+        {
+            string responseBdd = requestCenter.GetRequest(BDDTabsName.ListOptionLibraries.ToString() + "/" + ObjectName.CustomList.ToString() + "/" + id);
+
+            if (responseBdd != empty) return true;
+            else return false;
+        }
+
         /// <summary>
         /// Get all infos for the Storage Selection Menu
         /// </summary>
@@ -135,6 +151,66 @@ namespace Project_Inventory.Tools
             else
             {
                 return FormatToBDDObject(responseBdd, ObjectName.Storage) as Storage[];
+            }
+        }
+
+        /// <summary>
+        /// Get all infos for the Storage Transfert Selection Menu
+        /// </summary>
+        /// <param name="requestCenter"></param>
+        /// <returns></returns>
+        public static List<Storage> LoadStorageTransfertSelectionInfos(RequestCenter requestCenter)
+        {
+            string responseBdd = requestCenter.GetRequest(BDDTabsName.StorageLibraries.ToString());
+
+            if (responseBdd == empty)
+            {
+                return new List<Storage>();
+            }
+            else
+            {
+                List<Storage> storageList = (FormatToBDDObject(responseBdd, ObjectName.Storage) as Storage[]).ToList();
+                List<Storage> returnList = new List<Storage>();
+
+                foreach(Storage storage in storageList)
+                {
+                    if (IsStorageInitialised(requestCenter, storage.id))
+                    {
+                        returnList.Add(storage);
+                    }
+                }
+
+                return returnList;
+            }
+        }
+
+        /// <summary>
+        /// Get all infos for the Global Storage Research Page
+        /// </summary>
+        /// <param name="requestCenter"></param>
+        /// <returns></returns>
+        public static List<Data> LoadGlobalStorageResearchInfos(RequestCenter requestCenter, out List<Storage> storages)
+        {
+            string responseBdd = requestCenter.GetRequest(BDDTabsName.StorageLibraries.ToString());
+
+            if (responseBdd == empty)
+            {
+                storages = new List<Storage>();
+            }
+            else
+            {
+                storages = (FormatToBDDObject(responseBdd, ObjectName.Storage) as Storage[]).ToList();
+            }
+
+            responseBdd = requestCenter.GetRequest(BDDTabsName.DataLibraries.ToString());
+
+            if (responseBdd == empty)
+            {
+                return new List<Data>();
+            }
+            else
+            {
+                return (FormatToBDDObject(responseBdd, ObjectName.Data) as Data[]).ToList();
             }
         }
 
@@ -194,7 +270,7 @@ namespace Project_Inventory.Tools
         /// <returns></returns>
         public static CustomList[] LoadListMenuInfos(RequestCenter requestCenter, out List<StorageXCustomList> storageXCustomList, int storageId)
         {
-            string responseBdd = requestCenter.GetRequest(BDDTabsName.StorageLibrariesXCustomListLibraries.ToString() + "/storage/" + storageId);
+            string responseBdd = requestCenter.GetRequest(BDDTabsName.StorageLibrariesXCustomListLibraries.ToString() + "/" + ObjectName.Storage.ToString() + "/" + storageId);
 
             if (responseBdd == empty)
             {
@@ -239,7 +315,7 @@ namespace Project_Inventory.Tools
 
                 foreach(CustomList customList in customLists)
                 {
-                    responseBdd = requestCenter.GetRequest(BDDTabsName.ListOptionLibraries.ToString() + "/customList/" + customList.id);
+                    responseBdd = requestCenter.GetRequest(BDDTabsName.ListOptionLibraries.ToString() + "/" + ObjectName.CustomList.ToString() + "/" + customList.id);
 
                     if (responseBdd != empty)
                     {
@@ -322,7 +398,7 @@ namespace Project_Inventory.Tools
         /// <returns></returns>
         public static List<ListOption> LoadListViewerPageInfos(RequestCenter requestCenter, int customListId)
         {
-            string responseBdd = requestCenter.GetRequest(BDDTabsName.ListOptionLibraries.ToString() + "/customList/" + customListId);
+            string responseBdd = requestCenter.GetRequest(BDDTabsName.ListOptionLibraries.ToString() + "/" + ObjectName.CustomList.ToString() + "/" + customListId);
 
             if (responseBdd == empty)
             {
@@ -346,7 +422,7 @@ namespace Project_Inventory.Tools
             customListIds = new List<int>();
             List<StorageXCustomList> storagesXLists;
 
-            string responseBdd = requestCenter.GetRequest(BDDTabsName.StorageLibrariesXCustomListLibraries.ToString() + "/storage/" + storageId);
+            string responseBdd = requestCenter.GetRequest(BDDTabsName.StorageLibrariesXCustomListLibraries.ToString() + "/" + ObjectName.Storage.ToString() + "/" + storageId);
 
             if (responseBdd == empty)
             {
@@ -360,7 +436,7 @@ namespace Project_Inventory.Tools
             foreach (StorageXCustomList storageXCustom in storagesXLists)
             {
                 customListIds.Add(storageXCustom.CustomListId);
-                responseBdd = requestCenter.GetRequest(BDDTabsName.ListOptionLibraries.ToString() + "/customList/" + storageXCustom.CustomListId);
+                responseBdd = requestCenter.GetRequest(BDDTabsName.ListOptionLibraries.ToString() + "/" + ObjectName.CustomList.ToString() + "/" + storageXCustom.CustomListId);
 
                 if (responseBdd == empty)
                 {
@@ -372,7 +448,7 @@ namespace Project_Inventory.Tools
                 }
             }
 
-            responseBdd = requestCenter.GetRequest(BDDTabsName.DataLibraries.ToString() + "/storage/" + storageId);
+            responseBdd = requestCenter.GetRequest(BDDTabsName.DataLibraries.ToString() + "/" + ObjectName.Storage.ToString() + "/" + storageId);
 
             if (responseBdd == empty)
             {
@@ -385,6 +461,135 @@ namespace Project_Inventory.Tools
         }
 
         /// <summary>
+        /// Get all infos for the Data details page
+        /// </summary>
+        /// <param name="requestCenter"></param>
+        /// <param name="dataId"></param>
+        /// <returns></returns>
+        public static Data LoadDataDetailsPageInfos(RequestCenter requestCenter, int dataId, out List<List<ListOption>> listOptionsTab, out List<int> customListIds, out Data header)
+        {
+            listOptionsTab = new List<List<ListOption>>();
+            customListIds = new List<int>();
+            List<CustomList> customLists;
+            string responseBdd;
+
+            responseBdd = requestCenter.GetRequest(BDDTabsName.CustomListLibraries.ToString());
+
+            if (responseBdd == empty)
+            {
+                customLists = new List<CustomList>();
+            }
+            else
+            {
+                customLists = (FormatToBDDObject(responseBdd, ObjectName.CustomList) as CustomList[]).ToList();
+            }
+
+            foreach (CustomList customList in customLists)
+            {
+                responseBdd = requestCenter.GetRequest(BDDTabsName.ListOptionLibraries.ToString() + "/" + ObjectName.CustomList.ToString() + "/" + customList.id);
+
+                if (responseBdd == empty)
+                {
+                    listOptionsTab.Add(new List<ListOption>());
+                }
+                else
+                {
+                    listOptionsTab.Add((FormatToBDDObject(responseBdd, ObjectName.ListOption) as ListOption[]).ToList().OrderBy(obj => obj.Index).ToList());
+                }
+                customListIds.Add(customList.id);
+            }
+
+            Data data = GetData(requestCenter, dataId);
+
+            responseBdd = requestCenter.GetRequest(BDDTabsName.DataLibraries.ToString() + "/" + ObjectName.Header.ToString() + "/" + data.StorageId);
+
+            if (responseBdd == empty)
+            {
+                throw new Exception();
+            }
+            else
+            {
+                header = (FormatToBDDObject(responseBdd, ObjectName.Data) as Data[])[0];
+            }
+
+            return data;
+        }
+
+        /// <summary>
+        /// Get all infos for the Data transfert page
+        /// </summary>
+        /// <param name="requestCenter"></param>
+        /// <param name="dataId"></param>
+        /// <returns></returns>
+        public static Data LoadDataTransfertPageInfos(RequestCenter requestCenter, int dataId, int storageId, out Data newData, out List<List<ListOption>> listOptionsTab, out List<int> customListIds, out Data header, out Data newHeader)
+        {
+            listOptionsTab = new List<List<ListOption>>();
+            customListIds = new List<int>();
+            List<CustomList> customLists;
+            string responseBdd;
+
+            responseBdd = requestCenter.GetRequest(BDDTabsName.CustomListLibraries.ToString());
+
+            if (responseBdd == empty)
+            {
+                customLists = new List<CustomList>();
+            }
+            else
+            {
+                customLists = (FormatToBDDObject(responseBdd, ObjectName.CustomList) as CustomList[]).ToList();
+            }
+
+            foreach (CustomList customList in customLists)
+            {
+                responseBdd = requestCenter.GetRequest(BDDTabsName.ListOptionLibraries.ToString() + "/" + ObjectName.CustomList.ToString() + "/" + customList.id);
+
+                if (responseBdd == empty)
+                {
+                    listOptionsTab.Add(new List<ListOption>());
+                }
+                else
+                {
+                    listOptionsTab.Add((FormatToBDDObject(responseBdd, ObjectName.ListOption) as ListOption[]).ToList().OrderBy(obj => obj.Index).ToList());
+                }
+                customListIds.Add(customList.id);
+            }
+
+            Data data = GetData(requestCenter, dataId);
+
+            responseBdd = requestCenter.GetRequest(BDDTabsName.DataLibraries.ToString() + "/" + ObjectName.Header.ToString() + "/" + storageId);
+
+            if (responseBdd == empty)
+            {
+                throw new Exception();
+            }
+            else
+            {
+                newHeader = (FormatToBDDObject(responseBdd, ObjectName.Data) as Data[])[0];
+            }
+
+            responseBdd = requestCenter.GetRequest(BDDTabsName.DataLibraries.ToString() + "/" + ObjectName.Header.ToString() + "/" + data.StorageId);
+
+            if (responseBdd == empty)
+            {
+                throw new Exception();
+            }
+            else
+            {
+                header = (FormatToBDDObject(responseBdd, ObjectName.Data) as Data[])[0];
+            }
+
+            List<string> dataText = new List<string>();
+            foreach(string str in newHeader.DataText)
+            {
+                dataText.Add("");
+            }
+
+            newData = new Data(storageId, dataText, newHeader.DataType, false);
+
+            return data;
+        }
+
+        /// <summary>
         /// Get all infos for the Storage Viewer
         /// </summary>
         /// <param name="requestCenter"></param>
@@ -392,7 +597,7 @@ namespace Project_Inventory.Tools
         /// <returns></returns>
         public static Data[] LoadStorageViewerInfos(RequestCenter requestCenter, int storageId)
         {
-            string responseBdd = requestCenter.GetRequest(BDDTabsName.DataLibraries.ToString() + "/storage/" + storageId);
+            string responseBdd = requestCenter.GetRequest(BDDTabsName.DataLibraries.ToString() + "/" + ObjectName.Storage.ToString() + "/" + storageId);
 
             if (responseBdd == empty)
             {
@@ -412,7 +617,7 @@ namespace Project_Inventory.Tools
         /// <returns></returns>
         public static Data[] LoadStorageViewerInfos(RequestCenter requestCenter, int storageId, string researchString)
         {
-            string responseBdd = requestCenter.GetRequest(BDDTabsName.DataLibraries.ToString() + "/storage/" + storageId + "/" + researchString);
+            string responseBdd = requestCenter.GetRequest(BDDTabsName.DataLibraries.ToString() + "/" + ObjectName.Storage.ToString() + "/" + storageId + "/" + researchString);
 
             if (responseBdd == empty)
             {
@@ -430,7 +635,7 @@ namespace Project_Inventory.Tools
         /// <returns></returns>
         public static List<StorageXCustomList> LoadStorageXCustomLists(RequestCenter requestCenter, int id)
         {
-            string responseBdd = requestCenter.GetRequest(BDDTabsName.StorageLibrariesXCustomListLibraries.ToString() + "/customList/" + id);
+            string responseBdd = requestCenter.GetRequest(BDDTabsName.StorageLibrariesXCustomListLibraries.ToString() + "/" + ObjectName.CustomList.ToString() + "/" + id);
 
             if (responseBdd == empty)
             {
@@ -480,7 +685,7 @@ namespace Project_Inventory.Tools
                     Data[] dataLibrary = new Data[splitTab.Length];
                     foreach (string sf in splitTab)
                     {
-                        dataLibrary[i] = FormatObject(sf, new string[] { "id", "storageId", "dataText", "dataType", "isHeader", "codeBar" }, dataLibrary[i]);
+                        dataLibrary[i] = FormatObject(sf, dataLibrary[i]);
                         i++;
                     }
                     return dataLibrary;
@@ -489,7 +694,7 @@ namespace Project_Inventory.Tools
                     Storage[] storageLibrary = new Storage[splitTab.Length];
                     foreach (string sf in splitTab)
                     {
-                        storageLibrary[i] = FormatObject(sf, new string[] { "id", "name" }, storageLibrary[i]);
+                        storageLibrary[i] = FormatObject(sf, storageLibrary[i]);
                         i++;
                     }
                     return storageLibrary;
@@ -498,7 +703,7 @@ namespace Project_Inventory.Tools
                     CustomList[] customListLibrary = new CustomList[splitTab.Length];
                     foreach (string sf in splitTab)
                     {
-                        customListLibrary[i] = FormatObject(sf, new string[] { "id", "name" }, customListLibrary[i]);
+                        customListLibrary[i] = FormatObject(sf, customListLibrary[i]);
                         i++;
                     }
                     return customListLibrary;
@@ -507,7 +712,7 @@ namespace Project_Inventory.Tools
                     ListOption[] listOptionLibrary = new ListOption[splitTab.Length];
                     foreach (string sf in splitTab)
                     {
-                        listOptionLibrary[i] = FormatObject(sf, new string[] { "id", "customListId", "index", "name" }, listOptionLibrary[i]);
+                        listOptionLibrary[i] = FormatObject(sf, listOptionLibrary[i]);
                         i++;
                     }
                     return listOptionLibrary;
@@ -516,7 +721,7 @@ namespace Project_Inventory.Tools
                     StorageXCustomList[] storageXCustomListsLibrary = new StorageXCustomList[splitTab.Length];
                     foreach (string sf in splitTab)
                     {
-                        storageXCustomListsLibrary[i] = FormatObject(sf, new string[] { "id", "storageId", "customListId" }, storageXCustomListsLibrary[i]);
+                        storageXCustomListsLibrary[i] = FormatObject(sf, storageXCustomListsLibrary[i]);
                         i++;
                     }
                     return storageXCustomListsLibrary;
@@ -525,7 +730,7 @@ namespace Project_Inventory.Tools
                     Log[] logLibrary = new Log[splitTab.Length];
                     foreach (string sf in splitTab)
                     {
-                        logLibrary[i] = FormatObject(sf, new string[] { "id", "userId", "message", "date" }, logLibrary[i]);
+                        logLibrary[i] = FormatObject(sf, logLibrary[i]);
                         i++;
                     }
                     return logLibrary;
@@ -534,7 +739,7 @@ namespace Project_Inventory.Tools
                     User[] userLibrary = new User[splitTab.Length];
                     foreach (string sf in splitTab)
                     {
-                        userLibrary[i] = FormatObject(sf, new string[] { "id", "name", "accessibilityLevel", "isActive" }, userLibrary[i]);
+                        userLibrary[i] = FormatObject(sf, userLibrary[i]);
                         i++;
                     }
                     return userLibrary;
@@ -550,7 +755,7 @@ namespace Project_Inventory.Tools
         /// <param name="separators"></param>
         /// <param name="data"></param>
         /// <returns></returns>
-        private static Data FormatObject(string stf, string[] separators, Data data)
+        private static Data FormatObject(string stf, Data data)
         {
             int id = 42;
             int storageId = 42;
@@ -570,49 +775,47 @@ namespace Project_Inventory.Tools
 
             foreach (string split in splitTab)
             {
-                switch (split)
+                if(split == DataEnum.id.ToString())
                 {
-                    case "id":
-                        temp = splitTab[i + 1];
-                        temp = temp.Remove(0, 1);
-                        temp = temp.Remove(temp.Length - 1, 1);
+                    temp = splitTab[i + 1];
+                    temp = temp.Remove(0, 1);
+                    temp = temp.Remove(temp.Length - 1, 1);
 
-                        id = Int32.Parse(temp);
-                        break;
+                    id = Int32.Parse(temp);
+                } 
+                else if (split == DataEnum.storageId.ToString())
+                {
+                    temp = splitTab[i + 1];
+                    temp = temp.Remove(0, 1);
+                    temp = temp.Remove(temp.Length - 1, 1);
 
-                    case "storageId":
-                        temp = splitTab[i + 1];
-                        temp = temp.Remove(0, 1);
-                        temp = temp.Remove(temp.Length - 1, 1);
-
-                        storageId = Int32.Parse(temp);
-                        break;
-
-                    case "dataText":
-                        dataTextTemp = splitTab[i + 2];
-                        break;
-
-                    case "dataType":
-                        dataTypeTemp = splitTab[i + 2];
-                        break;
-
-                    case "isHeader":
-                        isHeaderStr = splitTab[i + 1];
-                        isHeaderStr = isHeaderStr.Remove(0, 1);
-                        isHeaderStr = isHeaderStr.Remove(isHeaderStr.Length - 1, 1);
-                        if (isHeaderStr == "true")
-                        {
-                            isHeader = true;
-                        }
-                        else if (isHeaderStr == "false")
-                        {
-                            isHeader = false;
-                        }
-                        break;
-
-                    case "codeBar":
-                        codeBar = splitTab[i + 2];
-                        break;
+                    storageId = Int32.Parse(temp);
+                }
+                else if (split == DataEnum.dataText.ToString())
+                {
+                    dataTextTemp = splitTab[i + 2];
+                }
+                else if (split == DataEnum.dataType.ToString())
+                {
+                    dataTypeTemp = splitTab[i + 2];
+                }
+                else if (split == DataEnum.isHeader.ToString())
+                {
+                    isHeaderStr = splitTab[i + 1];
+                    isHeaderStr = isHeaderStr.Remove(0, 1);
+                    isHeaderStr = isHeaderStr.Remove(isHeaderStr.Length - 1, 1);
+                    if (isHeaderStr == "true")
+                    {
+                        isHeader = true;
+                    }
+                    else if (isHeaderStr == "false")
+                    {
+                        isHeader = false;
+                    }
+                }
+                else if (split == DataEnum.codeBar.ToString())
+                {
+                    codeBar = splitTab[i + 2];
                 }
                 i++;
             }
@@ -632,7 +835,7 @@ namespace Project_Inventory.Tools
         /// <param name="separators"></param>
         /// <param name="storage"></param>
         /// <returns></returns>
-        private static Storage FormatObject(string stf, string[] separators, Storage storage)
+        private static Storage FormatObject(string stf, Storage storage)
         {
 
             int id = 42;
@@ -644,18 +847,16 @@ namespace Project_Inventory.Tools
 
             foreach (string split in splitTab)
             {
-                switch (split)
+                if (split == StorageEnum.id.ToString())
                 {
-                    case "id":
-                        string temp = splitTab[i + 1];
-                        temp = temp.Remove(0, 1);
-                        temp = temp.Remove(temp.Length - 1, 1);
-                        id = Int32.Parse(temp);
-                        break;
-
-                    case "name":
-                        name = splitTab[i + 2];
-                        break;
+                    string temp = splitTab[i + 1];
+                    temp = temp.Remove(0, 1);
+                    temp = temp.Remove(temp.Length - 1, 1);
+                    id = Int32.Parse(temp);
+                }
+                else if (split == StorageEnum.name.ToString())
+                {
+                    name = splitTab[i + 2];
                 }
                 i++;
             }
@@ -672,7 +873,7 @@ namespace Project_Inventory.Tools
         /// <param name="separators"></param>
         /// <param name="customList"></param>
         /// <returns></returns>
-        private static CustomList FormatObject(string stf, string[] separators, CustomList customList)
+        private static CustomList FormatObject(string stf, CustomList customList)
         {
 
             int id = 42;
@@ -684,21 +885,18 @@ namespace Project_Inventory.Tools
 
             foreach (string split in splitTab)
             {
-                switch (split)
+                if (split == CustomListEnum.id.ToString())
                 {
-                    case "id":
-                        string temp = splitTab[i + 1];
-                        temp = temp.Remove(0, 1);
-                        temp = temp.Remove(temp.Length - 1, 1);
+                    string temp = splitTab[i + 1];
+                    temp = temp.Remove(0, 1);
+                    temp = temp.Remove(temp.Length - 1, 1);
 
-                        id = Int32.Parse(temp);
-                        break;
-
-                    case "name":
-                        name = splitTab[i + 2];
-                        break;
+                    id = Int32.Parse(temp);
                 }
-
+                else if (split == CustomListEnum.name.ToString())
+                {
+                    name = splitTab[i + 2];
+                }
                 i++;
             }
 
@@ -714,7 +912,7 @@ namespace Project_Inventory.Tools
         /// <param name="separators"></param>
         /// <param name="listOption"></param>
         /// <returns></returns>
-        private static ListOption FormatObject(string stf, string[] separators, ListOption listOption)
+        private static ListOption FormatObject(string stf, ListOption listOption)
         {
 
             int id = 42;
@@ -730,32 +928,30 @@ namespace Project_Inventory.Tools
 
             foreach (string split in splitTab)
             {
-                switch (split)
+                if (split == ListOptionEnum.id.ToString())
                 {
-                    case "id":
-                        temp = splitTab[i + 1];
-                        temp = temp.Remove(0, 1);
-                        temp = temp.Remove(temp.Length - 1, 1);
-                        id = Int32.Parse(temp);
-                        break;
-
-                    case "customListId":
-                        temp = splitTab[i + 1];
-                        temp = temp.Remove(0, 1);
-                        temp = temp.Remove(temp.Length - 1, 1);
-                        customListId = Int32.Parse(temp);
-                        break;
-
-                    case "index":
-                        temp = splitTab[i + 1];
-                        temp = temp.Remove(0, 1);
-                        temp = temp.Remove(temp.Length - 1, 1);
-                        index = Int32.Parse(temp);
-                        break;
-
-                    case "name":
-                        name = splitTab[i + 2];
-                        break;
+                    temp = splitTab[i + 1];
+                    temp = temp.Remove(0, 1);
+                    temp = temp.Remove(temp.Length - 1, 1);
+                    id = Int32.Parse(temp);
+                }
+                else if(split == ListOptionEnum.customListId.ToString())
+                {
+                    temp = splitTab[i + 1];
+                    temp = temp.Remove(0, 1);
+                    temp = temp.Remove(temp.Length - 1, 1);
+                    customListId = Int32.Parse(temp);
+                }
+                else if(split == ListOptionEnum.index.ToString())
+                {
+                    temp = splitTab[i + 1];
+                    temp = temp.Remove(0, 1);
+                    temp = temp.Remove(temp.Length - 1, 1);
+                    index = Int32.Parse(temp);
+                }
+                else if(split == ListOptionEnum.name.ToString())
+                {
+                    name = splitTab[i + 2];
                 }
                 i++;
             }
@@ -772,7 +968,7 @@ namespace Project_Inventory.Tools
         /// <param name="separators"></param>
         /// <param name="storagesXCustomLists"></param>
         /// <returns></returns>
-        private static StorageXCustomList FormatObject(string stf, string[] separators, StorageXCustomList storagesXCustomLists)
+        private static StorageXCustomList FormatObject(string stf, StorageXCustomList storagesXCustomLists)
         {
 
             int id = 42;
@@ -786,32 +982,29 @@ namespace Project_Inventory.Tools
 
             foreach (string split in splitTab)
             {
-                switch (split)
+                if (split == StorageXCustomListEnum.id.ToString())
                 {
-                    case "id":
-                        temp = splitTab[i + 1];
-                        temp = temp.Remove(0, 1);
+                    temp = splitTab[i + 1];
+                    temp = temp.Remove(0, 1);
+                    temp = temp.Remove(temp.Length - 1, 1);
+                    id = Int32.Parse(temp);
+                } 
+                else if (split == StorageXCustomListEnum.storageId.ToString())
+                {
+                    temp = splitTab[i + 1];
+                    temp = temp.Remove(0, 1);
+                    temp = temp.Remove(temp.Length - 1, 1);
+                    storageId = Int32.Parse(temp);
+                }
+                else if(split == StorageXCustomListEnum.customListId.ToString())
+                {
+                    temp = splitTab[i + 1];
+                    temp = temp.Remove(0, 1);
+                    do
+                    {
                         temp = temp.Remove(temp.Length - 1, 1);
-                        id = Int32.Parse(temp);
-                        break;
-
-                    case "storageId":
-                        temp = splitTab[i + 1];
-                        temp = temp.Remove(0, 1);
-                        temp = temp.Remove(temp.Length - 1, 1);
-                        storageId = Int32.Parse(temp);
-                        break;
-
-                    case "customListId":
-                        temp = splitTab[i + 1];
-                        temp = temp.Remove(0, 1);
-                        do 
-                        {
-                            temp = temp.Remove(temp.Length - 1, 1);
-                        } 
-                        while (!Int32.TryParse(temp, out customListId));
-
-                        break;
+                    }
+                    while (!Int32.TryParse(temp, out customListId));
                 }
                 i++;
             }
@@ -828,7 +1021,7 @@ namespace Project_Inventory.Tools
         /// <param name="separators"></param>
         /// <param name="log"></param>
         /// <returns></returns>
-        private static Log FormatObject(string stf, string[] separators, Log log)
+        private static Log FormatObject(string stf, Log log)
         {
 
             int id = 42;
@@ -844,29 +1037,27 @@ namespace Project_Inventory.Tools
 
             foreach (string split in splitTab)
             {
-                switch (split)
+                if (split == LogEnum.id.ToString())
                 {
-                    case "id":
-                        temp = splitTab[i + 1];
-                        temp = temp.Remove(0, 1);
-                        temp = temp.Remove(temp.Length - 1, 1);
-                        id = Int32.Parse(temp);
-                        break;
-
-                    case "userId":
-                        temp = splitTab[i + 1];
-                        temp = temp.Remove(0, 1);
-                        temp = temp.Remove(temp.Length - 1, 1);
-                        userId = Int32.Parse(temp);
-                        break;
-
-                    case "message":
-                        message = splitTab[i + 2];
-                        break;
-
-                    case "date":
-                        date = Convert.ToDateTime(splitTab[i + 2]);
-                        break;
+                    temp = splitTab[i + 1];
+                    temp = temp.Remove(0, 1);
+                    temp = temp.Remove(temp.Length - 1, 1);
+                    id = Int32.Parse(temp);
+                }
+                else if (split == LogEnum.userId.ToString())
+                {
+                    temp = splitTab[i + 1];
+                    temp = temp.Remove(0, 1);
+                    temp = temp.Remove(temp.Length - 1, 1);
+                    userId = Int32.Parse(temp);
+                }
+                else if(split == LogEnum.message.ToString())
+                {
+                    message = splitTab[i + 2];
+                }
+                else if(split == LogEnum.date.ToString())
+                {
+                    date = Convert.ToDateTime(splitTab[i + 2]);
                 }
                 i++;
             }
@@ -883,7 +1074,7 @@ namespace Project_Inventory.Tools
         /// <param name="separators"></param>
         /// <param name="user"></param>
         /// <returns></returns>
-        private static User FormatObject(string stf, string[] separators, User user)
+        private static User FormatObject(string stf, User user)
         {
             int id = 42;
             string name = string.Empty;
@@ -899,50 +1090,47 @@ namespace Project_Inventory.Tools
 
             foreach (string split in splitTab)
             {
-                switch (split)
+                if (split == UserEnum.id.ToString())
                 {
-                    case "id":
-                        temp = splitTab[i + 1];
-                        temp = temp.Remove(0, 1);
-                        temp = temp.Remove(temp.Length - 1, 1);
+                    temp = splitTab[i + 1];
+                    temp = temp.Remove(0, 1);
+                    temp = temp.Remove(temp.Length - 1, 1);
 
-                        id = Int32.Parse(temp);
-                        break;
+                    id = Int32.Parse(temp);
+                }
+                else if (split == UserEnum.name.ToString())
+                {
+                    name = splitTab[i + 2];
+                }
+                else if(split == UserEnum.accessibilityLevel.ToString())
+                {
+                    temp = splitTab[i + 1];
+                    temp = temp.Remove(0, 1);
+                    temp = temp.Remove(temp.Length - 1, 1);
 
-                    case "name":
-                        name = splitTab[i + 2];
-                        break;
+                    accessibilityLevel = Int32.Parse(temp);
+                }
+                else if(split == UserEnum.isActive.ToString())
+                {
+                    isActiveTemp = splitTab[i + 1];
+                    isActiveTemp = isActiveTemp.Remove(0, 1);
+                    isActiveTemp = isActiveTemp.Remove(isActiveTemp.Length - 1, 1);
 
-                    case "accessibilityLevel":
-                        temp = splitTab[i + 1];
-                        temp = temp.Remove(0, 1);
-                        temp = temp.Remove(temp.Length - 1, 1);
+                    if (isActiveTemp[isActiveTemp.Length - 1] == '}') { isActiveTemp = isActiveTemp.Remove(isActiveTemp.Length - 1, 1); }
 
-                        accessibilityLevel = Int32.Parse(temp);
-                        break;
+                    switch (isActiveTemp)
+                    {
+                        case "true":
+                            isActive = true;
+                            break;
 
-                    case "isActive":
+                        case "false":
+                            isActive = false;
+                            break;
 
-                        isActiveTemp = splitTab[i + 1];
-                        isActiveTemp = isActiveTemp.Remove(0, 1);
-                        isActiveTemp = isActiveTemp.Remove(isActiveTemp.Length - 1, 1);
-
-                        if (isActiveTemp[isActiveTemp.Length - 1] == '}') { isActiveTemp = isActiveTemp.Remove(isActiveTemp.Length - 1, 1); }
-
-                        switch (isActiveTemp)
-                        {
-                            case "true":
-                                isActive = true;
-                                break;
-
-                            case "false":
-                                isActive = false;
-                                break;
-
-                            default:
-                                throw new Exception();
-                        }
-                        break;
+                        default:
+                            throw new Exception();
+                    }
                 }
                 i++;
             }

@@ -57,7 +57,7 @@ namespace Project_Inventory.BDD
         /// <returns></returns>
         public string ToJson()
         {
-            return "{\"storageId\":" + StorageId + ",\"dataText\":\"" + ToStringDataText() + "\",\"dataType\":\"" + ToStringDataType() + "\",\"isHeader\":" + IsHeader.ToString().ToLower() + ",\"codeBar\":\"" + CodeBar + "\"}";
+            return "{\"" + DataEnum.storageId + "\":" + StorageId + ",\"" + DataEnum.dataText + "\":\"" + ToStringDataText() + "\",\"" + DataEnum.dataType + "\":\"" + ToStringDataType() + "\",\"" + DataEnum.isHeader + "\":" + IsHeader.ToString().ToLower() + ",\"" + DataEnum.codeBar + "\":\"" + CodeBar + "\"}";
         }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace Project_Inventory.BDD
         /// <returns></returns>
         public string ToJsonId()
         {
-            return "{\"Id\":" + id + ",\"storageId\":" + StorageId + ",\"dataText\":\"" + ToStringDataText() + "\",\"dataType\":\"" + ToStringDataType() + "\",\"isHeader\":" + IsHeader.ToString().ToLower() + ",\"codeBar\":\"" + CodeBar + "\"}";
+            return "{\"" + DataEnum.id + "\":" + id + ",\"" + DataEnum.storageId + "\":" + StorageId + ",\"" + DataEnum.dataText + "\":\"" + ToStringDataText() + "\",\"" + DataEnum.dataType + "\":\"" + ToStringDataType() + "\",\"" + DataEnum.isHeader + "\":" + IsHeader.ToString().ToLower() + ",\"" + DataEnum.codeBar + "\":\"" + CodeBar + "\"}";
         }
 
         /// <summary>
@@ -114,5 +114,15 @@ namespace Project_Inventory.BDD
 
             return stg;
         }
+    }
+
+    public enum DataEnum
+    {
+        id,
+        storageId,
+        dataText,
+        dataType,
+        isHeader,
+        codeBar
     }
 }
