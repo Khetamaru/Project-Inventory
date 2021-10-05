@@ -427,6 +427,23 @@ namespace Project_Inventory
             }
         }
 
+        internal UIElementsName GetUIElementType(string column)
+        {
+            if (column == UIElementsName.DatePicker.ToString())
+            {
+                return UIElementsName.DatePicker;
+            }
+            else if (column == UIElementsName.TextBox.ToString())
+            {
+                return UIElementsName.TextBox;
+            }
+            else if (column == UIElementsName.TextBoxNumber.ToString())
+            {
+                return UIElementsName.TextBoxNumber;
+            }
+            return UIElementsName.None;
+        }
+
         /// <summary>
         /// Insert button in the grid
         /// </summary>
@@ -903,7 +920,6 @@ namespace Project_Inventory
         public void SetUpDataDetailsGrid(Grid embededGrid, Data data, List<List<ListOption>> listOptions, List<int> customListIds, Data header)
         {
             int i;
-            int intResult;
             SkinLocation skinLocation = SkinLocation.CenterCenter;
 
             for (i = 0; i < data.DataText.Count; i++)
@@ -958,15 +974,22 @@ namespace Project_Inventory
         /// <param name="grid"></param>
         /// <param name="stringTab"></param>
         /// <param name="skinPosition"></param>
-        public void CreateTabToGrid(Grid grid, Data[] stringTab, SkinLocation skinPosition, string[] indicTab, List<List<ListOption>> listOptions, List<int> customListIds)
+        public void CreateTabToGrid(Grid grid, Data[] stringTab, SkinLocation skinPosition, string[] indicTab, List<List<ListOption>> listOptions, List<int> customListIds, List<Button> sortButtonList)
         {
             int i;
             int j;
 
             int intResult;
 
-            int rowNb = grid.RowDefinitions.Count;
+            int rowNb = grid.RowDefinitions.Count - 1;
             int columnNb = grid.ColumnDefinitions.Count;
+
+            for (j = 0; j < columnNb - 1; j++)
+            {
+                Grid.SetRow(sortButtonList[j], 0);
+                Grid.SetColumn(sortButtonList[j], j);
+                grid.Children.Add(sortButtonList[j]);
+            }
 
             for (i = 0; i < rowNb; i++)
             {
@@ -977,22 +1000,22 @@ namespace Project_Inventory
                         if (IsCustomList(indicTab[j]) && i != 0)
                         {
                             Int32.TryParse(stringTab[i].DataText[j], out intResult);
-                            CreateTabCellToGrid(grid, intResult, i, j, skinPosition, GetListOptionInList(listOptions, Int32.Parse(indicTab[j]), customListIds));
+                            CreateTabCellToGrid(grid, intResult, i + 1, j, skinPosition, GetListOptionInList(listOptions, Int32.Parse(indicTab[j]), customListIds));
                         }
                         else
                         {
-                            CreateTabCellToGrid(grid, stringTab[i].DataText[j], i, j, skinPosition);
+                            CreateTabCellToGrid(grid, stringTab[i].DataText[j], i + 1, j, skinPosition);
                         }
                     }
                     else
                     {
-                        if(i == 0)
+                        if (i == 0)
                         {
-                            CreateTabCellToGrid(grid, "Code Bar", i, j, skinPosition);
+                            CreateTabCellToGrid(grid, "Code Bar", i + 1, j, skinPosition);
                         }
                         else
                         {
-                            CreateTabCellToGrid(grid, stringTab[i].CodeBar, i, j, skinPosition);
+                            CreateTabCellToGrid(grid, stringTab[i].CodeBar, i + 1, j, skinPosition);
                         }
                     }
                 }
@@ -1042,16 +1065,23 @@ namespace Project_Inventory
         /// <param name="stringTab"></param>
         /// <param name="indicTab"></param>
         /// <param name="skinPosition"></param>
-        public void CreateTabToGrid(Grid grid, Data[] stringTab, string[] indicTab, SkinLocation skinPosition, List<Button> buttonList, List<List<ListOption>> listOptions, List<int> customListIds)
+        public void CreateTabToGrid(Grid grid, Data[] stringTab, string[] indicTab, SkinLocation skinPosition, List<Button> buttonList, List<List<ListOption>> listOptions, List<int> customListIds, List<Button> sortButtonList)
         {
             int i;
             int j;
             int k = 0;
 
-            int rowNb = grid.RowDefinitions.Count - 1;
+            int rowNb = grid.RowDefinitions.Count - 2;
             int columnNb = grid.ColumnDefinitions.Count - 1;
 
             string[] addElemString = new string[columnNb];
+
+            for (j = 0; j < columnNb - 1; j++)
+            {
+                Grid.SetRow(sortButtonList[j], 0);
+                Grid.SetColumn(sortButtonList[j], j + 1);
+                grid.Children.Add(sortButtonList[j]);
+            }
 
             for (i = 0; i < addElemString.Length; i++)
             {
@@ -1066,18 +1096,18 @@ namespace Project_Inventory
                     {
                         if (stringTab[i].DataText.Count >= (i + 1) * (j + 1))
                         {
-                            CreateHeaderToGrid(grid, stringTab[i].DataText[j], i, j + 1, skinPosition);
+                            CreateHeaderToGrid(grid, stringTab[i].DataText[j], i + 1, j + 1, skinPosition);
                             k++;
                         }
                         else
                         {
-                            CreateHeaderToGrid(grid, "Code Bar", i, j + 1, skinPosition);
+                            CreateHeaderToGrid(grid, "Code Bar", i + 1, j + 1, skinPosition);
                         }
                     }
                 }
                 else
                 {
-                    Grid.SetRow(buttonList[i], i);
+                    Grid.SetRow(buttonList[i], i + 1);
                     Grid.SetColumn(buttonList[i], 0);
                     grid.Children.Add(buttonList[i]);
 
@@ -1087,17 +1117,17 @@ namespace Project_Inventory
                         {
                             if (IsCustomList(stringTab[i].DataType[j]))
                             {
-                                CreateTabCellToGrid(grid, stringTab[i].DataText[j], i, j + 1, skinPosition, GetListOptionInList(listOptions, Int32.Parse(indicTab[j]), customListIds));
+                                CreateTabCellToGrid(grid, stringTab[i].DataText[j], i + 1, j + 1, skinPosition, GetListOptionInList(listOptions, Int32.Parse(indicTab[j]), customListIds));
                             }
                             else
                             {
-                                CreateTabCellToGrid(grid, stringTab[i].DataText[j], indicTab[j], i, j + 1, skinPosition);
+                                CreateTabCellToGrid(grid, stringTab[i].DataText[j], indicTab[j], i + 1, j + 1, skinPosition);
                             }
                             k++;
                         }
                         else
                         {
-                            CreateTabCellToGrid(grid, stringTab[i].CodeBar, UIElementsName.TextBox.ToString(), i, j + 1, skinPosition);
+                            CreateTabCellToGrid(grid, stringTab[i].CodeBar, UIElementsName.TextBox.ToString(), i + 1, j + 1, skinPosition);
                         }
                     }
                 }
@@ -1109,16 +1139,16 @@ namespace Project_Inventory
                 {
                     if (IsCustomList(stringTab[0].DataType[l]))
                     {
-                        CreateTabCellToGrid(grid, addElemString[l], rowNb + 1, l + 1, skinPosition, GetListOptionInList(listOptions, Int32.Parse(indicTab[l]), customListIds));
+                        CreateTabCellToGrid(grid, addElemString[l], rowNb + 2, l + 1, skinPosition, GetListOptionInList(listOptions, Int32.Parse(indicTab[l]), customListIds));
                     }
                     else
                     {
-                        CreateTabCellToGrid(grid, addElemString[l], indicTab[l], rowNb + 1, l + 1, skinPosition);
+                        CreateTabCellToGrid(grid, addElemString[l], indicTab[l], rowNb + 2, l + 1, skinPosition);
                     }
                 }
                 else
                 {
-                    CreateTabCellToGrid(grid, addElemString[l], UIElementsName.TextBox.ToString(), rowNb + 1, l + 1, skinPosition);
+                    CreateTabCellToGrid(grid, addElemString[l], UIElementsName.TextBox.ToString(), rowNb + 2, l + 1, skinPosition);
                 }
             }
         }
@@ -1607,6 +1637,11 @@ namespace Project_Inventory
             EmbedScrollableGrid(grid, gridRight, scrollViewerRight);
         }
 
+        public int GetDataTextColumn(RequestCenter requestCenter, int listOptionId)
+        {
+            return JsonCenter.GetListOption(requestCenter, listOptionId).Index;
+        }
+
         // Form //
 
         /// <summary>
@@ -1817,7 +1852,7 @@ namespace Project_Inventory
         /// <param name="tabPos"></param>
         /// <param name="stringTab"></param>
         /// <param name="indicTab"></param>
-        public void CreateScrollableGrid(Grid grid, Grid embededGrid, int gridRowOne, int gridColumnOne, int gridRowTwo, int gridColumnTwo, SkinLocation gridSkin, SkinSize skinHeight, SkinLocation tabPos, Data[] stringTab, string[] indicTab, List<List<ListOption>> listOptions, List<int> customListIds)
+        public void CreateScrollableGrid(Grid grid, Grid embededGrid, int gridRowOne, int gridColumnOne, int gridRowTwo, int gridColumnTwo, SkinLocation gridSkin, SkinSize skinHeight, SkinLocation tabPos, Data[] stringTab, string[] indicTab, List<List<ListOption>> listOptions, List<int> customListIds, List<Button> sortButtonList)
         {
             ScrollViewer scrollViewer = new ScrollViewer();
 
@@ -1827,7 +1862,7 @@ namespace Project_Inventory
 
             ScrollGridInit(embededGrid, gridRowTwo, gridColumnTwo, scrollViewer);
 
-            CreateTabToGrid(embededGrid, stringTab, tabPos, indicTab, listOptions, customListIds);
+            CreateTabToGrid(embededGrid, stringTab, tabPos, indicTab, listOptions, customListIds, sortButtonList);
 
             EmbedScrollableGrid(grid, embededGrid, scrollViewer);
         }
@@ -1875,7 +1910,7 @@ namespace Project_Inventory
         /// <param name="tabPos"></param>
         /// <param name="stringTab"></param>
         /// <param name="indicTab"></param>
-        public void CreateScrollableGridModfiable(Grid grid, Grid embededGrid, int gridRowOne, int gridColumnOne, int gridRowTwo, int gridColumnTwo, SkinLocation gridSkin, SkinSize skinHeight, SkinLocation tabPos, Data[] stringTab, string[] indicTab, List<Button> buttonList, List<List<ListOption>> listOptions, List<int> customListIds)
+        public void CreateScrollableGridModfiable(Grid grid, Grid embededGrid, int gridRowOne, int gridColumnOne, int gridRowTwo, int gridColumnTwo, SkinLocation gridSkin, SkinSize skinHeight, SkinLocation tabPos, Data[] stringTab, string[] indicTab, List<Button> buttonList, List<List<ListOption>> listOptions, List<int> customListIds, List<Button> sortButtonList)
         {
             ScrollViewer scrollViewer = new ScrollViewer();
 
@@ -1885,7 +1920,7 @@ namespace Project_Inventory
 
             ScrollGridInit(embededGrid, gridRowTwo, gridColumnTwo, scrollViewer);
 
-            CreateTabToGrid(embededGrid, stringTab, indicTab, tabPos, buttonList, listOptions, customListIds);
+            CreateTabToGrid(embededGrid, stringTab, indicTab, tabPos, buttonList, listOptions, customListIds, sortButtonList);
 
             EmbedScrollableGrid(grid, embededGrid, scrollViewer);
         }
@@ -2173,8 +2208,6 @@ namespace Project_Inventory
             List<int> changesList = new List<int>();
             bool trigger;
             int i;
-
-            int intResult;
 
             for (i = 0; i < rowNb; i++)
             {

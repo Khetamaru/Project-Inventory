@@ -294,6 +294,13 @@ namespace Project_Inventory
                 else
                 {
                     requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "(" + JsonCenter.GetCustomList(requestCenter, CustomListId).Name + ") Custom List has been delete.").ToJson());
+
+                    List<ListOption> listOptions = JsonCenter.GetListOptionByCustomListId(requestCenter, CustomListId);
+
+                    foreach(ListOption option in listOptions)
+                    {
+                        requestCenter.DeleteRequest(BDDTabsName.ListOptionLibraries.ToString() + "/" + option.id);
+                    }
                     requestCenter.DeleteRequest(BDDTabsName.CustomListLibraries.ToString() + "/" + CustomListId);
                 }
             }

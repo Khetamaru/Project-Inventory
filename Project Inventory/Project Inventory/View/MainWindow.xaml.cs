@@ -555,6 +555,7 @@ namespace Project_Inventory
                     {
                         storageViewerPage.ResearchThree(storageViewerPage.researchTextBox.Text);
                     }
+                    else if (storageViewerPage.sortingTrigger) { }
                     else
                     {
                         storageViewerPage.LoadBDDInfos();

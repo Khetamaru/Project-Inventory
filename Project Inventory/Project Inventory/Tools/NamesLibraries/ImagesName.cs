@@ -13,6 +13,7 @@ namespace Project_Inventory.Tools
         logo,
         ArrowUp,
         ArrowDown,
+        ArrowNeutral,
 
         None
     }

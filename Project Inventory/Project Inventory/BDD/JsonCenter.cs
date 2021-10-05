@@ -119,6 +119,13 @@ namespace Project_Inventory.Tools
             return (FormatToBDDObject(responseBdd, ObjectName.ListOption) as ListOption[])[0];
         }
 
+        public static List<ListOption> GetListOptionByCustomListId(RequestCenter requestCenter, int id)
+        {
+            string responseBdd = requestCenter.GetRequest(BDDTabsName.ListOptionLibraries.ToString() + "/customList/" + id);
+
+            return (FormatToBDDObject(responseBdd, ObjectName.ListOption) as ListOption[]).ToList();
+        }
+
         public static bool IsStorageInitialised(RequestCenter requestCenter, int id)
         {
             string responseBdd = requestCenter.GetRequest(BDDTabsName.DataLibraries.ToString() + "/" + ObjectName.Storage.ToString() + "/" + id);
