@@ -130,7 +130,7 @@ namespace Project_Inventory
 
         private void BugReporting(string bugDescription)
         {
-            Bug bug = new Bug(actualUserId, bugDescription);
+            Bug bug = new Bug(actualUserId, bugDescription, false);
 
             requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "A Bug has been reported.").ToJson());
             requestCenter.PostRequest(BDDTabsName.BugLibraries.ToString(), bug.ToJson());

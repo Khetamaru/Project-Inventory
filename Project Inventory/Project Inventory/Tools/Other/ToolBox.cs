@@ -582,7 +582,7 @@ namespace Project_Inventory
             {
                 for (j = 0; j < columnNb; j++)
                 {
-                    if (buttonsTab.Length >= (i + 1) * (j + 1))
+                    if (buttonsTab.Length > k)
                     {
                         CreateSwitchButtonToGrid(grid, buttonsTab[k], routerTab[k], i, j, buttonsSkin, skinPosition);
                         k++;
@@ -1035,6 +1035,48 @@ namespace Project_Inventory
             foreach (Log log in logs)
             {
                 CreateTabCellToGrid(grid, "(" + GetUser(log.UserId, users).Name + ") : " + log.Message + " /// " + log.Date.ToString(), i, 0, skinPosition);
+
+                i++;
+            }
+        }
+
+        /// <summary>
+        /// Create UIElements in the scroll grid
+        /// </summary>
+        /// <param name="grid"></param>
+        /// <param name="stringTab"></param>
+        /// <param name="skinPosition"></param>
+        public void CreateTabToGrid(Grid grid, List<Bug> bugs, List<User> users, SkinLocation skinPosition, List<Button> deleteButtons, List<Button> handleButtons)
+        {
+            int i = 0;
+            User userTemp = null;
+
+            foreach (Bug bug in bugs)
+            {
+                foreach(User user in users)
+                {
+                    if (user.id == bug.UserId)
+                    {
+                        userTemp = user;
+                    }
+                }
+                InsertUIElementInGrid(grid, deleteButtons[i], i, 0, UIElementsName.Button, SkinLocation.CenterCenter);
+                CreateTabCellToGrid(grid, userTemp.Name, i, 1, skinPosition);
+                CreateTabCellToGrid(grid, bug.Description, i, 2, skinPosition);
+
+                if(bug.Handled)
+                {
+                    CreateTabCellToGrid(grid, "Handled", i, 3, skinPosition);
+                }
+                else
+                {
+                    CreateTabCellToGrid(grid, "Not Handled", i, 3, skinPosition);
+                }
+
+                if (!bug.Handled)
+                {
+                    InsertUIElementInGrid(grid, handleButtons[i], i, 4, UIElementsName.Button, SkinLocation.CenterCenter);
+                }
 
                 i++;
             }
@@ -1892,6 +1934,35 @@ namespace Project_Inventory
             ScrollGridInit(embededGrid, gridRowTwo, gridColumnTwo, scrollViewer, rowLimit);
 
             CreateTabToGrid(embededGrid, logs, users, tabPos);
+
+            EmbedScrollableGrid(grid, embededGrid, scrollViewer);
+        }
+
+        /// <summary>
+        /// Generate a scrollable grid
+        /// </summary>
+        /// <param name="grid"></param>
+        /// <param name="embededGrid"></param>
+        /// <param name="gridRowOne"></param>
+        /// <param name="gridColumnOne"></param>
+        /// <param name="gridRowTwo"></param>
+        /// <param name="gridColumnTwo"></param>
+        /// <param name="gridSkin"></param>
+        /// <param name="skinHeight"></param>
+        /// <param name="tabPos"></param>
+        /// <param name="stringTab"></param>
+        /// <param name="indicTab"></param>
+        public void CreateScrollGrid(Grid grid, Grid embededGrid, int gridRowOne, int gridColumnOne, int gridRowTwo, int gridColumnTwo, SkinLocation gridSkin, SkinSize skinHeight, SkinLocation tabPos, List<Bug> bugs, int rowLimit, List<User> users, List<Button> deleteButtons, List<Button> handleButtons)
+        {
+            ScrollViewer scrollViewer = new ScrollViewer();
+
+            SetUpGrid(grid, gridRowOne, gridColumnOne, gridSkin, skinHeight);
+
+            SetUpNewGrid(embededGrid, gridRowTwo, gridColumnTwo, SkinLocation.TopStretch);
+
+            ScrollGridInit(embededGrid, gridRowTwo, gridColumnTwo, scrollViewer, rowLimit);
+
+            CreateTabToGrid(embededGrid, bugs, users, tabPos, deleteButtons, handleButtons);
 
             EmbedScrollableGrid(grid, embededGrid, scrollViewer);
         }
