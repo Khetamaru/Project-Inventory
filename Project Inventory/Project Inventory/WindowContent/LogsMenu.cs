@@ -18,7 +18,6 @@ namespace Project_Inventory
 
         private List<Log> logsGridSave;
         private List<Log> logsGrid;
-        private RoutedEventLibrary[] bottomSwitchEvents;
 
         private List<User> users;
 
@@ -69,7 +68,6 @@ namespace Project_Inventory
         public void LoadBDDInfos()
         {
             logsGridSave = logsGrid = JsonCenter.LoadLogsMenuInfos(requestCenter, out users);
-            bottomSwitchEvents = JsonCenter.SetEventHandlerTab(logsGridSave.Count, GetEventHandler(WindowsName.ListViewerPage));
         }
 
         public new void TopGridInit(Grid topGrid)
