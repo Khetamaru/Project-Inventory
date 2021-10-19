@@ -28,6 +28,7 @@ namespace Project_Inventory
         private StorageTransfertSelection storageTransfertSelection;
         private DataTransfert dataTransfert;
         private BugReportedView bugReportedView;
+        private DatabaseModifMenu databaseModifMenu;
 
         private int actualUserId;
         private int actualStorageId;
@@ -211,6 +212,15 @@ namespace Project_Inventory
             bugReportedView.BottomGridInit(bottomGrid);
         }
 
+        public void DatabaseModifMenuInit()
+        {
+            databaseModifMenu = new DatabaseModifMenu(toolBox, router, requestCenter, actualUserId, actualStorageId, actualDataId, actualCustomListId);
+            actualWindow = WindowsName.DatabaseModifMenu;
+            databaseModifMenu.TopGridInit(topGrid);
+            databaseModifMenu.CenterGridInit(centerGrid);
+            databaseModifMenu.BottomGridInit(bottomGrid);
+        }
+
         public void FormPageInit(WindowsName formType)
         {
             RoutedEventHandler reloadEvent = new RoutedEventHandler((object sender, RoutedEventArgs e) => ReloadView(sender, e));
@@ -273,6 +283,10 @@ namespace Project_Inventory
 
                 case WindowsName.ListViewerPage:
                     listViewerPage.IDBachUps(out actualUserId, out actualStorageId, out actualDataId, out actualCustomListId);
+                    break;
+
+                case WindowsName.DatabaseModifMenu:
+                    databaseModifMenu.IDBachUps(out actualUserId, out actualStorageId, out actualDataId, out actualCustomListId);
                     break;
 
                 case WindowsName.GlobalStorageResearch:
@@ -341,6 +355,10 @@ namespace Project_Inventory
 
                 case WindowsName.BugReportedView:
                     BugReportedViewInit();
+                    break;
+
+                case WindowsName.DatabaseModifMenu:
+                    DatabaseModifMenuInit();
                     break;
 
                 case WindowsName.ListViewerPage:
@@ -461,6 +479,7 @@ namespace Project_Inventory
                 WindowsName.LogsMenu,
                 WindowsName.UserMenu,
                 WindowsName.BugReportedView,
+                WindowsName.DatabaseModifMenu,
                 WindowsName.FormPage
             };
 
@@ -555,6 +574,12 @@ namespace Project_Inventory
                     dataDetailsPage.TopGridInit(topGrid);
                     dataDetailsPage.CenterGridInit(centerGrid);
                     dataDetailsPage.BottomGridInit(bottomGrid);
+                    break;
+
+                case WindowsName.DatabaseModifMenu:
+                    databaseModifMenu.TopGridInit(topGrid);
+                    databaseModifMenu.CenterGridInit(centerGrid);
+                    databaseModifMenu.BottomGridInit(bottomGrid);
                     break;
 
                 case WindowsName.BugReportedView:

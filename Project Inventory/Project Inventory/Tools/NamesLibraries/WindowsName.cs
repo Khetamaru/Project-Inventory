@@ -21,6 +21,7 @@ namespace Project_Inventory.Tools
         StorageTransfertSelection,
         DataTransfert,
         BugReportedView,
+        DatabaseModifMenu,
 
         FormPage,
         AddStorage,

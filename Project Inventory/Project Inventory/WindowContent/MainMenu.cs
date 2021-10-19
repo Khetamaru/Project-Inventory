@@ -31,11 +31,11 @@ namespace Project_Inventory
         public MainMenu(ToolBox toolBox, Router _router, RequestCenter requestCenter, int _actualUserId, int _actualStorageId, int _actualDataId, int _actualCustomListId, RoutedEventHandler _reloadEvent)
             : base(toolBox, _router, requestCenter, _actualUserId, _actualStorageId, _actualDataId, _actualCustomListId)
         {
-            bottomGridButtons = new string[] { "Storage Selection", "Custom Lists", "Logs", "User Menu", "Bug Report", "Bug Menu" };
+            bottomGridButtons = new string[] { "Storage Selection", "Custom Lists", "Logs", "User Menu", "Bug Report", "Bug Menu", "BDD Modif Menu" };
 
             reloadEvent = _reloadEvent;
 
-            switchEvents = new RoutedEventLibrary[6];
+            switchEvents = new RoutedEventLibrary[7];
             RoutedEventLibrariesInit(switchEvents);
             switchEvents[0].changePageEvent = GetEventHandler(WindowsName.StorageSelectionMenu);
             switchEvents[1].changePageEvent = GetEventHandler(WindowsName.ListMenu);
@@ -43,6 +43,7 @@ namespace Project_Inventory
             switchEvents[3].changePageEvent = GetEventHandler(WindowsName.UserMenu);
             switchEvents[4].changePageEvent = GetEventHandler(WindowsName.BugReportPage);
             switchEvents[5].changePageEvent = GetEventHandler(WindowsName.BugReportedView);
+            switchEvents[6].changePageEvent = GetEventHandler(WindowsName.DatabaseModifMenu);
 
             widthLimit = 5;
 

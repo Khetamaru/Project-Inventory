@@ -5,14 +5,17 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using MySql.Data.MySqlClient;
+using Local_API_Server.Controllers;
+using System.IO;
+using System.Text;
+using System;
 
 namespace Local_API_Server
 {
     public class Startup
     {
-
         public string serverName = "localhost";
         public string userId = "root";
         public string password = "root";
@@ -54,6 +57,8 @@ namespace Local_API_Server
                 opt.UseMySql(dataStringConnection, ServerVersion.AutoDetect(dataStringConnection)));
             services.AddDbContext<BugLibraryContext>(opt =>
                 opt.UseMySql(dataStringConnection, ServerVersion.AutoDetect(dataStringConnection)));
+            services.AddDbContext<SaveContext>(Opt =>
+                Opt.UseMySql(dataStringConnection, ServerVersion.AutoDetect(dataStringConnection)));
 
             services.AddControllers();
 
@@ -83,6 +88,13 @@ namespace Local_API_Server
             {
                 endpoints.MapControllers();
             });
+        }
+
+        public void DataRestoration(MySqlCommand cmd)
+        {
+            cmd.CommandText = "";
+
+            cmd.ExecuteNonQuery();
         }
     }
 }

@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Local_API_Server.Models;
+using MySql.Data.MySqlClient;
+using System;
 
 namespace Local_API_Server.Controllers
 {

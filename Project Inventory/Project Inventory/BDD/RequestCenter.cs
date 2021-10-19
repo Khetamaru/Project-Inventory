@@ -13,7 +13,8 @@ namespace Project_Inventory.Tools
         GET,
         POST,
         PUT,
-        DELETE
+        DELETE,
+        OPTION
     }
 
     /// <summary>
@@ -147,6 +148,14 @@ namespace Project_Inventory.Tools
         {
             endPoint = requestString;
             httpMethod = HttpVerb.DELETE;
+
+            return MakeRequest();
+        }
+
+        public string OptionRequest(string requestString)
+        {
+            endPoint = requestString;
+            httpMethod = HttpVerb.OPTION;
 
             return MakeRequest();
         }
