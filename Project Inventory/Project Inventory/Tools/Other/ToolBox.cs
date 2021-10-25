@@ -1066,11 +1066,11 @@ namespace Project_Inventory
 
                 if(bug.Handled)
                 {
-                    CreateTabCellToGrid(grid, "Handled", i, 3, skinPosition);
+                    CreateTabCellToGrid(grid, "En cours de gestion", i, 3, skinPosition);
                 }
                 else
                 {
-                    CreateTabCellToGrid(grid, "Not Handled", i, 3, skinPosition);
+                    CreateTabCellToGrid(grid, "En attente", i, 3, skinPosition);
                 }
 
                 if (!bug.Handled)
@@ -1402,7 +1402,7 @@ namespace Project_Inventory
             if (indication == UIElementsName.ComboBox.ToString())
             {
                 ComboBox uiElement = new ComboBox();
-                string[] comboBoxStrings = new string[] { "Select an Item", "TextBox", "TextBoxNumber", "DatePicker", "ComboBox"};
+                string[] comboBoxStrings = new string[] { "Selectionnez une option", "TextBox", "TextBoxNumber", "DatePicker", "ComboBox"};
                 UIElementSkin.ComboBoxSkinForm(uiElement, comboBoxStrings);
 
                 if (text != null)

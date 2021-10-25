@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace Project_Inventory
@@ -55,8 +54,8 @@ namespace Project_Inventory
             viewerStatus = status.VIEWER;
             reloadEvent = _reloadEvent;
 
-            topGridButtons = new string[] { "Modify", "Research", "Return" };
-            saveButton = new string[] { "Save" };
+            topGridButtons = new string[] { "Modifier", "Chercher", "Retour" };
+            saveButton = new string[] { "Sauvegarder" };
 
             topSwitchEvents = new RoutedEventLibrary[3];
             RoutedEventLibrariesInit(topSwitchEvents);
@@ -187,14 +186,14 @@ namespace Project_Inventory
                 case status.VIEWER:
 
                     viewerStatus = status.MODIFIER;
-                    topGridButtons[0] = "Cancel";
+                    topGridButtons[0] = "Annuler";
 
                     break;
 
                 case status.MODIFIER:
 
                     viewerStatus = status.VIEWER;
-                    topGridButtons[0] = "Modify";
+                    topGridButtons[0] = "Modifier";
 
                     break;
             }
@@ -215,13 +214,13 @@ namespace Project_Inventory
 
                 foreach (int change in changesList)
                 {
-                    requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "(" + JsonCenter.GetStorage(requestCenter, actualStorageId).Name + ") Storage's Data has changed.").ToJson());
+                    requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "Le stockage (" + JsonCenter.GetStorage(requestCenter, actualStorageId).Name + ") a été modifié.").ToJson());
                     requestCenter.PutRequest(BDDTabsName.DataLibraries.ToString() + "/" + dataTab[change].id, dataTab[change].ToJsonId());
                 }
 
                 if (optionnalAdd != null)
                 {
-                    requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "(" + JsonCenter.GetStorage(requestCenter, actualStorageId).Name + ") Storage gained a new Data.").ToJson());
+                    requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "Le stockage (" + JsonCenter.GetStorage(requestCenter, actualStorageId).Name + ") a obtenu une nouvelle donnée.").ToJson());
                     requestCenter.PostRequest(BDDTabsName.DataLibraries.ToString(), optionnalAdd.ToJson());
                 }
             }
@@ -259,7 +258,7 @@ namespace Project_Inventory
         {
             if (PopUpCenter.ActionValidPopup())
             {
-                requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "A (" + JsonCenter.GetStorage(requestCenter, actualStorageId).Name + ") Storage's Data has been delete.").ToJson());
+                requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "La donnée (" + JsonCenter.GetStorage(requestCenter, actualStorageId).Name + ") a été supprimée.").ToJson());
                 requestCenter.DeleteRequest(BDDTabsName.DataLibraries.ToString() + "/" + dataId);
             }
         }
@@ -495,12 +494,12 @@ namespace Project_Inventory
 
         public void EmptyInfoPopUp()
         {
-            PopUpCenter.MessagePopup("This Storage is Empty.");
+            PopUpCenter.MessagePopup("Ce stockage est vide.");
         }
 
         public void EmptyResearchResult()
         {
-            PopUpCenter.MessagePopup("No Data has been found.");
+            PopUpCenter.MessagePopup("Aucune donnée n'a été trouvée.");
         }
     }
 }

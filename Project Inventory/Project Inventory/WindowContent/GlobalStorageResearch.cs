@@ -29,7 +29,7 @@ namespace Project_Inventory
         public GlobalStorageResearch(ToolBox toolBox, Router _router, RequestCenter requestCenter, int _actualUserId, int _actualStorageId, int _actualDataId, int _actualCustomId, RoutedEventHandler _reloadEvent, string _researchKeyString)
             : base(toolBox, _router, requestCenter, _actualUserId, _actualStorageId, _actualDataId, _actualCustomId)
         {
-            topGridButtons = new string[] { "Research", "Return" };
+            topGridButtons = new string[] { "Chercher", "Retour" };
 
             researchKeyString = _researchKeyString;
             researchTextBox = new TextBox();
@@ -118,7 +118,7 @@ namespace Project_Inventory
                     temp.Add(data);
 
                     button = new Button();
-                    button.Content = "See Details";
+                    button.Content = "Voir details";
                     button.Click += new RoutedEventHandler((object sender, RoutedEventArgs e) => { SeeDetails(sender, e, data.id); });
 
                     buttons.Add(button);
@@ -148,12 +148,12 @@ namespace Project_Inventory
 
         public void EmptyInfoPopUp()
         {
-            PopUpCenter.MessagePopup("There is no data found with this parameters.");
+            PopUpCenter.MessagePopup("Aucune donnée n'a été trouvée.");
         }
 
         public void EmptyResearchResult()
         {
-            PopUpCenter.MessagePopup("No Storage has been found.");
+            PopUpCenter.MessagePopup("Aucun stockage n'a été trouvé.");
         }
     }
 }

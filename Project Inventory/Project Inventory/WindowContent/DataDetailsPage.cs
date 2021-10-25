@@ -26,8 +26,8 @@ namespace Project_Inventory
         public DataDetailsPage(ToolBox toolBox, Router _router, RequestCenter requestCenter, int _actualUserId, int _actualStorageId, int _actualDataId, int _actualCustomId, RoutedEventHandler _reloadEvent)
             : base(toolBox, _router, requestCenter, _actualUserId, _actualStorageId, _actualDataId, _actualCustomId)
         {
-            topGridButtons = new string[] { "Transfert", "Return" };
-            saveButton = new string[] { "Save" };
+            topGridButtons = new string[] { "Transfert", "Retour" };
+            saveButton = new string[] { "Sauvegarder" };
 
             reloadEvent = _reloadEvent;
 
@@ -92,7 +92,7 @@ namespace Project_Inventory
                 Data output;
                 if (toolBox.GetUIElements(toolBox.ExtractFormInfos(capGrid), data, out output, listOptions))
                 {
-                    requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "(" + JsonCenter.GetStorage(requestCenter, output.StorageId).Name + ") Storage's Data has changed.").ToJson());
+                    requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "Une donnée du stockage (" + JsonCenter.GetStorage(requestCenter, output.StorageId).Name + ") a été modifiée.").ToJson());
                     requestCenter.PutRequest(BDDTabsName.DataLibraries.ToString() + "/" + output.id, output.ToJsonId());
                 }
 

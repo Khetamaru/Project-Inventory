@@ -34,7 +34,7 @@ namespace Project_Inventory
         public BugReportedView(ToolBox toolBox, Router _router, RequestCenter requestCenter, int _actualUserId, int _actualStorageId, int _actualDataId, int _actualCustomId, RoutedEventHandler _reloadEvent)
                : base(toolBox, _router, requestCenter, _actualUserId, _actualStorageId, _actualDataId, _actualCustomId)
         {
-            topGridButtons = new string[] { "", "", "Return" };
+            topGridButtons = new string[] { "", "", "Retour" };
 
             reloadEvent = _reloadEvent;
 
@@ -88,8 +88,8 @@ namespace Project_Inventory
                                                    new SkinName[] { SkinName.None, SkinName.None, SkinName.StandartLittleMargin },
                                                    new SkinLocation[] { SkinLocation.None, SkinLocation.None, SkinLocation.TopRight });
 
-            handleBugButton.Content = "View Handle Bugs";
-            unhandleBugButton.Content = "View Unhandle Bugs";
+            handleBugButton.Content = "Voir bugs pris en change";
+            unhandleBugButton.Content = "Voir bugs non pris en change";
 
             toolBox.InsertUIElementInGrid(topGrid, handleBugButton, 0, 0, UIElementsName.Button, SkinLocation.CenterCenter);
             toolBox.InsertUIElementInGrid(topGrid, unhandleBugButton, 0, 1, UIElementsName.Button, SkinLocation.CenterCenter);
@@ -100,15 +100,6 @@ namespace Project_Inventory
             capGrid = new Grid();
 
             toolBox.CreateScrollGrid(bottomGrid, capGrid, 1, 1, bugsGrid.Count, 5, SkinLocation.BottomStretch, SkinSize.HeightNintyPercent, SkinLocation.CenterCenter, bugsGrid, widthLimit, users, AddDeleteButtons(), AddHandleButtons());
-        }
-
-        public void DeleteLogs(object sender, RoutedEventArgs e)
-        {
-            if (PopUpCenter.ActionValidPopup("You will delete all logs, are you sure ?"))
-            {
-                requestCenter.DeleteRequest(BDDTabsName.LogLibraries.ToString());
-                GetEventHandler(WindowsName.LogsMenu).Invoke(sender, e);
-            }
         }
 
         public void BugSorting()
@@ -186,7 +177,7 @@ namespace Project_Inventory
         {
             if (PopUpCenter.ActionValidPopup())
             {
-                requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "A bug has been marked resolved.").ToJson());
+                requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "Un bug a été résolu.").ToJson());
                 requestCenter.DeleteRequest(BDDTabsName.BugLibraries.ToString() + "/" + bugId);
             }
         }
@@ -210,7 +201,7 @@ namespace Project_Inventory
                 });
                 tempRouter.resetPageEvent = reloadEvent;
 
-                tempButton = toolBox.CreateSwitchButton("Mark Handled", tempRouter, SkinName.Standart, SkinLocation.CenterCenter);
+                tempButton = toolBox.CreateSwitchButton("Prendre en charge", tempRouter, SkinName.Standart, SkinLocation.CenterCenter);
                 buttonList.Add(tempButton);
             }
 
@@ -222,14 +213,14 @@ namespace Project_Inventory
 
             if (PopUpCenter.ActionValidPopup())
             {
-                requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "A bug has been marked resolved.").ToJson());
+                requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "Un bug a été pris en charge.").ToJson());
                 requestCenter.PutRequest(BDDTabsName.BugLibraries.ToString() + "/" + bug.id, bug.ToJsonId());
             }
         }
 
         public void EmptyResearchResult()
         {
-            PopUpCenter.MessagePopup("No Bug has been found.");
+            PopUpCenter.MessagePopup("Aucun Bug n'a été trouvé.");
         }
     }
 }

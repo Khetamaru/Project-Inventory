@@ -22,14 +22,14 @@ namespace Project_Inventory
         public BDDAdminMenu(ToolBox toolBox, Router _router, RequestCenter requestCenter, int _actualUserId, int _actualStorageId, int _actualDataId, int _actualCustomListId)
             : base(toolBox, _router, requestCenter, _actualUserId, _actualStorageId, _actualDataId, _actualCustomListId)
         {
-            topGridButtons = new string[] { "Return" };
+            topGridButtons = new string[] { "Retour" };
 
             topSwitchEvents = new RoutedEventLibrary[1];
             RoutedEventLibrariesInit(topSwitchEvents);
 
             topSwitchEvents[0].changePageEvent = GetEventHandler(WindowsName.MainMenu);
 
-            bottomGridButtons = new string[] { "Cast DataBase" };
+            bottomGridButtons = new string[] { "Syncronisation de la Base De Données" };
 
             switchEvents = new RoutedEventLibrary[1];
             RoutedEventLibrariesInit(switchEvents);
@@ -57,10 +57,10 @@ namespace Project_Inventory
         {
             if (PopUpCenter.ActionValidPopup())
             {
-                requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "DataBase update has been casted.").ToJson());
+                requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "Base De Données synchronisée.").ToJson());
                 requestCenter.OptionRequest(BDDTabsName.Save.ToString() + "/Cast");
 
-                PopUpCenter.MessagePopup("DataBase update has been casted.");
+                PopUpCenter.MessagePopup("Base De Données synchronisée.");
             }
         }
     }

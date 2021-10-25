@@ -31,7 +31,7 @@ namespace Project_Inventory
         public MainMenu(ToolBox toolBox, Router _router, RequestCenter requestCenter, int _actualUserId, int _actualStorageId, int _actualDataId, int _actualCustomListId, RoutedEventHandler _reloadEvent)
             : base(toolBox, _router, requestCenter, _actualUserId, _actualStorageId, _actualDataId, _actualCustomListId)
         {
-            bottomGridButtons = new string[] { "Storage Selection", "Custom Lists", "Logs", "User Menu", "Bug Report", "Bug Menu", "BDD Modif Menu" };
+            bottomGridButtons = new string[] { "Bibliothèque de stockages", "Bibliothèque de listes custom", "Logs", "Menu utilisateur", "Signaler un bug", "Menu des bugs", "Menu de modification de la Base De Données" };
 
             reloadEvent = _reloadEvent;
 
@@ -113,7 +113,7 @@ namespace Project_Inventory
                     toolBox.SetUpGrid(bottomGrid, 2, 1, SkinLocation.StretchStretch, SkinSize.HeightNintyPercent);
 
                     ComboBox comboBox = new ComboBox();
-                    comboBox.Items.Add("Select A User");
+                    comboBox.Items.Add("Selectionnez un utilisateur");
                     foreach(User user in userList)
                     {
                         comboBox.Items.Add(user.Name);
@@ -122,7 +122,7 @@ namespace Project_Inventory
                     toolBox.InsertUIElementInGrid(bottomGrid, comboBox, 0, 0, UIElementsName.ComboBox, SkinLocation.CenterCenter);
 
                     Button button = new Button();
-                    button.Content = "Sign In";
+                    button.Content = "Identifiez-vous";
                     button.Click += new RoutedEventHandler((object sender, RoutedEventArgs e) =>
                     {
                         IDSetup(sender, e, comboBox);

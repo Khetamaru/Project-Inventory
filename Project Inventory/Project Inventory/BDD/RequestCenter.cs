@@ -73,7 +73,7 @@ namespace Project_Inventory.Tools
             }
             catch
             {
-                PopUpCenter.MessagePopup("An error as occured when we tried to communicate with the server.");
+                PopUpCenter.MessagePopup("Une erreur a eu lieu pendant la communication entre le programme et le serveur.");
             }
 
             return strResponseValue;
@@ -114,7 +114,7 @@ namespace Project_Inventory.Tools
             }
             catch
             {
-                PopUpCenter.MessagePopup("An error as occured when we tried to communicate with the server.");
+                PopUpCenter.MessagePopup("Une erreur a eu lieu pendant la communication entre le programme et le serveur.");
             }
 
             return strResponseValue;
