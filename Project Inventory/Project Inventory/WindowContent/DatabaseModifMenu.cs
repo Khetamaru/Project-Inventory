@@ -27,7 +27,7 @@ namespace Project_Inventory
         public DatabaseModifMenu(ToolBox toolBox, Router _router, RequestCenter requestCenter, int _actualUserId, int _actualStorageId, int _actualDataId, int _actualCustomListId)
             : base(toolBox, _router, requestCenter, _actualUserId, _actualStorageId, _actualDataId, _actualCustomListId)
         {
-            topGridButtons = new string[] { "Return" };
+            topGridButtons = new string[] { "Retour" };
             saveButton = new string[] { "Validation" };
 
             topSwitchEvents = new RoutedEventLibrary[1];
@@ -48,8 +48,8 @@ namespace Project_Inventory
         {
             requestTypes = new List<string>();
 
-            requestTypes.Add("Select an item");
-            requestTypes.Add("Update New Column");
+            requestTypes.Add("Selectionnez une option");
+            requestTypes.Add("Update Ajout Colonne");
 
             requestComboBox = new ComboBox();
             requestComboBox.SelectionChanged += new SelectionChangedEventHandler((object sender, SelectionChangedEventArgs e) =>
@@ -96,19 +96,19 @@ namespace Project_Inventory
         {
             requestCenter.OptionRequest(BDDTabsName.Save + "/Update/" + requestTextBox.Text);
 
-            PopUpCenter.MessagePopup("Request goodly executed and saved.");
+            PopUpCenter.MessagePopup("Requête correctement exécutée et sauvegardée.");
         }
 
         private void LaunchRequestPatern(object sender, SelectionChangedEventArgs e, string selectedOption)
         {
             switch(selectedOption)
             {
-                case "Select an item":
+                case "Selectionnez une option":
 
                     requestTextBox.Text = string.Empty;
                     break;
 
-                case "Update New Column":
+                case "Update Ajout Colonne":
 
                     requestTextBox.Text = "ALTER TABLE table_name " +
                                           "ADD column_name column_type;";

@@ -26,8 +26,8 @@ namespace Project_Inventory
         public ListViewerPage(ToolBox toolBox, Router _router, RequestCenter requestCenter, int _actualUserId, int _actualStorageId, int _actualDataId, int _actualCustomId, RoutedEventHandler _reloadEvent)
             : base(toolBox, _router, requestCenter, _actualUserId, _actualStorageId, _actualDataId, _actualCustomId)
         {
-            topGridButtons = new string[] { "Return" };
-            saveButton = new string[] { "Save" };
+            topGridButtons = new string[] { "Retour" };
+            saveButton = new string[] { "Sauvegarder" };
 
             reloadEvent = _reloadEvent;
 
@@ -108,7 +108,7 @@ namespace Project_Inventory
 
                 if (optionnalAdd != string.Empty)
                 {
-                    requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "(" + JsonCenter.GetCustomList(requestCenter, actualCustomListId).Name + ") Custom List has been extended and changed.").ToJson());
+                    requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "La liste custom (" + JsonCenter.GetCustomList(requestCenter, actualCustomListId).Name + ") a été modifié.").ToJson());
                     requestCenter.PostRequest(BDDTabsName.ListOptionLibraries.ToString(), (new ListOption(actualCustomListId, listOptions.Count, optionnalAdd)).ToJson());
 
                     foreach (ListOption option in listOptions)
@@ -118,7 +118,7 @@ namespace Project_Inventory
                 }
                 else if (trigger)
                 {
-                    requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "(" + JsonCenter.GetCustomList(requestCenter, actualCustomListId).Name + ") List Option has been changed.").ToJson());
+                    requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "La liste custom (" + JsonCenter.GetCustomList(requestCenter, actualCustomListId).Name + ") a été modifié.").ToJson());
                     foreach (ListOption option in listOptions)
                     {
                         requestCenter.PutRequest(BDDTabsName.ListOptionLibraries.ToString() + "/" + option.id, option.ToJsonId());
@@ -166,13 +166,13 @@ namespace Project_Inventory
             {
                 if (PopUpCenter.ActionValidPopup())
                 {
-                    requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "(" + JsonCenter.GetCustomList(requestCenter, actualCustomListId).Name + ") Custom List has been delete.").ToJson());
+                    requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "La liste custom (" + JsonCenter.GetCustomList(requestCenter, actualCustomListId).Name + ") a été modifié.").ToJson());
                     requestCenter.DeleteRequest(BDDTabsName.ListOptionLibraries.ToString() + "/" + listOptions[index].id);
                 }
             }
             else
             {
-                PopUpCenter.MessagePopup("A Custom List can't be empty. You can't delete the last List Option.");
+                PopUpCenter.MessagePopup("Une liste custom ne peut pas être vide. Vous ne pouvez pas supprimer la dernière option.");
             }
         }
 
@@ -218,7 +218,7 @@ namespace Project_Inventory
         {
             (listOptions[index - 1].Index, listOptions[index].Index) = (listOptions[index].Index, listOptions[index - 1].Index);
 
-            requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "(" + JsonCenter.GetListOption(requestCenter, listOptions[index].id).Name + ") List Option and (" + JsonCenter.GetListOption(requestCenter, listOptions[index - 1].id).Name + ") List Option from (" + JsonCenter.GetCustomList(requestCenter, actualCustomListId).Name + ") has been swaped.").ToJson());
+            requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "L'option (" + JsonCenter.GetListOption(requestCenter, listOptions[index].id).Name + ") et l'option (" + JsonCenter.GetListOption(requestCenter, listOptions[index - 1].id).Name + ") de la liste custom (" + JsonCenter.GetCustomList(requestCenter, actualCustomListId).Name + ") ont été échangés.").ToJson());
             requestCenter.PutRequest(BDDTabsName.ListOptionLibraries.ToString() + "/" + listOptions[index - 1].id, listOptions[index - 1].ToJsonId());
             requestCenter.PutRequest(BDDTabsName.ListOptionLibraries.ToString() + "/" + listOptions[index].id,     listOptions[index].ToJsonId());
         }
@@ -265,14 +265,14 @@ namespace Project_Inventory
         {
             (listOptions[index + 1].Index, listOptions[index].Index) = (listOptions[index].Index, listOptions[index + 1].Index);
 
-            requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "(" + JsonCenter.GetListOption(requestCenter, listOptions[index].id).Name + ") List Option and (" + JsonCenter.GetListOption(requestCenter, listOptions[index + 1].id).Name + ") List Option from (" + JsonCenter.GetCustomList(requestCenter, actualCustomListId).Name + ") has been swaped.").ToJson());
+            requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "L'option (" + JsonCenter.GetListOption(requestCenter, listOptions[index].id).Name + ") et l'option (" + JsonCenter.GetListOption(requestCenter, listOptions[index + 1].id).Name + ") de la liste custom (" + JsonCenter.GetCustomList(requestCenter, actualCustomListId).Name + ") ont été échangés.").ToJson());
             requestCenter.PutRequest(BDDTabsName.ListOptionLibraries.ToString() + "/" + listOptions[index + 1].id, listOptions[index + 1].ToJsonId());
             requestCenter.PutRequest(BDDTabsName.ListOptionLibraries.ToString() + "/" + listOptions[index].id, listOptions[index].ToJsonId());
         }
 
         public void EmptyInfoPopUp()
         {
-            PopUpCenter.MessagePopup("There is no Option in this List.");
+            PopUpCenter.MessagePopup("Il n'y a pas d'option dans cette liste.");
         }
     }
 }

@@ -74,7 +74,7 @@ namespace Project_Inventory.Tools
         /// <param name="optionTab"></param>
         public static void ComboBoxSkinForm(ComboBox comboBox, List<ListOption> optionTab)
         {
-            comboBox.Items.Add("Select an Item");
+            comboBox.Items.Add("Selectionnez une option");
 
             foreach (ListOption option in optionTab)
             {

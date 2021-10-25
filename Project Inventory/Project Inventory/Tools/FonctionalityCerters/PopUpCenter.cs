@@ -10,8 +10,8 @@ namespace Project_Inventory.Tools
         /// <returns></returns>
         public static bool ActionValidPopup()
         {
-            string sMessageBoxText = "Are you sure ?";
-            string sCaption = "Validation Pop Up";
+            string sMessageBoxText = "Êtes-vous sûr ?";
+            string sCaption = "Demande de confirmation";
 
             MessageBoxButton btnMessageBox = MessageBoxButton.YesNoCancel;
             MessageBoxImage icnMessageBox = MessageBoxImage.Warning;
@@ -39,7 +39,7 @@ namespace Project_Inventory.Tools
         /// <returns></returns>
         public static bool ActionValidPopup(string sMessageBoxText)
         {
-            string sCaption = "Validation Pop Up";
+            string sCaption = "Demande de confirmation";
 
             MessageBoxButton btnMessageBox = MessageBoxButton.YesNoCancel;
             MessageBoxImage icnMessageBox = MessageBoxImage.Warning;
@@ -65,7 +65,7 @@ namespace Project_Inventory.Tools
         {
             MessageBoxButton btnMessageBox = MessageBoxButton.OK;
             MessageBoxImage icnMessageBox = MessageBoxImage.Information;
-            string sCaption = "Information Pop Up";
+            string sCaption = "Message Informatif";
 
             MessageBox.Show(msg, sCaption, btnMessageBox, icnMessageBox);
         }

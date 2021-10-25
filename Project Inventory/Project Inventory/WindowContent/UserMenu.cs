@@ -36,8 +36,8 @@ namespace Project_Inventory
         {
             viewerStatus = status.VIEWER;
 
-            topGridButtons = new string[] { "Modify", "Return" };
-            saveButton = new string[] { "Save" };
+            topGridButtons = new string[] { "Modifier", "Retour" };
+            saveButton = new string[] { "Sauvegarde" };
 
             reloadEvent = _reloadEvent;
 
@@ -153,14 +153,14 @@ namespace Project_Inventory
                 case status.VIEWER:
 
                     viewerStatus = status.MODIFIER;
-                    topGridButtons[0] = "Cancel";
+                    topGridButtons[0] = "Annuler";
 
                     break;
 
                 case status.MODIFIER:
 
                     viewerStatus = status.VIEWER;
-                    topGridButtons[0] = "Modify";
+                    topGridButtons[0] = "Modifier";
 
                     break;
             }
@@ -184,13 +184,13 @@ namespace Project_Inventory
                 foreach (int change in changesList)
                 {
 
-                    requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "Some User's names has been changed.").ToJson());
+                    requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "Certains noms d'utilisateurs ont été modifiés.").ToJson());
                     requestCenter.PutRequest(BDDTabsName.UserLibraries.ToString() + "/" + bottomGridButtons[change].id, bottomGridButtons[change].ToJsonId());
                 }
 
                 if (optionnalAdd != null)
                 {
-                    requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "A new User has been created.").ToJson());
+                    requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "Un nouvel utilisateur a été créé.").ToJson());
                     requestCenter.PostRequest(BDDTabsName.UserLibraries.ToString(), optionnalAdd.ToJson());
                 }
             }
@@ -249,14 +249,14 @@ namespace Project_Inventory
         {
             if (PopUpCenter.ActionValidPopup())
             {
-                requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "(" + JsonCenter.GetUser(requestCenter, UserId).Name + ") User has been delete.").ToJson());
+                requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "L'utilisateur (" + JsonCenter.GetUser(requestCenter, UserId).Name + ") a été désactivé.").ToJson());
                 requestCenter.DeleteRequest(BDDTabsName.UserLibraries.ToString() + "/" + UserId);
             }
         }
 
         public void EmptyInfoPopUp()
         {
-            PopUpCenter.MessagePopup("There is no existing User in the DataBase.");
+            PopUpCenter.MessagePopup("Il n'y a pas d'utilisateur existant.");
         }
     }
 }
