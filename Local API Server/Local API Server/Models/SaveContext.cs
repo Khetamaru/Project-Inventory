@@ -4,7 +4,7 @@ namespace Local_API_Server.Models
 {
     public class SaveContext : DbContext
     {
-        public SaveContext(DbContextOptions<UserLibraryContext> options)
+        public SaveContext(DbContextOptions<SaveContext> options)
             : base(options)
         {
         }

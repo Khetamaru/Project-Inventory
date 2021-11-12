@@ -249,7 +249,11 @@ namespace Project_Inventory
                 storageViewerPage.TopGridInit(topGrid);
                 storageViewerPage.CenterGridInit(centerGrid);
                 storageViewerPage.BottomGridInit(bottomGrid);
-                if (storageViewerPage.emptyInfoPopUp) { storageViewerPage.EmptyInfoPopUp(); }
+
+                if (storageViewerPage.emptyInfoPopUp) 
+                { 
+                    storageViewerPage.EmptyInfoPopUp(); 
+                }
             }
         }
 
@@ -515,7 +519,11 @@ namespace Project_Inventory
                     storageSelectionMenu.TopGridInit(topGrid);
                     storageSelectionMenu.CenterGridInit(centerGrid);
                     storageSelectionMenu.BottomGridInit(bottomGrid);
-                    if (storageSelectionMenu.emptyInfoPopUp) { storageSelectionMenu.EmptyInfoPopUp(); }
+
+                    if (storageSelectionMenu.emptyInfoPopUp) 
+                    { 
+                        storageSelectionMenu.EmptyInfoPopUp(); 
+                    }
                     break;
 
                 case WindowsName.StorageTransfertSelection:
@@ -542,14 +550,22 @@ namespace Project_Inventory
                     listMenu.TopGridInit(topGrid);
                     listMenu.CenterGridInit(centerGrid);
                     listMenu.BottomGridInit(bottomGrid);
-                    if (listMenu.emptyInfoPopUp) { listMenu.EmptyInfoPopUp(); }
+
+                    if (listMenu.emptyInfoPopUp) 
+                    { 
+                        listMenu.EmptyInfoPopUp(); 
+                    }
                     break;
 
                 case WindowsName.UserMenu:
                     userMenu.TopGridInit(topGrid);
                     userMenu.CenterGridInit(centerGrid);
                     userMenu.BottomGridInit(bottomGrid);
-                    if (userMenu.emptyInfoPopUp) { userMenu.EmptyInfoPopUp(); }
+
+                    if (userMenu.emptyInfoPopUp) 
+                    { 
+                        userMenu.EmptyInfoPopUp(); 
+                    }
                     break;
 
                 case WindowsName.ListViewerPage:
@@ -557,7 +573,11 @@ namespace Project_Inventory
                     listViewerPage.TopGridInit(topGrid);
                     listViewerPage.CenterGridInit(centerGrid);
                     listViewerPage.BottomGridInit(bottomGrid);
-                    if (listViewerPage.emptyInfoPopUp) { listViewerPage.EmptyInfoPopUp(); }
+
+                    if (listViewerPage.emptyInfoPopUp) 
+                    { 
+                        listViewerPage.EmptyInfoPopUp(); 
+                    }
                     break;
 
                 case WindowsName.GlobalStorageResearch:
@@ -566,7 +586,11 @@ namespace Project_Inventory
                     globalStorageResearch.TopGridInit(topGrid);
                     globalStorageResearch.CenterGridInit(centerGrid);
                     globalStorageResearch.BottomGridInit(bottomGrid);
-                    if (globalStorageResearch.emptyInfoPopUp) { globalStorageResearch.EmptyInfoPopUp(); }
+
+                    if (globalStorageResearch.emptyInfoPopUp) 
+                    { 
+                        globalStorageResearch.EmptyInfoPopUp(); 
+                    }
                     break;
 
                 case WindowsName.DataDetailPage:
@@ -616,7 +640,11 @@ namespace Project_Inventory
                     }
                     storageViewerPage.CenterGridInit(centerGrid);
                     storageViewerPage.BottomGridInit(bottomGrid);
-                    if (storageViewerPage.emptyInfoPopUp) { storageViewerPage.EmptyInfoPopUp(); }
+
+                    if (storageViewerPage.emptyInfoPopUp) 
+                    { 
+                        storageViewerPage.EmptyInfoPopUp(); 
+                    }
                     break;
             }
         }

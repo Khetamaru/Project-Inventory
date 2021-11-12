@@ -14,7 +14,7 @@ namespace Project_Inventory.Tools
         POST,
         PUT,
         DELETE,
-        OPTION
+        OPTIONS
     }
 
     /// <summary>
@@ -63,7 +63,7 @@ namespace Project_Inventory.Tools
                 requestStream.Write(postBytes, 0, postBytes.Length);
                 requestStream.Close();
 
-                // grab te response and print it out to the console along with the status code
+                // grab the response and print it out to the console along with the status code
                 HttpWebResponse response = (HttpWebResponse)request.GetResponse();
                 string result;
                 using (StreamReader rdr = new StreamReader(response.GetResponseStream()))
@@ -86,6 +86,7 @@ namespace Project_Inventory.Tools
         private string MakeRequest()
         {
             string strResponseValue = string.Empty;
+            HttpWebResponse response = null;
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(http + port + endPoint);
 
@@ -93,7 +94,7 @@ namespace Project_Inventory.Tools
 
             try
             {
-                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+                using (response = (HttpWebResponse)request.GetResponse())
                 {
                     if (response.StatusCode != HttpStatusCode.OK)
                     {
@@ -155,9 +156,17 @@ namespace Project_Inventory.Tools
         public string OptionRequest(string requestString)
         {
             endPoint = requestString;
-            httpMethod = HttpVerb.OPTION;
+            httpMethod = HttpVerb.OPTIONS;
 
             return MakeRequest();
+        }
+
+        public string OptionRequest(string requestString, string json)
+        {
+            endPoint = requestString;
+            httpMethod = HttpVerb.OPTIONS;
+
+            return MakeRequest(json);
         }
     }
 }
