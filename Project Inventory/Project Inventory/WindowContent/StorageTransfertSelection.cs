@@ -26,7 +26,7 @@ namespace Project_Inventory
         public StorageTransfertSelection(ToolBox toolBox, Router _router, RequestCenter requestCenter, int _actualUserId, int _actualStorageId, int _actualDataId, int _actualCustomListId, RoutedEventHandler _reloadEvent)
             : base(toolBox, _router, requestCenter, _actualUserId, _actualStorageId, _actualDataId, _actualCustomListId)
         {
-            topGridButtons = new string[] { "Return" };
+            topGridButtons = new string[] { "Retour" };
 
             topSwitchEvents = new RoutedEventLibrary[1];
             RoutedEventLibrariesInit(topSwitchEvents);

@@ -27,6 +27,8 @@ namespace Project_Inventory
         private DataDetailsPage dataDetailsPage;
         private StorageTransfertSelection storageTransfertSelection;
         private DataTransfert dataTransfert;
+        private BugReportedView bugReportedView;
+        private DatabaseModifMenu databaseModifMenu;
 
         private int actualUserId;
         private int actualStorageId;
@@ -199,6 +201,26 @@ namespace Project_Inventory
             logsMenu.BottomGridInit(bottomGrid);
         }
 
+        public void BugReportedViewInit()
+        {
+            RoutedEventHandler reloadEvent = new RoutedEventHandler((object sender, RoutedEventArgs e) => ReloadView(sender, e));
+
+            bugReportedView = new BugReportedView(toolBox, router, requestCenter, actualUserId, actualStorageId, actualDataId, actualCustomListId, reloadEvent);
+            actualWindow = WindowsName.BugReportedView;
+            bugReportedView.TopGridInit(topGrid);
+            bugReportedView.CenterGridInit(centerGrid);
+            bugReportedView.BottomGridInit(bottomGrid);
+        }
+
+        public void DatabaseModifMenuInit()
+        {
+            databaseModifMenu = new DatabaseModifMenu(toolBox, router, requestCenter, actualUserId, actualStorageId, actualDataId, actualCustomListId);
+            actualWindow = WindowsName.DatabaseModifMenu;
+            databaseModifMenu.TopGridInit(topGrid);
+            databaseModifMenu.CenterGridInit(centerGrid);
+            databaseModifMenu.BottomGridInit(bottomGrid);
+        }
+
         public void FormPageInit(WindowsName formType)
         {
             RoutedEventHandler reloadEvent = new RoutedEventHandler((object sender, RoutedEventArgs e) => ReloadView(sender, e));
@@ -227,7 +249,11 @@ namespace Project_Inventory
                 storageViewerPage.TopGridInit(topGrid);
                 storageViewerPage.CenterGridInit(centerGrid);
                 storageViewerPage.BottomGridInit(bottomGrid);
-                if (storageViewerPage.emptyInfoPopUp) { storageViewerPage.EmptyInfoPopUp(); }
+
+                if (storageViewerPage.emptyInfoPopUp) 
+                { 
+                    storageViewerPage.EmptyInfoPopUp(); 
+                }
             }
         }
 
@@ -263,6 +289,10 @@ namespace Project_Inventory
                     listViewerPage.IDBachUps(out actualUserId, out actualStorageId, out actualDataId, out actualCustomListId);
                     break;
 
+                case WindowsName.DatabaseModifMenu:
+                    databaseModifMenu.IDBachUps(out actualUserId, out actualStorageId, out actualDataId, out actualCustomListId);
+                    break;
+
                 case WindowsName.GlobalStorageResearch:
                     globalStorageResearch.IDBachUps(out actualUserId, out actualStorageId, out actualDataId, out actualCustomListId);
                     break;
@@ -273,6 +303,10 @@ namespace Project_Inventory
 
                 case WindowsName.LogsMenu:
                     logsMenu.IDBachUps(out actualUserId, out actualStorageId, out actualDataId, out actualCustomListId);
+                    break;
+
+                case WindowsName.BugReportedView:
+                    bugReportedView.IDBachUps(out actualUserId, out actualStorageId, out actualDataId, out actualCustomListId);
                     break;
 
                 case WindowsName.FormPage:
@@ -321,6 +355,14 @@ namespace Project_Inventory
 
                 case WindowsName.LogsMenu:
                     LogsMenuInit();
+                    break;
+
+                case WindowsName.BugReportedView:
+                    BugReportedViewInit();
+                    break;
+
+                case WindowsName.DatabaseModifMenu:
+                    DatabaseModifMenuInit();
                     break;
 
                 case WindowsName.ListViewerPage:
@@ -440,6 +482,8 @@ namespace Project_Inventory
                 WindowsName.DataDetailPage,
                 WindowsName.LogsMenu,
                 WindowsName.UserMenu,
+                WindowsName.BugReportedView,
+                WindowsName.DatabaseModifMenu,
                 WindowsName.FormPage
             };
 
@@ -475,7 +519,11 @@ namespace Project_Inventory
                     storageSelectionMenu.TopGridInit(topGrid);
                     storageSelectionMenu.CenterGridInit(centerGrid);
                     storageSelectionMenu.BottomGridInit(bottomGrid);
-                    if (storageSelectionMenu.emptyInfoPopUp) { storageSelectionMenu.EmptyInfoPopUp(); }
+
+                    if (storageSelectionMenu.emptyInfoPopUp) 
+                    { 
+                        storageSelectionMenu.EmptyInfoPopUp(); 
+                    }
                     break;
 
                 case WindowsName.StorageTransfertSelection:
@@ -502,14 +550,22 @@ namespace Project_Inventory
                     listMenu.TopGridInit(topGrid);
                     listMenu.CenterGridInit(centerGrid);
                     listMenu.BottomGridInit(bottomGrid);
-                    if (listMenu.emptyInfoPopUp) { listMenu.EmptyInfoPopUp(); }
+
+                    if (listMenu.emptyInfoPopUp) 
+                    { 
+                        listMenu.EmptyInfoPopUp(); 
+                    }
                     break;
 
                 case WindowsName.UserMenu:
                     userMenu.TopGridInit(topGrid);
                     userMenu.CenterGridInit(centerGrid);
                     userMenu.BottomGridInit(bottomGrid);
-                    if (userMenu.emptyInfoPopUp) { userMenu.EmptyInfoPopUp(); }
+
+                    if (userMenu.emptyInfoPopUp) 
+                    { 
+                        userMenu.EmptyInfoPopUp(); 
+                    }
                     break;
 
                 case WindowsName.ListViewerPage:
@@ -517,7 +573,11 @@ namespace Project_Inventory
                     listViewerPage.TopGridInit(topGrid);
                     listViewerPage.CenterGridInit(centerGrid);
                     listViewerPage.BottomGridInit(bottomGrid);
-                    if (listViewerPage.emptyInfoPopUp) { listViewerPage.EmptyInfoPopUp(); }
+
+                    if (listViewerPage.emptyInfoPopUp) 
+                    { 
+                        listViewerPage.EmptyInfoPopUp(); 
+                    }
                     break;
 
                 case WindowsName.GlobalStorageResearch:
@@ -526,7 +586,11 @@ namespace Project_Inventory
                     globalStorageResearch.TopGridInit(topGrid);
                     globalStorageResearch.CenterGridInit(centerGrid);
                     globalStorageResearch.BottomGridInit(bottomGrid);
-                    if (globalStorageResearch.emptyInfoPopUp) { globalStorageResearch.EmptyInfoPopUp(); }
+
+                    if (globalStorageResearch.emptyInfoPopUp) 
+                    { 
+                        globalStorageResearch.EmptyInfoPopUp(); 
+                    }
                     break;
 
                 case WindowsName.DataDetailPage:
@@ -534,6 +598,19 @@ namespace Project_Inventory
                     dataDetailsPage.TopGridInit(topGrid);
                     dataDetailsPage.CenterGridInit(centerGrid);
                     dataDetailsPage.BottomGridInit(bottomGrid);
+                    break;
+
+                case WindowsName.DatabaseModifMenu:
+                    databaseModifMenu.TopGridInit(topGrid);
+                    databaseModifMenu.CenterGridInit(centerGrid);
+                    databaseModifMenu.BottomGridInit(bottomGrid);
+                    break;
+
+                case WindowsName.BugReportedView:
+                    bugReportedView.LoadBDDInfos();
+                    bugReportedView.TopGridInit(topGrid);
+                    bugReportedView.CenterGridInit(centerGrid);
+                    bugReportedView.BottomGridInit(bottomGrid);
                     break;
 
                 case WindowsName.LogsMenu:
@@ -555,6 +632,7 @@ namespace Project_Inventory
                     {
                         storageViewerPage.ResearchThree(storageViewerPage.researchTextBox.Text);
                     }
+                    else if (storageViewerPage.sortingTrigger) { }
                     else
                     {
                         storageViewerPage.LoadBDDInfos();
@@ -562,7 +640,11 @@ namespace Project_Inventory
                     }
                     storageViewerPage.CenterGridInit(centerGrid);
                     storageViewerPage.BottomGridInit(bottomGrid);
-                    if (storageViewerPage.emptyInfoPopUp) { storageViewerPage.EmptyInfoPopUp(); }
+
+                    if (storageViewerPage.emptyInfoPopUp) 
+                    { 
+                        storageViewerPage.EmptyInfoPopUp(); 
+                    }
                     break;
             }
         }

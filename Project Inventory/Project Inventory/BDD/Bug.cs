@@ -10,19 +10,22 @@ namespace Project_Inventory.BDD
     {
         public int UserId { get; set; }
         public string Description { get; set; }
+        public bool Handled { get; set; }
 
-        public Bug(int id, int userId, string description)
+        public Bug(int id, int userId, string description, bool handle)
             : base(id)
         {
             UserId = userId;
             Description = description;
+            Handled = handle;
         }
 
-        public Bug(int userId, string description)
+        public Bug(int userId, string description, bool handle)
             : base(42)
         {
             UserId = userId;
             Description = description;
+            Handled = handle;
         }
 
         /// <summary>
@@ -41,7 +44,7 @@ namespace Project_Inventory.BDD
         /// <returns></returns>
         public string ToJsonId()
         {
-            return "{\"" + BugEnum.id + "\":" + id + ",\"" + BugEnum.userId + "\":" + UserId + ",\"" + BugEnum.description + "\":\"" + Description + "\"}";
+            return "{\"" + BugEnum.id + "\":" + id + ",\"" + BugEnum.userId + "\":" + UserId + ",\"" + BugEnum.description + "\":\"" + Description + "\",\"" + BugEnum.handled + "\":" + Handled.ToString().ToLower() + "}";
         }
     }
 
@@ -49,6 +52,7 @@ namespace Project_Inventory.BDD
     {
         id,
         userId,
-        description
+        description,
+        handled
     }
 }

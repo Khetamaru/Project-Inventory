@@ -20,6 +20,8 @@ namespace Project_Inventory.Tools
         DataDetailPage,
         StorageTransfertSelection,
         DataTransfert,
+        BugReportedView,
+        DatabaseModifMenu,
 
         FormPage,
         AddStorage,

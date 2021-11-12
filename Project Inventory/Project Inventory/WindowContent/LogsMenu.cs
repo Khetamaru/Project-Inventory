@@ -18,7 +18,6 @@ namespace Project_Inventory
 
         private List<Log> logsGridSave;
         private List<Log> logsGrid;
-        private RoutedEventLibrary[] bottomSwitchEvents;
 
         private List<User> users;
 
@@ -34,7 +33,7 @@ namespace Project_Inventory
         public LogsMenu(ToolBox toolBox, Router _router, RequestCenter requestCenter, int _actualUserId, int _actualStorageId, int _actualDataId, int _actualCustomId, RoutedEventHandler _reloadEvent)
                : base(toolBox, _router, requestCenter, _actualUserId, _actualStorageId, _actualDataId, _actualCustomId)
         {
-            topGridButtons = new string[] { "Research", "", "", "Return" };
+            topGridButtons = new string[] { "Chercher", "", "", "Retour" };
 
             reloadEvent = _reloadEvent;
 
@@ -51,7 +50,7 @@ namespace Project_Inventory
             preResearchDate.SelectedDate = DateTime.Now;
             postResearchDate = new DatePicker();
             buttonLogDelete = new Button();
-            buttonLogDelete.Content = "Delete Logs";
+            buttonLogDelete.Content = "Supprimer les Logs";
             buttonLogDelete.Click += new RoutedEventHandler((object sender, RoutedEventArgs e) => { DeleteLogs(sender, e); });
 
             capGrid = new Grid();
@@ -69,7 +68,6 @@ namespace Project_Inventory
         public void LoadBDDInfos()
         {
             logsGridSave = logsGrid = JsonCenter.LoadLogsMenuInfos(requestCenter, out users);
-            bottomSwitchEvents = JsonCenter.SetEventHandlerTab(logsGridSave.Count, GetEventHandler(WindowsName.ListViewerPage));
         }
 
         public new void TopGridInit(Grid topGrid)
@@ -198,7 +196,7 @@ namespace Project_Inventory
 
         public void DeleteLogs(object sender, RoutedEventArgs e)
         {
-            if (PopUpCenter.ActionValidPopup("You will delete all logs, are you sure ?"))
+            if (PopUpCenter.ActionValidPopup("Vous allez supprimer tous les logs, êtes-vous sûr ?"))
             {
                 requestCenter.DeleteRequest(BDDTabsName.LogLibraries.ToString());
                 GetEventHandler(WindowsName.LogsMenu).Invoke(sender, e);
@@ -207,7 +205,7 @@ namespace Project_Inventory
 
         public void EmptyResearchResult()
         {
-            PopUpCenter.MessagePopup("No Log has been found.");
+            PopUpCenter.MessagePopup("Aucun log n'a été trouvé.");
         }
     }
 }

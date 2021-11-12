@@ -42,8 +42,8 @@ namespace Project_Inventory
             viewerStatus = status.VIEWER;
             reloadEvent = _reloadEvent;
 
-            topGridButtons = new string[] { "Modify", "Research", "Return" };
-            saveButton = new string[] { "Save" };
+            topGridButtons = new string[] { "Modifier", "Chercher", "Retour" };
+            saveButton = new string[] { "Sauvegarder" };
 
             topSwitchEvents = new RoutedEventLibrary[3];
             RoutedEventLibrariesInit(topSwitchEvents);
@@ -85,7 +85,7 @@ namespace Project_Inventory
             toolBox.CreateSwitchButtonsToGridByTab(topGrid, 
                                                    topGridButtons, 
                                                    topSwitchEvents, 
-                                                   new SkinName[] { SkinName.StandartLittleMargin, SkinName.StandartLittleMargin, SkinName.StandartLittleMargin }, 
+                                                   new SkinName[] { SkinName.StandartLittleMargin, SkinName.StandartLittleMargin, SkinName.StandartLittleMargin },
                                                    new SkinLocation[] { SkinLocation.TopLeft, SkinLocation.TopCenter, SkinLocation.TopRight });
 
             toolBox.InsertUIElementInGrid(topGrid, researchTextBox, 0, 1, UIElementsName.TextBox, SkinLocation.CenterCenter);
@@ -190,7 +190,7 @@ namespace Project_Inventory
             }
             else
             {
-                PopUpCenter.MessagePopup("You have to type something in the search bar.");
+                PopUpCenter.MessagePopup("Vous devez écrire quelque chose dans la barre de recherche.");
             }
         }
 
@@ -206,14 +206,14 @@ namespace Project_Inventory
                 case status.VIEWER:
 
                     viewerStatus = status.MODIFIER;
-                    topGridButtons[0] = "Cancel";
+                    topGridButtons[0] = "Annuler";
 
                     break;
 
                 case status.MODIFIER:
 
                     viewerStatus = status.VIEWER;
-                    topGridButtons[0] = "Modify";
+                    topGridButtons[0] = "Modifier";
 
                     break;
             }
@@ -234,13 +234,13 @@ namespace Project_Inventory
 
                 foreach (int change in changesList)
                 {
-                    requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "Storage's name(s) has been changed.").ToJson());
+                    requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "Le nom d'un stockage a été modifié.").ToJson());
                     requestCenter.PutRequest(BDDTabsName.StorageLibraries.ToString() + "/" + bottomGridButtons[change].id, bottomGridButtons[change].ToJsonId());
                 }
 
                 if (optionnalAdd != null)
                 {
-                    requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "A new Storage has been created.").ToJson());
+                    requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "Un nouveau stockage a été créé.").ToJson());
                     requestCenter.PostRequest(BDDTabsName.StorageLibraries.ToString(), optionnalAdd.ToJson());
                 }
             }
@@ -299,7 +299,7 @@ namespace Project_Inventory
         {
             if (PopUpCenter.ActionValidPopup())
             {
-                requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "(" + JsonCenter.GetStorage(requestCenter, StorageId).Name + ") Storage has been delete.").ToJson());
+                requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "Le stockage (" + JsonCenter.GetStorage(requestCenter, StorageId).Name + ") a été supprimé.").ToJson());
                 requestCenter.DeleteRequest(BDDTabsName.StorageLibrariesXCustomListLibraries.ToString() + "/storage/" + StorageId);
                 requestCenter.DeleteRequest(BDDTabsName.DataLibraries.ToString() + "/storage/" + StorageId);
                 requestCenter.DeleteRequest(BDDTabsName.StorageLibraries.ToString() + "/" + StorageId);
@@ -308,7 +308,7 @@ namespace Project_Inventory
 
         public void EmptyInfoPopUp()
         {
-            PopUpCenter.MessagePopup("There is no existing Storage.");
+            PopUpCenter.MessagePopup("Il n'y a pas de stockage.");
         }
     }
 }

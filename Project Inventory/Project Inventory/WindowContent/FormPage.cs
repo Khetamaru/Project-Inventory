@@ -124,18 +124,18 @@ namespace Project_Inventory
             }
             else
             {
-                PopUpCenter.MessagePopup("Some Fields are empty or wrongly filled.");
+                PopUpCenter.MessagePopup("Certains champs de texte sont vides ou mal renseignés.");
             }
         }
 
         private void BugReporting(string bugDescription)
         {
-            Bug bug = new Bug(actualUserId, bugDescription);
+            Bug bug = new Bug(actualUserId, bugDescription, false);
 
-            requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "A Bug has been reported.").ToJson());
+            requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "Un Bug a été signalé.").ToJson());
             requestCenter.PostRequest(BDDTabsName.BugLibraries.ToString(), bug.ToJson());
 
-            PopUpCenter.MessagePopup("The Bug has been reported.");
+            PopUpCenter.MessagePopup("Le bug a été signalé.");
         }
 
         /// <summary>
@@ -170,7 +170,7 @@ namespace Project_Inventory
 
             string json = data.ToJson();
 
-            requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "(" + JsonCenter.GetStorage(requestCenter, actualStorageId).Name + ") Storage has been initialised.").ToJson());
+            requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "Le stockage (" + JsonCenter.GetStorage(requestCenter, actualStorageId).Name + ") a été initialisé.").ToJson());
             requestCenter.PostRequest(BDDTabsName.DataLibraries.ToString(), json);
 
             StorageXCustomList temp;
@@ -392,8 +392,8 @@ namespace Project_Inventory
             formElementsTemp[formElements.Length] = UIElementsName.ComboBox;
             formElementsTemp[formElements.Length + 1] = UIElementsName.TextBox;
 
-            labelsTemp[labels.Length] = "Information Type";
-            labelsTemp[labels.Length + 1] = "Information Title";
+            labelsTemp[labels.Length] = "Type de colonne";
+            labelsTemp[labels.Length + 1] = "Titre de colonne";
 
             formElements = formElementsTemp;
             labels = labelsTemp;
@@ -412,13 +412,13 @@ namespace Project_Inventory
 
                     customList = JsonCenter.LoadInitStorageInfos(requestCenter);
 
-                    topGridButtons = new string[] { "Return" };
+                    topGridButtons = new string[] { "Retour" };
 
                     topSwitchEvents = new RoutedEventLibrary[1];
                     RoutedEventLibrariesInit(topSwitchEvents);
                     topSwitchEvents[0].changePageEvent = GetEventHandler(WindowsName.StorageSelectionMenu);
 
-                    bottomGridButtons = new string[] { "Add Column", "Valid" };
+                    bottomGridButtons = new string[] { "Ajouter un colonne", "Valider" };
                     bottomColumnNb = 2;
 
                     formValidButton = new RoutedEventLibrary[2];
@@ -427,7 +427,7 @@ namespace Project_Inventory
                     formValidButton[1].changePageEvent = GetEventHandler(WindowsName.StorageViewerPage);
 
                     formElements = new UIElementsName[] { UIElementsName.ComboBox, UIElementsName.TextBox };
-                    labels = new string[] { "Information Type", "Information Title" };
+                    labels = new string[] { "Type de colonne", "Titre de colonne" };
 
                     formValidButton[1].optionalEventOne = new RoutedEventHandler((object sender, RoutedEventArgs e) =>
                     {
@@ -438,26 +438,26 @@ namespace Project_Inventory
 
                 case WindowsName.CreditPage:
 
-                    topGridButtons = new string[] { "Return" };
+                    topGridButtons = new string[] { "Retour" };
 
                     topSwitchEvents = new RoutedEventLibrary[1];
                     RoutedEventLibrariesInit(topSwitchEvents);
                     topSwitchEvents[0].changePageEvent = GetEventHandler(WindowsName.MainMenu);
 
                     formElements = new UIElementsName[] { UIElementsName.None, UIElementsName.None, UIElementsName.None };
-                    labels = new string[] { "Enterprise : Docteur Ordianteur Laval", "Project Manager : ETAIX Vincent", "Code Author : LASSERRE Anthony" };
+                    labels = new string[] { "Entreprise : Docteur Ordianteur Laval", "Chef de projet : ETAIX Vincent", "Programmateur : LASSERRE Anthony" };
 
                     break;
 
                 case WindowsName.BugReportPage:
 
-                    topGridButtons = new string[] { "Return" };
+                    topGridButtons = new string[] { "Retour" };
 
                     topSwitchEvents = new RoutedEventLibrary[1];
                     RoutedEventLibrariesInit(topSwitchEvents);
                     topSwitchEvents[0].changePageEvent = GetEventHandler(WindowsName.MainMenu);
 
-                    bottomGridButtons = new string[] { "Report Bug" };
+                    bottomGridButtons = new string[] { "Signaler le bug" };
                     bottomColumnNb = 1;
 
                     formValidButton = new RoutedEventLibrary[1];

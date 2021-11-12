@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using Project_Inventory.BDD;
@@ -30,8 +29,8 @@ namespace Project_Inventory
         public DataTransfert(ToolBox toolBox, Router _router, RequestCenter requestCenter, int _actualUserId, int _actualStorageId, int _actualDataId, int _actualCustomId, RoutedEventHandler _reloadEvent)
             : base(toolBox, _router, requestCenter, _actualUserId, _actualStorageId, _actualDataId, _actualCustomId)
         {
-            topGridButtons = new string[] { "", "Return" };
-            saveButton = new string[] { "Save" };
+            topGridButtons = new string[] { "", "Retour" };
+            saveButton = new string[] { "Sauvegarder" };
 
             reloadEvent = _reloadEvent;
 
@@ -68,10 +67,10 @@ namespace Project_Inventory
                                                    new SkinLocation[] { SkinLocation.None,             SkinLocation.TopRight });
 
             Label leftTitle = new Label();
-            leftTitle.Content = "OLD DATA";
+            leftTitle.Content = "ANCIENNE DONNÉE";
 
             Label rightTitle = new Label();
-            rightTitle.Content = "NEW DATA";
+            rightTitle.Content = "NOUVELLE DONNÉE";
 
             toolBox.InsertUIElementInGrid(topGrid, leftTitle,  0, 0, UIElementsName.Label, SkinLocation.CenterCenter);
             toolBox.InsertUIElementInGrid(topGrid, rightTitle, 0, 1, UIElementsName.Label, SkinLocation.CenterCenter);
@@ -105,10 +104,10 @@ namespace Project_Inventory
                 Data output;
                 if (toolBox.GetUIElements(toolBox.ExtractFormInfos(capGrid[1]), newData, out output, listOptions))
                 {
-                    requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "(" + JsonCenter.GetStorage(requestCenter, actualStorageId).Name + ") Storage's Data has changed.").ToJson());
+                    requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "Une donnée du stockage (" + JsonCenter.GetStorage(requestCenter, actualStorageId).Name + ") a été modifiée.").ToJson());
                     requestCenter.PostRequest(BDDTabsName.DataLibraries.ToString(), output.ToJson());
 
-                    requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "(" + JsonCenter.GetStorage(requestCenter, data.StorageId).Name + ") Storage's Data has been delete.").ToJson());
+                    requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "Une donnée du stockage (" + JsonCenter.GetStorage(requestCenter, data.StorageId).Name + ") a été supprimée.").ToJson());
                     requestCenter.DeleteRequest(BDDTabsName.DataLibraries.ToString() + "/" + data.id);
 
                     GetEventHandler(WindowsName.StorageSelectionMenu).Invoke(sender, e);

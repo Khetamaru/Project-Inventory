@@ -119,6 +119,13 @@ namespace Project_Inventory.Tools
             return (FormatToBDDObject(responseBdd, ObjectName.ListOption) as ListOption[])[0];
         }
 
+        public static List<ListOption> GetListOptionByCustomListId(RequestCenter requestCenter, int id)
+        {
+            string responseBdd = requestCenter.GetRequest(BDDTabsName.ListOptionLibraries.ToString() + "/customList/" + id);
+
+            return (FormatToBDDObject(responseBdd, ObjectName.ListOption) as ListOption[]).ToList();
+        }
+
         public static bool IsStorageInitialised(RequestCenter requestCenter, int id)
         {
             string responseBdd = requestCenter.GetRequest(BDDTabsName.DataLibraries.ToString() + "/" + ObjectName.Storage.ToString() + "/" + id);
@@ -260,6 +267,36 @@ namespace Project_Inventory.Tools
             else
             {
                 return (FormatToBDDObject(responseBdd, ObjectName.Log) as Log[]).ToList();
+            }
+        }
+
+        /// <summary>
+        /// Get all infos for the Logs Menu
+        /// </summary>
+        /// <param name="requestCenter"></param>
+        /// <returns></returns>
+        public static List<Bug> LoadBugReportedViewInfos(RequestCenter requestCenter, out List<User> users)
+        {
+            string responseBdd = requestCenter.GetRequest(BDDTabsName.UserLibraries.ToString());
+
+            if (responseBdd == empty)
+            {
+                users = new List<User>();
+            }
+            else
+            {
+                users = (FormatToBDDObject(responseBdd, ObjectName.User) as User[]).ToList();
+            }
+
+            responseBdd = requestCenter.GetRequest(BDDTabsName.BugLibraries.ToString());
+
+            if (responseBdd == empty)
+            {
+                return new List<Bug>();
+            }
+            else
+            {
+                return (FormatToBDDObject(responseBdd, ObjectName.Bug) as Bug[]).ToList();
             }
         }
 
@@ -735,6 +772,15 @@ namespace Project_Inventory.Tools
                     }
                     return logLibrary;
 
+                case ObjectName.Bug:
+                    Bug[] bugLibrary = new Bug[splitTab.Length];
+                    foreach (string sf in splitTab)
+                    {
+                        bugLibrary[i] = FormatObject(sf, bugLibrary[i]);
+                        i++;
+                    }
+                    return bugLibrary;
+
                 case ObjectName.User:
                     User[] userLibrary = new User[splitTab.Length];
                     foreach (string sf in splitTab)
@@ -1065,6 +1111,76 @@ namespace Project_Inventory.Tools
             log = new Log(id, userId, message, date);
 
             return log;
+        }
+
+        /// <summary>
+        /// Convert a json to Bug
+        /// </summary>
+        /// <param name="stf"></param>
+        /// <param name="separators"></param>
+        /// <param name="log"></param>
+        /// <returns></returns>
+        private static Bug FormatObject(string stf, Bug bug)
+        {
+            int id = 42;
+            int userId = 42;
+            string description = string.Empty;
+            bool handled = false;
+
+            string temp = string.Empty;
+
+            int i = 0;
+
+            string[] splitTab = stf.Split(new string[] { "\"" }, StringSplitOptions.None);
+
+            foreach (string split in splitTab)
+            {
+                if (split == BugEnum.id.ToString())
+                {
+                    temp = splitTab[i + 1];
+                    temp = temp.Remove(0, 1);
+                    temp = temp.Remove(temp.Length - 1, 1);
+                    id = Int32.Parse(temp);
+                }
+                else if (split == BugEnum.userId.ToString())
+                {
+                    temp = splitTab[i + 1];
+                    temp = temp.Remove(0, 1);
+                    temp = temp.Remove(temp.Length - 1, 1);
+                    userId = Int32.Parse(temp);
+                }
+                else if (split == BugEnum.description.ToString())
+                {
+                    description = splitTab[i + 2];
+                }
+                else if (split == BugEnum.handled.ToString())
+                {
+                    temp = splitTab[i + 1];
+                    temp = temp.Remove(0, 1);
+                    temp = temp.Remove(temp.Length - 1, 1);
+
+                    if (temp[temp.Length - 1] == '}') { temp = temp.Remove(temp.Length - 1, 1); }
+
+                    switch (temp)
+                    {
+                        case "true":
+                            handled = true;
+                            break;
+
+                        case "false":
+                            handled = false;
+                            break;
+
+                        default:
+                            throw new Exception();
+                    }
+                }
+                i++;
+            }
+
+            bug = new Bug(id, userId, description, handled);
+
+            return bug;
         }
 
         /// <summary>

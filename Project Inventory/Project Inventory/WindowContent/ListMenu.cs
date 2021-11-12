@@ -37,8 +37,8 @@ namespace Project_Inventory
         {
             viewerStatus = status.VIEWER;
 
-            topGridButtons = new string[] { "Modify", "Return" };
-            saveButton = new string[] { "Save" };
+            topGridButtons = new string[] { "Modifier", "Retour" };
+            saveButton = new string[] { "Sauvegarder" };
 
             reloadEvent = _reloadEvent;
 
@@ -189,14 +189,14 @@ namespace Project_Inventory
                 case status.VIEWER:
 
                     viewerStatus = status.MODIFIER;
-                    topGridButtons[0] = "Cancel";
+                    topGridButtons[0] = "Annuler";
 
                     break;
 
                 case status.MODIFIER:
 
                     viewerStatus = status.VIEWER;
-                    topGridButtons[0] = "Modify";
+                    topGridButtons[0] = "Modifier";
 
                     break;
             }
@@ -220,13 +220,13 @@ namespace Project_Inventory
                 foreach (int change in changesList)
                 {
 
-                    requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "Some Custom List's names has been changed.").ToJson());
+                    requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "Un ou plusieurs listes custom ont été modifiés.").ToJson());
                     requestCenter.PutRequest(BDDTabsName.CustomListLibraries.ToString() + "/" + bottomGridButtons[change].id, bottomGridButtons[change].ToJsonId());
                 }
 
                 if (optionnalAdd != null)
                 {
-                    requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "A new Custom List has been created.").ToJson());
+                    requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "Une nouvelle liste custom a été créée.").ToJson());
                     requestCenter.PostRequest(BDDTabsName.CustomListLibraries.ToString(), optionnalAdd.ToJson());
                 }
             }
@@ -289,11 +289,18 @@ namespace Project_Inventory
 
                 if (storageXCustomLists.Count > 0)
                 {
-                    PopUpCenter.MessagePopup("This Custom List is used in a Storage. You can't delete it.");
+                    PopUpCenter.MessagePopup("Cette liste custom est utilisée dans un stockage. Vous ne pouvez pas la supprimer.");
                 }
                 else
                 {
-                    requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "(" + JsonCenter.GetCustomList(requestCenter, CustomListId).Name + ") Custom List has been delete.").ToJson());
+                    requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "La liste custom (" + JsonCenter.GetCustomList(requestCenter, CustomListId).Name + ") a été supprimée.").ToJson());
+
+                    List<ListOption> listOptions = JsonCenter.GetListOptionByCustomListId(requestCenter, CustomListId);
+
+                    foreach(ListOption option in listOptions)
+                    {
+                        requestCenter.DeleteRequest(BDDTabsName.ListOptionLibraries.ToString() + "/" + option.id);
+                    }
                     requestCenter.DeleteRequest(BDDTabsName.CustomListLibraries.ToString() + "/" + CustomListId);
                 }
             }
@@ -301,7 +308,7 @@ namespace Project_Inventory
 
         public void EmptyInfoPopUp()
         {
-            PopUpCenter.MessagePopup("There is no Custom List in the Data Base.");
+            PopUpCenter.MessagePopup("Il n'existe pas de liste custom.");
         }
     }
 }

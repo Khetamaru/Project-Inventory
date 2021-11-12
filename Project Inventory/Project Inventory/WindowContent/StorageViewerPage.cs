@@ -4,9 +4,10 @@ using Project_Inventory.Tools.FonctionalityCerters;
 using Project_Inventory.Tools.NamesLibraries;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
+using System.Windows.Media.Imaging;
 
 namespace Project_Inventory
 {
@@ -30,11 +31,15 @@ namespace Project_Inventory
         private status viewerStatus;
 
         private Grid capGrid;
-        private Data[] dataTab;
-        private Data[] dataTabSave;
+        private List<Data> dataTab;
+        private List<Data> dataTabSave;
         private List<List<ListOption>> listOptionsTab;
         private List<int> customListIds;
         private string[] indicTab;
+
+        public bool sortingTrigger;
+        private int buttonTriggeredIndex;
+        private ImagesName buttonTriggeredImage;
 
         public bool emptyInfoPopUp;
 
@@ -49,8 +54,8 @@ namespace Project_Inventory
             viewerStatus = status.VIEWER;
             reloadEvent = _reloadEvent;
 
-            topGridButtons = new string[] { "Modify", "Research", "Return" };
-            saveButton = new string[] { "Save" };
+            topGridButtons = new string[] { "Modifier", "Chercher", "Retour" };
+            saveButton = new string[] { "Sauvegarder" };
 
             topSwitchEvents = new RoutedEventLibrary[3];
             RoutedEventLibrariesInit(topSwitchEvents);
@@ -69,6 +74,10 @@ namespace Project_Inventory
             researchTextBox = new TextBox();
             KeyPressedEventCenter.KeyPressedEventInjection(new RoutedEventHandler((object sender, RoutedEventArgs e) => { ResearchTrigger(sender, e, true); }), KeyPressedName.EnterKey, researchTextBox);
 
+            sortingTrigger = false;
+            buttonTriggeredIndex = -1;
+            buttonTriggeredImage = ImagesName.None;
+
             capGrid = new Grid();
 
             LoadBDDInfos();
@@ -79,9 +88,9 @@ namespace Project_Inventory
         /// </summary>
         public void LoadBDDInfos()
         {
-            dataTabSave = dataTab = JsonCenter.LoadStorageViewerInfos(requestCenter, actualStorageId, out listOptionsTab, out customListIds);
+            dataTabSave = dataTab = JsonCenter.LoadStorageViewerInfos(requestCenter, actualStorageId, out listOptionsTab, out customListIds).ToList();
 
-            if (dataTabSave == new Data[0])
+            if (dataTabSave == new List<Data>())
             {
                 emptyInfoPopUp = true;
             }
@@ -114,6 +123,8 @@ namespace Project_Inventory
 
         public new void CenterGridInit(Grid centerGrid)
         {
+            sortingTrigger = false;
+
             switch (viewerStatus)
             {
                 case status.VIEWER:
@@ -128,12 +139,12 @@ namespace Project_Inventory
 
                     toolBox.CreateScrollableGridModfiable(centerGrid, capGrid,
                                          1, 1,
-                                         dataTab.Length + 1, dataTab[0].DataText.Count + 2,
+                                         dataTab.Count + 2, dataTab[0].DataText.Count + 2,
                                          SkinLocation.CenterStretch, SkinSize.HeightEightPercent,
                                          SkinLocation.CenterCenter,
-                                         dataTab, indicTab,
+                                         dataTab.ToArray(), indicTab,
                                          AddDeleteButtons(),
-                                         listOptionsTab, customListIds);
+                                         listOptionsTab, customListIds, SortButtonsGeneration());
                     break;
             }
         }
@@ -148,11 +159,11 @@ namespace Project_Inventory
 
                     toolBox.CreateScrollableGrid(bottomGrid, capGrid,
                                          1, 1,
-                                         dataTab.Length, dataTabSave[0].DataText.Count + 1,
+                                         dataTab.Count + 1, dataTab[0].DataText.Count + 1,
                                          SkinLocation.BottomStretch, SkinSize.HeightNintyPercent,
                                          SkinLocation.CenterCenter,
-                                         dataTab, indicTab,
-                                         listOptionsTab, customListIds);
+                                         dataTab.ToArray(), indicTab,
+                                         listOptionsTab, customListIds, SortButtonsGeneration());
                     break;
 
                 case status.MODIFIER:
@@ -175,14 +186,14 @@ namespace Project_Inventory
                 case status.VIEWER:
 
                     viewerStatus = status.MODIFIER;
-                    topGridButtons[0] = "Cancel";
+                    topGridButtons[0] = "Annuler";
 
                     break;
 
                 case status.MODIFIER:
 
                     viewerStatus = status.VIEWER;
-                    topGridButtons[0] = "Modify";
+                    topGridButtons[0] = "Modifier";
 
                     break;
             }
@@ -199,17 +210,17 @@ namespace Project_Inventory
             {
                 Data optionnalAdd = null;
 
-                List<int> changesList = toolBox.GetUIElements(toolBox.ExtractFormInfos(capGrid), dataTab, out optionnalAdd, listOptionsTab);
+                List<int> changesList = toolBox.GetUIElements(toolBox.ExtractFormInfos(capGrid), dataTab.ToArray(), out optionnalAdd, listOptionsTab);
 
                 foreach (int change in changesList)
                 {
-                    requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "(" + JsonCenter.GetStorage(requestCenter, actualStorageId).Name + ") Storage's Data has changed.").ToJson());
+                    requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "Le stockage (" + JsonCenter.GetStorage(requestCenter, actualStorageId).Name + ") a été modifié.").ToJson());
                     requestCenter.PutRequest(BDDTabsName.DataLibraries.ToString() + "/" + dataTab[change].id, dataTab[change].ToJsonId());
                 }
 
                 if (optionnalAdd != null)
                 {
-                    requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "(" + JsonCenter.GetStorage(requestCenter, actualStorageId).Name + ") Storage gained a new Data.").ToJson());
+                    requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "Le stockage (" + JsonCenter.GetStorage(requestCenter, actualStorageId).Name + ") a obtenu une nouvelle donnée.").ToJson());
                     requestCenter.PostRequest(BDDTabsName.DataLibraries.ToString(), optionnalAdd.ToJson());
                 }
             }
@@ -247,7 +258,7 @@ namespace Project_Inventory
         {
             if (PopUpCenter.ActionValidPopup())
             {
-                requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "A (" + JsonCenter.GetStorage(requestCenter, actualStorageId).Name + ") Storage's Data has been delete.").ToJson());
+                requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "La donnée (" + JsonCenter.GetStorage(requestCenter, actualStorageId).Name + ") a été supprimée.").ToJson());
                 requestCenter.DeleteRequest(BDDTabsName.DataLibraries.ToString() + "/" + dataId);
             }
         }
@@ -286,7 +297,7 @@ namespace Project_Inventory
                 }
             }
 
-            int[] trigger = new int[dataTabSave.Length];
+            int[] trigger = new int[dataTabSave.Count];
             int i = 0;
 
             foreach (Data data in dataTabSave)
@@ -324,7 +335,7 @@ namespace Project_Inventory
                 }
             }
 
-            dataTab = new Data[dataLibraryShorted.Count];
+            dataTab = new List<Data>(dataLibraryShorted.Count);
             for (i = 0; i < dataLibraryShorted.Count; i++)
             {
                 dataTab[i] = dataLibraryShorted[i];
@@ -343,14 +354,152 @@ namespace Project_Inventory
             }
         }
 
+        private List<Button> SortButtonsGeneration()
+        {
+            List<Button> sortButtons = new List<Button>();
+            Button button;
+            int customListId;
+            int i;
+            List<int> indexList = new List<int>();
+
+            for (i = 0; i < dataTab[0].DataType.Count; i++)
+            {
+                indexList.Add(i);
+            }
+
+            foreach (int index in indexList)
+            {
+                if (buttonTriggeredIndex == index)
+                {
+                    button = toolBox.CreateSwitchButtonImage(buttonTriggeredImage, new RoutedEventLibrary(), SkinName.Standart, SkinLocation.CenterCenter, ImageSizesName.Small);
+
+                    if (Int32.TryParse(dataTab[0].DataType[index], out customListId))
+                    {
+                        button.Click += new RoutedEventHandler((object sender, RoutedEventArgs e) => { SortingDatas(sender, e, UIElementsName.ComboBox, index, button, sortButtons); });
+                    }
+                    else
+                    {
+                        button.Click += new RoutedEventHandler((object sender, RoutedEventArgs e) => { SortingDatas(sender, e, toolBox.GetUIElementType(dataTab[0].DataType[index]), index, button, sortButtons); });
+                    }
+                }
+                else
+                {
+                    button = toolBox.CreateSwitchButtonImage(ImagesName.ArrowNeutral, new RoutedEventLibrary(), SkinName.Standart, SkinLocation.CenterCenter, ImageSizesName.Small);
+
+                    if (Int32.TryParse(dataTab[0].DataType[index], out customListId))
+                    {
+                        button.Click += new RoutedEventHandler((object sender, RoutedEventArgs e) => { SortingDatas(sender, e, UIElementsName.ComboBox, index, button, sortButtons); });
+                    }
+                    else
+                    {
+                        button.Click += new RoutedEventHandler((object sender, RoutedEventArgs e) => { SortingDatas(sender, e, toolBox.GetUIElementType(dataTab[0].DataType[index]), index, button, sortButtons); });
+                    }
+                }
+
+                sortButtons.Add(button);
+            }
+            return sortButtons;
+        }
+
+        private void SortingDatas(object sender, RoutedEventArgs e, UIElementsName uiType, int index, Button button, List<Button> sortButtons)
+        {
+            Data Header = dataTab[0];
+            dataTab.Remove(Header);
+
+            bool triggerReverse = buttonTriggeredIndex == index && buttonTriggeredImage == ImagesName.ArrowDown ? true : false;
+
+            List<Data> tempList = new List<Data>();
+
+            if (triggerReverse)
+            {
+                switch (uiType)
+                {
+                    case UIElementsName.ComboBox:
+
+                        tempList = dataTab.OrderByDescending(d => toolBox.GetDataTextColumn(requestCenter, Int32.Parse(d.DataText[index])) + 1).ToList();
+                        break;
+
+                    case UIElementsName.DatePicker:
+
+                        tempList = dataTab.OrderByDescending(d => Convert.ToDateTime(d.DataText[index])).ToList();
+                        break;
+
+                    case UIElementsName.TextBox:
+
+                        tempList = dataTab.OrderByDescending(d => d.DataText[index]).ToList();
+                        break;
+
+                    case UIElementsName.TextBoxNumber:
+
+                        tempList = dataTab.OrderByDescending(d => d.DataText[index]).ToList();
+                        break;
+                }
+            }
+            else
+            {
+                switch (uiType)
+                {
+                    case UIElementsName.ComboBox:
+
+                        tempList = dataTab.OrderBy(d => toolBox.GetDataTextColumn(requestCenter, Int32.Parse(d.DataText[index])) + 1).ToList();
+                        break;
+
+                    case UIElementsName.DatePicker:
+
+                        tempList = dataTab.OrderBy(d => Convert.ToDateTime(d.DataText[index])).ToList();
+                        break;
+
+                    case UIElementsName.TextBox:
+
+                        tempList = dataTab.OrderBy(d => d.DataText[index]).ToList();
+                        break;
+
+                    case UIElementsName.TextBoxNumber:
+
+                        tempList = dataTab.OrderBy(d => d.DataText[index]).ToList();
+                        break;
+                }
+            }
+
+            dataTab = new List<Data>();
+            dataTab.Add(Header);
+
+            foreach(Data data in tempList)
+            {
+                dataTab.Add(data);
+            }
+
+            foreach (Button sortButton in sortButtons)
+            {
+                (sortButton.Content as Image).Source = new BitmapImage(new Uri(Environment.CurrentDirectory + "..\\..\\..\\..\\Images\\" + ImagesName.ArrowNeutral.ToString() + ".png", UriKind.Absolute));
+            }
+
+            if (triggerReverse)
+            {
+                (button.Content as Image).Source = new BitmapImage(new Uri(Environment.CurrentDirectory + "..\\..\\..\\..\\Images\\" + ImagesName.ArrowUp.ToString() + ".png", UriKind.Absolute));
+                buttonTriggeredIndex = index;
+                buttonTriggeredImage = ImagesName.ArrowUp;
+            }
+            else
+            {
+                (button.Content as Image).Source = new BitmapImage(new Uri(Environment.CurrentDirectory + "..\\..\\..\\..\\Images\\" + ImagesName.ArrowDown.ToString() + ".png", UriKind.Absolute));
+                buttonTriggeredIndex = index;
+                buttonTriggeredImage = ImagesName.ArrowDown;
+            }
+
+            sortingTrigger = true;
+
+            reloadEvent.Invoke(sender, e);
+        }
+
         public void EmptyInfoPopUp()
         {
-            PopUpCenter.MessagePopup("This Storage is Empty.");
+            PopUpCenter.MessagePopup("Ce stockage est vide.");
         }
 
         public void EmptyResearchResult()
         {
-            PopUpCenter.MessagePopup("No Data has been found.");
+            PopUpCenter.MessagePopup("Aucune donnée n'a été trouvée.");
         }
     }
 }

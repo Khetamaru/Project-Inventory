@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Windows.Controls;
 
 namespace Project_Inventory.Tools
 {
@@ -16,6 +14,7 @@ namespace Project_Inventory.Tools
         UserLibraries,
         StorageLibrariesXCustomListLibraries,
         ListOptionLibraries,
-        BugLibraries
+        BugLibraries,
+        Save
     }
 }
