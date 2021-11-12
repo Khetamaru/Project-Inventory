@@ -44,7 +44,7 @@ namespace Project_Inventory
 
             requestTypes.Add("Selectionnez une option");
             requestTypes.Add("Update Ajout Colonne");
-            requestTypes.Add("Update Suppression Colonne"); 
+            requestTypes.Add("Update Suppression Colonne");
 
             requestComboBox = new ComboBox();
             requestComboBox.SelectionChanged += new SelectionChangedEventHandler((object sender, SelectionChangedEventArgs e) =>
