@@ -12,24 +12,38 @@ namespace Local_API_Server.Controllers
     [ApiController]
     public class SaveController : ControllerBase
     {
-        SaveContext _saveContext;
         MySqlCommand cmd;
+
+        public string serverName = "localhost";
+        public string userId = "root";
+        public string password = "root";
+        public bool persistsecurityinfo = true;
+        public string databaseName = "project_inventory";
+        public string dataStringConnection;
+
+        public string databaseVersion = "V2";
 
         public SaveController(SaveContext saveContext) {
 
+            dataStringConnection = "server=" + serverName + ";" +
+                                    "Uid=" + userId + ";" +
+                                    "password=" + password + ";" +
+                                    "persistsecurityinfo=" + persistsecurityinfo + ";" +
+                                    "database=" + databaseName;
+
             cmd = new MySqlCommand();
-            cmd.Connection = new MySqlConnection();
+            cmd.Connection = new MySqlConnection(dataStringConnection);
         }
 
-        [HttpOptions("/Update/{request}")]
-        public async Task<IActionResult> Update(string request)
+        [HttpPut("Update")]
+        public IActionResult Update(RequestMySQL request)
         {
-            cmd.CommandText = request;
+            cmd.CommandText = request.Request;
             cmd.Connection.Open();
 
-            try 
-            { 
-                cmd.ExecuteNonQuery(); 
+            try
+            {
+                cmd.ExecuteNonQuery();
             }
             catch { return BadRequest(); }
 
@@ -37,10 +51,9 @@ namespace Local_API_Server.Controllers
 
             try
             {
-                using (FileStream fs = System.IO.File.Create(@"./Save/SaveUpdateRequests.txt"))
+                using (StreamWriter fs = new StreamWriter(@"./Save/SaveUpdateRequests.txt", true))
                 {
-                    byte[] info = new UTF8Encoding(true).GetBytes(request);
-                    fs.Write(info, 0, info.Length);
+                    fs.WriteLine(request.Request);
                 }
             }
             catch (Exception ex)
@@ -51,7 +64,7 @@ namespace Local_API_Server.Controllers
             return Ok();
         }
 
-        [HttpOptions("/Cast")]
+        [HttpOptions("Cast")]
         public async Task<IActionResult> CastingSave()
         {
             cmd.CommandText = System.IO.File.ReadAllText(@"./Save/SaveUpdateRequests.txt");
@@ -64,7 +77,6 @@ namespace Local_API_Server.Controllers
             catch { return BadRequest(); }
 
             cmd.Connection.Close();
-
             System.IO.File.Delete(@"./Save/SaveUpdateRequests.txt");
 
             return Ok();

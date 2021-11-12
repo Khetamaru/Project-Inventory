@@ -7,15 +7,10 @@ using System.Windows.Controls;
 
 namespace Project_Inventory
 {
-    /// <summary>
-    /// Page to access all menus
-    /// </summary>
     public class DatabaseModifMenu : WindowContent
     {
         private string[] topGridButtons;
         private RoutedEventLibrary[] topSwitchEvents;
-
-        private int widthLimit;
 
         private List<string> requestTypes;
         private ComboBox requestComboBox;
@@ -28,20 +23,19 @@ namespace Project_Inventory
             : base(toolBox, _router, requestCenter, _actualUserId, _actualStorageId, _actualDataId, _actualCustomListId)
         {
             topGridButtons = new string[] { "Retour" };
-            saveButton = new string[] { "Validation" };
+            saveButton = new string[] { "Validation", "Synchronisation" };
 
             topSwitchEvents = new RoutedEventLibrary[1];
             RoutedEventLibrariesInit(topSwitchEvents);
 
-            saveEvents = new RoutedEventLibrary[1];
+            saveEvents = new RoutedEventLibrary[2];
             RoutedEventLibrariesInit(saveEvents);
             saveEvents[0].optionalEventTwo = new RoutedEventHandler((object sender, RoutedEventArgs e) => { LaunchRequest(sender, e); });
+            saveEvents[1].optionalEventTwo = new RoutedEventHandler((object sender, RoutedEventArgs e) => { BDDStructSynchro(sender, e); });
 
             topSwitchEvents[0].changePageEvent = GetEventHandler(WindowsName.MainMenu);
 
             requestFieldSetUp();
-
-            widthLimit = 5;
         }
 
         private void requestFieldSetUp()
@@ -50,6 +44,7 @@ namespace Project_Inventory
 
             requestTypes.Add("Selectionnez une option");
             requestTypes.Add("Update Ajout Colonne");
+            requestTypes.Add("Update Suppression Colonne"); 
 
             requestComboBox = new ComboBox();
             requestComboBox.SelectionChanged += new SelectionChangedEventHandler((object sender, SelectionChangedEventArgs e) =>
@@ -65,7 +60,6 @@ namespace Project_Inventory
             requestTextBox = new TextBox();
 
             requestComboBox.SelectedItem = requestComboBox.Items[0];
-
         }
 
         public new void TopGridInit(Grid topGrid)
@@ -87,16 +81,31 @@ namespace Project_Inventory
 
         public new void BottomGridInit(Grid bottomGrid)
         {
-            toolBox.SetUpGrid(bottomGrid, 1, 1, SkinLocation.BottomStretch, SkinSize.HeightTenPercent);
+            toolBox.SetUpGrid(bottomGrid, 1, 2, SkinLocation.BottomStretch, SkinSize.HeightTenPercent);
 
-            toolBox.CreateSwitchButtonsToGridByTab(bottomGrid, saveButton, saveEvents, SkinName.StandartLittleMargin, SkinLocation.BottomCenter);
+            toolBox.CreateSwitchButtonsToGridByTab(bottomGrid, saveButton, saveEvents, 
+                                                   new SkinName[] { SkinName.StandartLittleMargin, SkinName.StandartLittleMargin },
+                                                   new SkinLocation[] { SkinLocation.BottomCenter, SkinLocation.BottomCenter });
         }
 
         private void LaunchRequest(object sender, RoutedEventArgs e)
         {
-            requestCenter.OptionRequest(BDDTabsName.Save + "/Update/" + requestTextBox.Text);
+            if(PopUpCenter.ActionValidPopup("Cette Action est irréversible et peut affecter sévèrement la base de données. Êtes-vous sûr ?"))
+            {
+                requestCenter.PutRequest(BDDTabsName.Save + "/Update", new RequestMySQL(requestTextBox.Text).ToJson());
+                requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "BDD modifiée.").ToJson());
+                PopUpCenter.MessagePopup("Requête correctement exécutée et sauvegardée.");
+            }
+        }
 
-            PopUpCenter.MessagePopup("Requête correctement exécutée et sauvegardée.");
+        private void BDDStructSynchro(object sender, RoutedEventArgs e)
+        {
+            if (PopUpCenter.ActionValidPopup("Cette action ne doit être effectuée que et uniquement suite à une mise à jour. Êtes-vous sûr ?"))
+            {
+                requestCenter.OptionRequest(BDDTabsName.Save + "/Cast");
+                requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(actualUserId, "BDD synchronisée.").ToJson());
+                PopUpCenter.MessagePopup("Structure de la base de donnée synchronisée.");
+            }
         }
 
         private void LaunchRequestPatern(object sender, SelectionChangedEventArgs e, string selectedOption)
@@ -112,6 +121,12 @@ namespace Project_Inventory
 
                     requestTextBox.Text = "ALTER TABLE table_name " +
                                           "ADD column_name column_type;";
+                    break;
+
+                case "Update Suppression Colonne":
+
+                    requestTextBox.Text = "ALTER TABLE table_name " +
+                                          "DROP COLUMN column_name;";
                     break;
             }
         }
