@@ -2,6 +2,7 @@
 using System.Net;
 using System.IO;
 using System.Text;
+using System.Configuration;
 
 namespace Project_Inventory.Tools
 {
@@ -29,8 +30,8 @@ namespace Project_Inventory.Tools
 
         public RequestCenter()
         {
-            http = "http://localhost:";
-            port = "5000/api/";
+            http = ConfigurationManager.AppSettings["http"];
+            port = ConfigurationManager.AppSettings["port"];
             endPoint = string.Empty;
             httpMethod = HttpVerb.GET;
         }
