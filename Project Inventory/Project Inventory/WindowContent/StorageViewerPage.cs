@@ -338,7 +338,7 @@ namespace Project_Inventory
             dataTab = new List<Data>(dataLibraryShorted.Count);
             for (i = 0; i < dataLibraryShorted.Count; i++)
             {
-                dataTab[i] = dataLibraryShorted[i];
+                dataTab.Add(dataLibraryShorted[i]);
             }
 
             indicTab = new string[dataTabSave[0].DataText.Count];
