@@ -7,10 +7,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
 using MySql.Data.MySqlClient;
-using Local_API_Server.Controllers;
-using System.IO;
-using System.Text;
-using System;
 
 namespace Local_API_Server
 {

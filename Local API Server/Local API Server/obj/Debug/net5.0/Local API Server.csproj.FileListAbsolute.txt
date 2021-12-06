@@ -269,14 +269,6 @@ F:\PROJECTS\Project-Inventory\Local API Server\Local API Server\obj\Debug\net5.0
 F:\PROJECTS\Project-Inventory\Local API Server\Local API Server\obj\Debug\net5.0\ref\Local API Server.dll
 F:\PROJECTS\Project-Inventory\Local API Server\Local API Server\obj\Debug\net5.0\Local API Server.pdb
 F:\PROJECTS\Project-Inventory\Local API Server\Local API Server\obj\Debug\net5.0\Local API Server.genruntimeconfig.cache
-F:\PROJECTS\Project-Inventory\Local API Server\Local API Server\bin\Debug\net5.0\System.Web.Mvc.dll
-F:\PROJECTS\Project-Inventory\Local API Server\Local API Server\bin\Debug\net5.0\System.Web.Razor.dll
-F:\PROJECTS\Project-Inventory\Local API Server\Local API Server\bin\Debug\net5.0\System.Web.Helpers.dll
-F:\PROJECTS\Project-Inventory\Local API Server\Local API Server\bin\Debug\net5.0\System.Web.WebPages.Deployment.dll
-F:\PROJECTS\Project-Inventory\Local API Server\Local API Server\bin\Debug\net5.0\System.Web.WebPages.Razor.dll
-F:\PROJECTS\Project-Inventory\Local API Server\Local API Server\bin\Debug\net5.0\System.Web.WebPages.dll
-F:\PROJECTS\Project-Inventory\Local API Server\Local API Server\bin\Debug\net5.0\Microsoft.Web.Infrastructure.dll
-F:\PROJECTS\Project-Inventory\Local API Server\Local API Server\obj\Debug\net5.0\Local API Server.csproj.AssemblyReference.cache
 F:\PROJECTS\Project-Inventory\Local API Server\Local API Server\bin\Debug\net5.0\BouncyCastle.Crypto.dll
 F:\PROJECTS\Project-Inventory\Local API Server\Local API Server\bin\Debug\net5.0\Google.Protobuf.dll
 F:\PROJECTS\Project-Inventory\Local API Server\Local API Server\bin\Debug\net5.0\K4os.Compression.LZ4.dll

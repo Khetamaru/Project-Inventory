@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31205.134
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Local API Server", "Local API Server\Local API Server.csproj", "{3AC44303-73AF-40E0-9AAE-98F92514F267}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Local API Server", "Local API Server\Local API Server.csproj", "{3AC44303-73AF-40E0-9AAE-98F92514F267}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "API Server", "API Server\API Server.vdproj", "{AC5F77F4-3ED0-4C9D-B6A0-6604B0298B7A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +13,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{3AC44303-73AF-40E0-9AAE-98F92514F267}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3AC44303-73AF-40E0-9AAE-98F92514F267}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3AC44303-73AF-40E0-9AAE-98F92514F267}.Debug|Any CPU.ActiveCfg = Release|Any CPU
+		{3AC44303-73AF-40E0-9AAE-98F92514F267}.Debug|Any CPU.Build.0 = Release|Any CPU
 		{3AC44303-73AF-40E0-9AAE-98F92514F267}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3AC44303-73AF-40E0-9AAE-98F92514F267}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC5F77F4-3ED0-4C9D-B6A0-6604B0298B7A}.Debug|Any CPU.ActiveCfg = Release
+		{AC5F77F4-3ED0-4C9D-B6A0-6604B0298B7A}.Debug|Any CPU.Build.0 = Release
+		{AC5F77F4-3ED0-4C9D-B6A0-6604B0298B7A}.Release|Any CPU.ActiveCfg = Release
+		{AC5F77F4-3ED0-4C9D-B6A0-6604B0298B7A}.Release|Any CPU.Build.0 = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

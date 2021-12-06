@@ -12,7 +12,7 @@ namespace Local_API_Server.Controllers
     [ApiController]
     public class SaveController : ControllerBase
     {
-        MySqlCommand cmd;
+        readonly MySqlCommand cmd;
 
         public string serverName = "localhost";
         public string userId = "root";
@@ -24,6 +24,10 @@ namespace Local_API_Server.Controllers
         public string databaseVersion = "V2";
 
         public SaveController(SaveContext saveContext) {
+            if (saveContext is null)
+            {
+                throw new ArgumentNullException(nameof(saveContext));
+            }
 
             dataStringConnection = "server=" + serverName + ";" +
                                     "Uid=" + userId + ";" +
@@ -31,8 +35,10 @@ namespace Local_API_Server.Controllers
                                     "persistsecurityinfo=" + persistsecurityinfo + ";" +
                                     "database=" + databaseName;
 
-            cmd = new MySqlCommand();
-            cmd.Connection = new MySqlConnection(dataStringConnection);
+            cmd = new MySqlCommand
+            {
+                Connection = new MySqlConnection(dataStringConnection)
+            };
         }
 
         [HttpPut("Update")]
@@ -51,10 +57,8 @@ namespace Local_API_Server.Controllers
 
             try
             {
-                using (StreamWriter fs = new StreamWriter(@"./Save/SaveUpdateRequests.txt", true))
-                {
-                    fs.WriteLine(request.Request);
-                }
+                using StreamWriter fs = new(@"./Save/SaveUpdateRequests.txt", true);
+                fs.WriteLine(request.Request);
             }
             catch (Exception ex)
             {
@@ -65,7 +69,7 @@ namespace Local_API_Server.Controllers
         }
 
         [HttpOptions("Cast")]
-        public async Task<IActionResult> CastingSave()
+        public IActionResult CastingSave()
         {
             cmd.CommandText = System.IO.File.ReadAllText(@"./Save/SaveUpdateRequests.txt");
             cmd.Connection.Open();

@@ -1,0 +1,16 @@
+F:\PROJECTS\Project-Inventory\Project Inventory\Project Inventory\bin\Release\net472\Project Inventory.exe.config
+F:\PROJECTS\Project-Inventory\Project Inventory\Project Inventory\bin\Release\net472\Project Inventory.exe
+F:\PROJECTS\Project-Inventory\Project Inventory\Project Inventory\bin\Release\net472\Project Inventory.pdb
+F:\PROJECTS\Project-Inventory\Project Inventory\Project Inventory\bin\Release\net472\WPFCustomMessageBox.dll
+F:\PROJECTS\Project-Inventory\Project Inventory\Project Inventory\obj\Release\net472\View\MainWindow.baml
+F:\PROJECTS\Project-Inventory\Project Inventory\Project Inventory\obj\Release\net472\View\MainWindow.g.cs
+F:\PROJECTS\Project-Inventory\Project Inventory\Project Inventory\obj\Release\net472\App.g.cs
+F:\PROJECTS\Project-Inventory\Project Inventory\Project Inventory\obj\Release\net472\Project Inventory_MarkupCompile.cache
+F:\PROJECTS\Project-Inventory\Project Inventory\Project Inventory\obj\Release\net472\Project Inventory.g.resources
+F:\PROJECTS\Project-Inventory\Project Inventory\Project Inventory\obj\Release\net472\Project Inventory.GeneratedMSBuildEditorConfig.editorconfig
+F:\PROJECTS\Project-Inventory\Project Inventory\Project Inventory\obj\Release\net472\Project Inventory.AssemblyInfoInputs.cache
+F:\PROJECTS\Project-Inventory\Project Inventory\Project Inventory\obj\Release\net472\Project Inventory.AssemblyInfo.cs
+F:\PROJECTS\Project-Inventory\Project Inventory\Project Inventory\obj\Release\net472\Project Inventory.csproj.CoreCompileInputs.cache
+F:\PROJECTS\Project-Inventory\Project Inventory\Project Inventory\obj\Release\net472\Project Inventory.csproj.CopyComplete
+F:\PROJECTS\Project-Inventory\Project Inventory\Project Inventory\obj\Release\net472\Project Inventory.exe
+F:\PROJECTS\Project-Inventory\Project Inventory\Project Inventory\obj\Release\net472\Project Inventory.pdb
