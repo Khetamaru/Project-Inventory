@@ -11,7 +11,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Images\" />
+    <None Remove="Images\ArrowDown.png" />
+    <None Remove="Images\ArrowNeutral.png" />
+    <None Remove="Images\ArrowUp.png" />
+    <None Remove="Images\logo.ico" />
+    <None Remove="Images\logo.png" />
+    <None Remove="Images\None.png" />
+    <None Remove="Images\RedCross.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -21,6 +27,18 @@
   <ItemGroup>
     <Reference Include="System.Configuration" />
     <Reference Include="System.Windows.Forms" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\ArrowDown.png" />
+    <Resource Include="Images\ArrowNeutral.png" />
+    <Resource Include="Images\ArrowUp.png" />
+    <Resource Include="Images\logo.ico" />
+    <Resource Include="Images\logo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\None.png" />
+    <Resource Include="Images\RedCross.png" />
   </ItemGroup>
 
 </Project>

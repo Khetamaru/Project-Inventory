@@ -5,6 +5,7 @@ using Project_Inventory.Tools.NamesLibraries;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
@@ -471,18 +472,18 @@ namespace Project_Inventory
 
             foreach (Button sortButton in sortButtons)
             {
-                (sortButton.Content as Image).Source = new BitmapImage(new Uri(Environment.CurrentDirectory + "..\\..\\..\\..\\Images\\" + ImagesName.ArrowNeutral.ToString() + ".png", UriKind.Absolute));
+                (sortButton.Content as Image).Source = new BitmapImage(new Uri(@"pack://application:,,,/" + Assembly.GetCallingAssembly().GetName().Name + ";component/Images/" + ImagesName.ArrowNeutral.ToString() + ".png", UriKind.Absolute));
             }
 
             if (triggerReverse)
             {
-                (button.Content as Image).Source = new BitmapImage(new Uri(Environment.CurrentDirectory + "..\\..\\..\\..\\Images\\" + ImagesName.ArrowUp.ToString() + ".png", UriKind.Absolute));
+                (button.Content as Image).Source = new BitmapImage(new Uri(@"pack://application:,,,/" + Assembly.GetCallingAssembly().GetName().Name + ";component/Images/" + ImagesName.ArrowUp.ToString() + ".png", UriKind.Absolute));
                 buttonTriggeredIndex = index;
                 buttonTriggeredImage = ImagesName.ArrowUp;
             }
             else
             {
-                (button.Content as Image).Source = new BitmapImage(new Uri(Environment.CurrentDirectory + "..\\..\\..\\..\\Images\\" + ImagesName.ArrowDown.ToString() + ".png", UriKind.Absolute));
+                (button.Content as Image).Source = new BitmapImage(new Uri(@"pack://application:,,,/" + Assembly.GetCallingAssembly().GetName().Name + ";component/Images/" + ImagesName.ArrowDown.ToString() + ".png", UriKind.Absolute));
                 buttonTriggeredIndex = index;
                 buttonTriggeredImage = ImagesName.ArrowDown;
             }

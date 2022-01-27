@@ -72,9 +72,9 @@ namespace Project_Inventory.Tools
                     result = rdr.ReadToEnd();
                 }
             }
-            catch
+            catch (Exception e)
             {
-                PopUpCenter.MessagePopup("Une erreur a eu lieu pendant la communication entre le programme et le serveur.");
+                PopUpCenter.MessagePopup("Une erreur a eu lieu pendant la communication entre le programme et le serveur.\n\n" + e.ToString());
             }
 
             return strResponseValue;
@@ -114,9 +114,9 @@ namespace Project_Inventory.Tools
                     }
                 }
             }
-            catch
+            catch(Exception e)
             {
-                PopUpCenter.MessagePopup("Une erreur a eu lieu pendant la communication entre le programme et le serveur.");
+                PopUpCenter.MessagePopup("Une erreur a eu lieu pendant la communication entre le programme et le serveur.\n\n" + e.ToString());
             }
 
             return strResponseValue;

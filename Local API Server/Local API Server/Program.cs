@@ -18,10 +18,12 @@ namespace Local_API_Server
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                    webBuilder.UseUrls("http://localhost:8080/");
-                });
+            .ConfigureWebHostDefaults(webBuilder =>
+            {
+
+                webBuilder.UseSetting("http_port", "8085");
+                webBuilder.UseStartup<Startup>();
+                webBuilder.UseUrls("http://192.168.1.79:8085/");
+            });
     }
 }

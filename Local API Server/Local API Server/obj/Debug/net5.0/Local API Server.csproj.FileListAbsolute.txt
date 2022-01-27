@@ -279,3 +279,4 @@ F:\PROJECTS\Project-Inventory\Local API Server\Local API Server\bin\Debug\net5.0
 F:\PROJECTS\Project-Inventory\Local API Server\Local API Server\bin\Debug\net5.0\Zstandard.Net.dll
 F:\PROJECTS\Project-Inventory\Local API Server\Local API Server\bin\Debug\net5.0\MySqlConnector.dll
 F:\PROJECTS\Project-Inventory\Local API Server\Local API Server\bin\Debug\net5.0\Pomelo.EntityFrameworkCore.MySql.dll
+F:\PROJECTS\Project-Inventory\Local API Server\Local API Server\obj\Debug\net5.0\Local API Server.csproj.AssemblyReference.cache

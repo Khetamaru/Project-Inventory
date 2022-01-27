@@ -28,3 +28,4 @@ F:\PROJECTS\Project-Inventory\Project Inventory\Project Inventory\bin\Debug\net4
 F:\PROJECTS\Project-Inventory\Project Inventory\Project Inventory\obj\Debug\net472\Project Inventory.GeneratedMSBuildEditorConfig.editorconfig
 F:\PROJECTS\Project-Inventory\Project Inventory\Project Inventory\bin\Debug\net472\WPFCustomMessageBox.dll
 F:\PROJECTS\Project-Inventory\Project Inventory\Project Inventory\obj\Debug\net472\Project Inventory.csproj.CopyComplete
+F:\PROJECTS\Project-Inventory\Project Inventory\Project Inventory\obj\Debug\net472\Project Inventory.csproj.AssemblyReference.cache

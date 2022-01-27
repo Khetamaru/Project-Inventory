@@ -123,6 +123,7 @@ namespace Project_Inventory.Tools
         {
             string responseBdd = requestCenter.GetRequest(BDDTabsName.ListOptionLibraries.ToString() + "/customList/" + id);
 
+            if (responseBdd == empty) return new List<ListOption>();
             return (FormatToBDDObject(responseBdd, ObjectName.ListOption) as ListOption[]).ToList();
         }
 

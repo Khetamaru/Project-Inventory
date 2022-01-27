@@ -15,7 +15,7 @@
     {
         "Entry"
         {
-        "MsmKey" = "8:_C9175A4955D44B48A5EB0D61F429610F"
+        "MsmKey" = "8:_092C4AB82FA34C7588370C812BB25175"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -82,6 +82,11 @@
                     {
                     "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
                     "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.NetCore.CoreRuntime.5.0.x64"
+                    {
+                    "Name" = "8:.NET Runtime 5.0.9 (x64)"
+                    "ProductCode" = "8:Microsoft.NetCore.CoreRuntime.5.0.x64"
                     }
                 }
             }
@@ -183,15 +188,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:API Server"
-        "ProductCode" = "8:{30AE4B30-4488-4C4F-9154-95B007F7E5B6}"
-        "PackageCode" = "8:{0B57E2DC-5E69-4C5D-9226-D8FEAE24DB25}"
+        "ProductCode" = "8:{7B8902B7-E8A1-4C8B-8E34-A8B798C49325}"
+        "PackageCode" = "8:{C048E4FE-C49E-4CA8-8F94-73DD6BBAD9B7}"
         "UpgradeCode" = "8:{ABE0B16A-548B-41AC-BA88-DA68BDA88683}"
         "AspNetVersion" = "8:"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:FALSE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.6"
+        "ProductVersion" = "8:1.4.9"
         "Manufacturer" = "8:RG Depanage"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -304,6 +309,20 @@
         }
         "Shortcut"
         {
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_7339C92E4B3048BE9E0EFE85300BAB96"
+            {
+            "Name" = "8:API SERVER INVENTORY"
+            "Arguments" = "8:"
+            "Description" = "8:"
+            "ShowCmd" = "3:1"
+            "IconIndex" = "3:0"
+            "Transitive" = "11:FALSE"
+            "Target" = "8:_092C4AB82FA34C7588370C812BB25175"
+            "Folder" = "8:_4EBB131D6C36449EBC8E577D9EA196BC"
+            "WorkingFolder" = "8:_0E618AF089C74301B5A523336159B475"
+            "Icon" = "8:"
+            "Feature" = "8:"
+            }
         }
         "UserInterface"
         {
@@ -703,7 +722,7 @@
         }
         "ProjectOutput"
         {
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_C9175A4955D44B48A5EB0D61F429610F"
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_092C4AB82FA34C7588370C812BB25175"
             {
             "SourcePath" = "8:..\\Local API Server\\obj\\Release\\net5.0\\apphost.exe"
             "TargetName" = "8:"

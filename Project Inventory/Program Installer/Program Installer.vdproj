@@ -13,6 +13,18 @@
 "SccProvider" = "8:"
     "Hierarchy"
     {
+        "Entry"
+        {
+        "MsmKey" = "8:_5A2A2B634FC24414B2E8F2ADA86A1662"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_8331D901DB1E498A88036DB877BB72D1"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
     }
     "Configurations"
     {
@@ -100,6 +112,26 @@
         }
         "File"
         {
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_8331D901DB1E498A88036DB877BB72D1"
+            {
+            "SourcePath" = "8:..\\Project Inventory\\Images\\logo.ico"
+            "TargetName" = "8:logo.ico"
+            "Tag" = "8:"
+            "Folder" = "8:_876610E6A70B4D6DB6AE2385CD289D2C"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
         }
         "FileType"
         {
@@ -166,20 +198,20 @@
         "Product"
         {
         "Name" = "8:Microsoft Visual Studio"
-        "ProductName" = "8:Program Installer"
-        "ProductCode" = "8:{9753D01A-ED92-4688-AF28-F9DA57B19221}"
-        "PackageCode" = "8:{2F323F61-C92F-448B-A2F1-A7B67DC9296B}"
+        "ProductName" = "8:RG Inventaire"
+        "ProductCode" = "8:{F8FDF1D5-3257-46E4-8043-080ADDE7F8E2}"
+        "PackageCode" = "8:{D007E6C8-B9BF-4D1D-8F62-274B946D11E7}"
         "UpgradeCode" = "8:{62192136-B4F9-4D27-A5A9-3D12EE72ADFA}"
         "AspNetVersion" = "8:"
         "RestartWWWService" = "11:FALSE"
-        "RemovePreviousVersions" = "11:FALSE"
+        "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.2"
+        "ProductVersion" = "8:1.5.0"
         "Manufacturer" = "8:RG Depanage"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
-        "Title" = "8:Program Installer"
+        "Title" = "8:RG Inventaire"
         "Subject" = "8:"
         "ARPCONTACT" = "8:RG Depanage"
         "Keywords" = "8:"
@@ -288,32 +320,18 @@
         }
         "Shortcut"
         {
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_039B7C62AB3E4EEC86D03C39B052508B"
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_ABBF0C99B95B49C89B9A496CC35B4A6C"
             {
-            "Name" = "8:Inventaire DO53"
+            "Name" = "8:RG Inventaire"
             "Arguments" = "8:"
             "Description" = "8:"
             "ShowCmd" = "3:1"
             "IconIndex" = "3:0"
             "Transitive" = "11:FALSE"
-            "Target" = "8:_71AA05E019554059BC9E38BCC1E2CC19"
+            "Target" = "8:_5A2A2B634FC24414B2E8F2ADA86A1662"
             "Folder" = "8:_71AA05E019554059BC9E38BCC1E2CC19"
-            "WorkingFolder" = "8:_71AA05E019554059BC9E38BCC1E2CC19"
-            "Icon" = "8:"
-            "Feature" = "8:"
-            }
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_7DC2F6273D314AE7936BF3BAD7FEC0A1"
-            {
-            "Name" = "8:Shortcut to User's Programs Menu"
-            "Arguments" = "8:"
-            "Description" = "8:"
-            "ShowCmd" = "3:1"
-            "IconIndex" = "3:0"
-            "Transitive" = "11:FALSE"
-            "Target" = "8:_0BCC66591F644A508C9548941B8651D8"
-            "Folder" = "8:_0BCC66591F644A508C9548941B8651D8"
-            "WorkingFolder" = "8:_0BCC66591F644A508C9548941B8651D8"
-            "Icon" = "8:"
+            "WorkingFolder" = "8:_0ABA5FD0D380449C81160C8D278B236C"
+            "Icon" = "8:_8331D901DB1E498A88036DB877BB72D1"
             "Feature" = "8:"
             }
         }
@@ -715,9 +733,9 @@
         }
         "ProjectOutput"
         {
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_E6D38ABE0A824335B1AE69123ADE420C"
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_5A2A2B634FC24414B2E8F2ADA86A1662"
             {
-            "SourcePath" = "8:"
+            "SourcePath" = "8:..\\Project Inventory\\obj\\Release\\net472\\Project Inventory.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_0ABA5FD0D380449C81160C8D278B236C"
@@ -736,7 +754,7 @@
             "IsolateTo" = "8:"
             "ProjectOutputGroupRegister" = "3:1"
             "OutputConfiguration" = "8:"
-            "OutputGroupCanonicalName" = "8:PublishItems"
+            "OutputGroupCanonicalName" = "8:Built"
             "OutputProjectGuid" = "8:{B4C6A5F8-715F-434F-B788-1C9156C2442B}"
             "ShowKeyOutput" = "11:TRUE"
                 "ExcludeFilters"

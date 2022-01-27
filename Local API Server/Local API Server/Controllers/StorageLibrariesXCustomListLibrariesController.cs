@@ -134,7 +134,7 @@ namespace Local_API_Server.Controllers
 
             if (storageLibraryXCustomListLibrary == null)
             {
-                return NotFound();
+                return Ok();
             }
 
             foreach (StorageLibraryXCustomListLibrary SLXCLL in storageLibraryXCustomListLibrary)

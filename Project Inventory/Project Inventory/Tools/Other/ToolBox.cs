@@ -2,6 +2,7 @@
 using Project_Inventory.Tools;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -96,7 +97,7 @@ namespace Project_Inventory
 
             temp.Content = new Image
             {
-                Source = new BitmapImage(new Uri(startupPath + "..\\..\\..\\..\\Images\\" + imagesName.ToString() + ".png", UriKind.Absolute)),
+                Source = new BitmapImage(new Uri(@"pack://application:,,,/" + Assembly.GetCallingAssembly().GetName().Name + ";component/Images/" + imagesName.ToString() + ".png", UriKind.Absolute)),
                 Stretch = Stretch.Fill,
                 Height = height,
                 Width = width

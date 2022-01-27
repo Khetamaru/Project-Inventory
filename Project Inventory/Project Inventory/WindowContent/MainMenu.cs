@@ -1,5 +1,6 @@
 ﻿using Project_Inventory.BDD;
 using Project_Inventory.Tools;
+using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;

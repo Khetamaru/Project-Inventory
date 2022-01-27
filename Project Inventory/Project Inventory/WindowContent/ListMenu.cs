@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using Project_Inventory.BDD;
@@ -297,9 +298,12 @@ namespace Project_Inventory
 
                     List<ListOption> listOptions = JsonCenter.GetListOptionByCustomListId(requestCenter, CustomListId);
 
-                    foreach(ListOption option in listOptions)
+                    if (listOptions.Count > 0)
                     {
-                        requestCenter.DeleteRequest(BDDTabsName.ListOptionLibraries.ToString() + "/" + option.id);
+                        foreach (ListOption option in listOptions)
+                        {
+                            requestCenter.DeleteRequest(BDDTabsName.ListOptionLibraries.ToString() + "/" + option.id);
+                        }
                     }
                     requestCenter.DeleteRequest(BDDTabsName.CustomListLibraries.ToString() + "/" + CustomListId);
                 }
