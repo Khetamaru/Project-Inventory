@@ -26,7 +26,7 @@ namespace Project_Inventory.Tools
         /// Prepare all stored procedure for insertion in the button
         /// </summary>
         /// <returns></returns>
-        private RoutedEventHandler[] LibraryToTab()
+        public RoutedEventHandler[] LibraryToTab()
         {
             int i = 0;
 

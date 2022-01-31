@@ -23,7 +23,8 @@ namespace Local_API_Server
 
                 webBuilder.UseSetting("http_port", "8085");
                 webBuilder.UseStartup<Startup>();
-                webBuilder.UseUrls("http://192.168.1.79:8085/");
+                //webBuilder.UseUrls("http://192.168.1.79:8085/");
+                webBuilder.UseUrls("http://localhost:8085/");
             });
     }
 }

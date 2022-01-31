@@ -74,7 +74,7 @@ namespace Project_Inventory.Tools
             }
             catch (Exception e)
             {
-                PopUpCenter.MessagePopup("Une erreur a eu lieu pendant la communication entre le programme et le serveur.\n\n" + e.ToString());
+                CatchError(e, json);
             }
 
             return strResponseValue;
@@ -116,7 +116,7 @@ namespace Project_Inventory.Tools
             }
             catch(Exception e)
             {
-                PopUpCenter.MessagePopup("Une erreur a eu lieu pendant la communication entre le programme et le serveur.\n\n" + e.ToString());
+                CatchError(e);
             }
 
             return strResponseValue;
@@ -168,6 +168,21 @@ namespace Project_Inventory.Tools
             httpMethod = HttpVerb.OPTIONS;
 
             return MakeRequest(json);
+        }
+
+        private void CatchError(Exception e, string json)
+        {
+            PopUpCenter.MessagePopup("Une erreur a eu lieu pendant la communication entre le programme et le serveur.\n\n" +
+                                     http + port + endPoint + "\n\n" +
+                                     e.ToString() + "\n\n" + 
+                                     json);
+        }
+
+        private void CatchError(Exception e)
+        {
+            PopUpCenter.MessagePopup("Une erreur a eu lieu pendant la communication entre le programme et le serveur.\n\n" +
+                                     http + port + endPoint + "\n\n" +
+                                     e.ToString() + "\n\n");
         }
     }
 }

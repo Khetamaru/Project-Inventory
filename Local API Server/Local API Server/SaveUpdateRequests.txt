@@ -1,0 +1,2 @@
+ALTER TABLE versionlibraries MODIFY COLUMN id INT AUTO_INCREMENT;
+INSERT INTO versionlibraries(version) VALUES('1.5.0');

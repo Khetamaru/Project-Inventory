@@ -1,7 +1,10 @@
 ﻿using Project_Inventory.BDD;
 using Project_Inventory.Tools;
+using Project_Inventory.Tools.FonctionalityCerters;
+using Project_Inventory.Tools.NamesLibraries;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -28,13 +31,15 @@ namespace Project_Inventory
         private List<User> userList;
 
         private RoutedEventHandler reloadEvent;
+        Action closeEvent;
 
-        public MainMenu(ToolBox toolBox, Router _router, RequestCenter requestCenter, int _actualUserId, int _actualStorageId, int _actualDataId, int _actualCustomListId, RoutedEventHandler _reloadEvent)
+        public MainMenu(ToolBox toolBox, Router _router, RequestCenter requestCenter, int _actualUserId, int _actualStorageId, int _actualDataId, int _actualCustomListId, RoutedEventHandler _reloadEvent, Action _closeEvent)
             : base(toolBox, _router, requestCenter, _actualUserId, _actualStorageId, _actualDataId, _actualCustomListId)
         {
             bottomGridButtons = new string[] { "Bibliothèque de stockages", "Bibliothèque de listes custom", "Logs", "Menu utilisateur", "Signaler un bug", "Menu des bugs", "Menu de modification de la Base De Données" };
 
             reloadEvent = _reloadEvent;
+            closeEvent = _closeEvent;
 
             switchEvents = new RoutedEventLibrary[7];
             RoutedEventLibrariesInit(switchEvents);
@@ -48,9 +53,15 @@ namespace Project_Inventory
 
             widthLimit = 5;
 
-            IsUserConnected();
-
-            LoadBDDInfos();
+            if (IsProgramUpToDate())
+            {
+                IsUserConnected();
+                LoadBDDInfos();
+            }
+            else
+            {
+                closeEvent.Invoke();
+            }
         }
 
         public void IsUserConnected()
@@ -63,6 +74,24 @@ namespace Project_Inventory
             {
                 state = IsThereUser.NO;
             }
+        }
+
+        public bool IsProgramUpToDate()
+        {
+            string lvn = ConfigurationManager.AppSettings["version"];
+            SoftwareVersion svn = JsonCenter.GetVersion(requestCenter);
+
+            if (string.Compare(lvn, svn.version) < 0)
+            {
+                PopUpCenter.MessagePopup("Votre version du logiciel n'est plus à jour.\nVeuillez contacter votre technicien pour mise à jour.\n\nVersion actuelle : " + lvn + "\nVersion nécéssaire : " + svn.version);
+                return false;
+            }
+            if (string.Compare(lvn, svn.version) > 0)
+            {
+                requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(1, "Mise à jour Système vers la version (" + lvn + ")").ToJson());
+                requestCenter.PostRequest(BDDTabsName.VersionLibraries.ToString(), new SoftwareVersion(lvn).ToJson());
+            }
+            return true;
         }
 
         public void LoadBDDInfos()
@@ -111,7 +140,7 @@ namespace Project_Inventory
 
                 case IsThereUser.NO:
 
-                    toolBox.SetUpGrid(bottomGrid, 2, 1, SkinLocation.StretchStretch, SkinSize.HeightNintyPercent);
+                    toolBox.SetUpGrid(bottomGrid, 4, 1, SkinLocation.StretchStretch, SkinSize.HeightNintyPercent);
 
                     ComboBox comboBox = new ComboBox();
                     comboBox.Items.Add("Selectionnez un utilisateur");
@@ -132,8 +161,40 @@ namespace Project_Inventory
 
                     toolBox.InsertUIElementInGrid(bottomGrid, button, 1, 0, UIElementsName.Button, SkinLocation.CenterCenter);
 
+                    TextBox textBox = new TextBox();
+                    toolBox.InsertUIElementInGrid(bottomGrid, textBox, 2, 0, UIElementsName.TextBox, SkinLocation.CenterCenter);
+                    KeyPressedEventCenter.KeyPressedEventInjection(new RoutedEventHandler((object sender, RoutedEventArgs e) =>
+                    {
+                        NewUserCreation(sender, e, textBox.Text);
+                    }), KeyPressedName.EnterKey, textBox);
+
+                    Button button2 = new Button();
+                    button2.Content = "Création utilisateur";
+                    button2.Click += new RoutedEventHandler((object sender, RoutedEventArgs e) =>
+                    {
+                        NewUserCreation(sender, e, textBox.Text);
+                    });
+                    toolBox.InsertUIElementInGrid(bottomGrid, button2, 3, 0, UIElementsName.Button, SkinLocation.CenterCenter);
+
                     break;
             }
+        }
+
+        private void NewUserCreation(object sender, RoutedEventArgs e, string textBoxText)
+        {
+            if (textBoxText.Replace(" ", "") != null)
+            {
+                requestCenter.PostRequest(BDDTabsName.LogLibraries.ToString(), new Log(1, "Un nouvel utilisateur a été créé.").ToJson());
+                requestCenter.PostRequest(BDDTabsName.UserLibraries.ToString(), new User(textBoxText, 0, true).ToJson());
+
+                PopUpCenter.MessagePopup("Utilisateur (" + textBoxText + ") correctement créé !");
+            }
+            else
+            {
+                PopUpCenter.MessagePopup("Veuillez entrer un nom d'utilisateur avant d'en créer un.");
+            }
+
+            reloadEvent.Invoke(sender, e);
         }
 
         public void IDSetup(object sender, RoutedEventArgs e, ComboBox comboBox)

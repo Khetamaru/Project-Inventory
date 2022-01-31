@@ -51,18 +51,18 @@ namespace Local_API_Server.Controllers
             {
                 cmd.ExecuteNonQuery();
             }
-            catch { return BadRequest(); }
+            catch(Exception e) { return BadRequest(); }
 
             cmd.Connection.Close();
 
             try
             {
-                using StreamWriter fs = new(@"./Save/SaveUpdateRequests.txt", true);
+                using StreamWriter fs = new(@"./SaveUpdateRequests.txt", true);
                 fs.WriteLine(request.Request);
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                Console.WriteLine(ex.ToString());
+                Console.WriteLine(e.ToString());
             }
 
             return Ok();
@@ -71,7 +71,7 @@ namespace Local_API_Server.Controllers
         [HttpOptions("Cast")]
         public IActionResult CastingSave()
         {
-            cmd.CommandText = System.IO.File.ReadAllText(@"./Save/SaveUpdateRequests.txt");
+            cmd.CommandText = System.IO.File.ReadAllText(@"./SaveUpdateRequests.txt");
             cmd.Connection.Open();
 
             try
@@ -81,7 +81,7 @@ namespace Local_API_Server.Controllers
             catch { return BadRequest(); }
 
             cmd.Connection.Close();
-            System.IO.File.Delete(@"./Save/SaveUpdateRequests.txt");
+            System.IO.File.Delete(@"./SaveUpdateRequests.txt");
 
             return Ok();
         }

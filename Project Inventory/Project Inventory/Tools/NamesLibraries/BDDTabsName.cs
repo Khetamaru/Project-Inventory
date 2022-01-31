@@ -15,6 +15,7 @@ namespace Project_Inventory.Tools
         StorageLibrariesXCustomListLibraries,
         ListOptionLibraries,
         BugLibraries,
+        VersionLibraries,
         Save
     }
 }
