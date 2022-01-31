@@ -34,11 +34,11 @@
     <Resource Include="Images\ArrowNeutral.png" />
     <Resource Include="Images\ArrowUp.png" />
     <Resource Include="Images\logo.ico" />
-    <Resource Include="Images\logo.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Images\None.png" />
-    <Resource Include="Images\RedCross.png" />
+	<Resource Include="Images\None.png" />
+	<Resource Include="Images\RedCross.png" />
+	<Resource Include="Images\logo.png">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	</Resource>
   </ItemGroup>
 
 </Project>

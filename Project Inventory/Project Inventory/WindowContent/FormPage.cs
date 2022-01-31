@@ -444,8 +444,10 @@ namespace Project_Inventory
                     RoutedEventLibrariesInit(topSwitchEvents);
                     topSwitchEvents[0].changePageEvent = GetEventHandler(WindowsName.MainMenu);
 
-                    formElements = new UIElementsName[] { UIElementsName.None, UIElementsName.None, UIElementsName.None };
-                    labels = new string[] { "Entreprise : Docteur Ordianteur Laval", "Chef de projet : ETAIX Vincent", "Programmateur : LASSERRE Anthony" };
+                    SoftwareVersion version = JsonCenter.GetVersion(requestCenter);
+
+                    formElements = new UIElementsName[] { UIElementsName.None, UIElementsName.None, UIElementsName.None, UIElementsName.None };
+                    labels = new string[] { "Entreprise : Docteur Ordianteur Laval", "Chef de projet : ETAIX Vincent", "Programmateur : LASSERRE Anthony", "Version : " + version.version };
 
                     break;
 

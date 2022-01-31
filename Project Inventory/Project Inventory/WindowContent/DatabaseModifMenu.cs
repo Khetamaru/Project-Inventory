@@ -43,8 +43,10 @@ namespace Project_Inventory
             requestTypes = new List<string>();
 
             requestTypes.Add("Selectionnez une option");
-            requestTypes.Add("Update Ajout Colonne");
-            requestTypes.Add("Update Suppression Colonne");
+            requestTypes.Add("Ajout Colonne");
+            requestTypes.Add("Suppression Colonne");
+            requestTypes.Add("Ajout Ligne");
+            requestTypes.Add("Modification Colonne");
 
             requestComboBox = new ComboBox();
             requestComboBox.SelectionChanged += new SelectionChangedEventHandler((object sender, SelectionChangedEventArgs e) =>
@@ -117,16 +119,28 @@ namespace Project_Inventory
                     requestTextBox.Text = string.Empty;
                     break;
 
-                case "Update Ajout Colonne":
+                case "Ajout Colonne":
 
                     requestTextBox.Text = "ALTER TABLE table_name " +
                                           "ADD column_name column_type;";
                     break;
 
-                case "Update Suppression Colonne":
+                case "Suppression Colonne":
 
                     requestTextBox.Text = "ALTER TABLE table_name " +
                                           "DROP COLUMN column_name;";
+                    break;
+
+                case "Ajout Ligne":
+
+                    requestTextBox.Text = "INSERT INTO tablename('', '', ...) " +
+                                          "VALUES('', '', ...);";
+                    break;
+
+                case "Modification Colonne":
+
+                    requestTextBox.Text = "ALTER TABLE tablename " +
+                                          "MODIFY COLUMN columnName columnType modification;";
                     break;
             }
         }

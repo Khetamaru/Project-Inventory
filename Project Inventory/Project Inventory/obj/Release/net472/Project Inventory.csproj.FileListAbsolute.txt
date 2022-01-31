@@ -14,3 +14,4 @@ F:\PROJECTS\Project-Inventory\Project Inventory\Project Inventory\obj\Release\ne
 F:\PROJECTS\Project-Inventory\Project Inventory\Project Inventory\obj\Release\net472\Project Inventory.csproj.CopyComplete
 F:\PROJECTS\Project-Inventory\Project Inventory\Project Inventory\obj\Release\net472\Project Inventory.exe
 F:\PROJECTS\Project-Inventory\Project Inventory\Project Inventory\obj\Release\net472\Project Inventory.pdb
+F:\PROJECTS\Project-Inventory\Project Inventory\Project Inventory\obj\Release\net472\Project Inventory.csproj.AssemblyReference.cache

@@ -143,3 +143,4 @@ F:\PROJECTS\Project-Inventory\Local API Server\Local API Server\obj\Release\net5
 F:\PROJECTS\Project-Inventory\Local API Server\Local API Server\obj\Release\net5.0\ref\Local API Server.dll
 F:\PROJECTS\Project-Inventory\Local API Server\Local API Server\obj\Release\net5.0\Local API Server.pdb
 F:\PROJECTS\Project-Inventory\Local API Server\Local API Server\obj\Release\net5.0\Local API Server.genruntimeconfig.cache
+F:\PROJECTS\Project-Inventory\Local API Server\Local API Server\obj\Release\net5.0\Local API Server.csproj.AssemblyReference.cache

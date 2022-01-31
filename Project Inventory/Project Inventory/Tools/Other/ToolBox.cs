@@ -1,5 +1,7 @@
 ﻿using Project_Inventory.BDD;
 using Project_Inventory.Tools;
+using Project_Inventory.Tools.FonctionalityCerters;
+using Project_Inventory.Tools.NamesLibraries;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -1226,7 +1228,7 @@ namespace Project_Inventory
         /// <param name="grid"></param>
         /// <param name="storageTab"></param>
         /// <param name="skinPosition"></param>
-        public void CreateTabToGrid(Grid grid, Storage[] storageTab, SkinLocation skinPosition)
+        public void CreateTabToGrid(Grid grid, Storage[] storageTab, SkinLocation skinPosition, RoutedEventLibrary routedEventLibrary)
         {
             int i = storageTab.Length;
             int j = 1;
@@ -1247,7 +1249,7 @@ namespace Project_Inventory
                 {
                     if (storageTab.Length > j + (i * 5))
                     {
-                        CreateHeaderToGrid(grid, storageTab[j + (i * 5)].Name, i, j, skinPosition);
+                        CreateHeaderToGrid(grid, storageTab[j + (i * 5)].Name, i, j, skinPosition, routedEventLibrary);
                         k = j;
                     }
                 }
@@ -1256,7 +1258,7 @@ namespace Project_Inventory
 
             if (k >= 5) { k = 0; }
 
-            CreateHeaderToGrid(grid, addElemString, rowNb, k, skinPosition);
+            CreateHeaderToGrid(grid, addElemString, rowNb, k, skinPosition, routedEventLibrary);
         }
 
         /// <summary>
@@ -1538,6 +1540,29 @@ namespace Project_Inventory
         {
             TextBox textbox = new TextBox();
             textbox.Text = text;
+
+            UIElementSkin.TextBoxSkinModify(textbox, wpfScreen);
+            StorageViewerSkin.LoadSkinPosition(textbox, skinPosition);
+
+            Grid.SetRow(textbox, row);
+            Grid.SetColumn(textbox, column);
+
+            grid.Children.Add(textbox);
+        }
+
+        /// <summary>
+        /// Create the header line in the scroll grid
+        /// </summary>
+        /// <param name="grid"></param>
+        /// <param name="text"></param>
+        /// <param name="row"></param>
+        /// <param name="column"></param>
+        /// <param name="skinPosition"></param>
+        public void CreateHeaderToGrid(Grid grid, string text, int row, int column, SkinLocation skinPosition, RoutedEventLibrary routedEventLibrary)
+        {
+            TextBox textbox = new TextBox();
+            textbox.Text = text;
+            KeyPressedEventCenter.KeyPressedEventInjection(routedEventLibrary, KeyPressedName.EnterKey, textbox);
 
             UIElementSkin.TextBoxSkinModify(textbox, wpfScreen);
             StorageViewerSkin.LoadSkinPosition(textbox, skinPosition);
