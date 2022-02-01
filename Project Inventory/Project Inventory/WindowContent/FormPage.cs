@@ -445,6 +445,7 @@ namespace Project_Inventory
                     topSwitchEvents[0].changePageEvent = GetEventHandler(WindowsName.MainMenu);
 
                     SoftwareVersion version = JsonCenter.GetVersion(requestCenter);
+                    formValidButton = new RoutedEventLibrary[1];
 
                     formElements = new UIElementsName[] { UIElementsName.None, UIElementsName.None, UIElementsName.None, UIElementsName.None };
                     labels = new string[] { "Entreprise : Docteur Ordianteur Laval", "Chef de projet : ETAIX Vincent", "Programmateur : LASSERRE Anthony", "Version : " + version.version };

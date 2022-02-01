@@ -118,7 +118,7 @@ namespace Project_Inventory
 
                     RoutedEventLibrary routedEventLibrary = new RoutedEventLibrary();
                     routedEventLibrary.optionalEventOne = new RoutedEventHandler((object sender, RoutedEventArgs e) => { LogOut(sender, e); });
-                    toolBox.CreateSwitchButtonToGrid(topGrid, "Déconnection", routedEventLibrary, 0, 0, SkinName.StandartLittleMargin, SkinLocation.TopRight);
+                    toolBox.CreateSwitchButtonToGrid(topGrid, "Déconnexion", routedEventLibrary, 0, 0, SkinName.StandartLittleMargin, SkinLocation.TopRight);
 
                     break;
 
