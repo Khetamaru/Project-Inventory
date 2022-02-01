@@ -65,7 +65,7 @@ namespace Project_Inventory
                                                  formElements.Length, 2,
                                                  SkinLocation.StretchStretch, SkinSize.HeightEightPercent,
                                                  formElements, labels, listBoxNames,
-                                                 customList);
+                                                 customList, formValidButton[0]);
                     break;
 
                 case WindowsName.CreditPage:
@@ -75,7 +75,7 @@ namespace Project_Inventory
                                                  formElements.Length, 1,
                                                  SkinLocation.BottomStretch, SkinSize.HeightNintyPercent,
                                                  formElements, labels, listBoxNames,
-                                                 customList);
+                                                 customList, formValidButton[0]);
                     break;
             }
         }

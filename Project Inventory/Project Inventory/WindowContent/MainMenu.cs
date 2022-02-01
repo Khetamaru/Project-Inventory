@@ -167,6 +167,7 @@ namespace Project_Inventory
                     {
                         NewUserCreation(sender, e, textBox.Text);
                     }), KeyPressedName.EnterKey, textBox);
+                    textBox.Focus();
 
                     Button button2 = new Button();
                     button2.Content = "Création utilisateur";

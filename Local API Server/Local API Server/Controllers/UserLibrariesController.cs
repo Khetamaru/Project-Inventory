@@ -26,6 +26,13 @@ namespace Local_API_Server.Controllers
             return await _context.UserLibraries.Where(user => user.IsActive == true).ToListAsync();
         }
 
+        // GET: api/UserLibraries
+        [HttpGet("all")]
+        public async Task<ActionResult<IEnumerable<UserLibrary>>> GetAllUserLibraries()
+        {
+            return await _context.UserLibraries.ToListAsync();
+        }
+
         // GET: api/UserLibraries/5
         [HttpGet("{id}")]
         public async Task<ActionResult<UserLibrary>> GetUserLibrary(int id)
