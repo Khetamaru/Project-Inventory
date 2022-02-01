@@ -145,7 +145,7 @@ namespace Project_Inventory
                                          SkinLocation.CenterCenter,
                                          dataTab.ToArray(), indicTab,
                                          AddDeleteButtons(),
-                                         listOptionsTab, customListIds, SortButtonsGeneration());
+                                         listOptionsTab, customListIds, SortButtonsGeneration(), saveEvents[0]);
                     break;
             }
         }

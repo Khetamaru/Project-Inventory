@@ -267,7 +267,7 @@ namespace Project_Inventory.Tools
         /// <returns></returns>
         public static List<Log> LoadLogsMenuInfos(RequestCenter requestCenter, out List<User> users)
         {
-            string responseBdd = requestCenter.GetRequest(BDDTabsName.UserLibraries.ToString());
+            string responseBdd = requestCenter.GetRequest(BDDTabsName.UserLibraries.ToString() + "/all");
 
             if (responseBdd == empty)
             {

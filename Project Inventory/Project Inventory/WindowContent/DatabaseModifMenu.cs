@@ -1,5 +1,7 @@
 ﻿using Project_Inventory.BDD;
 using Project_Inventory.Tools;
+using Project_Inventory.Tools.FonctionalityCerters;
+using Project_Inventory.Tools.NamesLibraries;
 using System;
 using System.Collections.Generic;
 using System.Windows;
@@ -60,6 +62,7 @@ namespace Project_Inventory
             }
 
             requestTextBox = new TextBox();
+            KeyPressedEventCenter.KeyPressedEventInjection(saveEvents[0], KeyPressedName.EnterKey, requestTextBox);
 
             requestComboBox.SelectedItem = requestComboBox.Items[0];
         }
@@ -79,6 +82,7 @@ namespace Project_Inventory
 
             toolBox.InsertUIElementInGrid(centerGrid, requestComboBox, 0, 0, UIElementsName.ComboBox, SkinLocation.CenterCenter);
             toolBox.InsertUIElementInGrid(centerGrid, requestTextBox, 0, 2, UIElementsName.TextBox, SkinLocation.CenterCenter);
+            requestTextBox.Focus();
         }
 
         public new void BottomGridInit(Grid bottomGrid)

@@ -140,7 +140,7 @@ namespace Project_Inventory
                     toolBox.ButtonPlacer(capGrid, bottomGridButtons.Length + 1, widthLimit, SkinLocation.BottomStretch, SkinSize.HeightEightPercent);
                     RoutedIdSetup(bottomGridButtons);
 
-                    toolBox.CreateTabToGrid(capGrid, bottomGridButtons, SkinLocation.CenterCenter);
+                    toolBox.CreateTabToGrid(capGrid, bottomGridButtons, SkinLocation.CenterCenter, saveEvents[0]);
                     centerGrid.Children.Add(capGrid);
 
                     AddDeleteButtons();
