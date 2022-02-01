@@ -116,6 +116,10 @@ namespace Project_Inventory
                     Grid.SetColumn(button, 0);
                     topGrid.Children.Add(button);
 
+                    RoutedEventLibrary routedEventLibrary = new RoutedEventLibrary();
+                    routedEventLibrary.optionalEventOne = new RoutedEventHandler((object sender, RoutedEventArgs e) => { LogOut(sender, e); });
+                    toolBox.CreateSwitchButtonToGrid(topGrid, "Déconnection", routedEventLibrary, 0, 0, SkinName.StandartLittleMargin, SkinLocation.TopRight);
+
                     break;
 
                 case IsThereUser.NO:
@@ -212,6 +216,12 @@ namespace Project_Inventory
             {
                 reloadEvent.Invoke(sender, e);
             }
+        }
+
+        private void LogOut(object sender, RoutedEventArgs e)
+        {
+            actualUserId = -1;
+            reloadEvent.Invoke(sender, e);
         }
     }
 }
