@@ -79,7 +79,7 @@ namespace Project_Inventory
             capGrid = new Grid();
             toolBox.SetUpGrid(centerGrid, 1, 1, SkinLocation.StretchStretch, SkinSize.HeightEightPercent);
 
-            toolBox.CustomListViewer(centerGrid, capGrid, listOptions, AddDeleteButtons(), AddUpArrowsButtons(), AddDownArrowsButtons());
+            toolBox.CustomListViewer(centerGrid, capGrid, listOptions, AddDeleteButtons(), AddUpArrowsButtons(), AddDownArrowsButtons(), saveEvents[0]);
         }
 
         public new void BottomGridInit(Grid bottomGrid)

@@ -59,6 +59,18 @@ namespace Project_Inventory.Tools
         }
 
         /// <summary>
+        /// Convert a Version to json
+        /// </summary>
+        /// <param name="version"></param>
+        /// <returns></returns>
+        public static string ObjectJsonBuilder(SoftwareVersion version)
+        {
+            string json = version.ToJson();
+
+            return json;
+        }
+
+        /// <summary>
         /// Convert a Custom List to json
         /// </summary>
         /// <param name="storage"></param>
@@ -74,49 +86,56 @@ namespace Project_Inventory.Tools
         {
             string responseBdd = requestCenter.GetRequest(BDDTabsName.StorageLibraries.ToString() + "/" + id);
 
-            return (FormatToBDDObject(responseBdd, ObjectName.Storage) as Storage[])[0];
+            return (FormatToBDDObject(responseBdd, ObjectName.Storage) as Storage[]).First();
         }
 
         public static Data GetData(RequestCenter requestCenter, int id)
         {
             string responseBdd = requestCenter.GetRequest(BDDTabsName.DataLibraries.ToString() + "/" + id);
 
-            return (FormatToBDDObject(responseBdd, ObjectName.Data) as Data[])[0];
+            return (FormatToBDDObject(responseBdd, ObjectName.Data) as Data[]).First();
+        }
+
+        public static SoftwareVersion GetVersion(RequestCenter requestCenter)
+        {
+            string responseBdd = requestCenter.GetRequest(BDDTabsName.VersionLibraries.ToString() + "/uptodate");
+
+            return (FormatToBDDObject(responseBdd, ObjectName.Version) as SoftwareVersion[]).First();
         }
 
         public static User GetUser(RequestCenter requestCenter, int id)
         {
             string responseBdd = requestCenter.GetRequest(BDDTabsName.UserLibraries.ToString() + "/" + id);
 
-            return (FormatToBDDObject(responseBdd, ObjectName.User) as User[])[0];
+            return (FormatToBDDObject(responseBdd, ObjectName.User) as User[]).First();
         }
 
         public static Log GetLog(RequestCenter requestCenter, int id)
         {
             string responseBdd = requestCenter.GetRequest(BDDTabsName.LogLibraries.ToString() + "/" + id);
 
-            return (FormatToBDDObject(responseBdd, ObjectName.Log) as Log[])[0];
+            return (FormatToBDDObject(responseBdd, ObjectName.Log) as Log[]).First();
         }
 
         public static StorageXCustomList GetStorageXCustomList(RequestCenter requestCenter, int id)
         {
             string responseBdd = requestCenter.GetRequest(BDDTabsName.StorageLibrariesXCustomListLibraries.ToString() + "/" + id);
 
-            return (FormatToBDDObject(responseBdd, ObjectName.StorageXCustomList) as StorageXCustomList[])[0];
+            return (FormatToBDDObject(responseBdd, ObjectName.StorageXCustomList) as StorageXCustomList[]).First();
         }
 
         public static CustomList GetCustomList(RequestCenter requestCenter, int id)
         {
             string responseBdd = requestCenter.GetRequest(BDDTabsName.CustomListLibraries.ToString() + "/" + id);
 
-            return (FormatToBDDObject(responseBdd, ObjectName.CustomList) as CustomList[])[0];
+            return (FormatToBDDObject(responseBdd, ObjectName.CustomList) as CustomList[]).First();
         }
 
         public static ListOption GetListOption(RequestCenter requestCenter, int id)
         {
             string responseBdd = requestCenter.GetRequest(BDDTabsName.ListOptionLibraries.ToString() + "/" + id);
 
-            return (FormatToBDDObject(responseBdd, ObjectName.ListOption) as ListOption[])[0];
+            return (FormatToBDDObject(responseBdd, ObjectName.ListOption) as ListOption[]).First();
         }
 
         public static List<ListOption> GetListOptionByCustomListId(RequestCenter requestCenter, int id)
@@ -248,7 +267,7 @@ namespace Project_Inventory.Tools
         /// <returns></returns>
         public static List<Log> LoadLogsMenuInfos(RequestCenter requestCenter, out List<User> users)
         {
-            string responseBdd = requestCenter.GetRequest(BDDTabsName.UserLibraries.ToString());
+            string responseBdd = requestCenter.GetRequest(BDDTabsName.UserLibraries.ToString() + "/all");
 
             if (responseBdd == empty)
             {
@@ -547,7 +566,7 @@ namespace Project_Inventory.Tools
             }
             else
             {
-                header = (FormatToBDDObject(responseBdd, ObjectName.Data) as Data[])[0];
+                header = (FormatToBDDObject(responseBdd, ObjectName.Data) as Data[]).First();
             }
 
             return data;
@@ -602,7 +621,7 @@ namespace Project_Inventory.Tools
             }
             else
             {
-                newHeader = (FormatToBDDObject(responseBdd, ObjectName.Data) as Data[])[0];
+                newHeader = (FormatToBDDObject(responseBdd, ObjectName.Data) as Data[]).First();
             }
 
             responseBdd = requestCenter.GetRequest(BDDTabsName.DataLibraries.ToString() + "/" + ObjectName.Header.ToString() + "/" + data.StorageId);
@@ -613,7 +632,7 @@ namespace Project_Inventory.Tools
             }
             else
             {
-                header = (FormatToBDDObject(responseBdd, ObjectName.Data) as Data[])[0];
+                header = (FormatToBDDObject(responseBdd, ObjectName.Data) as Data[]).First();
             }
 
             List<string> dataText = new List<string>();
@@ -790,6 +809,15 @@ namespace Project_Inventory.Tools
                         i++;
                     }
                     return userLibrary;
+
+                case ObjectName.Version:
+                    SoftwareVersion[] versionLibrary = new SoftwareVersion[splitTab.Length];
+                    foreach (string sf in splitTab)
+                    {
+                        versionLibrary[i] = FormatObject(sf, versionLibrary[i]);
+                        i++;
+                    }
+                    return versionLibrary;
             }
 
             return null;
@@ -1255,6 +1283,45 @@ namespace Project_Inventory.Tools
             user = new User(id, name, accessibilityLevel, isActive);
 
             return user;
+        }
+
+        /// <summary>
+        /// Convert a json to User
+        /// </summary>
+        /// <param name="stf"></param>
+        /// <param name="separators"></param>
+        /// <param name="version"></param>
+        /// <returns></returns>
+        private static SoftwareVersion FormatObject(string stf, SoftwareVersion softwareVersion)
+        {
+            int id = 42;
+            string version = string.Empty;
+
+            string temp;
+            int i = 0;
+
+            string[] splitTab = stf.Split(new string[] { "\"" }, StringSplitOptions.None);
+
+            foreach (string split in splitTab)
+            {
+                if (split == VersionEnum.id.ToString())
+                {
+                    temp = splitTab[i + 1];
+                    temp = temp.Remove(0, 1);
+                    temp = temp.Remove(temp.Length - 1, 1);
+
+                    id = Int32.Parse(temp);
+                }
+                else if (split == VersionEnum.version.ToString())
+                {
+                    version = splitTab[i + 2];
+                }
+                i++;
+            }
+
+            softwareVersion = new SoftwareVersion(id, version);
+
+            return softwareVersion;
         }
     }
 }

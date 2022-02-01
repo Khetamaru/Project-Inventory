@@ -1,5 +1,7 @@
 ﻿using Project_Inventory.BDD;
 using Project_Inventory.Tools;
+using Project_Inventory.Tools.FonctionalityCerters;
+using Project_Inventory.Tools.NamesLibraries;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -759,7 +761,7 @@ namespace Project_Inventory
         /// <param name="formElements"></param>
         /// <param name="labels"></param>
         /// <param name="listBoxName"></param>
-        public void CreateFormToGridByTab(Grid grid, UIElementsName[] formElements, string[] labels, ComboBoxNames listBoxName, CustomList[] customList)
+        public void CreateFormToGridByTab(Grid grid, UIElementsName[] formElements, string[] labels, ComboBoxNames listBoxName, CustomList[] customList, RoutedEventLibrary routedEventLibrary)
         {
             Label label;
             UIElement uIElement;
@@ -788,6 +790,7 @@ namespace Project_Inventory
                     case (UIElementsName.TextBox):
 
                         uIElement = new TextBox();
+                        KeyPressedEventCenter.KeyPressedEventInjection(routedEventLibrary, KeyPressedName.EnterKey, uIElement);
                         UIElementSkin.TextBoxSkinForm(uIElement as TextBox, wpfScreen);
                         Grid.SetRow(uIElement, i);
                         Grid.SetColumn(uIElement, 1);
@@ -798,6 +801,7 @@ namespace Project_Inventory
                     case (UIElementsName.TextBoxNumber):
 
                         uIElement = new TextBox();
+                        KeyPressedEventCenter.KeyPressedEventInjection(routedEventLibrary, KeyPressedName.EnterKey, uIElement);
                         UIElementSkin.TextBoxSkinForm(uIElement as TextBox, wpfScreen);
                         UIElementSkin.TextBoxNumberSkinForm(uIElement as TextBox, wpfScreen);
                         Grid.SetRow(uIElement, i);
@@ -859,7 +863,7 @@ namespace Project_Inventory
         /// </summary>
         /// <param name="embededGrid"></param>
         /// <param name="options"></param>
-        public void SetUpCustomListGrid(Grid embededGrid, List<ListOption> options, List<Button> deleteButtons, List<Button> upButtons, List<Button> downButtons)
+        public void SetUpCustomListGrid(Grid embededGrid, List<ListOption> options, List<Button> deleteButtons, List<Button> upButtons, List<Button> downButtons, RoutedEventLibrary routedEventLibrary)
         {
             TextBox textBoxTemp;
             int i;
@@ -870,13 +874,14 @@ namespace Project_Inventory
 
                 textBoxTemp = new TextBox();
                 textBoxTemp.Text = options[i].Name;
+                KeyPressedEventCenter.KeyPressedEventInjection(routedEventLibrary, KeyPressedName.EnterKey, textBoxTemp);
                 InsertUIElementInGrid(embededGrid, textBoxTemp, i, 1, UIElementsName.TextBox, SkinLocation.CenterCenter);
 
                 InsertUIElementInGrid(embededGrid, upButtons[i], i, 2, UIElementsName.None, SkinLocation.TopCenter);
                 InsertUIElementInGrid(embededGrid, downButtons[i], i, 2, UIElementsName.None, SkinLocation.BottomCenter);
             }
-
             textBoxTemp = new TextBox();
+            KeyPressedEventCenter.KeyPressedEventInjection(routedEventLibrary, KeyPressedName.EnterKey, textBoxTemp);
             InsertUIElementInGrid(embededGrid, textBoxTemp, i, 1, UIElementsName.TextBox, SkinLocation.CenterCenter);
         }
 
@@ -1108,7 +1113,7 @@ namespace Project_Inventory
         /// <param name="stringTab"></param>
         /// <param name="indicTab"></param>
         /// <param name="skinPosition"></param>
-        public void CreateTabToGrid(Grid grid, Data[] stringTab, string[] indicTab, SkinLocation skinPosition, List<Button> buttonList, List<List<ListOption>> listOptions, List<int> customListIds, List<Button> sortButtonList)
+        public void CreateTabToGrid(Grid grid, Data[] stringTab, string[] indicTab, SkinLocation skinPosition, List<Button> buttonList, List<List<ListOption>> listOptions, List<int> customListIds, List<Button> sortButtonList, RoutedEventLibrary routedEventLibrary)
         {
             int i;
             int j;
@@ -1139,7 +1144,7 @@ namespace Project_Inventory
                     {
                         if (stringTab[i].DataText.Count >= (i + 1) * (j + 1))
                         {
-                            CreateHeaderToGrid(grid, stringTab[i].DataText[j], i + 1, j + 1, skinPosition);
+                            CreateHeaderToGrid(grid, stringTab[i].DataText[j], i + 1, j + 1, skinPosition, routedEventLibrary);
                             k++;
                         }
                         else
@@ -1164,13 +1169,13 @@ namespace Project_Inventory
                             }
                             else
                             {
-                                CreateTabCellToGrid(grid, stringTab[i].DataText[j], indicTab[j], i + 1, j + 1, skinPosition);
+                                CreateTabCellToGrid(grid, stringTab[i].DataText[j], indicTab[j], i + 1, j + 1, skinPosition, routedEventLibrary);
                             }
                             k++;
                         }
                         else
                         {
-                            CreateTabCellToGrid(grid, stringTab[i].CodeBar, UIElementsName.TextBox.ToString(), i + 1, j + 1, skinPosition);
+                            CreateTabCellToGrid(grid, stringTab[i].CodeBar, UIElementsName.TextBox.ToString(), i + 1, j + 1, skinPosition, routedEventLibrary);
                         }
                     }
                 }
@@ -1186,12 +1191,12 @@ namespace Project_Inventory
                     }
                     else
                     {
-                        CreateTabCellToGrid(grid, addElemString[l], indicTab[l], rowNb + 2, l + 1, skinPosition);
+                        CreateTabCellToGrid(grid, addElemString[l], indicTab[l], rowNb + 2, l + 1, skinPosition, routedEventLibrary);
                     }
                 }
                 else
                 {
-                    CreateTabCellToGrid(grid, addElemString[l], UIElementsName.TextBox.ToString(), rowNb + 2, l + 1, skinPosition);
+                    CreateTabCellToGrid(grid, addElemString[l], UIElementsName.TextBox.ToString(), rowNb + 2, l + 1, skinPosition, routedEventLibrary);
                 }
             }
         }
@@ -1226,7 +1231,7 @@ namespace Project_Inventory
         /// <param name="grid"></param>
         /// <param name="storageTab"></param>
         /// <param name="skinPosition"></param>
-        public void CreateTabToGrid(Grid grid, Storage[] storageTab, SkinLocation skinPosition)
+        public void CreateTabToGrid(Grid grid, Storage[] storageTab, SkinLocation skinPosition, RoutedEventLibrary routedEventLibrary)
         {
             int i = storageTab.Length;
             int j = 1;
@@ -1247,7 +1252,7 @@ namespace Project_Inventory
                 {
                     if (storageTab.Length > j + (i * 5))
                     {
-                        CreateHeaderToGrid(grid, storageTab[j + (i * 5)].Name, i, j, skinPosition);
+                        CreateHeaderToGrid(grid, storageTab[j + (i * 5)].Name, i, j, skinPosition, routedEventLibrary);
                         k = j;
                     }
                 }
@@ -1256,7 +1261,7 @@ namespace Project_Inventory
 
             if (k >= 5) { k = 0; }
 
-            CreateHeaderToGrid(grid, addElemString, rowNb, k, skinPosition);
+            CreateHeaderToGrid(grid, addElemString, rowNb, k, skinPosition, routedEventLibrary);
         }
 
         /// <summary>
@@ -1265,7 +1270,7 @@ namespace Project_Inventory
         /// <param name="grid"></param>
         /// <param name="storageTab"></param>
         /// <param name="skinPosition"></param>
-        public void CreateTabToGrid(Grid grid, CustomList[] storageTab, SkinLocation skinPosition)
+        public void CreateTabToGrid(Grid grid, CustomList[] storageTab, SkinLocation skinPosition, RoutedEventLibrary routedEventLibrary)
         {
             int i = storageTab.Length;
             int j = 1;
@@ -1286,7 +1291,7 @@ namespace Project_Inventory
                 {
                     if (storageTab.Length > j + (i * 5))
                     {
-                        CreateHeaderToGrid(grid, storageTab[j + (i * 5)].Name, i, j, skinPosition);
+                        CreateHeaderToGrid(grid, storageTab[j + (i * 5)].Name, i, j, skinPosition, routedEventLibrary);
                         k = j;
                     }
                 }
@@ -1295,7 +1300,7 @@ namespace Project_Inventory
 
             if (k >= 5) { k = 0; }
 
-            CreateHeaderToGrid(grid, addElemString, rowNb, k, skinPosition);
+            CreateHeaderToGrid(grid, addElemString, rowNb, k, skinPosition, routedEventLibrary);
         }
 
         /// <summary>
@@ -1304,7 +1309,7 @@ namespace Project_Inventory
         /// <param name="grid"></param>
         /// <param name="storageTab"></param>
         /// <param name="skinPosition"></param>
-        public void CreateTabToGrid(Grid grid, List<User> storageTab, SkinLocation skinPosition)
+        public void CreateTabToGrid(Grid grid, List<User> storageTab, SkinLocation skinPosition, RoutedEventLibrary routedEventLibrary)
         {
             int i = storageTab.Count;
             int j = 1;
@@ -1325,7 +1330,7 @@ namespace Project_Inventory
                 {
                     if (storageTab.Count > j + (i * 5))
                     {
-                        CreateHeaderToGrid(grid, storageTab[j + (i * 5)].Name, i, j, skinPosition);
+                        CreateHeaderToGrid(grid, storageTab[j + (i * 5)].Name, i, j, skinPosition, routedEventLibrary);
                         k = j;
                     }
                 }
@@ -1334,7 +1339,7 @@ namespace Project_Inventory
 
             if (k >= 5) { k = 0; }
 
-            CreateHeaderToGrid(grid, addElemString, rowNb, k, skinPosition);
+            CreateHeaderToGrid(grid, addElemString, rowNb, k, skinPosition, routedEventLibrary);
         }
 
         /// <summary>
@@ -1404,6 +1409,98 @@ namespace Project_Inventory
             {
                 ComboBox uiElement = new ComboBox();
                 string[] comboBoxStrings = new string[] { "Selectionnez une option", "TextBox", "TextBoxNumber", "DatePicker", "ComboBox"};
+                UIElementSkin.ComboBoxSkinForm(uiElement, comboBoxStrings);
+
+                if (text != null)
+                {
+                    uiElement.SelectedItem = text;
+                }
+                else
+                {
+                    uiElement.SelectedItem = uiElement.Items[0];
+                }
+
+                UIElementSkin.ComboBoxSkinModify(uiElement);
+                StorageViewerSkin.LoadSkinPosition(uiElement, skinPosition);
+
+                // insert potential clickEvent
+
+                Grid.SetRow(uiElement, row);
+                Grid.SetColumn(uiElement, column);
+
+                grid.Children.Add(uiElement);
+            }
+        }
+
+        /// <summary>
+        /// Create UIElements in the scroll grid
+        /// </summary>
+        /// <param name="grid"></param>
+        /// <param name="text"></param>
+        /// <param name="indication"></param>
+        /// <param name="row"></param>
+        /// <param name="column"></param>
+        /// <param name="skinPosition"></param>
+        public void CreateTabCellToGrid(Grid grid, string text, string indication, int row, int column, SkinLocation skinPosition, RoutedEventLibrary routedEventLibrary)
+        {
+            if (indication == UIElementsName.DatePicker.ToString())
+            {
+                DatePicker uiElement = new DatePicker();
+                UIElementSkin.DatePickerSkinForm(uiElement);
+                if (text != "")
+                {
+                    uiElement.SelectedDate = DateTime.Parse(text);
+                }
+
+                UIElementSkin.DatePickerSkinModify(uiElement);
+                StorageViewerSkin.LoadSkinPosition(uiElement, skinPosition);
+
+                // insert potential clickEvent
+
+                Grid.SetRow(uiElement, row);
+                Grid.SetColumn(uiElement, column);
+
+                grid.Children.Add(uiElement);
+            }
+
+            if (indication == UIElementsName.TextBox.ToString())
+            {
+                TextBox uiElement = new TextBox();
+                UIElementSkin.TextBoxValidationHandler(uiElement);
+                uiElement.Text = text;
+                KeyPressedEventCenter.KeyPressedEventInjection(routedEventLibrary, KeyPressedName.EnterKey, uiElement);
+
+                UIElementSkin.TextBoxSkinModify(uiElement, wpfScreen);
+                StorageViewerSkin.LoadSkinPosition(uiElement, skinPosition);
+
+                // insert potential clickEvent
+
+                Grid.SetRow(uiElement, row);
+                Grid.SetColumn(uiElement, column);
+
+                grid.Children.Add(uiElement);
+            }
+
+            if (indication == UIElementsName.TextBoxNumber.ToString())
+            {
+                TextBox uiElement = new TextBox();
+                UIElementSkin.TextBoxNumberValidationHandler(uiElement);
+                uiElement.Text = text;
+                KeyPressedEventCenter.KeyPressedEventInjection(routedEventLibrary, KeyPressedName.EnterKey, uiElement);
+
+                UIElementSkin.TextBoxNumberSkinModify(uiElement, wpfScreen);
+                StorageViewerSkin.LoadSkinPosition(uiElement, skinPosition);
+
+                Grid.SetRow(uiElement, row);
+                Grid.SetColumn(uiElement, column);
+
+                grid.Children.Add(uiElement);
+            }
+
+            if (indication == UIElementsName.ComboBox.ToString())
+            {
+                ComboBox uiElement = new ComboBox();
+                string[] comboBoxStrings = new string[] { "Selectionnez une option", "TextBox", "TextBoxNumber", "DatePicker", "ComboBox" };
                 UIElementSkin.ComboBoxSkinForm(uiElement, comboBoxStrings);
 
                 if (text != null)
@@ -1549,6 +1646,29 @@ namespace Project_Inventory
         }
 
         /// <summary>
+        /// Create the header line in the scroll grid
+        /// </summary>
+        /// <param name="grid"></param>
+        /// <param name="text"></param>
+        /// <param name="row"></param>
+        /// <param name="column"></param>
+        /// <param name="skinPosition"></param>
+        public void CreateHeaderToGrid(Grid grid, string text, int row, int column, SkinLocation skinPosition, RoutedEventLibrary routedEventLibrary)
+        {
+            TextBox textbox = new TextBox();
+            textbox.Text = text;
+            KeyPressedEventCenter.KeyPressedEventInjection(routedEventLibrary, KeyPressedName.EnterKey, textbox);
+
+            UIElementSkin.TextBoxSkinModify(textbox, wpfScreen);
+            StorageViewerSkin.LoadSkinPosition(textbox, skinPosition);
+
+            Grid.SetRow(textbox, row);
+            Grid.SetColumn(textbox, column);
+
+            grid.Children.Add(textbox);
+        }
+
+        /// <summary>
         /// Adapt view about number of button to show
         /// </summary>
         /// <param name="grid"></param>
@@ -1587,7 +1707,7 @@ namespace Project_Inventory
         /// <param name="gridSkin"></param>
         /// <param name="skinHeight"></param>
         /// <param name="options"></param>
-        public void CustomListViewer(Grid grid, Grid embededGrid, List<ListOption> options, List<Button> deleteButtons, List<Button> upButtons, List<Button> downButtons)
+        public void CustomListViewer(Grid grid, Grid embededGrid, List<ListOption> options, List<Button> deleteButtons, List<Button> upButtons, List<Button> downButtons, RoutedEventLibrary routedEventLibrary)
         {
             ScrollViewer scrollViewer = new ScrollViewer();
 
@@ -1597,7 +1717,7 @@ namespace Project_Inventory
 
             ScrollGridInit(embededGrid);
 
-            SetUpCustomListGrid(embededGrid, options, deleteButtons, upButtons, downButtons);
+            SetUpCustomListGrid(embededGrid, options, deleteButtons, upButtons, downButtons, routedEventLibrary);
 
             EmbedScrollableGrid(grid, embededGrid, scrollViewer);
         }
@@ -1701,7 +1821,7 @@ namespace Project_Inventory
         /// <param name="stringTab"></param>
         /// <param name="indicTab"></param>
         /// <param name="listBoxNames"></param>
-        public void CreateScrollableForm(Grid grid, Grid embededGrid, int gridRowOne, int gridColumnOne, int gridRowTwo, int gridColumnTwo, SkinLocation gridSkin, SkinSize skinHeight, UIElementsName[] stringTab, string[] indicTab, ComboBoxNames listBoxNames, CustomList[] customList)
+        public void CreateScrollableForm(Grid grid, Grid embededGrid, int gridRowOne, int gridColumnOne, int gridRowTwo, int gridColumnTwo, SkinLocation gridSkin, SkinSize skinHeight, UIElementsName[] stringTab, string[] indicTab, ComboBoxNames listBoxNames, CustomList[] customList, RoutedEventLibrary routedEventLibrary)
         {
             ScrollViewer scrollViewer = new ScrollViewer();
 
@@ -1711,7 +1831,7 @@ namespace Project_Inventory
 
             ScrollFormInit(embededGrid, gridRowTwo, scrollViewer);
 
-            CreateFormToGridByTab(embededGrid, stringTab, indicTab, listBoxNames, customList);
+            CreateFormToGridByTab(embededGrid, stringTab, indicTab, listBoxNames, customList, routedEventLibrary);
 
             EmbedScrollableGrid(grid, embededGrid, scrollViewer);
         }
@@ -1982,7 +2102,7 @@ namespace Project_Inventory
         /// <param name="tabPos"></param>
         /// <param name="stringTab"></param>
         /// <param name="indicTab"></param>
-        public void CreateScrollableGridModfiable(Grid grid, Grid embededGrid, int gridRowOne, int gridColumnOne, int gridRowTwo, int gridColumnTwo, SkinLocation gridSkin, SkinSize skinHeight, SkinLocation tabPos, Data[] stringTab, string[] indicTab, List<Button> buttonList, List<List<ListOption>> listOptions, List<int> customListIds, List<Button> sortButtonList)
+        public void CreateScrollableGridModfiable(Grid grid, Grid embededGrid, int gridRowOne, int gridColumnOne, int gridRowTwo, int gridColumnTwo, SkinLocation gridSkin, SkinSize skinHeight, SkinLocation tabPos, Data[] stringTab, string[] indicTab, List<Button> buttonList, List<List<ListOption>> listOptions, List<int> customListIds, List<Button> sortButtonList, RoutedEventLibrary routedEventLibrary)
         {
             ScrollViewer scrollViewer = new ScrollViewer();
 
@@ -1992,7 +2112,7 @@ namespace Project_Inventory
 
             ScrollGridInit(embededGrid, gridRowTwo, gridColumnTwo, scrollViewer);
 
-            CreateTabToGrid(embededGrid, stringTab, indicTab, tabPos, buttonList, listOptions, customListIds, sortButtonList);
+            CreateTabToGrid(embededGrid, stringTab, indicTab, tabPos, buttonList, listOptions, customListIds, sortButtonList, routedEventLibrary);
 
             EmbedScrollableGrid(grid, embededGrid, scrollViewer);
         }

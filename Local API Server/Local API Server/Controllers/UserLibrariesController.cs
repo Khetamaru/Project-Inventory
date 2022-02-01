@@ -23,6 +23,13 @@ namespace Local_API_Server.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UserLibrary>>> GetUserLibraries()
         {
+            return await _context.UserLibraries.Where(user => user.IsActive == true).ToListAsync();
+        }
+
+        // GET: api/UserLibraries
+        [HttpGet("all")]
+        public async Task<ActionResult<IEnumerable<UserLibrary>>> GetAllUserLibraries()
+        {
             return await _context.UserLibraries.ToListAsync();
         }
 
@@ -92,8 +99,25 @@ namespace Local_API_Server.Controllers
                 return NotFound();
             }
 
-            _context.UserLibraries.Remove(UserLibrary);
-            await _context.SaveChangesAsync();
+            UserLibrary.IsActive = false;
+
+            _context.Entry(UserLibrary).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!UserLibraryExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
 
             return Ok();
         }

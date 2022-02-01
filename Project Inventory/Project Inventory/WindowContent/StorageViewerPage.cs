@@ -102,11 +102,11 @@ namespace Project_Inventory
 
             int j;
 
-            indicTab = new string[dataTab[0].DataText.Count];
+            indicTab = new string[dataTab.First().DataText.Count];
 
-            for (j = 0; j < dataTab[0].DataText.Count; j++)
+            for (j = 0; j < dataTab.First().DataText.Count; j++)
             {
-                indicTab[j] = dataTab[0].DataType[j];
+                indicTab[j] = dataTab.First().DataType[j];
             }
         }
 
@@ -140,12 +140,12 @@ namespace Project_Inventory
 
                     toolBox.CreateScrollableGridModfiable(centerGrid, capGrid,
                                          1, 1,
-                                         dataTab.Count + 2, dataTab[0].DataText.Count + 2,
+                                         dataTab.Count + 2, dataTab.First().DataText.Count + 2,
                                          SkinLocation.CenterStretch, SkinSize.HeightEightPercent,
                                          SkinLocation.CenterCenter,
                                          dataTab.ToArray(), indicTab,
                                          AddDeleteButtons(),
-                                         listOptionsTab, customListIds, SortButtonsGeneration());
+                                         listOptionsTab, customListIds, SortButtonsGeneration(), saveEvents[0]);
                     break;
             }
         }
@@ -160,7 +160,7 @@ namespace Project_Inventory
 
                     toolBox.CreateScrollableGrid(bottomGrid, capGrid,
                                          1, 1,
-                                         dataTab.Count + 1, dataTab[0].DataText.Count + 1,
+                                         dataTab.Count + 1, dataTab.First().DataText.Count + 1,
                                          SkinLocation.BottomStretch, SkinSize.HeightNintyPercent,
                                          SkinLocation.CenterCenter,
                                          dataTab.ToArray(), indicTab,
@@ -342,11 +342,11 @@ namespace Project_Inventory
                 dataTab.Add(dataLibraryShorted[i]);
             }
 
-            indicTab = new string[dataTabSave[0].DataText.Count];
+            indicTab = new string[dataTabSave.First().DataText.Count];
 
-            for (i = 0; i < dataTabSave[0].DataText.Count; i++)
+            for (i = 0; i < dataTabSave.First().DataText.Count; i++)
             {
-                indicTab[i] = dataTabSave[0].DataType[i];
+                indicTab[i] = dataTabSave.First().DataType[i];
             }
 
             if (dataLibraryShorted.Count <= 1)
@@ -363,7 +363,7 @@ namespace Project_Inventory
             int i;
             List<int> indexList = new List<int>();
 
-            for (i = 0; i < dataTab[0].DataType.Count; i++)
+            for (i = 0; i < dataTab.First().DataType.Count; i++)
             {
                 indexList.Add(i);
             }
@@ -374,26 +374,26 @@ namespace Project_Inventory
                 {
                     button = toolBox.CreateSwitchButtonImage(buttonTriggeredImage, new RoutedEventLibrary(), SkinName.Standart, SkinLocation.CenterCenter, ImageSizesName.Small);
 
-                    if (Int32.TryParse(dataTab[0].DataType[index], out customListId))
+                    if (Int32.TryParse(dataTab.First().DataType[index], out customListId))
                     {
                         button.Click += new RoutedEventHandler((object sender, RoutedEventArgs e) => { SortingDatas(sender, e, UIElementsName.ComboBox, index, button, sortButtons); });
                     }
                     else
                     {
-                        button.Click += new RoutedEventHandler((object sender, RoutedEventArgs e) => { SortingDatas(sender, e, toolBox.GetUIElementType(dataTab[0].DataType[index]), index, button, sortButtons); });
+                        button.Click += new RoutedEventHandler((object sender, RoutedEventArgs e) => { SortingDatas(sender, e, toolBox.GetUIElementType(dataTab.First().DataType[index]), index, button, sortButtons); });
                     }
                 }
                 else
                 {
                     button = toolBox.CreateSwitchButtonImage(ImagesName.ArrowNeutral, new RoutedEventLibrary(), SkinName.Standart, SkinLocation.CenterCenter, ImageSizesName.Small);
 
-                    if (Int32.TryParse(dataTab[0].DataType[index], out customListId))
+                    if (Int32.TryParse(dataTab.First().DataType[index], out customListId))
                     {
                         button.Click += new RoutedEventHandler((object sender, RoutedEventArgs e) => { SortingDatas(sender, e, UIElementsName.ComboBox, index, button, sortButtons); });
                     }
                     else
                     {
-                        button.Click += new RoutedEventHandler((object sender, RoutedEventArgs e) => { SortingDatas(sender, e, toolBox.GetUIElementType(dataTab[0].DataType[index]), index, button, sortButtons); });
+                        button.Click += new RoutedEventHandler((object sender, RoutedEventArgs e) => { SortingDatas(sender, e, toolBox.GetUIElementType(dataTab.First().DataType[index]), index, button, sortButtons); });
                     }
                 }
 
@@ -404,7 +404,7 @@ namespace Project_Inventory
 
         private void SortingDatas(object sender, RoutedEventArgs e, UIElementsName uiType, int index, Button button, List<Button> sortButtons)
         {
-            Data Header = dataTab[0];
+            Data Header = dataTab.First();
             dataTab.Remove(Header);
 
             bool triggerReverse = buttonTriggeredIndex == index && buttonTriggeredImage == ImagesName.ArrowDown ? true : false;

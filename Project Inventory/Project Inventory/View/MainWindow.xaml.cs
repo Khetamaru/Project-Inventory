@@ -35,6 +35,8 @@ namespace Project_Inventory
         private int actualDataId;
         private int actualCustomListId;
 
+        private CancelEventHandler ClosePopUpEvent;
+
         public MainWindow()
         {
             DataContext = this;
@@ -56,10 +58,18 @@ namespace Project_Inventory
             actualDataId = -1;
             actualCustomListId = -1;
 
+            ClosePopUpEvent = new CancelEventHandler((object sender, CancelEventArgs e) => { ClosePopUp(sender, e); });
+
             this.SizeChanged += new SizeChangedEventHandler((object sender, SizeChangedEventArgs e) => { SizeChangeResizeEvent(sender, e); });
-            this.Closing += new CancelEventHandler((object sender, CancelEventArgs e) => { ClosePopUp(sender, e); });
+            this.Closing += ClosePopUpEvent;
 
             Init();
+        }
+
+        private void CloseApp()
+        {
+            Closing -= ClosePopUpEvent;
+            Close();
         }
 
         private void SizeChangeResizeEvent(object sender, SizeChangedEventArgs e)
@@ -90,7 +100,7 @@ namespace Project_Inventory
         {
             RoutedEventHandler reloadEvent = new RoutedEventHandler((object sender, RoutedEventArgs e) => ReloadView(sender, e));
 
-            mainMenu = new MainMenu(toolBox, router, requestCenter, actualUserId, actualStorageId, actualCustomListId, actualDataId, reloadEvent);
+            mainMenu = new MainMenu(toolBox, router, requestCenter, actualUserId, actualStorageId, actualCustomListId, actualDataId, reloadEvent, CloseApp);
             actualWindow = WindowsName.MainMenu;
             mainMenu.TopGridInit(topGrid);
             mainMenu.CenterGridInit(centerGrid);

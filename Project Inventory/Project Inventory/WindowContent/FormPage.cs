@@ -65,7 +65,7 @@ namespace Project_Inventory
                                                  formElements.Length, 2,
                                                  SkinLocation.StretchStretch, SkinSize.HeightEightPercent,
                                                  formElements, labels, listBoxNames,
-                                                 customList);
+                                                 customList, formValidButton[0]);
                     break;
 
                 case WindowsName.CreditPage:
@@ -75,7 +75,7 @@ namespace Project_Inventory
                                                  formElements.Length, 1,
                                                  SkinLocation.BottomStretch, SkinSize.HeightNintyPercent,
                                                  formElements, labels, listBoxNames,
-                                                 customList);
+                                                 customList, formValidButton[0]);
                     break;
             }
         }
@@ -444,8 +444,11 @@ namespace Project_Inventory
                     RoutedEventLibrariesInit(topSwitchEvents);
                     topSwitchEvents[0].changePageEvent = GetEventHandler(WindowsName.MainMenu);
 
-                    formElements = new UIElementsName[] { UIElementsName.None, UIElementsName.None, UIElementsName.None };
-                    labels = new string[] { "Entreprise : Docteur Ordianteur Laval", "Chef de projet : ETAIX Vincent", "Programmateur : LASSERRE Anthony" };
+                    SoftwareVersion version = JsonCenter.GetVersion(requestCenter);
+                    formValidButton = new RoutedEventLibrary[1];
+
+                    formElements = new UIElementsName[] { UIElementsName.None, UIElementsName.None, UIElementsName.None, UIElementsName.None };
+                    labels = new string[] { "Entreprise : Docteur Ordianteur Laval", "Chef de projet : ETAIX Vincent", "Programmateur : LASSERRE Anthony", "Version : " + version.version };
 
                     break;
 
